@@ -1,0 +1,87 @@
+{
+  "name": "bluecotswallet",
+  "version": "0.1.0",
+  "private": true,
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "test": "jest",
+    "postinstall": "./scripts/postinstall.sh",
+    "postversion": "react-native-version"
+  },
+  "jest": {
+    "preset": "jest-expo"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.6",
+    "babel-plugin-inline-dotenv": "^1.1.2",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react-native-web3": "0.0.4",
+    "jest-expo": "~27.0.0",
+    "react-native-version": "^2.6.3",
+    "react-test-renderer": "16.3.1",
+    "rn-nodeify": "^10.0.0"
+  },
+  "dependencies": {
+    "analytics-react-native": "^1.2.0",
+    "assert": "^1.4.1",
+    "ethereumjs-util": "^5.2.0",
+    "ethereumjs-wallet": "^0.6.0",
+    "events": "^3.0.0",
+    "expo": "^27.1.1",
+    "native-base": "^2.7.2",
+    "node-libs-browser": "^2.1.0",
+    "react": "16.3.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-27.0.0.tar.gz",
+    "react-native-config": "^0.11.5",
+    "react-native-crypto": "^2.1.2",
+    "react-native-elements": "^0.19.1",
+    "react-native-fontawesome": "^5.7.0",
+    "react-native-qrcode-svg": "^5.1.0",
+    "react-native-randombytes": "^3.5.0",
+    "react-native-sensitive-info": "^5.2.4",
+    "react-native-simple-modal": "^9.0.1",
+    "react-native-svg": "^6.5.2",
+    "react-native-uuid": "^1.4.9",
+    "react-navigation": "^2.11.2",
+    "react-redux": "^5.0.7",
+    "readable-stream": "^3.0.0",
+    "redux": "^4.0.0",
+    "redux-logger": "^3.0.6",
+    "redux-persist": "^5.10.0",
+    "redux-persist-expo-securestore": "^0.1.1",
+    "redux-persist-sensitive-storage": "^1.0.0",
+    "stream-browserify": "^2.0.1",
+    "uuid": "^3.3.2",
+    "vm-browserify": "^1.1.0",
+    "web3": "^0.20.6",
+    "web3-provider-engine": "^14.0.6"
+  },
+  "react-native": {
+    "crypto": "react-native-crypto",
+    "_stream_transform": "readable-stream/transform",
+    "_stream_readable": "readable-stream/readable",
+    "_stream_writable": "readable-stream/writable",
+    "_stream_duplex": "readable-stream/duplex",
+    "_stream_passthrough": "readable-stream/passthrough",
+    "stream": "stream-browserify",
+    "vm": "vm-browserify"
+  },
+  "browser": {
+    "crypto": "react-native-crypto",
+    "_stream_transform": "readable-stream/transform",
+    "_stream_readable": "readable-stream/readable",
+    "_stream_writable": "readable-stream/writable",
+    "_stream_duplex": "readable-stream/duplex",
+    "_stream_passthrough": "readable-stream/passthrough",
+    "stream": "stream-browserify",
+    "vm": "vm-browserify"
+  },
+  "description": "This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).",
+  "keywords": [
+    "bluecots",
+    "wallet"
+  ],
+  "author": "doramong0926",
+  "license": "MIT"
+}

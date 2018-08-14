@@ -1,0 +1,7 @@
+export const LOGOUT = 'LOGOUT';
+export const SET_CALL_TO_ACTION_DISMISSED = 'SET_CALL_TO_ACTION_DISMISSED';
+export const SET_NETWORK = 'SET_NETWORK';
+export const SET_PIN_CODE = 'SET_PIN_CODE';
+export const ADD_WALLET = 'ADD_WALLET';
+export const REMOVE_WALLET = 'REMOVE_WALLET';
+export const SET_DEFAULT_WALLET = 'SET_DEFAULT_WALLET';

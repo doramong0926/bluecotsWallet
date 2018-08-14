@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "sdkVersion": "27.0.0",
+    "android": {
+      "package": "bluecotsWallet"
+    },
+    "name": "bluecotsWallet",
+    "slug": "bluecotswallet",
+    "version": "0.1.0",
+    "isDetached": true,
+    "detach": {
+      "scheme": "exp5f35913053c249e18df5080502949fec",
+      "androidExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/android-v2.5.3-sdk27.0.0-408c8d77-8d1f-4784-b7b4-93826250663a.tar.gz"
+    }
+  }
+}
