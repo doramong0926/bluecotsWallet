@@ -17,13 +17,13 @@ class mainScreen extends Component{
 
     render(){
         return (
-            <AppTabNavigator />
+            <MainScreenTabNavigator />
         );
     }
 }
 export default mainScreen;
 
-const AppTabNavigator = createBottomTabNavigator({
+const MainScreenTabNavigator = createBottomTabNavigator({
         walletTab:{
             screen:WalletScreen    
         },

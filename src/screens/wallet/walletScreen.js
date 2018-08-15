@@ -86,8 +86,6 @@ class WalletScreen extends Component{
                     dataSourceForWalletListModal={this.state.dataSourceForWalletListModal}    
                     fetchWalletList={this.fetchWalletList.bind(this)}             
                 />
-
-                
             </View>  
         );
     }
