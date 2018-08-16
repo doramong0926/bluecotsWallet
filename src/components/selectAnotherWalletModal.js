@@ -41,7 +41,7 @@ class SelectAnotherWalletModal extends Component {
                 }}
             >
                 <View>
-                    <Text style={{textAlign: 'center'}}>Wallet List </Text>
+                    <Text style={{textAlign: 'center'}}>Wallet List2 </Text>
                 </View>
                 <View>
                     <ListView
