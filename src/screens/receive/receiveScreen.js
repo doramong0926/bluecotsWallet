@@ -1,11 +1,10 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { FormLabel, FormInput, Button } from 'react-native-elements'
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import QRCode from 'react-native-qrcode-svg';
-import WalletUtils from './../../utils/wallet';
-import { store } from './../../config/store';
+import ActionCreator from './../../actions';
+import { connect } from 'react-redux';
 
 class receiveScreen extends Component{  
     static navigationOptions = {
@@ -24,17 +23,29 @@ class receiveScreen extends Component{
                 <View style={style.container}>
                     <QRCode 
                         size = {200} 
-                        value={store.getState().defaultWallet.walletAddress}
+                        value={this.props.defaultWallet.walletAddress}
                     />
                 </View>
                 <View style={style.container}>
-                    <Text>{store.getState().defaultWallet.walletAddress}</Text>
+                    <Text>{this.props.defaultWallet.walletAddress}</Text>
                 </View>
             </View>  
         );
     }
 }
-export default receiveScreen;
+
+function mapStateToProps(state) {
+    return {
+        defaultWallet: state.wallet.defaultWallet,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+    };
+}
+  
+export default connect(mapStateToProps, mapDispatchToProps)(receiveScreen);
  
 const style = StyleSheet.create({
     container: {

@@ -5,15 +5,15 @@ import { createMigrate, persistReducer, persistStore, persistCombineReducers } f
 import createSensitiveStorage from 'redux-persist-expo-securestore';
 // import uuid from 'react-native-uuid';
 const uuid = require('uuid')
-import { defaultState, rootReducer } from './reducer';
+import reducers from './../reducers';
 
 const migrations = {
   0: state => ({
-    ...state,
-    walletList: state.walletList.map(wallet => ({
-      ...wallet,
-      id: uuid.v4(),
-    })),
+      ...state,
+      walletList: state.walletList.map(wallet => ({
+          ...wallet,
+          id: uuid.v4(),
+      })),
   }),
 };
 
@@ -26,21 +26,21 @@ const migrations = {
 const storage = createSensitiveStorage();
 
 const persistConfig = {
-  key: "bluecotsWallet",
-  version: 1,
-  storage,
-  migrate: createMigrate(migrations, { debug: false }),
+    key: "bluecotsWallet",
+    version: 1,
+    storage,
+    migrate: createMigrate(migrations, { debug: false }),
 };
 
 const store = createStore(
-  persistReducer(persistConfig, rootReducer),
-  defaultState,
-  process.env.NODE_ENV === 'production'
-    ? undefined
-    : applyMiddleware(createLogger()),
+    persistReducer(persistConfig, reducers),
+    //initialState,
+    process.env.NODE_ENV === 'production'
+        ? undefined
+        : applyMiddleware(createLogger()),
 );
 
 const persistor = persistStore(store);
-//persistor.purge();
+persistor.purge();
 
 export { persistor, store };

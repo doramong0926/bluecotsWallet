@@ -1,23 +1,26 @@
 
 import React, { Component } from 'react';
-import { Text, View, TouchableHighlight, StyleSheet } from 'react-native';
-import { FormLabel, FormInput, Button } from 'react-native-elements';
+import { Text, View } from 'react-native';
 import Modal from 'react-native-simple-modal';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import EthUtil from 'ethereumjs-util';
-import WalletUtils from './../utils/wallet';
+import { Ionicons } from '@expo/vector-icons';
+import ActionCreator from './../actions';
+import { connect } from 'react-redux';
 
-class CreateWalletModal extends Component {  
+class ModalCreateWallet extends Component {
+    constructor(props, context) {
+        super(props, context);
+    }
+
     render() {
         return (
             <Modal 
                 offset={0}
-                open={this.props.createWalletModalIsOpen}
+                open={this.props.visibleModalCreateWallet}
                 animationDuration={200}
                 animationTension={40}
                 closeOnTouchOutside={true}
                 disableOnBackPress={false}
-                modalDidClose={() => {this.props.setCreateWalletModalIsOpen(false)}}
+                modalDidClose={() => {this.props.hideModalCreateWallet()}}
                 modalDidOpen={() => undefined}
                 modalProps={undefined}
                 containerProps={undefined}
@@ -48,14 +51,45 @@ class CreateWalletModal extends Component {
             </Modal>
         );
     }
+
     handleResotrePress = () => {
-        this.props.setCreateWalletModalIsOpen(false); 
-        this.props.setRestoreWalletModalIsOpen(true); 
+        this.props.hideModalCreateWallet();
+        this.props.showModalRestoreWallet();
     }
     handleNewPress = () => {
-        this.props.setCreateWalletModalIsOpen(false); 
-        this.props.setGenerateWalletModalIsOpen(true); 
+        this.props.hideModalCreateWallet();
+        this.props.showModalGenerateWallet(); 
     }
 }
 
-export default CreateWalletModal;
+function mapStateToProps(state) {
+    return {
+        visibleModalCreateWallet: state.modal.visibleCreateWalletModal
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        showModalCreateWallet: () => {
+            dispatch(ActionCreator.showModalCreateWallet());
+        },
+        hideModalCreateWallet: () => {
+            dispatch(ActionCreator.hideModalCreateWallet());
+        },
+        showModalRestoreWallet: () => {
+            dispatch(ActionCreator.showModalRestoreWallet());
+        },
+        hideModalRestoreWallet: () => {
+            dispatch(ActionCreator.hideModalRestoreWallet());
+        },
+        showModalGenerateWallet: () => {
+            dispatch(ActionCreator.showModalGenerateWallet());
+        },
+        hideModalGenerateWallet: () => {
+            dispatch(ActionCreator.hideModalGenerateWallet());
+        }
+    };
+}
+  
+export default connect(mapStateToProps, mapDispatchToProps)(ModalCreateWallet);
+

@@ -1,30 +1,36 @@
 import React, { Component } from 'react';
-import { Image, Text, View, StyleSheet } from 'react-native';
-import { store } from './../config/store';
+import { Text, View, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import ActionCreator from './../actions';
 
 class walletAddressWithNickName extends Component {
+    constructor(props, context) {
+        super(props, context);
+    }
+
     render() {
         return (
-            (store.getState().defaultWallet.walletAddress) ? (this.renderAddressWithnickName()) : (this.renderNeedToAddAddress())
+            this.renderAddressWithnickName()
         );
     }
 
     renderAddressWithnickName = () => {
-        return (
-            <View>
-                <Text style={styles.nickName}>{this.props.nickName}</Text>
-                <Text style={styles.address}>{this.props.walletAddr}</Text>
-            </View>
-        );
-    }; 
-
-    renderNeedToAddAddress = () => {
-        return (
-            <View>
-                <Text style={styles.address}>Wallet address is not exist. Please add wallet first.</Text>
-            </View>
-        )
-    };     
+        if (this.props.defaultWallet) {
+            return (
+                <View>
+                    <Text style={styles.nickName}>{this.props.defaultWallet.nickName}</Text>
+                    <Text style={styles.address}>{this.props.defaultWallet.walletAddress}</Text>
+                </View>
+            );
+        }
+        else {
+            return (
+                <View>
+                    <Text style={styles.address}>Wallet address is not exist. Please add wallet first.</Text>
+                </View>
+            )
+        }
+    };  
 }
 
 const styles = StyleSheet.create({
@@ -40,5 +46,15 @@ const styles = StyleSheet.create({
     },
 })
 
-export default walletAddressWithNickName;
+function mapStateToProps(state) {
+    return {
+        defaultWallet: state.wallet.defaultWallet,
+    };
+}
 
+function mapDispatchToProps(dispatch) {
+    return {        
+    };
+}
+  
+export default connect(mapStateToProps, mapDispatchToProps)(walletAddressWithNickName);

@@ -1,23 +1,25 @@
 
 import React, { Component } from 'react';
 import { Text, View, TouchableHighlight, StyleSheet } from 'react-native';
-import { FormLabel, FormInput, Button } from 'react-native-elements';
+import { connect } from 'react-redux';
+import ActionCreator from './../actions';
 import Modal from 'react-native-simple-modal';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import EthUtil from 'ethereumjs-util';
-import WalletUtils from './../utils/wallet';
 
-class DefaultWalletSettingModal extends Component {  
+class ModalDefaultWalletSettings extends Component {  
+    constructor(props, context) {
+        super(props, context);
+    }
+
     render() {
         return (
             <Modal 
                 offset={0}
-                open={this.props.defaultWalletSettingModalIsOpen}
+                open={this.props.visibleModalDefaultWalletSettings}
                 animationDuration={200}
                 animationTension={40}
                 closeOnTouchOutside={true}
                 disableOnBackPress={false}
-                modalDidClose={() => {this.props.setDefaultWalletSettingModalIsOpen(false)}}
+                modalDidClose={() => {this.props.hideModalDefaultWalletSettings()}}
                 modalDidOpen={() => undefined}
                 modalProps={undefined}
                 containerProps={undefined}
@@ -61,18 +63,41 @@ class DefaultWalletSettingModal extends Component {
         );
     }
     handleSelectPress = () => {
-        this.props.setDefaultWalletSettingModalIsOpen(false); 
-        this.props.setSelectAnotherWalletModalIsOpen(true); 
+        this.props.hideModalDefaultWalletSettings();
+        this.props.showModalSelectAnotherWallet(); 
     }
     handleModifyNickNamePress = () => {
-        this.props.setDefaultWalletSettingModalIsOpen(false); 
+        this.props.hideModalDefaultWalletSettings(); 
     }
     handleBackupPress = () => {
-        this.props.setDefaultWalletSettingModalIsOpen(false); 
+        this.props.hideModalDefaultWalletSettings(); 
     }
     handleDeletePress = () => {
-        this.props.setDefaultWalletSettingModalIsOpen(false); 
+        this.props.this.props.hideModalDefaultWalletSettings(); 
     }
 }
 
-export default DefaultWalletSettingModal;
+function mapStateToProps(state) {
+    return {
+        visibleModalDefaultWalletSettings: state.modal.visibleModalDefaultWalletSettings
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        showModalDefaultWalletSettings: () => {
+            dispatch(ActionCreator.showModalDefaultWalletSettings());
+        },
+        hideModalDefaultWalletSettings: () => {
+            dispatch(ActionCreator.hideModalDefaultWalletSettings());
+        },
+        showModalSelectAnotherWallet: () => {
+            dispatch(ActionCreator.showModalSelectAnotherWallet());
+        },
+        hideModalSelectAnotherWallet: () => {
+            dispatch(ActionCreator.hideModalSelectAnotherWallet());
+        }
+    };
+}
+  
+export default connect(mapStateToProps, mapDispatchToProps)(ModalDefaultWalletSettings);

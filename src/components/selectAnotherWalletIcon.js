@@ -1,9 +1,15 @@
 
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import ActionCreator from './../actions';
+import { connect } from 'react-redux';
 
 class SelectAnotherWalletIcon extends Component {
+    constructor(props, context) {
+        super(props, context);
+    }
+
     render() {
         return (
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
@@ -13,8 +19,25 @@ class SelectAnotherWalletIcon extends Component {
     }
 
     handlePress = () => {
-        this.props.setSelectAnotherWalletModalIsOpen(true); 
+        this.props.showModalSelectAnotherWallet(); 
     }
 }
 
-export default SelectAnotherWalletIcon;
+function mapStateToProps(state) {
+    return {
+        visibleModalSelectAnotherWallet: state.modal.visibleModalSelectAnotherWallet
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        showModalSelectAnotherWallet: () => {
+            dispatch(ActionCreator.showModalSelectAnotherWallet());
+        },
+        hideModalSelectAnotherWallet: () => {
+            dispatch(ActionCreator.hideModalSelectAnotherWallet());
+        }
+    };
+}
+  
+export default connect(mapStateToProps, mapDispatchToProps)(SelectAnotherWalletIcon);

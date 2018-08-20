@@ -1,9 +1,15 @@
 
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import ActionCreator from './../actions';
+import { connect } from 'react-redux';
 
 class CreateWalletIcon extends Component {
+    constructor(props, context) {
+        super(props, context);
+    }
+
     render() {
         return (
             <View>
@@ -13,8 +19,25 @@ class CreateWalletIcon extends Component {
     }
 
     handlePress = () => {
-        this.props.setCreateWalletModalIsOpen(true); 
+        this.props.showModalCreateWallet();
     }
 }
 
-export default CreateWalletIcon;
+function mapStateToProps(state) {
+    return {
+        
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        showModalCreateWallet: () => {
+            dispatch(ActionCreator.showModalCreateWallet());
+        },
+        hideModalCreateWallet: () => {
+            dispatch(ActionCreator.hideModalCreateWallet());
+        }
+    };
+}
+  
+export default connect(mapStateToProps, mapDispatchToProps)(CreateWalletIcon);

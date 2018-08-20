@@ -1,53 +1,42 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ListView } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { FormLabel, FormInput, Button } from 'react-native-elements'
-import { store } from './../../config/store';
 import WalletUtils from './../../utils/wallet';
+import ActionCreator from './../../actions';
+import { connect } from 'react-redux';
 import WalletAddressWithNickName from './../../components/walletAddressWithNickName';
 import SelectAnotherWalletIcon from './../../components/selectAnotherWalletIcon';
-import SelectAnotherWalletModal from './../../components/selectAnotherWalletModal';
+import ModalSelectAnotherWallet from './../../modals/modalSelectAnotherWallet';
 
 class BlcSendScreen extends Component{
+    constructor(props, context) {
+        super(props, context);
+    }
+
     static navigationOptions = {
         tabBarLabel: 'BLC'
     };
 
     state = {
-        walletAddress: '',
-        nickName: '',
         addressToSendErc20: '',
         amountToSendErc20: '',
-        currentBLCBalance: 0,
-        selectAnotherWalletModalIsOpen : false,
-        dataSourceForWalletListModal: new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2,
-        }),
     };
-
-    componentDidMount() {
-        this.fetchWalletList();
-        this.fetchWalletInfo();
-        this.updateWalletBalance();
-    }
 
     render(){
         return (
             <View>
                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
                     <View style={{flex:9, alignItems: 'center', justifyContent: 'center'}}>
-                        <WalletAddressWithNickName walletAddr={this.state.walletAddress} nickName={this.state.nickName}/>
+                        <WalletAddressWithNickName />
                     </View>
                     <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
-                        <SelectAnotherWalletIcon
-                            selectAnotherWalletModalIsOpen={this.state.selectAnotherWalletModalIsOpen}
-                            setSelectAnotherWalletModalIsOpen={this.setSelectAnotherWalletModalIsOpen.bind(this)}
-                        />
+                        <SelectAnotherWalletIcon />
                     </View>
                 </View>
                 <View>
                     <Text style={styles.balance}> Available balance </Text>
-                    <Text style={styles.balance}> {this.state.currentBLCBalance} </Text>
+                    <Text style={styles.balance}> {this.props.blcBanlance} </Text>
                 </View>
                 <View>
                     <FormLabel>Address to send BLC</FormLabel>
@@ -64,55 +53,8 @@ class BlcSendScreen extends Component{
                         title="Send"
                     />
                 </View>
-                <SelectAnotherWalletModal
-                    updateWalletBalance={this.updateWalletBalance.bind(this)}
-                    selectAnotherWalletModalIsOpen={this.state.selectAnotherWalletModalIsOpen}   
-                    setSelectAnotherWalletModalIsOpen={this.setSelectAnotherWalletModalIsOpen.bind(this)}      
-                    dataSourceForWalletListModal={this.state.dataSourceForWalletListModal}    
-                    fetchWalletList={this.fetchWalletList.bind(this)}             
-                />
             </View>
         );
-    }
-
-    setSelectAnotherWalletModalIsOpen = (value) => {
-        this.setState({
-            selectAnotherWalletModalIsOpen: value
-        });
-    };
-
-    updateWalletBalance = async () => {
-        const currentBLCBalance = await WalletUtils.getBalance({
-            walletAddress:this.state.walletAddress,
-            contractAddress: process.env.DEFAULT_TOKEN_CONTRACT_ADDRESS,
-            symbol: process.env.DEFAULT_TOKEN_SYMBOL, 
-            decimals: process.env.DEFAULT_TOKEN_DECIMALS, 
-        });
-        this.setState({
-            currentBLCBalance,
-        });
-    };
-    
-    fetchWalletList = async () => {
-        var walletList = WalletUtils.getRegistedWalletList('BLC');
-        console.log('walletList : ' + walletList);
-        console.log('c' + walletList.wallet);
-        this.setState({
-            dataSourceForWalletListModal: this.state.dataSourceForWalletListModal.cloneWithRows(walletList)
-        });
-    };
-    
-    fetchWalletInfo = () => {
-        if (store.getState().defaultWallet.walletAddress)
-        {
-            this.state.walletAddress = store.getState().defaultWallet.walletAddress;
-            this.state.nickName = store.getState().defaultWallet.nickName;
-        }
-        else 
-        {
-            this.state.walletAddress = '0x';
-            this.state.nickName = 'Wallet address is not exist.'            
-        }
     }
 
     getAddressToSendErc20 = (input) => {
@@ -164,7 +106,19 @@ class BlcSendScreen extends Component{
         parseFloat(this.state.amountToSendErc20, 10) > 0;
     }
 }
-export default BlcSendScreen;
+
+function mapStateToProps(state) {
+    return {
+        blcBanlance: state.wallet.blcBanlance,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+    };
+}
+  
+export default connect(mapStateToProps, mapDispatchToProps)(BlcSendScreen);
 
 const styles = StyleSheet.create({
     nickName: {
