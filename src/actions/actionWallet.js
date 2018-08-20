@@ -3,7 +3,7 @@ import actionTypes from './actionTypes';
 export function addWallet(wallet) {
     return {
         type: actionTypes.ADD_WALLET,
-        payload: wallet,
+        payload: wallet
     };
 }
 

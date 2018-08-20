@@ -7,7 +7,7 @@ import ActionCreator from './../../actions';
 import { connect } from 'react-redux';
 import WalletAddressWithNickName from './../../components/walletAddressWithNickName';
 import SelectAnotherWalletIcon from './../../components/selectAnotherWalletIcon';
-import ModalSelectAnotherWallet from './../../modals/modalSelectAnotherWallet';
+
 
 class BlcSendScreen extends Component{
     constructor(props, context) {

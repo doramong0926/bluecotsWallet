@@ -109,24 +109,24 @@ class ModalGenerateWallet extends Component {
                 ]
             );
         } else {
-            this.props.addWallet(wallet);
-            this.props.setDefaultWallet(wallet);
+                this.props.addWallet(wallet);
+                this.props.setDefaultWallet(wallet);
 
-            Alert.alert(
-                'Success to restore wallet from PrivateKey',
-                this.props.defaultWallet.walletAddress,
-                [
-                    {
-                        text: 'OK', onPress: () => {}
-                    }
-                ]
-            );
+                Alert.alert(
+                    'Success to restore wallet from PrivateKey',
+                    this.props.defaultWallet.walletAddress,
+                    [
+                        {
+                            text: 'OK', onPress: () => {}
+                        }
+                    ]
+                );
 
 
-            const walletList = this.props.walletList.filter(wallet => wallet.symbol == 'BLC');            
-            console.log('walletList : ' + walletList);
-            this.props.setWalletList(walletList);
-            this.updateWalletBalance();
+                const walletList = this.props.walletList.filter(wallet => wallet.symbol == 'BLC');            
+                console.log('walletList : ' + walletList);
+                this.props.setWalletList(walletList);
+                this.updateWalletBalance();
         }
         this.setState({
             nickName: '',

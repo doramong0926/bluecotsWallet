@@ -1,4 +1,5 @@
 import { applyMiddleware, createStore } from 'redux';
+import promiseMiddleware from 'redux-promise-middleware'
 import { createLogger } from 'redux-logger';
 import { createMigrate, persistReducer, persistStore, persistCombineReducers } from 'redux-persist';
 //import createSensitiveStorage from 'redux-persist-sensitive-storage';
@@ -37,7 +38,7 @@ const store = createStore(
     //initialState,
     process.env.NODE_ENV === 'production'
         ? undefined
-        : applyMiddleware(createLogger()),
+        : applyMiddleware(promiseMiddleware(), createLogger()),
 );
 
 const persistor = persistStore(store);
