@@ -5,11 +5,18 @@ import Modal from 'react-native-simple-modal';
 import ActionCreator from './../actions';
 import { connect } from 'react-redux';
 import WalletUtils from './../utils/wallet';
+import PropTypes from 'prop-types';
 
 class ModalSelectAnotherWallet extends Component {
     constructor(props, context) {
         super(props, context);
     }
+
+    static propTypes = {
+        defaultWallet: PropTypes.shape({
+            walletAddress: PropTypes.string.isRequired,
+        }).isRequired,
+    };
 
     state = {
         nickName: '',
@@ -82,22 +89,19 @@ class ModalSelectAnotherWallet extends Component {
     }
 
     updateWalletBalance = async () => {
-        console.log('defaultWallet : ' + this.props.defaultWallet);
         if (this.props.defaultWallet.walletAddress) {
-            const currentETHBalance = await WalletUtils.getBalance({
+                const currentETHBalance = await WalletUtils.getBalance({
                 walletAddress: this.props.defaultWallet.walletAddress,
                 contractAddress:'', 
                 symbol:'ETH', 
                 decimals:0
             });
-            const currentBLCBalance = await WalletUtils.getBalance({
+                const currentBLCBalance = await WalletUtils.getBalance({
                 walletAddress: this.props.defaultWallet.walletAddress,
                 contractAddress: process.env.DEFAULT_TOKEN_CONTRACT_ADDRESS,
                 symbol: process.env.DEFAULT_TOKEN_SYMBOL, 
                 decimals: process.env.DEFAULT_TOKEN_DECIMALS, 
             });
-            console.log("ddddddddddd currentETHBalance: " + currentETHBalance)
-            console.log("ddddddddddd currentBLCBalance: " + currentBLCBalance)
             this.props.setEthBalance(currentETHBalance); 
             this.props.setBlcBalance(currentBLCBalance);
         }

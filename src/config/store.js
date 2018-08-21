@@ -1,5 +1,5 @@
 import { applyMiddleware, createStore } from 'redux';
-import promiseMiddleware from 'redux-promise-middleware'
+import ReduxThunk from 'redux-thunk'
 import { createLogger } from 'redux-logger';
 import { createMigrate, persistReducer, persistStore, persistCombineReducers } from 'redux-persist';
 //import createSensitiveStorage from 'redux-persist-sensitive-storage';
@@ -11,10 +11,12 @@ import reducers from './../reducers';
 const migrations = {
   0: state => ({
       ...state,
-      walletList: state.walletList.map(wallet => ({
-          ...wallet,
+      walletList: state.wallet.map(walletList => ({
+          ...walletList,
           id: uuid.v4(),
       })),
+      ethBalance: state.wallet.ethBalance,
+      blcBalance: state.wallet.blcBalance,
   }),
 };
 
@@ -30,15 +32,14 @@ const persistConfig = {
     key: "bluecotsWallet",
     version: 1,
     storage,
-    migrate: createMigrate(migrations, { debug: false }),
+    //migrate: createMigrate(migrations, { debug: false }),
 };
 
 const store = createStore(
-    persistReducer(persistConfig, reducers),
-    //initialState,
+    persistCombineReducers(persistConfig, reducers),
     process.env.NODE_ENV === 'production'
         ? undefined
-        : applyMiddleware(promiseMiddleware(), createLogger()),
+        : applyMiddleware(ReduxThunk, createLogger()),
 );
 
 const persistor = persistStore(store);

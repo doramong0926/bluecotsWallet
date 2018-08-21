@@ -9,7 +9,7 @@ import { store } from '../config/store';
 import actionTypes from './../actions/actionTypes';
 
 //import AnalyticsUtils from './analytics';
-import { erc20Abi } from './constants';
+import { erc20Abi } from './../config/constants';
 
 
 export default class WalletUtils {
@@ -23,7 +23,7 @@ export default class WalletUtils {
   }
 
   static getWeb3HTTPProvider() {
-    switch (store.getState().network) {
+    switch (store.getState().config.network) {
       case 'ropsten':
         return new Web3.providers.HttpProvider(
           `https://ropsten.infura.io/${process.env.INFURA_API_KEY}`,
@@ -44,7 +44,7 @@ export default class WalletUtils {
   }
 
   static getEtherscanApiSubdomain() {
-    switch (store.getState().network) {
+    switch (store.getState().config.network) {
       case 'ropsten':
         return 'api-ropsten';
       case 'kovan':
@@ -60,7 +60,7 @@ export default class WalletUtils {
    * Returns a web3 instance with the user's wallet
    */
   static getWeb3Instance() {
-    const { defaultWallet } = store.getState();  
+    const { defaultWallet } = store.getState().wallet;  
     const wallet = EthereumJsWallet.fromPrivateKey(Buffer.from(defaultWallet.privateKey, 'hex'));
 
     const engine = new ProviderEngine();
@@ -82,20 +82,18 @@ export default class WalletUtils {
    *
    * @param {Object} token
    */
-  static getTransactions({ contractAddress, decimals, symbol }) {
+  static getTransactions({ contractAddress, walletAddress, decimals, symbol }) {
     if (symbol === 'ETH') {
       return this.getEthTransactions();
     }
 
-    return this.getERC20Transactions(contractAddress, decimals);
+    return this.getERC20Transactions(contractAddress, walletAddress, decimals);
   }
 
   /**
    * Fetch a list of ETH transactions for the user's wallet
    */
-  static getEthTransactions() {
-    const { walletAddress } = store.getState();
-
+  static getEthTransactions(walletAddress) {
     return fetch(
       `https://${this.getEtherscanApiSubdomain()}.etherscan.io/api?module=account&action=txlist&address=${walletAddress}&sort=desc&apikey=${
         process.env.ETHERSCAN_API_KEY
@@ -121,9 +119,7 @@ export default class WalletUtils {
    *
    * @param {String} contractAddress
    */
-  static async getERC20Transactions(contractAddress, decimals) {
-    const { walletAddress } = store.getState();
-
+  static async getERC20Transactions(contractAddress, walletAddress, decimals) {
     return fetch(
       `https://${this.getEtherscanApiSubdomain()}.etherscan.io/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${walletAddress}&sort=desc&apikey=${
         process.env.ETHERSCAN_API_KEY
@@ -162,10 +158,6 @@ export default class WalletUtils {
    */
   static getEthBalance(walletAddress) {
     const web3 = new Web3(this.getWeb3HTTPProvider());
-    console.log('====================================');
-    console.log("getEtherBalnace wallet : " + walletAddress);
-    console.log('====================================');
-
     return new Promise((resolve, reject) => {
       web3.eth.getBalance(walletAddress, (error, weiBalance) => {
         if (error) {
@@ -177,7 +169,6 @@ export default class WalletUtils {
         // AnalyticsUtils.trackEvent('Get ETH balance', {
         //   balance,
         // });
-
         resolve(balance);
       });
     });
@@ -190,13 +181,7 @@ export default class WalletUtils {
    * @param {Number} decimals
    */
   static getERC20Balance(walletAddress, contractAddress, decimals) {
-
     const web3 = new Web3(this.getWeb3HTTPProvider());
-
-    console.log('====================================');
-    console.log("getERC20Balance wallet : " + walletAddress);
-    console.log('====================================');
-
     return new Promise((resolve, reject) => {
       web3.eth
         .contract(erc20Abi)

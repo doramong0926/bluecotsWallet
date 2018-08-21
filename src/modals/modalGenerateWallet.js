@@ -7,11 +7,18 @@ import ActionCreator from './../actions';
 import { connect } from 'react-redux';
 import EthereumJsWallet from 'ethereumjs-wallet';
 import WalletUtils from './../utils/wallet';
+import PropTypes from 'prop-types';
 const uuid = require('uuid')
 
 class ModalGenerateWallet extends Component {     
     constructor(props, context) {
         super(props, context);
+    };
+    
+    static propTypes = {
+        defaultWallet: PropTypes.shape({
+            walletAddress: PropTypes.string.isRequired,
+        }).isRequired,
     };
 
     state = {
@@ -69,8 +76,7 @@ class ModalGenerateWallet extends Component {
         this.props.hideModalGenerateWallet();
     }
 
-    generateWallet = () => {
-        this.props.hideModalGenerateWallet();
+    generateWallet = () => {        
         const nickName = this.state.nickName;
         const walletFromEth = EthereumJsWallet.generate();
         const wallet = {
@@ -111,38 +117,37 @@ class ModalGenerateWallet extends Component {
         } else {
                 this.props.addWallet(wallet);
                 this.props.setDefaultWallet(wallet);
-
-                Alert.alert(
-                    'Success to restore wallet from PrivateKey',
-                    this.props.defaultWallet.walletAddress,
-                    [
-                        {
-                            text: 'OK', onPress: () => {}
-                        }
-                    ]
-                );
-
-
-                const walletList = this.props.walletList.filter(wallet => wallet.symbol == 'BLC');            
-                console.log('walletList : ' + walletList);
-                this.props.setWalletList(walletList);
-                this.updateWalletBalance();
+                setTimeout(() => {
+                    Alert.alert(
+                        'Success to generate wallet',
+                        this.props.defaultWallet.walletAddress,
+                        [
+                            {
+                                text: 'OK', onPress: () => {}
+                            }
+                        ]
+                    );
+                    const walletList = this.props.walletList.filter(wallet => wallet.symbol == 'BLC');          
+                    console.log('walletList : ' + walletList);
+                    this.props.setWalletList(walletList);
+                    this.updateWalletBalance(); 
+                  },);     
         }
         this.setState({
             nickName: '',
         })
+        this.props.hideModalGenerateWallet();
     };
 
     updateWalletBalance = async () => {
-        console.log('defaultWallet : ' + this.props.defaultWallet);
         if (this.props.defaultWallet.walletAddress) {
-            const currentETHBalance = await WalletUtils.getBalance({
+                const currentETHBalance = await WalletUtils.getBalance({
                 walletAddress: this.props.defaultWallet.walletAddress,
                 contractAddress:'', 
                 symbol:'ETH', 
                 decimals:0
             });
-            const currentBLCBalance = await WalletUtils.getBalance({
+                const currentBLCBalance = await WalletUtils.getBalance({
                 walletAddress: this.props.defaultWallet.walletAddress,
                 contractAddress: process.env.DEFAULT_TOKEN_CONTRACT_ADDRESS,
                 symbol: process.env.DEFAULT_TOKEN_SYMBOL, 

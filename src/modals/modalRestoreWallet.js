@@ -8,6 +8,7 @@ import EthereumJsWallet from 'ethereumjs-wallet';
 import WalletUtils from './../utils/wallet';
 import ActionCreator from './../actions';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 const uuid = require('uuid')
 
 
@@ -15,6 +16,12 @@ class ModalRestoreWallet extends Component {
     constructor(props, context) {
         super(props, context);
     }
+
+    static propTypes = {
+        defaultWallet: PropTypes.shape({
+            walletAddress: PropTypes.string.isRequired,
+        }).isRequired,
+    };
 
     state = {
         nickName: '',
@@ -140,20 +147,23 @@ class ModalRestoreWallet extends Component {
                 );
             } else {
                 this.props.addWallet(wallet);
-                this.props.setDefaultWallet(wallet);
-                const walletList = this.props.walletList.filter(wallet => wallet.symbol == 'BLC');            
-                console.log('walletList : ' + walletList);
-                this.props.setWalletList(walletList);
-                this.updateWalletBalance();
-                Alert.alert(
-                    'Success to restore wallet from PrivateKey',
-                    this.props.defaultWallet.walletAddress,
-                    [
-                        {
-                            text: 'OK', onPress: () => {}
-                        }
-                    ]
-                );
+                this.props.setDefaultWallet(wallet);               
+
+                setTimeout(() => {
+                    const walletList = this.props.walletList.filter(wallet => wallet.symbol == 'BLC');            
+                    console.log('walletList : ' + walletList);
+                    this.props.setWalletList(walletList);
+                    this.updateWalletBalance();
+                    Alert.alert(
+                        'Success to restore wallet from PrivateKey',
+                        this.props.defaultWallet.walletAddress,
+                        [
+                            {
+                                text: 'OK', onPress: () => {}
+                            }
+                        ]
+                    );
+                },);    
             }
         }
         
@@ -164,22 +174,19 @@ class ModalRestoreWallet extends Component {
     };
 
     updateWalletBalance = async () => {
-        console.log('defaultWallet.walletAddress : ' + this.props.defaultWallet.walletAddress);
         if (this.props.defaultWallet.walletAddress) {
-            const currentETHBalance = await WalletUtils.getBalance({
+                const currentETHBalance = await WalletUtils.getBalance({
                 walletAddress: this.props.defaultWallet.walletAddress,
                 contractAddress:'', 
                 symbol:'ETH', 
                 decimals:0
             });
-            const currentBLCBalance = await WalletUtils.getBalance({
+                const currentBLCBalance = await WalletUtils.getBalance({
                 walletAddress: this.props.defaultWallet.walletAddress,
                 contractAddress: process.env.DEFAULT_TOKEN_CONTRACT_ADDRESS,
                 symbol: process.env.DEFAULT_TOKEN_SYMBOL, 
                 decimals: process.env.DEFAULT_TOKEN_DECIMALS, 
             });
-            console.log("ddddddddddd currentETHBalance: " + currentETHBalance)
-            console.log("ddddddddddd currentBLCBalance: " + currentBLCBalance)
             this.props.setEthBalance(currentETHBalance); 
             this.props.setBlcBalance(currentBLCBalance);
         }

@@ -10,11 +10,18 @@ import WalletAddressWithNickName from './walletAddressWithNickName';
 import CreateWalletIcon from './createWalletIcon';
 import DefaultWalletSettingIcon from './defaultWalletSettingIcon';
 import { store } from './../config/store';
+import PropTypes from 'prop-types';
 
 class WalletBalanceErc20 extends Component {
     constructor(props, context) {
         super(props, context);
     }
+
+    static propTypes = {
+        defaultWallet: PropTypes.shape({
+            walletAddress: PropTypes.string.isRequired,
+        }).isRequired,
+    };
 
     componentDidMount(){
         this.updateWalletBalance();
@@ -37,7 +44,9 @@ class WalletBalanceErc20 extends Component {
                             <TokenSymbolWithName icon={BLC_ICON_IMAGE} tokenString={'ETH'} tokenName={'ethereum'} />
                         </View>
                         <View style={{flex: 5, flexDirection: 'row', justifyContent: 'flex-end'}}>
-                            <Text style={{fontSize : 30, fontWeight: 'bold', textAlign:'center' }}>{this.props.ethBalance.toFixed(3)}</Text>
+                            <Text style={{fontSize : 30, fontWeight: 'bold', textAlign:'center' }}>
+                                {(this.props.ethBalance) ? this.props.ethBalance.toFixed(3): '0.000'}
+                            </Text>
                             <Text style={{fontSize :10, textAlign: 'center' }}> ETH</Text>
                         </View>
                     </View>
@@ -46,7 +55,9 @@ class WalletBalanceErc20 extends Component {
                             <TokenSymbolWithName icon={BLC_ICON_IMAGE} tokenString={'BLC'} tokenName={'bluecots'} />
                         </View>
                         <View style={{flex: 5, flexDirection: 'row', justifyContent: 'flex-end'}}>
-                            <Text style={{fontSize : 30, fontWeight: 'bold', textAlign: 'center' }}>{this.props.blcBalance.toFixed(3)}</Text>
+                            <Text style={{fontSize : 30, fontWeight: 'bold', textAlign: 'center' }}>
+                                {(this.props.blcBalance) ? this.props.blcBalance.toFixed(3): '0.000'}
+                            </Text>
                             <Text style={{fontSize :10, textAlign: 'center' }}> BLC</Text>
                         </View>
                     </View>
@@ -59,15 +70,14 @@ class WalletBalanceErc20 extends Component {
     }    
 
     updateWalletBalance = async () => {
-        console.log('defaultWallet : ' + this.props.defaultWallet);
         if (this.props.defaultWallet.walletAddress) {
-            const currentETHBalance = await WalletUtils.getBalance({
+                const currentETHBalance = await WalletUtils.getBalance({
                 walletAddress: this.props.defaultWallet.walletAddress,
                 contractAddress:'', 
                 symbol:'ETH', 
                 decimals:0
             });
-            const currentBLCBalance = await WalletUtils.getBalance({
+                const currentBLCBalance = await WalletUtils.getBalance({
                 walletAddress: this.props.defaultWallet.walletAddress,
                 contractAddress: process.env.DEFAULT_TOKEN_CONTRACT_ADDRESS,
                 symbol: process.env.DEFAULT_TOKEN_SYMBOL, 
@@ -76,7 +86,7 @@ class WalletBalanceErc20 extends Component {
             this.props.setEthBalance(currentETHBalance); 
             this.props.setBlcBalance(currentBLCBalance);
         }
-    }    
+    }
 }
 
 function mapStateToProps(state) {
@@ -89,11 +99,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        setEthBalance: () => {
-            dispatch(ActionCreator.setEthBalance());
+        setEthBalance: (balance) => {
+            dispatch(ActionCreator.setEthBalance(balance));
         },
-        setBlcBalance: () => {
-            dispatch(ActionCreator.setBlcBalance());
+        setBlcBalance: (balance) => {
+            dispatch(ActionCreator.setBlcBalance(balance));
         },
     };
 }

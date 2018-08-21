@@ -15,7 +15,7 @@ class walletAddressWithNickName extends Component {
     }
 
     renderAddressWithnickName = () => {
-        if (this.props.defaultWallet) {
+        if (this.props.defaultWallet.walletAddress) {
             return (
                 <View>
                     <Text style={styles.nickName}>{this.props.defaultWallet.nickName}</Text>

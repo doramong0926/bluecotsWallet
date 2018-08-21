@@ -1,6 +1,6 @@
 import actionTypes from './actionTypes';
 
-export function addWallet(wallet) {
+export function addWallet(wallet) {  
     return {
         type: actionTypes.ADD_WALLET,
         payload: wallet
@@ -15,7 +15,7 @@ export function removeWallet(wallet) {
 }
 
 export function setDefaultWallet(wallet) {
-    return {
+    return {        
         type: actionTypes.SET_DEFAULT_WALLET,
         payload: wallet
     };
@@ -40,3 +40,13 @@ export function setBlcBalance(balance) {
         payload: balance
     };
 }
+/*
+export function aSyncAddWallet(wallet) {    
+    return function (dispatch) {
+      return fetchSecretSauce().then(
+        sauce => dispatch(makeASandwich(forPerson, sauce)),
+        error => dispatch(apologize('The Sandwich Shop', forPerson, error))
+      );
+    };
+  }
+  */

@@ -23,7 +23,8 @@ class WalletScreen extends Component{
                 <View style={styles.gifticonContainer}>
                     <Text>gifticon container not ready.</Text>
                 </View>
-            </View>  
+            </View> 
+            
         );
     }
 }

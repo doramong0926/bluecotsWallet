@@ -1,4 +1,5 @@
 import actionTypes from './../actions/actionTypes';
+import { defaultWallet } from './../config/constants';
 
 const initialState = {  
     walletList: [
@@ -11,10 +12,10 @@ const initialState = {
             privateKey: '',
         },
     ],
-    defaultWallet: '',
+    defaultWallet: defaultWallet,
     ethBalance: 0,
     blcBalance: 0,
-  };  
+};  
 
 export default (state = initialState, action) => {
     switch (action.type) {
@@ -22,7 +23,7 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 walletList: state.walletList.concat(action.payload),
             });
-
+            
         case actionTypes.REMOVE_WALLET:
             // need to implement
             return Object.assign({}, state, {
@@ -33,7 +34,7 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 defaultWallet: action.payload,
             });
-        
+
         case actionTypes.REMOVE_DEFAULT_WALLET:
             return Object.assign({}, state, {
                 defaultWallet: '',
