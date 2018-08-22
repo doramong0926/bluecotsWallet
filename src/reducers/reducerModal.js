@@ -8,9 +8,6 @@ const initialState = {
     visibleModalRestoreWallet: false,
     visibleModalGenerateWallet: false,
     visibleModalSelectAnotherWallet: false,
-    dataSourceForWalletList: new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2,
-    }),
 };  
  
 export default (state = initialState, action) => {
@@ -63,11 +60,6 @@ export default (state = initialState, action) => {
         case actionTypes.HIDE_MODAL_SELECT_ANOTHER_WALLET:
             return Object.assign({}, state, {
                 visibleModalSelectAnotherWallet: false
-            });
-
-        case actionTypes.SET_WALLET_LIST:
-            return Object.assign({}, state, {
-                dataSourceForWalletList: state.dataSourceForWalletList.cloneWithRows(action.payload)
             });
 
         default:

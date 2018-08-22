@@ -127,8 +127,6 @@ class ModalGenerateWallet extends Component {
                             }
                         ]
                     );
-                    const walletList = this.props.walletList.filter(wallet => wallet.symbol === 'BLC');
-                    this.props.setWalletList(walletList);
                     this.updateWalletBalance(this.props.defaultWallet.walletAddress); 
                   },);     
         }
@@ -189,9 +187,6 @@ function mapDispatchToProps(dispatch) {
         addWallet: (wallet) => {
             dispatch(ActionCreator.addWallet(wallet));
         }, 
-        setWalletList: (walletList) => {
-            dispatch(ActionCreator.setWalletList(walletList));
-        },
         setEthBalance: (balance) => {
             dispatch(ActionCreator.setEthBalance(balance));
         },

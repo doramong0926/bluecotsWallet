@@ -1,12 +1,5 @@
 import actionTypes from './actionTypes';
 
-export function setWalletList(walletList) {
-  return {
-      type: actionTypes.SET_WALLET_LIST,
-      payload: walletList,
-  };
-}
-
 export function showModalCreateWallet() {
   return {
     type: actionTypes.SHOW_MODAL_CREATE_WALLET

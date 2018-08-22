@@ -6,6 +6,7 @@ import ActionCreator from './../actions';
 import { connect } from 'react-redux';
 import WalletUtils from './../utils/wallet';
 import PropTypes from 'prop-types';
+import store from './../config/store';
 
 class ModalSelectAnotherWallet extends Component {
     constructor(props, context) {
@@ -19,8 +20,18 @@ class ModalSelectAnotherWallet extends Component {
     };
 
     state = {
-        nickName: '',
+        dataSourceForWalletList: new ListView.DataSource({
+            rowHasChanged: (row1, row2) => row1 !== row2,
+        }),
     };
+    
+    componentDidMount() {
+        this.fetchWalletList();
+    }
+
+    componentWillReceiveProps() {
+        this.fetchWalletList();
+    }
 
     render() {
         return (            
@@ -32,7 +43,7 @@ class ModalSelectAnotherWallet extends Component {
                 closeOnTouchOutside={true}
                 disableOnBackPress={false}
                 modalDidClose={() => {this.closeModal()}}
-                modalDidOpen={() => undefined}
+                modalDidOpen={() => {this.openModal()}}
                 modalProps={undefined}
                 containerProps={undefined}
                 containerStyle={{
@@ -54,7 +65,7 @@ class ModalSelectAnotherWallet extends Component {
                 </View>
                 <View>
                     <ListView
-                        dataSource={this.props.dataSourceForWalletList}
+                        dataSource={this.state.dataSourceForWalletList}
                         renderRow={this.renderWalletList}
                         style={styles.listView}
                     />
@@ -67,19 +78,30 @@ class ModalSelectAnotherWallet extends Component {
         this.props.hideModalSelectAnotherWallet()
     }
 
+    openModal = () => {
+        this.fetchWalletList();
+    }    
+
     renderWalletList = (wallet) => {
-        return (
-            <TouchableHighlight onPress={() => this.handlePress(wallet)} underlayColor="gray">
-                <View style={{flexDirection: 'row', margin: 10}}>
-                    <View style={{flex:4}}>
-                        <Text> {wallet.nickName} </Text>
+        if (wallet.walletAddress !== undefined && wallet.walletAddress !== '') {
+            return (
+                <TouchableHighlight onPress={() => this.handlePress(wallet)} underlayColor="gray">
+                    <View style={{flexDirection: 'row', margin: 10}}>
+                        <View style={{flex:4}}>
+                            <Text> {wallet.nickName} </Text>
+                        </View>
+                        <View style={{flex:6}}>
+                            <Text> {wallet.walletAddress.substring(0,18)}... </Text>
+                        </View>
                     </View>
-                    <View style={{flex:6}}>
-                        <Text> {wallet.walletAddress.substring(0,18)}... </Text>
-                    </View>
+                </TouchableHighlight>
+            );
+        } else {
+            return (
+                <View>
                 </View>
-            </TouchableHighlight>
-        );
+            )
+        }
     }
 
     handlePress = (wallet) => {
@@ -89,6 +111,10 @@ class ModalSelectAnotherWallet extends Component {
             this.props.hideModalSelectAnotherWallet();
         },); 
     }
+
+    fetchWalletList = () => {
+        this.state.dataSourceForWalletList = this.state.dataSourceForWalletList.cloneWithRows(this.props.walletList);
+    };
     
     updateWalletBalance = async (walletAddress) => {
         if (walletAddress) {
@@ -109,7 +135,7 @@ class ModalSelectAnotherWallet extends Component {
                 this.props.setBlcBalance(currentBLCBalance);
             };      
         }
-    }
+    }    
 }
 
 const styles = StyleSheet.create({
@@ -120,9 +146,10 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
+        walletList: state.wallet.walletList,
         defaultWallet: state.wallet.defaultWallet,
         visibleModalSelectAnotherWallet: state.modal.visibleModalSelectAnotherWallet,
-        dataSourceForWalletList: state.modal.dataSourceForWalletList,
+        //dataSourceForWalletList: state.modal.dataSourceForWalletList,
     };
 }
 

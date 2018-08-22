@@ -1,31 +1,3 @@
-import { ListView } from 'react-native';
-
-const initialState = {
-    network: process.env.NETWORK,
-    walletList: [
-        {
-            name: '',
-            nickName : '',
-            id: '',
-            symbol: '',
-            walletAddress: '',
-            privateKey: '',
-        },
-    ],
-    defaultWallet: defaultWallet,
-    ethBalance: 0,
-    blcBalance: 0,
-    visibleModalCreateWallet: false,
-    visibleModalDefaultWalletSettings: false,
-    visibleModalRestoreWallet: false,
-    visibleModalGenerateWallet: false,
-    visibleModalSelectAnotherWallet: false,
-    dataSourceForWalletList: new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2,
-    }),
-}
-
-
 const defaultWallet = {
     name: '',
     nickName : '',

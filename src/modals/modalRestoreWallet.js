@@ -86,10 +86,6 @@ class ModalRestoreWallet extends Component {
             privateKey: '',
         })
         this.props.hideModalRestoreWallet();
-        const walletList = this.props.walletList.filter(wallet => wallet.symbol === 'BLC');            
-        console.log('walletList : ' + walletList);
-        this.props.setWalletList(walletList);
-        this.updateWalletBalance();
     }
 
     restoreWallet = () => {
@@ -150,8 +146,6 @@ class ModalRestoreWallet extends Component {
                 this.props.setDefaultWallet(wallet);               
 
                 setTimeout(() => {
-                    const walletList = this.props.walletList.filter(wallet => wallet.symbol === 'BLC');
-                    this.props.setWalletList(walletList);
                     this.updateWalletBalance(this.props.defaultWallet.walletAddress);
                     Alert.alert(
                         'Success to restore wallet from PrivateKey',
@@ -247,10 +241,7 @@ function mapDispatchToProps(dispatch) {
         },        
         setDefaultWallet: (defaultWallet) => {
             dispatch(ActionCreator.setDefaultWallet(defaultWallet));
-        }, 
-        setWalletList: (walletList) => {
-            dispatch(ActionCreator.setWalletList(walletList));
-        },       
+        },    
         setEthBalance: (balance) => {
             dispatch(ActionCreator.setEthBalance(balance));
         },
