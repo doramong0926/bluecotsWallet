@@ -88,10 +88,10 @@ class ModalGenerateWallet extends Component {
             privateKey: walletFromEth.getPrivateKey().toString('hex') 
         }
         const registedWalletList1 = this.props.walletList
-                .filter(wallet => wallet.symbol == 'BLC')
+                .filter(wallet => wallet.symbol === 'BLC')
                 .map(wallet => wallet.walletAddress);
         const registedWalletList2 = this.props.walletList
-            .filter(wallet => wallet.symbol == 'BLC')
+            .filter(wallet => wallet.symbol === 'BLC')
             .map(wallet => wallet.nickName);
 
         if (registedWalletList1.includes(walletFromEth.getAddressString())) {
@@ -127,10 +127,9 @@ class ModalGenerateWallet extends Component {
                             }
                         ]
                     );
-                    const walletList = this.props.walletList.filter(wallet => wallet.symbol == 'BLC');          
-                    console.log('walletList : ' + walletList);
+                    const walletList = this.props.walletList.filter(wallet => wallet.symbol === 'BLC');
                     this.props.setWalletList(walletList);
-                    this.updateWalletBalance(); 
+                    this.updateWalletBalance(this.props.defaultWallet.walletAddress); 
                   },);     
         }
         this.setState({
@@ -139,22 +138,24 @@ class ModalGenerateWallet extends Component {
         this.props.hideModalGenerateWallet();
     };
 
-    updateWalletBalance = async () => {
-        if (this.props.defaultWallet.walletAddress) {
+    updateWalletBalance = async (walletAddress) => {
+        if (walletAddress) {
                 const currentETHBalance = await WalletUtils.getBalance({
-                walletAddress: this.props.defaultWallet.walletAddress,
+                walletAddress: walletAddress,
                 contractAddress:'', 
                 symbol:'ETH', 
                 decimals:0
             });
                 const currentBLCBalance = await WalletUtils.getBalance({
-                walletAddress: this.props.defaultWallet.walletAddress,
+                walletAddress: walletAddress,
                 contractAddress: process.env.DEFAULT_TOKEN_CONTRACT_ADDRESS,
                 symbol: process.env.DEFAULT_TOKEN_SYMBOL, 
                 decimals: process.env.DEFAULT_TOKEN_DECIMALS, 
             });
-            this.props.setEthBalance(currentETHBalance); 
-            this.props.setBlcBalance(currentBLCBalance);
+            if (currentETHBalance !== undefined && currentBLCBalance !== undefined) {
+                this.props.setEthBalance(currentETHBalance); 
+                this.props.setBlcBalance(currentBLCBalance);
+            };      
         }
     }
 

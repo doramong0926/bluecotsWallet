@@ -84,26 +84,30 @@ class ModalSelectAnotherWallet extends Component {
 
     handlePress = (wallet) => {
         this.props.setDefaultWallet(wallet);
-        this.updateWalletBalance();
-        this.props.hideModalSelectAnotherWallet();
+        setTimeout(() => {
+            this.updateWalletBalance(this.props.defaultWallet.walletAddress);
+            this.props.hideModalSelectAnotherWallet();
+        },); 
     }
-
-    updateWalletBalance = async () => {
-        if (this.props.defaultWallet.walletAddress) {
+    
+    updateWalletBalance = async (walletAddress) => {
+        if (walletAddress) {
                 const currentETHBalance = await WalletUtils.getBalance({
-                walletAddress: this.props.defaultWallet.walletAddress,
+                walletAddress: walletAddress,
                 contractAddress:'', 
                 symbol:'ETH', 
                 decimals:0
             });
                 const currentBLCBalance = await WalletUtils.getBalance({
-                walletAddress: this.props.defaultWallet.walletAddress,
+                walletAddress: walletAddress,
                 contractAddress: process.env.DEFAULT_TOKEN_CONTRACT_ADDRESS,
                 symbol: process.env.DEFAULT_TOKEN_SYMBOL, 
                 decimals: process.env.DEFAULT_TOKEN_DECIMALS, 
             });
-            this.props.setEthBalance(currentETHBalance); 
-            this.props.setBlcBalance(currentBLCBalance);
+            if (currentETHBalance !== undefined && currentBLCBalance !== undefined) {
+                this.props.setEthBalance(currentETHBalance); 
+                this.props.setBlcBalance(currentBLCBalance);
+            };      
         }
     }
 }
