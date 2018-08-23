@@ -7,13 +7,13 @@ import { connect } from 'react-redux';
 import WalletUtils from './../utils/wallet';
 import PropTypes from 'prop-types';
 
-class ModalSelectAnotherWallet extends Component {
+class ModalChangeDefaultWallet extends Component {
     constructor(props, context) {
         super(props, context);
     }
 
     static propTypes = {
-        walletForSend: PropTypes.shape({
+        defaultWallet: PropTypes.shape({
             walletAddress: PropTypes.string.isRequired,
         }).isRequired,
     };
@@ -26,19 +26,17 @@ class ModalSelectAnotherWallet extends Component {
     
     componentDidMount() {
         this.fetchWalletList();
-        this.updateWalletBalance(this.props.walletForSend.walletAddress);
     }
 
     componentWillReceiveProps() {
         this.fetchWalletList();
-        this.updateWalletBalance(this.props.walletForSend.walletAddress);
     }
 
     render() {
         return (            
             <Modal 
                 offset={0}
-                open={this.props.visibleModalSelectAnotherWallet}
+                open={this.props.visibleModalChangeDefaultWallet}
                 animationDuration={200}
                 animationTension={40}
                 closeOnTouchOutside={true}
@@ -76,7 +74,7 @@ class ModalSelectAnotherWallet extends Component {
     }
 
     closeModal = () => {
-        this.props.hideModalSelectAnotherWallet()
+        this.props.hideModalChangeDefaultWallet()
     }
 
     openModal = () => {
@@ -106,10 +104,12 @@ class ModalSelectAnotherWallet extends Component {
     }
 
     handlePress = (wallet) => {
+        this.props.setDefaultWallet(wallet);
         this.props.setWalletForSend(wallet);
+        this.props.setWalletForReceive(wallet);
         setTimeout(() => {
-            this.updateWalletBalance(this.props.walletForSend.walletAddress);
-            this.props.hideModalSelectAnotherWallet();
+            this.updateWalletBalance(this.props.defaultWallet.walletAddress);
+            this.props.hideModalChangeDefaultWallet();
         },); 
     }
 
@@ -132,8 +132,13 @@ class ModalSelectAnotherWallet extends Component {
                 decimals: process.env.DEFAULT_TOKEN_DECIMALS, 
             });
             if (currentETHBalance !== undefined && currentBLCBalance !== undefined) {
+                this.props.setEthBalance(currentETHBalance); 
+                this.props.setBlcBalance(currentBLCBalance);
+                
                 this.props.setEthBalanceForSend(currentETHBalance); 
-                this.props.setBlcBalanceForSend(currentBLCBalance);
+                this.props.setBlcBalanceForSend(currentBLCBalance);                
+                this.props.setEthBalanceForReceive(currentETHBalance); 
+                this.props.setBlcBalanceForReceive(currentBLCBalance);
             };      
         }
     }    
@@ -148,15 +153,27 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         walletList: state.wallet.walletList,
-        walletForSend: state.wallet.walletForSend,
-        visibleModalSelectAnotherWallet: state.modal.visibleModalSelectAnotherWallet,        
+        defaultWallet: state.wallet.defaultWallet,
+        visibleModalChangeDefaultWallet: state.modal.visibleModalChangeDefaultWallet,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
+        setDefaultWallet: (wallet) => {
+            dispatch(ActionCreator.setDefaultWallet(wallet));
+        },
         setWalletForSend: (wallet) => {
             dispatch(ActionCreator.setWalletForSend(wallet));
+        },
+        setWalletForReceive: (wallet) => {
+            dispatch(ActionCreator.setWalletForReceive(wallet));
+        },
+        setEthBalance: (balance) => {
+            dispatch(ActionCreator.setEthBalance(balance));
+        },
+        setBlcBalance: (balance) => {
+            dispatch(ActionCreator.setBlcBalance(balance));
         },
         setEthBalanceForSend: (balance) => {
             dispatch(ActionCreator.setEthBalanceForSend(balance));
@@ -164,13 +181,19 @@ function mapDispatchToProps(dispatch) {
         setBlcBalanceForSend: (balance) => {
             dispatch(ActionCreator.setBlcBalanceForSend(balance));
         },
-        showModalSelectAnotherWallet: () => {
-            dispatch(ActionCreator.showModalSelectAnotherWallet());
+        setEthBalanceForReceive: (balance) => {
+            dispatch(ActionCreator.setEthBalanceForReceive(balance));
         },
-        hideModalSelectAnotherWallet: () => {
-            dispatch(ActionCreator.hideModalSelectAnotherWallet());
+        setBlcBalanceForReceive: (balance) => {
+            dispatch(ActionCreator.setBlcBalanceForReceive(balance));
+        },
+        showModalChangeDefaultWallet: () => {
+            dispatch(ActionCreator.showModalChangeDefaultWallet());
+        },
+        hideModalChangeDefaultWallet: () => {
+            dispatch(ActionCreator.hideModalChangeDefaultWallet());
         }
     };
 }
   
-export default connect(mapStateToProps, mapDispatchToProps)(ModalSelectAnotherWallet);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalChangeDefaultWallet);

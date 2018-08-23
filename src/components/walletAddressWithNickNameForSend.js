@@ -3,13 +3,13 @@ import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-class walletAddressWithNickName extends Component {
+class WalletAddressWithNickNameForSend extends Component {
     constructor(props, context) {
         super(props, context);
     }
 
     static propTypes = {
-        defaultWallet: PropTypes.shape({
+        walletForSend: PropTypes.shape({
             walletAddress: PropTypes.string.isRequired,
         }).isRequired,
     };
@@ -21,11 +21,11 @@ class walletAddressWithNickName extends Component {
     }
 
     renderAddressWithnickName = () => {
-        if (this.props.defaultWallet.walletAddress) {
+        if (this.props.walletForSend.walletAddress) {
             return (
                 <View>
-                    <Text style={styles.nickName}>{this.props.defaultWallet.nickName}</Text>
-                    <Text style={styles.address}>{this.props.defaultWallet.walletAddress}</Text>
+                    <Text style={styles.nickName}>{this.props.walletForSend.nickName}</Text>
+                    <Text style={styles.address}>{this.props.walletForSend.walletAddress}</Text>
                 </View>
             );
         }
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        defaultWallet: state.wallet.defaultWallet,
+        walletForSend: state.wallet.walletForSend,
     };
 }
 
@@ -63,4 +63,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
   
-export default connect(mapStateToProps, mapDispatchToProps)(walletAddressWithNickName);
+export default connect(mapStateToProps, mapDispatchToProps)(WalletAddressWithNickNameForSend);

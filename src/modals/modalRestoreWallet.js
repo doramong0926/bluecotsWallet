@@ -143,8 +143,9 @@ class ModalRestoreWallet extends Component {
                 );
             } else {
                 this.props.addWallet(wallet);
-                this.props.setDefaultWallet(wallet);               
-
+                this.props.setDefaultWallet(wallet);   
+                this.props.setWalletForSend(wallet);
+                this.props.setWalletForReceive(wallet);
                 setTimeout(() => {
                     this.updateWalletBalance(this.props.defaultWallet.walletAddress);
                     Alert.alert(
@@ -183,6 +184,10 @@ class ModalRestoreWallet extends Component {
             if (currentETHBalance !== undefined && currentBLCBalance !== undefined) {
                 this.props.setEthBalance(currentETHBalance); 
                 this.props.setBlcBalance(currentBLCBalance);
+                this.props.setEthBalanceForSend(currentETHBalance); 
+                this.props.setBlcBalanceForSend(currentBLCBalance);                
+                this.props.setEthBalanceForReceive(currentETHBalance); 
+                this.props.setBlcBalanceForReceive(currentBLCBalance);
             };      
         }
     }
@@ -242,6 +247,12 @@ function mapDispatchToProps(dispatch) {
         setDefaultWallet: (defaultWallet) => {
             dispatch(ActionCreator.setDefaultWallet(defaultWallet));
         },    
+        setWalletForSend: (wallet) => {
+            dispatch(ActionCreator.setWalletForSend(wallet));
+        },
+        setWalletForReceive: (wallet) => {
+            dispatch(ActionCreator.setWalletForReceive(wallet));
+        },
         setEthBalance: (balance) => {
             dispatch(ActionCreator.setEthBalance(balance));
         },
@@ -253,7 +264,19 @@ function mapDispatchToProps(dispatch) {
         },
         hideModalRestoreWallet: () => {
             dispatch(ActionCreator.hideModalRestoreWallet());
-        }
+        },
+        setEthBalanceForSend: (balance) => {
+            dispatch(ActionCreator.setEthBalanceForSend(balance));
+        },
+        setBlcBalanceForSend: (balance) => {
+            dispatch(ActionCreator.setBlcBalanceForSend(balance));
+        },
+        setEthBalanceForReceive: (balance) => {
+            dispatch(ActionCreator.setEthBalanceForReceive(balance));
+        },
+        setBlcBalanceForReceive: (balance) => {
+            dispatch(ActionCreator.setBlcBalanceForReceive(balance));
+        },
     };
 }
   

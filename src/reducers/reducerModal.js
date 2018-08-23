@@ -8,6 +8,7 @@ const initialState = {
     visibleModalRestoreWallet: false,
     visibleModalGenerateWallet: false,
     visibleModalSelectAnotherWallet: false,
+    visibleModalChangeDefaultWallet: false,
 };  
  
 export default (state = initialState, action) => {
@@ -60,6 +61,16 @@ export default (state = initialState, action) => {
         case actionTypes.HIDE_MODAL_SELECT_ANOTHER_WALLET:
             return Object.assign({}, state, {
                 visibleModalSelectAnotherWallet: false
+            });
+
+        case actionTypes.SHOW_MODAL_CHANGE_DEFAULT_WALLET:
+            return Object.assign({}, state, {
+                visibleModalChangeDefaultWallet: true
+            });
+
+        case actionTypes.HIDE_MODAL_CHANGE_DEFAULT_WALLET:
+            return Object.assign({}, state, {
+                visibleModalChangeDefaultWallet: false
             });
 
         default:

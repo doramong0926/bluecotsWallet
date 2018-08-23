@@ -64,7 +64,7 @@ class ModalDefaultWalletSettings extends Component {
     }
     handleSelectPress = () => {
         this.props.hideModalDefaultWalletSettings();
-        this.props.showModalSelectAnotherWallet(); 
+        this.props.showModalChangeDefaultWallet(); 
     }
     handleModifyNickNamePress = () => {
         this.props.hideModalDefaultWalletSettings(); 
@@ -91,12 +91,9 @@ function mapDispatchToProps(dispatch) {
         hideModalDefaultWalletSettings: () => {
             dispatch(ActionCreator.hideModalDefaultWalletSettings());
         },
-        showModalSelectAnotherWallet: () => {
-            dispatch(ActionCreator.showModalSelectAnotherWallet());
+        showModalChangeDefaultWallet: () => {
+            dispatch(ActionCreator.showModalChangeDefaultWallet());
         },
-        hideModalSelectAnotherWallet: () => {
-            dispatch(ActionCreator.hideModalSelectAnotherWallet());
-        }
     };
 }
   

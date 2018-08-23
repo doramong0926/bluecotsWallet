@@ -27,6 +27,20 @@ export function removeDefaultWallet(wallet) {
     };
 }
 
+export function setWalletForSend(wallet) {
+    return {
+        type: actionTypes.SET_WALLET_FOR_SEND,
+        payload: wallet
+    };
+}
+
+export function setWalletForReceive(wallet) {
+    return {
+        type: actionTypes.SET_WALLET_FOR_RECEIVE,
+        payload: wallet
+    };
+}
+
 export function setEthBalance(balance) {
     return {
         type: actionTypes.SET_ETH_BALANCE,
@@ -40,13 +54,31 @@ export function setBlcBalance(balance) {
         payload: balance
     };
 }
-/*
-export function aSyncAddWallet(wallet) {    
-    return function (dispatch) {
-      return fetchSecretSauce().then(
-        sauce => dispatch(makeASandwich(forPerson, sauce)),
-        error => dispatch(apologize('The Sandwich Shop', forPerson, error))
-      );
+
+export function setEthBalanceForSend(balance) {
+    return {
+        type: actionTypes.SET_ETH_BALANCE_FOR_SEND,
+        payload: balance
     };
-  }
-  */
+}
+
+export function setBlcBalanceForSend(balance) {
+    return {
+        type: actionTypes.SET_BLC_BALANCE_FOR_SEND,
+        payload: balance
+    };
+}
+
+export function setEthBalanceForReceive(balance) {
+    return {
+        type: actionTypes.SET_ETH_BALANCE_FOR_RECEIVE,
+        payload: balance
+    };
+}
+
+export function setBlcBalanceForReceive(balance) {
+    return {
+        type: actionTypes.SET_BLC_BALANCE_FOR_RECEIVE,
+        payload: balance
+    };
+}

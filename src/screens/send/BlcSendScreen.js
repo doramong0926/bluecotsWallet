@@ -3,10 +3,11 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { FormLabel, FormInput, Button } from 'react-native-elements'
 import WalletUtils from './../../utils/wallet';
-import ActionCreator from './../../actions';
 import { connect } from 'react-redux';
-import WalletAddressWithNickName from './../../components/walletAddressWithNickName';
+import ActionCreator from './../../actions';
+import WalletAddressWithNickNameForSend from './../../components/walletAddressWithNickNameForSend';
 import SelectAnotherWalletIcon from './../../components/selectAnotherWalletIcon';
+import PropTypes from 'prop-types';
 
 
 class BlcSendScreen extends Component{
@@ -18,17 +19,31 @@ class BlcSendScreen extends Component{
         tabBarLabel: 'BLC'
     };
 
+    static propTypes = {
+        walletForSend: PropTypes.shape({
+            walletAddress: PropTypes.string.isRequired,
+        }).isRequired,
+    };
+
     state = {
         addressToSendErc20: '',
         amountToSendErc20: '',
     };
+
+    componentDidMount() {
+        this.updateWalletBalance(this.props.walletForSend.walletAddress);
+    }
+
+    componentWillReceiveProps() {
+        this.updateWalletBalance(this.props.walletForSend.walletAddress);
+    }
 
     render(){
         return (
             <View>
                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
                     <View style={{flex:9, alignItems: 'center', justifyContent: 'center'}}>
-                        <WalletAddressWithNickName />
+                        <WalletAddressWithNickNameForSend />
                     </View>
                     <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
                         <SelectAnotherWalletIcon />
@@ -36,7 +51,7 @@ class BlcSendScreen extends Component{
                 </View>
                 <View>
                     <Text style={styles.balance}> Available balance </Text>
-                    <Text style={styles.balance}> {this.props.blcBanlance} </Text>
+                    <Text style={styles.balance}> {this.props.blcBalanceForSend} </Text>
                 </View>
                 <View>
                     <FormLabel>Address to send BLC</FormLabel>
@@ -56,6 +71,27 @@ class BlcSendScreen extends Component{
             </View>
         );
     }
+
+    updateWalletBalance = async (walletAddress) => {
+        if (walletAddress) {
+                const currentETHBalance = await WalletUtils.getBalance({
+                walletAddress: walletAddress,
+                contractAddress:'', 
+                symbol:'ETH', 
+                decimals:0
+            });
+                const currentBLCBalance = await WalletUtils.getBalance({
+                walletAddress: walletAddress,
+                contractAddress: process.env.DEFAULT_TOKEN_CONTRACT_ADDRESS,
+                symbol: process.env.DEFAULT_TOKEN_SYMBOL, 
+                decimals: process.env.DEFAULT_TOKEN_DECIMALS, 
+            });
+            if (currentETHBalance !== undefined && currentBLCBalance !== undefined) {
+                this.props.setEthBalanceForSend(currentETHBalance); 
+                this.props.setBlcBalanceForSend(currentBLCBalance);
+            };      
+        }
+    }   
 
     getAddressToSendErc20 = (input) => {
         const addressToSendErc20 = input;
@@ -109,12 +145,19 @@ class BlcSendScreen extends Component{
 
 function mapStateToProps(state) {
     return {
-        blcBanlance: state.wallet.blcBanlance,
+        walletForSend: state.wallet.walletForSend,
+        blcBalanceForSend: state.wallet.blcBalanceForSend,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
+        setEthBalanceForSend: (balance) => {
+            dispatch(ActionCreator.setEthBalanceForSend(balance));
+        },
+        setBlcBalanceForSend: (balance) => {
+            dispatch(ActionCreator.setBlcBalanceForSend(balance));
+        },
     };
 }
   

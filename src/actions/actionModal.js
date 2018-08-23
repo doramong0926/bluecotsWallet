@@ -59,3 +59,15 @@ export function hideModalSelectAnotherWallet() {
       type: actionTypes.HIDE_MODAL_SELECT_ANOTHER_WALLET
     };
 }
+
+export function showModalChangeDefaultWallet() {
+  return {
+    type: actionTypes.SHOW_MODAL_CHANGE_DEFAULT_WALLET
+  };
+}
+
+export function hideModalChangeDefaultWallet() {
+    return {
+      type: actionTypes.HIDE_MODAL_CHANGE_DEFAULT_WALLET
+    };
+}
