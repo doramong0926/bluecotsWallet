@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Clipboard } from 'react-native';
 import { FormLabel, FormInput, Button } from 'react-native-elements'
 import WalletUtils from './../../utils/wallet';
 import { connect } from 'react-redux';
@@ -59,7 +59,7 @@ class BlcSendScreen extends Component{
                 </View>
                 <View>
                     <FormLabel>Amount to send BLC</FormLabel>
-                    <FormInput onChangeText={(value) => this.getAmountToSendErc20(value)}/>
+                    <FormInput value={this.state.amountToSendErc20} onChangeText={(value) => this.getAmountToSendErc20(value)}/>
                 </View>
                 <View>
                     <Button
@@ -67,7 +67,7 @@ class BlcSendScreen extends Component{
                         title="paste"
                     />
                     <Button
-                        disabled={!this.addressIsValid() || !this.amountIsValid()}
+                        disabled={!this.addressIsValid(this.state.addressToSendErc20) || !this.amountIsValid()}                        
                         onPress={this.sendErc20Transaction}
                         title="Send"
                     />
@@ -143,12 +143,12 @@ class BlcSendScreen extends Component{
         }
     };
 
-    addressIsValid = () => {
-        /^0x([A-Fa-f0-9]{40})$/.test(this.state.addressToSendErc20);
+    addressIsValid = (walletAddress) => {
+        return WalletUtils.addressIsValid(walletAddress);
     }
 
     amountIsValid = () => {
-        parseFloat(this.state.amountToSendErc20, 10) > 0;
+        return parseFloat(this.state.amountToSendErc20, 10) > 0;
     }
 }
 
