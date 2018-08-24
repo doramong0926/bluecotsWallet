@@ -52,16 +52,20 @@ class BlcSendScreen extends Component{
                 <View>
                     <Text style={styles.balance}> Available balance </Text>
                     <Text style={styles.balance}> {this.props.blcBalanceForSend} </Text>
-                </View>
+                </View>                
                 <View>
                     <FormLabel>Address to send BLC</FormLabel>
-                    <FormInput onChangeText={(value) => this.getAddressToSendErc20(value)}/>
+                    <FormInput value={this.state.addressToSendErc20} onChangeText={(value) => this.getAddressToSendErc20(value)}/>
                 </View>
                 <View>
                     <FormLabel>Amount to send BLC</FormLabel>
                     <FormInput onChangeText={(value) => this.getAmountToSendErc20(value)}/>
                 </View>
                 <View>
+                    <Button
+                        onPress={this.readPrivateKeyFromClipboard}
+                        title="paste"
+                    />
                     <Button
                         disabled={!this.addressIsValid() || !this.amountIsValid()}
                         onPress={this.sendErc20Transaction}
@@ -71,6 +75,11 @@ class BlcSendScreen extends Component{
             </View>
         );
     }
+
+    readPrivateKeyFromClipboard = async () => {   
+        const addressToSendErc20 = await Clipboard.getString();   
+        this.setState({ addressToSendErc20 }); 
+    };
 
     updateWalletBalance = async (walletAddress) => {
         if (walletAddress) {
