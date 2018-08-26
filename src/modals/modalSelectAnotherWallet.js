@@ -109,6 +109,8 @@ class ModalSelectAnotherWallet extends Component {
         this.props.setWalletForSend(wallet);
         setTimeout(() => {
             this.updateWalletBalance(this.props.walletForSend.walletAddress);
+            this.props.setAddressToSendBlc('');
+            this.props.setAmountToSendBlc('');
             this.props.hideModalSelectAnotherWallet();
         },); 
     }
@@ -169,7 +171,13 @@ function mapDispatchToProps(dispatch) {
         },
         hideModalSelectAnotherWallet: () => {
             dispatch(ActionCreator.hideModalSelectAnotherWallet());
-        }
+        },
+        setAddressToSendBlc: (address) => {
+            dispatch(ActionCreator.setAddressToSendBlc(address));
+        },
+        setAmountToSendBlc: (balance) => {
+            dispatch(ActionCreator.setAmountToSendBlc(balance));
+        },
     };
 }
   

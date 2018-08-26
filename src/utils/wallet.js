@@ -59,9 +59,8 @@ export default class WalletUtils {
   /**
    * Returns a web3 instance with the user's wallet
    */
-  static getWeb3Instance() {
-    const { defaultWallet } = store.getState().wallet;  
-    const wallet = EthereumJsWallet.fromPrivateKey(Buffer.from(defaultWallet.privateKey, 'hex'));
+  static getWeb3Instance(fromWallet) {
+    const wallet = EthereumJsWallet.fromPrivateKey(Buffer.from(fromWallet.privateKey, 'hex'));
 
     const engine = new ProviderEngine();
 
@@ -72,10 +71,11 @@ export default class WalletUtils {
 
     const web3 = new Web3(engine);
 
-    web3.eth.defaultAccount = defaultWallet.walletAddress;
+    web3.eth.defaultAccount = fromWallet.walletAddress;
 
     return web3;
   }
+
 
   /**
    * Fetch a list of transactions for the user's wallet concerning the given token
@@ -226,16 +226,18 @@ export default class WalletUtils {
    */
   static sendTransaction(
     { contractAddress, symbol, decimals },
+    fromWallet,
     toAddress,
     amount,
   ) {
     if (symbol === 'ETH') {
-      return this.sendETHTransaction(toAddress, amount);
+      return this.sendETHTransaction(fromWallet, toAddress, amount);
     }
 
     return this.sendERC20Transaction(
       contractAddress,
       decimals,
+      fromWallet,
       toAddress,
       amount,
     );
@@ -247,8 +249,8 @@ export default class WalletUtils {
    * @param {String} toAddress
    * @param {String} amount
    */
-  static sendETHTransaction(toAddress, amount) {
-    const web3 = this.getWeb3Instance();
+  static sendETHTransaction(fromWallet, toAddress, amount) {
+    const web3 = this.getWeb3Instance(fromWallet);
 
     
     // AnalyticsUtils.trackEvent('Send ETH transaction', {
@@ -278,15 +280,15 @@ export default class WalletUtils {
    * @param {String} toAddress
    * @param {String} amount
    */
-  static sendERC20Transaction(contractAddress, decimals, toAddress, amount) {
-    const web3 = this.getWeb3Instance();
+  static sendERC20Transaction(contractAddress, decimals, fromWallet, toAddress, amount) {
+    const web3 = this.getWeb3Instance(fromWallet);
 
     // AnalyticsUtils.trackEvent('Send ERC20 transaction', {
     //   contractAddress,
     //   value: amount,
     // });
     console.log('====================================');
-    console.log('test send tr : ' + contractAddress + ' toAddress : ' + toAddress + ' amount : ' + amount);
+    console.log('test send tr : ' + fromWallet.walletAddress + ' toAddress : ' + toAddress + ' amount : ' + amount);
     console.log('====================================');
     return new Promise((resolve, reject) => {
       web3.eth

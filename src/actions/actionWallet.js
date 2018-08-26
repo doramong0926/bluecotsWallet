@@ -82,3 +82,17 @@ export function setBlcBalanceForReceive(balance) {
         payload: balance
     };
 }
+
+export function setAddressToSendBlc(address) {
+    return {
+        type: actionTypes.SET_ADDRESS_TO_SEND_BLC,
+        payload: address
+    };
+}
+
+export function setAmountToSendBlc(balance) {
+    return {
+        type: actionTypes.SET_AMOUNT_TO_SEND_BLC,
+        payload: balance
+    };
+}

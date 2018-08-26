@@ -12,6 +12,8 @@ import ModalDefaultWalletSettings from './src/modals/modalDefaultWalletSettings'
 import ModalGenerateWallet from './src/modals/modalGenerateWallet';
 import ModalRestoreWallet from './src/modals/modalRestoreWallet';
 import ModalChangeDefaultWallet from './src/modals/modalChangeDefaultWallet';
+import ModalConfirmToSend from './src/modals/modalConfirmToSend';
+import ModalSuccess from './src/modals/modalSuccess';
 
 export default class App extends React.Component {
     render() {
@@ -25,6 +27,9 @@ export default class App extends React.Component {
                     <ModalRestoreWallet /> 
                     <ModalSelectAnotherWallet />
                     <ModalChangeDefaultWallet />
+                    <ModalConfirmToSend />
+                    <ModalSuccess />
+                    
                 </PersistGate>
             </Provider>    
         );

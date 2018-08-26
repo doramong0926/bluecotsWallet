@@ -25,6 +25,9 @@ class WalletBalanceErc20 extends Component {
 
     componentDidMount(){
         this.updateWalletBalance();
+        setInterval(() => {
+            this.updateWalletBalance();
+        }, 1000)
     }
 
     render() {
@@ -83,8 +86,16 @@ class WalletBalanceErc20 extends Component {
                 symbol: process.env.DEFAULT_TOKEN_SYMBOL, 
                 decimals: process.env.DEFAULT_TOKEN_DECIMALS, 
             });
-            this.props.setEthBalance(currentETHBalance); 
-            this.props.setBlcBalance(currentBLCBalance);
+            if (currentETHBalance !== undefined && currentBLCBalance !== undefined) {
+                if (this.props.ethBalance !== currentETHBalance)
+                {
+                    this.props.setEthBalance(currentETHBalance); 
+                }
+                if (this.props.blcBalance !== currentBLCBalance)
+                {
+                    this.props.setBlcBalance(currentBLCBalance);
+                }
+            }
         }
     }
 }

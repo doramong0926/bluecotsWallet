@@ -71,3 +71,27 @@ export function hideModalChangeDefaultWallet() {
       type: actionTypes.HIDE_MODAL_CHANGE_DEFAULT_WALLET
     };
 }
+
+export function showModalSuccess() {
+  return {
+    type: actionTypes.SHOW_MODAL_SUCCESS
+  };
+}
+
+export function hideModalSuccess() {
+    return {
+      type: actionTypes.HIDE_MODAL_SUCCESS
+    };
+}
+
+export function showModalConfirmToSend() {
+  return {
+    type: actionTypes.SHOW_MODAL_CONFIRM_TO_SEND
+  };
+}
+
+export function hideModalConfirmToSend() {
+    return {
+      type: actionTypes.HIDE_MODAL_CONFIRM_TO_SEND
+    };
+}

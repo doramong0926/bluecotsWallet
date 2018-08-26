@@ -1,5 +1,5 @@
 
-import { ListView } from 'react-native';
+
 import actionTypes from './../actions/actionTypes';
 
 const initialState = {  
@@ -9,6 +9,8 @@ const initialState = {
     visibleModalGenerateWallet: false,
     visibleModalSelectAnotherWallet: false,
     visibleModalChangeDefaultWallet: false,
+    visibleModalSuccess: false,
+    visibleModalConfirmToSend: false,
 };  
  
 export default (state = initialState, action) => {
@@ -71,6 +73,26 @@ export default (state = initialState, action) => {
         case actionTypes.HIDE_MODAL_CHANGE_DEFAULT_WALLET:
             return Object.assign({}, state, {
                 visibleModalChangeDefaultWallet: false
+            });
+
+        case actionTypes.SHOW_MODAL_SUCCESS:
+            return Object.assign({}, state, {
+                visibleModalSuccess: true
+            });
+
+        case actionTypes.HIDE_MODAL_SUCCESS:
+            return Object.assign({}, state, {
+                visibleModalSuccess: false
+            });
+
+        case actionTypes.SHOW_MODAL_CONFIRM_TO_SEND:
+            return Object.assign({}, state, {
+                visibleModalConfirmToSend: true
+            });
+
+        case actionTypes.HIDE_MODAL_CONFIRM_TO_SEND:
+            return Object.assign({}, state, {
+                visibleModalConfirmToSend: false
             });
 
         default:

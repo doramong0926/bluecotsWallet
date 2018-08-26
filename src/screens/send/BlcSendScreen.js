@@ -25,11 +25,6 @@ class BlcSendScreen extends Component{
         }).isRequired,
     };
 
-    state = {
-        addressToSendErc20: '',
-        amountToSendErc20: '',
-    };
-
     componentDidMount() {
         this.updateWalletBalance(this.props.walletForSend.walletAddress);
     }
@@ -55,20 +50,20 @@ class BlcSendScreen extends Component{
                 </View>                
                 <View>
                     <FormLabel>Address to send BLC</FormLabel>
-                    <FormInput value={this.state.addressToSendErc20} onChangeText={(value) => this.getAddressToSendErc20(value)}/>
+                    <FormInput value={this.props.addressToSendBlc} onChangeText={(value) => this.props.setAddressToSendBlc(value)}/>
                 </View>
                 <View>
                     <FormLabel>Amount to send BLC</FormLabel>
-                    <FormInput value={this.state.amountToSendErc20} onChangeText={(value) => this.getAmountToSendErc20(value)}/>
+                    <FormInput value={this.props.amountToSendBlc.toString()} onChangeText={(value) => this.props.setAmountToSendBlc(value)}/>
                 </View>
                 <View>
                     <Button
-                        onPress={this.readPrivateKeyFromClipboard}
+                        onPress={this.handelPressPaste}
                         title="paste"
                     />
                     <Button
-                        disabled={!this.addressIsValid(this.state.addressToSendErc20) || !this.amountIsValid()}                        
-                        onPress={this.sendErc20Transaction}
+                        disabled={!this.addressIsValid(this.props.addressToSendBlc) || !this.amountIsValid(this.props.amountToSendBlc)}
+                        onPress={this.handelPressSend}
                         title="Send"
                     />
                 </View>
@@ -76,9 +71,13 @@ class BlcSendScreen extends Component{
         );
     }
 
-    readPrivateKeyFromClipboard = async () => {   
-        const addressToSendErc20 = await Clipboard.getString();   
-        this.setState({ addressToSendErc20 }); 
+    handelPressSend = () => {
+        this.props.showModalConfirmToSend();
+    }
+    
+    handelPressPaste = async () => {
+        const address = await Clipboard.getString();   
+        this.props.setAddressToSendBlc(address);
     };
 
     updateWalletBalance = async (walletAddress) => {
@@ -102,53 +101,12 @@ class BlcSendScreen extends Component{
         }
     }   
 
-    getAddressToSendErc20 = (input) => {
-        const addressToSendErc20 = input;
-        this.setState({
-          addressToSendErc20,
-        });
-        console.log('====================================');
-        console.log('address to send ERC20: ' + this.state.addressToSendErc20);
-        console.log('====================================');
-    }
-
-    getAmountToSendErc20 = (input) => {
-        const amountToSendErc20 = input;
-        this.setState({
-            amountToSendErc20,
-        });
-        console.log('====================================');
-        console.log('amount to send ERC20: ' + this.state.amountToSendErc20);
-        console.log('====================================');
-    }
-
-    sendErc20Transaction = async () => {
-        try {  
-            await WalletUtils.sendTransaction(
-            { 
-                contractAddress: process.env.DEFAULT_TOKEN_CONTRACT_ADDRESS,
-                symbol: process.env.DEFAULT_TOKEN_SYMBOL, 
-                decimals: process.env.DEFAULT_TOKEN_DECIMALS
-            },
-            this.state.addressToSendErc20,
-            this.state.amountToSendErc20,
-            );
-            console.log('====================================');
-            console.log('Sending BLC');
-            console.log("You've successfully sent" + this.state.amountToSendErc20 + 
-                        'BLC ' + 'to' + this.state.addressToSendErc20);
-            console.log('====================================');
-        } catch (error) {
-            ;
-        }
-    };
-
     addressIsValid = (walletAddress) => {
         return WalletUtils.addressIsValid(walletAddress);
     }
 
-    amountIsValid = () => {
-        return parseFloat(this.state.amountToSendErc20, 10) > 0;
+    amountIsValid = (amount) => {
+        return parseFloat(amount, 10) > 0;
     }
 }
 
@@ -156,6 +114,8 @@ function mapStateToProps(state) {
     return {
         walletForSend: state.wallet.walletForSend,
         blcBalanceForSend: state.wallet.blcBalanceForSend,
+        addressToSendBlc: state.wallet.addressToSendBlc,
+        amountToSendBlc: state.wallet.amountToSendBlc,
     };
 }
 
@@ -166,6 +126,21 @@ function mapDispatchToProps(dispatch) {
         },
         setBlcBalanceForSend: (balance) => {
             dispatch(ActionCreator.setBlcBalanceForSend(balance));
+        },
+        showModalSuccess: () => {
+            dispatch(ActionCreator.showModalSuccess());
+        },
+        hideModalSuccess: () => {
+            dispatch(ActionCreator.hideModalSuccess());
+        },
+        showModalConfirmToSend: () => {
+            dispatch(ActionCreator.showModalConfirmToSend());
+        },
+        setAddressToSendBlc: (address) => {
+            dispatch(ActionCreator.setAddressToSendBlc(address));
+        },
+        setAmountToSendBlc: (balance) => {
+            dispatch(ActionCreator.setAmountToSendBlc(balance));
         },
     };
 }
