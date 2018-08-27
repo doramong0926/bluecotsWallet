@@ -84,14 +84,38 @@ export function hideModalSuccess() {
     };
 }
 
-export function showModalConfirmToSend() {
+export function showModalFail() {
   return {
-    type: actionTypes.SHOW_MODAL_CONFIRM_TO_SEND
+    type: actionTypes.SHOW_MODAL_FAIL
   };
 }
 
-export function hideModalConfirmToSend() {
+export function hideModalFail() {
     return {
-      type: actionTypes.HIDE_MODAL_CONFIRM_TO_SEND
+      type: actionTypes.HIDE_MODAL_FAIL
+    };
+}
+
+export function showModalConfirmToSendBlc() {
+  return {
+    type: actionTypes.SHOW_MODAL_CONFIRM_TO_SEND_BLC
+  };
+}
+
+export function hideModalConfirmToSendBlc() {
+    return {
+      type: actionTypes.HIDE_MODAL_CONFIRM_TO_SEND_BLC
+    };
+}
+
+export function showModalConfirmToSendEth() {
+  return {
+    type: actionTypes.SHOW_MODAL_CONFIRM_TO_SEND_ETH
+  };
+}
+
+export function hideModalConfirmToSendEth() {
+    return {
+      type: actionTypes.HIDE_MODAL_CONFIRM_TO_SEND_ETH
     };
 }

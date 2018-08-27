@@ -146,11 +146,11 @@ export default class WalletUtils {
    * @param {Object} token
    */
   static getBalance({ walletAddress, contractAddress, symbol, decimals }) {
-    if (symbol === 'ETH') {
-      return this.getEthBalance(walletAddress);
-    }
-
-    return this.getERC20Balance(walletAddress, contractAddress, decimals);
+      if (symbol === 'ETH') {
+          return this.getEthBalance(walletAddress);
+      } else {
+          return this.getERC20Balance(walletAddress, contractAddress, decimals);
+      }
   }
 
   /**
@@ -159,18 +159,18 @@ export default class WalletUtils {
   static getEthBalance(walletAddress) {
     const web3 = new Web3(this.getWeb3HTTPProvider());
     return new Promise((resolve, reject) => {
-      web3.eth.getBalance(walletAddress, (error, weiBalance) => {
-        if (error) {
-          reject(error);
-        }
-
-        const balance = weiBalance / Math.pow(10, 18);
-
-        // AnalyticsUtils.trackEvent('Get ETH balance', {
-        //   balance,
-        // });
-        resolve(balance);
-      });
+        web3.eth.getBalance(walletAddress, (error, weiBalance) => {
+          if (error) {
+            reject(error);
+          }
+  
+          const balance = weiBalance / Math.pow(10, 18);
+  
+          // AnalyticsUtils.trackEvent('Get ETH balance', {
+          //   balance,
+          // });
+          resolve(balance);
+        });
     });
   }
 
@@ -183,21 +183,21 @@ export default class WalletUtils {
   static getERC20Balance(walletAddress, contractAddress, decimals) {
     const web3 = new Web3(this.getWeb3HTTPProvider());
     return new Promise((resolve, reject) => {
-      web3.eth
-        .contract(erc20Abi)
-        .at(contractAddress)
-        .balanceOf(walletAddress, (error, decimalsBalance) => {
-          if (error) {
-            reject(error);
-          }
+        web3.eth
+          .contract(erc20Abi)
+          .at(contractAddress)
+          .balanceOf(walletAddress, (error, decimalsBalance) => {
+            if (error) {
+              reject(error);
+            }
 
-          const balance = decimalsBalance / Math.pow(10, decimals);
-          // AnalyticsUtils.trackEvent('Get ERC20 balance', {
-          //   balance,
-          //   contractAddress,
-          // });
-          resolve(balance);
-        });
+            const balance = decimalsBalance / Math.pow(10, decimals);
+            // AnalyticsUtils.trackEvent('Get ERC20 balance', {
+            //   balance,
+            //   contractAddress,
+            // });
+            resolve(balance);
+          });
     });
   }
 

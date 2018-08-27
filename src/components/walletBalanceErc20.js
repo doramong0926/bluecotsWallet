@@ -86,11 +86,13 @@ class WalletBalanceErc20 extends Component {
                 symbol: process.env.DEFAULT_TOKEN_SYMBOL, 
                 decimals: process.env.DEFAULT_TOKEN_DECIMALS, 
             });
-            if (currentETHBalance !== undefined && currentBLCBalance !== undefined) {
+            if (currentETHBalance !== undefined) {
                 if (this.props.ethBalance !== currentETHBalance)
                 {
                     this.props.setEthBalance(currentETHBalance); 
                 }
+            }
+            if (currentBLCBalance !== undefined) {
                 if (this.props.blcBalance !== currentBLCBalance)
                 {
                     this.props.setBlcBalance(currentBLCBalance);

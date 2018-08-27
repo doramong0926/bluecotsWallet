@@ -26,12 +26,10 @@ class ModalSelectAnotherWallet extends Component {
     
     componentDidMount() {
         this.fetchWalletList();
-        this.updateWalletBalance(this.props.walletForSend.walletAddress);
     }
 
     componentWillReceiveProps() {
         this.fetchWalletList();
-        this.updateWalletBalance(this.props.walletForSend.walletAddress);
     }
 
     render() {
@@ -107,38 +105,14 @@ class ModalSelectAnotherWallet extends Component {
 
     handlePress = (wallet) => {
         this.props.setWalletForSend(wallet);
-        setTimeout(() => {
-            this.updateWalletBalance(this.props.walletForSend.walletAddress);
-            this.props.setAddressToSendBlc('');
-            this.props.setAmountToSendBlc('');
-            this.props.hideModalSelectAnotherWallet();
-        },); 
+        this.props.setAddressToSendBlc('');
+        this.props.setAmountToSendBlc('');
+        this.props.hideModalSelectAnotherWallet();
     }
 
     fetchWalletList = () => {
         this.state.dataSourceForWalletList = this.state.dataSourceForWalletList.cloneWithRows(this.props.walletList);
     };
-    
-    updateWalletBalance = async (walletAddress) => {
-        if (walletAddress) {
-                const currentETHBalance = await WalletUtils.getBalance({
-                walletAddress: walletAddress,
-                contractAddress:'', 
-                symbol:'ETH', 
-                decimals:0
-            });
-                const currentBLCBalance = await WalletUtils.getBalance({
-                walletAddress: walletAddress,
-                contractAddress: process.env.DEFAULT_TOKEN_CONTRACT_ADDRESS,
-                symbol: process.env.DEFAULT_TOKEN_SYMBOL, 
-                decimals: process.env.DEFAULT_TOKEN_DECIMALS, 
-            });
-            if (currentETHBalance !== undefined && currentBLCBalance !== undefined) {
-                this.props.setEthBalanceForSend(currentETHBalance); 
-                this.props.setBlcBalanceForSend(currentBLCBalance);
-            };      
-        }
-    }    
 }
 
 const styles = StyleSheet.create({
@@ -159,12 +133,6 @@ function mapDispatchToProps(dispatch) {
     return {
         setWalletForSend: (wallet) => {
             dispatch(ActionCreator.setWalletForSend(wallet));
-        },
-        setEthBalanceForSend: (balance) => {
-            dispatch(ActionCreator.setEthBalanceForSend(balance));
-        },
-        setBlcBalanceForSend: (balance) => {
-            dispatch(ActionCreator.setBlcBalanceForSend(balance));
         },
         showModalSelectAnotherWallet: () => {
             dispatch(ActionCreator.showModalSelectAnotherWallet());

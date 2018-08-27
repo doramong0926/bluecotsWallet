@@ -1,33 +1,72 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Clipboard } from 'react-native';
 import { FormLabel, FormInput, Button } from 'react-native-elements'
+import WalletUtils from './../../utils/wallet';
+import { connect } from 'react-redux';
+import ActionCreator from './../../actions';
+import WalletAddressWithNickNameForSend from './../../components/walletAddressWithNickNameForSend';
+import SelectAnotherWalletIcon from './../../components/selectAnotherWalletIcon';
+import PropTypes from 'prop-types';
+
 
 class EthSendScreen extends Component{
+    constructor(props, context) {
+        super(props, context);
+    }
+
     static navigationOptions = {
-        tabBarLabel: 'ETH',
+        tabBarLabel: 'ETH'
     };
 
-    state = {
-        addressToSendEth: '',
-        amountToSendEth: '',
+    static propTypes = {
+        walletForSend: PropTypes.shape({
+            walletAddress: PropTypes.string.isRequired,
+        }).isRequired,
     };
+
+    componentDidMount() {
+        this.updateWalletBalance(this.props.walletForSend.walletAddress);
+        setInterval(() => {
+            this.updateWalletBalance(this.props.walletForSend.walletAddress);
+        }, 1000)
+    }
+
+    componentWillMount() {
+        this.updateWalletBalance(this.props.walletForSend.walletAddress);
+    }
 
     render(){
         return (
-            <View style={style.container}>
-                <View >
+            <View>
+                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                    <View style={{flex:9, alignItems: 'center', justifyContent: 'center'}}>
+                        <WalletAddressWithNickNameForSend />
+                    </View>
+                    <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
+                        <SelectAnotherWalletIcon />
+                    </View>
+                </View>
+                <View>
+                    <Text style={styles.balance}> Available balance </Text>
+                    <Text style={styles.balance}> {this.props.ethBalanceForSend} </Text>
+                </View>                
+                <View>
                     <FormLabel>Address to send ETH</FormLabel>
-                    <FormInput onChangeText={(value) => this.getAddressToSendEth(value)}/>
+                    <FormInput value={this.props.addressToSendEth} onChangeText={(value) => this.props.setAddressToSendEth(value)}/>
                 </View>
                 <View>
                     <FormLabel>Amount to send ETH</FormLabel>
-                    <FormInput onChangeText={(value) => this.getAmountToSendEth(value)}/>
+                    <FormInput value={this.props.amountToSendEth.toString()} onChangeText={(value) => this.props.setAmountToSendEth(value)}/>
                 </View>
                 <View>
                     <Button
-                        disabled={!this.addressIsValid() || !this.amountIsValid()}
-                        onPress={this.sendTransaction}
+                        onPress={this.handelPressPaste}
+                        title="paste"
+                    />
+                    <Button
+                        disabled={!this.addressIsValid(this.props.addressToSendEth) || !this.amountIsValid(this.props.amountToSendEth)}
+                        onPress={this.handelPressSend}
                         title="Send"
                     />
                 </View>
@@ -35,63 +74,89 @@ class EthSendScreen extends Component{
         );
     }
 
-    getAddressToSendEth = (input) => {
-        const addressToSendEth = input;
-        this.setState({
-            addressToSendEth,
-        });
-        console.log('====================================');
-        console.log('address to send ETH: ' + this.state.addressToSendEth);
-        console.log('====================================');
+    handelPressSend = () => {
+        this.props.showModalConfirmToSendEth();
     }
-
-
-
-    getAmountToSendEth = (input) => {
-        const amountToSendEth = input;
-        this.setState({
-            amountToSendEth,
-        });
-        console.log('====================================');
-        console.log('amount to send ETH: ' + this.state.amountToSendEth);
-        console.log('====================================');
-    }
-
-    sendTransaction = async () => {
-        try {  
-            await WalletUtils.sendTransaction(
-            { 
-                contractAddress: "",
-                symbol: "ETH",
-                decimals: ""
-            },
-            this.state.addressToSendErc20,
-            this.state.amountToSendErc20,
-            );
-            console.log('====================================');
-            console.log('Sending ETH');
-            console.log("You've successfully sent" + this.state.amountToSendErc20 + 
-                        'ETH ' + 'to' + this.state.addressToSendErc20);
-            console.log('====================================');
-        } catch (error) {
-            ;
-        }
+    
+    handelPressPaste = async () => {
+        const address = await Clipboard.getString();   
+        this.props.setAddressToSendEth(address);
     };
 
-    addressIsValid = () => {
-        /^0x([A-Fa-f0-9]{40})$/.test(this.state.addressToSendErc20);
+    updateWalletBalance = async (walletAddress) => {
+        if (walletAddress) {
+            const currentETHBalance = await WalletUtils.getBalance({
+                walletAddress: walletAddress,
+                contractAddress:'', 
+                symbol:'ETH', 
+                decimals:0
+            });
+            if (currentETHBalance !== undefined) {
+                if (this.props.ethBalanceForSend !== currentETHBalance)
+                {
+                    this.props.setEthBalanceForSend(currentETHBalance); 
+                }
+            }
+        }
+    }   
+
+    addressIsValid = (walletAddress) => {
+        return WalletUtils.addressIsValid(walletAddress);
     }
 
-    amountIsValid = () => {
-        parseFloat(this.state.amountToSendErc20, 10) > 0;
+    amountIsValid = (amount) => {
+        return parseFloat(amount, 10) > 0;
     }
 }
-export default EthSendScreen;
- 
-const style = StyleSheet.create({
-    container: {
-        flex: 1,
+
+function mapStateToProps(state) {
+    return {
+        walletForSend: state.wallet.walletForSend,
+        ethBalanceForSend: state.wallet.ethBalanceForSend,
+        addressToSendEth: state.wallet.addressToSendEth,
+        amountToSendEth: state.wallet.amountToSendEth,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        showModalConfirmToSendEth: () => {
+            dispatch(ActionCreator.showModalConfirmToSendEth());
+        },
+        setEthBalanceForSend: (balance) => {
+            dispatch(ActionCreator.setEthBalanceForSend(balance));
+        },
+        setAddressToSendEth: (address) => {
+            dispatch(ActionCreator.setAddressToSendEth(address));
+        },
+        setAmountToSendEth: (balance) => {
+            dispatch(ActionCreator.setAmountToSendEth(balance));
+        },
+    };
+}
+  
+export default connect(mapStateToProps, mapDispatchToProps)(EthSendScreen);
+
+const styles = StyleSheet.create({
+    nickName: {
         alignItems: 'center',
         justifyContent: 'center',
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: 'black',
+    },
+    address: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: 12,
+        fontWeight: 'bold',
+        color: 'black',
+    },
+    balance: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: 'black',
     }
 })

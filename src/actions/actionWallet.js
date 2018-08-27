@@ -69,20 +69,6 @@ export function setBlcBalanceForSend(balance) {
     };
 }
 
-export function setEthBalanceForReceive(balance) {
-    return {
-        type: actionTypes.SET_ETH_BALANCE_FOR_RECEIVE,
-        payload: balance
-    };
-}
-
-export function setBlcBalanceForReceive(balance) {
-    return {
-        type: actionTypes.SET_BLC_BALANCE_FOR_RECEIVE,
-        payload: balance
-    };
-}
-
 export function setAddressToSendBlc(address) {
     return {
         type: actionTypes.SET_ADDRESS_TO_SEND_BLC,
@@ -93,6 +79,20 @@ export function setAddressToSendBlc(address) {
 export function setAmountToSendBlc(balance) {
     return {
         type: actionTypes.SET_AMOUNT_TO_SEND_BLC,
+        payload: balance
+    };
+}
+
+export function setAddressToSendEth(address) {
+    return {
+        type: actionTypes.SET_ADDRESS_TO_SEND_ETH,
+        payload: address
+    };
+}
+
+export function setAmountToSendEth(balance) {
+    return {
+        type: actionTypes.SET_AMOUNT_TO_SEND_ETH,
         payload: balance
     };
 }

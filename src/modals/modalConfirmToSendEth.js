@@ -7,7 +7,7 @@ import ActionCreator from './../actions';
 import { connect } from 'react-redux';
 import WalletUtils from './../utils/wallet';
 
-class ModalConfirmToSend extends Component {
+class ModalConfirmToSendEth extends Component {
     constructor(props, context) {
         super(props, context);
     }
@@ -16,12 +16,12 @@ class ModalConfirmToSend extends Component {
         return (
             <Modal 
                 offset={0}
-                open={this.props.visibleModalConfirmToSend}
+                open={this.props.visibleModalConfirmToSendEth}
                 animationDuration={200}
                 animationTension={40}
                 closeOnTouchOutside={true}
                 disableOnBackPress={false}
-                modalDidClose={() => {this.props.hideModalConfirmToSend()}}
+                modalDidClose={() => {this.props.hideModalConfirmToSendEth()}}
                 modalDidOpen={() => undefined}
                 modalProps={undefined}
                 containerProps={undefined}
@@ -40,7 +40,7 @@ class ModalConfirmToSend extends Component {
                 }}
             >
                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>  
-                    <Text>Are you sure to send {this.props.amountToSendBlc} BLC to {this.props.addressToSendBlc}</Text>
+                    <Text>Are you sure to send {this.props.amountToSendEth} ETH to {this.props.addressToSendEth}</Text>
                 </View>
                 <Button
                     onPress={this.handelPressOk}
@@ -55,33 +55,34 @@ class ModalConfirmToSend extends Component {
     }
 
     handelPressOk = () => {
-        this.sendErc20Transaction();
+        this.sendTransaction();
         setTimeout(() => {
-            this.props.hideModalConfirmToSend();
-            this.props.showModalSuccess();
-            this.props.setAddressToSendBlc('');
-            this.props.setAmountToSendBlc('');
+            this.props.hideModalConfirmToSendEth();            
+            this.props.setAddressToSendEth('');
+            this.props.setAmountToSendEth('');
         },);
     }
 
     handelPressCancel = () => {
-        this.props.hideModalConfirmToSend();
+        this.props.hideModalConfirmToSendEth();
     }
 
-    sendErc20Transaction = async () => {
+    sendTransaction = async () => {
         try {  
             await WalletUtils.sendTransaction(
                 { 
-                    contractAddress: process.env.DEFAULT_TOKEN_CONTRACT_ADDRESS,
-                    symbol: process.env.DEFAULT_TOKEN_SYMBOL, 
-                    decimals: process.env.DEFAULT_TOKEN_DECIMALS
+                    contractAddress:'', 
+                    symbol:'ETH', 
+                    decimals:0
                 },
                 this.props.walletForSend,
-                this.props.addressToSendBlc,
-                this.props.amountToSendBlc,
+                this.props.addressToSendEth,
+                this.props.amountToSendEth,
             );
+            this.props.showModalSuccess();
         } catch (error) {
-            ;
+            console.log('sendTransaction error : ' + error);
+            this.props.showModalFail();
         }
     };
 
@@ -90,9 +91,9 @@ class ModalConfirmToSend extends Component {
 
 function mapStateToProps(state) {
     return {
-        visibleModalConfirmToSend: state.modal.visibleModalConfirmToSend,
-        addressToSendBlc: state.wallet.addressToSendBlc,
-        amountToSendBlc: state.wallet.amountToSendBlc,
+        visibleModalConfirmToSendEth: state.modal.visibleModalConfirmToSendEth,
+        addressToSendEth: state.wallet.addressToSendEth,
+        amountToSendEth: state.wallet.amountToSendEth,
         walletForSend: state.wallet.walletForSend,
     };
 }
@@ -102,26 +103,23 @@ function mapDispatchToProps(dispatch) {
         showModalSuccess: () => {
             dispatch(ActionCreator.showModalSuccess());
         },
-        hideModalSuccess: () => {
-            dispatch(ActionCreator.hideModalSuccess());
+        showModalFail: () => {
+            dispatch(ActionCreator.showModalFail());
         },
-        showModalConfirmToSend: () => {
-            dispatch(ActionCreator.showModalConfirmToSend());
+        showModalConfirmToSendEth: () => {
+            dispatch(ActionCreator.showModalConfirmToSendEth());
         },
-        hideModalConfirmToSend: () => {
-            dispatch(ActionCreator.hideModalConfirmToSend());
+        hideModalConfirmToSendEth: () => {
+            dispatch(ActionCreator.hideModalConfirmToSendEth());
         },
-        setAddressToSendBlc: (address) => {
-            dispatch(ActionCreator.setAddressToSendBlc(address));
+        setAddressToSendEth: (address) => {
+            dispatch(ActionCreator.setAddressToSendEth(address));
         },
-        setAmountToSendBlc: (balance) => {
-            dispatch(ActionCreator.setAmountToSendBlc(balance));
-        },
-        showModalSuccess: () => {
-            dispatch(ActionCreator.showModalSuccess());
+        setAmountToSendEth: (balance) => {
+            dispatch(ActionCreator.setAmountToSendEth(balance));
         },
     };
 }
   
-export default connect(mapStateToProps, mapDispatchToProps)(ModalConfirmToSend);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalConfirmToSendEth);
 

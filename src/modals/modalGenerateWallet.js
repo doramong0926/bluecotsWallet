@@ -152,14 +152,18 @@ class ModalGenerateWallet extends Component {
                 symbol: process.env.DEFAULT_TOKEN_SYMBOL, 
                 decimals: process.env.DEFAULT_TOKEN_DECIMALS, 
             });
-            if (currentETHBalance !== undefined && currentBLCBalance !== undefined) {
-                this.props.setEthBalance(currentETHBalance); 
-                this.props.setBlcBalance(currentBLCBalance);
-                this.props.setEthBalanceForSend(currentETHBalance); 
-                this.props.setBlcBalanceForSend(currentBLCBalance);                
-                this.props.setEthBalanceForReceive(currentETHBalance); 
-                this.props.setBlcBalanceForReceive(currentBLCBalance);
-            };      
+            if (currentETHBalance !== undefined) {
+                if (this.props.ethBalance !== currentETHBalance)
+                {
+                    this.props.setEthBalance(currentETHBalance); 
+                }
+            }
+            if (currentBLCBalance !== undefined) {
+                if (this.props.blcBalance !== currentBLCBalance)
+                {
+                    this.props.setBlcBalance(currentBLCBalance);
+                }
+            }
         }
     }
 
@@ -216,12 +220,6 @@ function mapDispatchToProps(dispatch) {
         },
         setBlcBalanceForSend: (balance) => {
             dispatch(ActionCreator.setBlcBalanceForSend(balance));
-        },
-        setEthBalanceForReceive: (balance) => {
-            dispatch(ActionCreator.setEthBalanceForReceive(balance));
-        },
-        setBlcBalanceForReceive: (balance) => {
-            dispatch(ActionCreator.setBlcBalanceForReceive(balance));
         },
     };
 }

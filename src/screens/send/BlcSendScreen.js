@@ -27,9 +27,12 @@ class BlcSendScreen extends Component{
 
     componentDidMount() {
         this.updateWalletBalance(this.props.walletForSend.walletAddress);
+        setInterval(() => {
+            this.updateWalletBalance(this.props.walletForSend.walletAddress);
+        }, 1000)
     }
 
-    componentWillReceiveProps() {
+    componentWillMount() {
         this.updateWalletBalance(this.props.walletForSend.walletAddress);
     }
 
@@ -72,7 +75,7 @@ class BlcSendScreen extends Component{
     }
 
     handelPressSend = () => {
-        this.props.showModalConfirmToSend();
+        this.props.showModalConfirmToSendBlc();
     }
     
     handelPressPaste = async () => {
@@ -82,22 +85,18 @@ class BlcSendScreen extends Component{
 
     updateWalletBalance = async (walletAddress) => {
         if (walletAddress) {
-                const currentETHBalance = await WalletUtils.getBalance({
-                walletAddress: walletAddress,
-                contractAddress:'', 
-                symbol:'ETH', 
-                decimals:0
-            });
-                const currentBLCBalance = await WalletUtils.getBalance({
+            const currentBLCBalance = await WalletUtils.getBalance({
                 walletAddress: walletAddress,
                 contractAddress: process.env.DEFAULT_TOKEN_CONTRACT_ADDRESS,
                 symbol: process.env.DEFAULT_TOKEN_SYMBOL, 
                 decimals: process.env.DEFAULT_TOKEN_DECIMALS, 
-            });
-            if (currentETHBalance !== undefined && currentBLCBalance !== undefined) {
-                this.props.setEthBalanceForSend(currentETHBalance); 
-                this.props.setBlcBalanceForSend(currentBLCBalance);
-            };      
+            });            
+            if (currentBLCBalance !== undefined) {
+                if (this.props.blcBalanceForSend !== currentBLCBalance)
+                {
+                    this.props.setBlcBalanceForSend(currentBLCBalance);
+                }
+            }    
         }
     }   
 
@@ -121,20 +120,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        setEthBalanceForSend: (balance) => {
-            dispatch(ActionCreator.setEthBalanceForSend(balance));
+        showModalConfirmToSendBlc: () => {
+            dispatch(ActionCreator.showModalConfirmToSendBlc());
         },
         setBlcBalanceForSend: (balance) => {
             dispatch(ActionCreator.setBlcBalanceForSend(balance));
-        },
-        showModalSuccess: () => {
-            dispatch(ActionCreator.showModalSuccess());
-        },
-        hideModalSuccess: () => {
-            dispatch(ActionCreator.hideModalSuccess());
-        },
-        showModalConfirmToSend: () => {
-            dispatch(ActionCreator.showModalConfirmToSend());
         },
         setAddressToSendBlc: (address) => {
             dispatch(ActionCreator.setAddressToSendBlc(address));

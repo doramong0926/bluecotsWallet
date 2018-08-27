@@ -12,8 +12,10 @@ import ModalDefaultWalletSettings from './src/modals/modalDefaultWalletSettings'
 import ModalGenerateWallet from './src/modals/modalGenerateWallet';
 import ModalRestoreWallet from './src/modals/modalRestoreWallet';
 import ModalChangeDefaultWallet from './src/modals/modalChangeDefaultWallet';
-import ModalConfirmToSend from './src/modals/modalConfirmToSend';
+import ModalConfirmToSendBlc from './src/modals/modalConfirmToSendBlc';
+import ModalConfirmToSendEth from './src/modals/modalConfirmToSendEth';
 import ModalSuccess from './src/modals/modalSuccess';
+import ModalFail from './src/modals/modalFail';
 
 export default class App extends React.Component {
     render() {
@@ -27,9 +29,10 @@ export default class App extends React.Component {
                     <ModalRestoreWallet /> 
                     <ModalSelectAnotherWallet />
                     <ModalChangeDefaultWallet />
-                    <ModalConfirmToSend />
+                    <ModalConfirmToSendBlc />
+                    <ModalConfirmToSendEth />
                     <ModalSuccess />
-                    
+                    <ModalFail />                    
                 </PersistGate>
             </Provider>    
         );

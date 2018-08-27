@@ -10,7 +10,9 @@ const initialState = {
     visibleModalSelectAnotherWallet: false,
     visibleModalChangeDefaultWallet: false,
     visibleModalSuccess: false,
-    visibleModalConfirmToSend: false,
+    visibleModalFail: false,
+    visibleModalConfirmToSendBlc: false,
+    visibleModalConfirmToSendEth: false,
 };  
  
 export default (state = initialState, action) => {
@@ -85,14 +87,34 @@ export default (state = initialState, action) => {
                 visibleModalSuccess: false
             });
 
-        case actionTypes.SHOW_MODAL_CONFIRM_TO_SEND:
+        case actionTypes.SHOW_MODAL_FAIL:
             return Object.assign({}, state, {
-                visibleModalConfirmToSend: true
+                visibleModalFail: true
             });
 
-        case actionTypes.HIDE_MODAL_CONFIRM_TO_SEND:
+        case actionTypes.HIDE_MODAL_FAIL:
             return Object.assign({}, state, {
-                visibleModalConfirmToSend: false
+                visibleModalFail: false
+            });            
+
+        case actionTypes.SHOW_MODAL_CONFIRM_TO_SEND_BLC:
+            return Object.assign({}, state, {
+                visibleModalConfirmToSendBlc: true
+            });
+
+        case actionTypes.HIDE_MODAL_CONFIRM_TO_SEND_BLC:
+            return Object.assign({}, state, {
+                visibleModalConfirmToSendBlc: false
+            });
+
+        case actionTypes.SHOW_MODAL_CONFIRM_TO_SEND_ETH:
+            return Object.assign({}, state, {
+                visibleModalConfirmToSendEth: true
+            });
+
+        case actionTypes.HIDE_MODAL_CONFIRM_TO_SEND_ETH:
+            return Object.assign({}, state, {
+                visibleModalConfirmToSendEth: false
             });
 
         default:

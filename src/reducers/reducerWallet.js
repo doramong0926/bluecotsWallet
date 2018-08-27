@@ -19,10 +19,10 @@ const initialState = {
     blcBalance: 0,
     ethBalanceForSend: 0,
     blcBalanceForSend: 0,
-    ethBalanceForReceive: 0,
-    blcBalanceForReceive: 0,
     addressToSendBlc: '',
     amountToSendBlc: '',
+    addressToSendEth: '',
+    amountToSendEth: '',
 };  
 
 export default (state = initialState, action) => {
@@ -78,16 +78,6 @@ export default (state = initialState, action) => {
                 blcBalanceForSend: action.payload,
             });
 
-        case actionTypes.SET_ETH_BALANCE_FOR_RECEIVE:
-            return Object.assign({}, state, {
-                ethBalanceForReceive: action.payload,
-            });
-
-        case actionTypes.SET_BLC_BALANCE_FOR_RECEIVE:
-            return Object.assign({}, state, {
-                blcBalanceForReceive: action.payload,
-            });
-
         case actionTypes.SET_ADDRESS_TO_SEND_BLC:
             return Object.assign({}, state, {
                 addressToSendBlc: action.payload,
@@ -96,6 +86,16 @@ export default (state = initialState, action) => {
         case actionTypes.SET_AMOUNT_TO_SEND_BLC:
             return Object.assign({}, state, {
                 amountToSendBlc: action.payload,
+            });
+
+        case actionTypes.SET_ADDRESS_TO_SEND_ETH:
+            return Object.assign({}, state, {
+                addressToSendEth: action.payload,
+            });
+
+        case actionTypes.SET_AMOUNT_TO_SEND_ETH:
+            return Object.assign({}, state, {
+                amountToSendEth: action.payload,
             });
 
         default:
