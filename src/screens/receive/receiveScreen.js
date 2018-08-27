@@ -1,10 +1,14 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Clipboard, CameraRoll , ToastAndroid } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import QRCode from 'react-native-qrcode-svg';
-import ActionCreator from './../../actions';
+import { Button } from 'react-native-elements'
 import { connect } from 'react-redux';
+import WalletAddressWithNickNameForReceive from './../../components/walletAddressWithNickNameForReceive';
+import SelectAnotherWalletIcon from './../../components/selectAnotherWalletIcon';
+import ActionCreator from './../../actions';
+//import RNFS from "react-native-fs"
 
 class receiveScreen extends Component{  
     static navigationOptions = {
@@ -20,28 +24,92 @@ class receiveScreen extends Component{
     render(){
         return (
             <View style={style.container}>
-                <View style={style.container}>
-                    <QRCode 
-                        size = {200} 
-                        value={this.props.defaultWallet.walletAddress}
+                <View style={{flex: 4, alignItems: 'center', justifyContent: 'center'}}>
+                    {this.renderQrCode()}
+                </View>
+                <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                    <View style={{flex:9, alignItems: 'center', justifyContent: 'center'}}>
+                        <WalletAddressWithNickNameForReceive />
+                    </View>
+                    <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
+                        <SelectAnotherWalletIcon ScreenType='receive' />
+                    </View>                    
+                </View>
+                <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                    <Button
+                        onPress={this.handlePressCopy}
+                        title="Copy address"
+                    />
+                    <Button
+                        disabled={false}
+                        onPress={this.handlePressToSave}
+                        title="Save QR-code"
                     />
                 </View>
-                <View style={style.container}>
-                    <Text>{this.props.defaultWallet.walletAddress}</Text>
+                <View style={{flex: 5, alignItems: 'center', justifyContent: 'center'}}>
+                    <Text> transaction history</Text>
                 </View>
             </View>  
-        );
+        );        
     }
+
+    renderQrCode = () => {
+        if (this.props.walletForReceive.walletAddress)
+        {
+            return (
+                <QRCode 
+                    size = {200} 
+                    value={this.props.walletForReceive.walletAddress}
+                    getRef={(c) => (this.svg = c)}
+                />
+            )
+        } else {
+            return (
+                <Text> need to add wallet </Text>
+            )
+        }
+        
+    }
+
+    handlePressCopy = async () => {
+        this.props.setCopyAddressToClipboard('');
+        Clipboard.setString(this.props.walletForReceive.walletAddress);
+        const address = await Clipboard.getString();
+        this.props.setCopyAddressToClipboard(address);
+        this.props.showModalCopyAddressToClipboard();
+    };
+
+    handlePressToSave = () => {
+        /*
+        this.svg.toDataURL((data) => {
+            filePath = RNFS.CachesDirectoryPath + "/" + this.props.walletForReceive.walletAddress + ".png";
+            RNFS.writeFile(filePath, data, 'base64')
+              .then((success) => {
+                  return CameraRoll.saveToCameraRoll(filePath, 'photo')
+              })
+              .then(() => {
+                  this.setState({ busy: false, imageSaved: true  })
+                  ToastAndroid.show('Saved to gallery !!', ToastAndroid.SHORT)
+              })
+        })
+        */ 
+    };
 }
 
 function mapStateToProps(state) {
     return {
-        defaultWallet: state.wallet.defaultWallet,
+        walletForReceive: state.wallet.walletForReceive,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
+        showModalCopyAddressToClipboard: () => {
+            dispatch(ActionCreator.showModalCopyAddressToClipboard());
+        },
+        setCopyAddressToClipboard: (address) => {
+            dispatch(ActionCreator.setCopyAddressToClipboard(address));
+        },
     };
 }
   

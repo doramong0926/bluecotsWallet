@@ -4,16 +4,15 @@ import { Text, View, ListView, TouchableHighlight, Alert, Clipboard, StyleSheet 
 import Modal from 'react-native-simple-modal';
 import ActionCreator from './../actions';
 import { connect } from 'react-redux';
-import WalletUtils from './../utils/wallet';
 import PropTypes from 'prop-types';
 
-class ModalSelectAnotherWallet extends Component {
+class ModalSelectAnotherWalletForReceive extends Component {
     constructor(props, context) {
         super(props, context);
     }
 
     static propTypes = {
-        walletForSend: PropTypes.shape({
+        walletForReceive: PropTypes.shape({
             walletAddress: PropTypes.string.isRequired,
         }).isRequired,
     };
@@ -36,7 +35,7 @@ class ModalSelectAnotherWallet extends Component {
         return (            
             <Modal 
                 offset={0}
-                open={this.props.visibleModalSelectAnotherWallet}
+                open={this.props.visibleModalSelectAnotherWalletForReceive}
                 animationDuration={200}
                 animationTension={40}
                 closeOnTouchOutside={true}
@@ -74,7 +73,7 @@ class ModalSelectAnotherWallet extends Component {
     }
 
     closeModal = () => {
-        this.props.hideModalSelectAnotherWallet()
+        this.props.hideModalSelectAnotherWalletForReceive()
     }
 
     openModal = () => {
@@ -104,10 +103,8 @@ class ModalSelectAnotherWallet extends Component {
     }
 
     handlePress = (wallet) => {
-        this.props.setWalletForSend(wallet);
-        this.props.setAddressToSendBlc('');
-        this.props.setAmountToSendBlc('');
-        this.props.hideModalSelectAnotherWallet();
+        this.props.setWalletForReceive(wallet);
+        this.props.hideModalSelectAnotherWalletForReceive();
     }
 
     fetchWalletList = () => {
@@ -124,29 +121,23 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         walletList: state.wallet.walletList,
-        walletForSend: state.wallet.walletForSend,
-        visibleModalSelectAnotherWallet: state.modal.visibleModalSelectAnotherWallet,        
+        walletForReceive: state.wallet.walletForReceive,
+        visibleModalSelectAnotherWalletForReceive: state.modal.visibleModalSelectAnotherWalletForReceive,        
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        setWalletForSend: (wallet) => {
-            dispatch(ActionCreator.setWalletForSend(wallet));
+        setWalletForReceive: (wallet) => {
+            dispatch(ActionCreator.setWalletForReceive(wallet));
         },
-        showModalSelectAnotherWallet: () => {
-            dispatch(ActionCreator.showModalSelectAnotherWallet());
+        showModalSelectAnotherWalletForReceive: () => {
+            dispatch(ActionCreator.showModalSelectAnotherWalletForReceive());
         },
-        hideModalSelectAnotherWallet: () => {
-            dispatch(ActionCreator.hideModalSelectAnotherWallet());
-        },
-        setAddressToSendBlc: (address) => {
-            dispatch(ActionCreator.setAddressToSendBlc(address));
-        },
-        setAmountToSendBlc: (balance) => {
-            dispatch(ActionCreator.setAmountToSendBlc(balance));
+        hideModalSelectAnotherWalletForReceive: () => {
+            dispatch(ActionCreator.hideModalSelectAnotherWalletForReceive());
         },
     };
 }
   
-export default connect(mapStateToProps, mapDispatchToProps)(ModalSelectAnotherWallet);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalSelectAnotherWalletForReceive);

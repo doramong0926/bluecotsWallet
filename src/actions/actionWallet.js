@@ -96,3 +96,10 @@ export function setAmountToSendEth(balance) {
         payload: balance
     };
 }
+
+export function setCopyAddressToClipboard(address) {
+    return {
+        type: actionTypes.SET_COPY_ADDRESS_TO_CLIPBOARD,
+        payload: address
+    };
+}

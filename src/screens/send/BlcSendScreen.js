@@ -44,7 +44,7 @@ class BlcSendScreen extends Component{
                         <WalletAddressWithNickNameForSend />
                     </View>
                     <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
-                        <SelectAnotherWalletIcon />
+                        <SelectAnotherWalletIcon ScreenType='send' />
                     </View>
                 </View>
                 <View>

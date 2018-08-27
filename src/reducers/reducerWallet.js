@@ -23,6 +23,7 @@ const initialState = {
     amountToSendBlc: '',
     addressToSendEth: '',
     amountToSendEth: '',
+    copyAddressToClipboard: '',
 };  
 
 export default (state = initialState, action) => {
@@ -96,6 +97,11 @@ export default (state = initialState, action) => {
         case actionTypes.SET_AMOUNT_TO_SEND_ETH:
             return Object.assign({}, state, {
                 amountToSendEth: action.payload,
+            });
+
+        case actionTypes.SET_COPY_ADDRESS_TO_CLIPBOARD:
+            return Object.assign({}, state, {
+                copyAddressToClipboard: action.payload,
             });
 
         default:

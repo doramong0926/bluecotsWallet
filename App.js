@@ -7,7 +7,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './src/config/store';
 import mainScreen from './src/screens/main/mainScreen'
 import ModalCreateWallet from './src/modals/modalCreateWallet';
-import ModalSelectAnotherWallet from './src/modals/modalSelectAnotherWallet';
+import ModalSelectAnotherWalletForSend from './src/modals/modalSelectAnotherWalletForSend';
+import ModalSelectAnotherWalletForReceive from './src/modals/modalSelectAnotherWalletForReceive';
 import ModalDefaultWalletSettings from './src/modals/modalDefaultWalletSettings';
 import ModalGenerateWallet from './src/modals/modalGenerateWallet';
 import ModalRestoreWallet from './src/modals/modalRestoreWallet';
@@ -16,6 +17,8 @@ import ModalConfirmToSendBlc from './src/modals/modalConfirmToSendBlc';
 import ModalConfirmToSendEth from './src/modals/modalConfirmToSendEth';
 import ModalSuccess from './src/modals/modalSuccess';
 import ModalFail from './src/modals/modalFail';
+import ModalCopyAddressToClipboard from './src/modals/modalCopyAddressToClipboard';
+
 
 export default class App extends React.Component {
     render() {
@@ -27,10 +30,12 @@ export default class App extends React.Component {
                     <ModalDefaultWalletSettings />
                     <ModalGenerateWallet />
                     <ModalRestoreWallet /> 
-                    <ModalSelectAnotherWallet />
+                    <ModalSelectAnotherWalletForSend />
+                    <ModalSelectAnotherWalletForReceive />
                     <ModalChangeDefaultWallet />
                     <ModalConfirmToSendBlc />
                     <ModalConfirmToSendEth />
+                    <ModalCopyAddressToClipboard />
                     <ModalSuccess />
                     <ModalFail />                    
                 </PersistGate>

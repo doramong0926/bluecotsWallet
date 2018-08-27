@@ -7,12 +7,14 @@ const initialState = {
     visibleModalDefaultWalletSettings: false,
     visibleModalRestoreWallet: false,
     visibleModalGenerateWallet: false,
-    visibleModalSelectAnotherWallet: false,
+    visibleModalSelectAnotherWalletForSend: false,
+    visibleModalSelectAnotherWalletForReceive: false,
     visibleModalChangeDefaultWallet: false,
     visibleModalSuccess: false,
     visibleModalFail: false,
     visibleModalConfirmToSendBlc: false,
     visibleModalConfirmToSendEth: false,
+    visibleModalCopyAddressToClipboard: false,
 };  
  
 export default (state = initialState, action) => {
@@ -57,14 +59,24 @@ export default (state = initialState, action) => {
                 visibleModalGenerateWallet: false
             });
 
-        case actionTypes.SHOW_MODAL_SELECT_ANOTHER_WALLET:
+        case actionTypes.SHOW_MODAL_SELECT_ANOTHER_WALLET_FOR_SEND:
             return Object.assign({}, state, {
-                visibleModalSelectAnotherWallet: true
+                visibleModalSelectAnotherWalletForSend: true
             });
 
-        case actionTypes.HIDE_MODAL_SELECT_ANOTHER_WALLET:
+        case actionTypes.HIDE_MODAL_SELECT_ANOTHER_WALLET_FOR_SEND:
             return Object.assign({}, state, {
-                visibleModalSelectAnotherWallet: false
+                visibleModalSelectAnotherWalletForSend: false
+            });
+
+        case actionTypes.SHOW_MODAL_SELECT_ANOTHER_WALLET_FOR_RECEIVE:
+            return Object.assign({}, state, {
+                visibleModalSelectAnotherWalletForReceive: true
+            });
+
+        case actionTypes.HIDE_MODAL_SELECT_ANOTHER_WALLET_FOR_RECEIVE:
+            return Object.assign({}, state, {
+                visibleModalSelectAnotherWalletForReceive: false
             });
 
         case actionTypes.SHOW_MODAL_CHANGE_DEFAULT_WALLET:
@@ -116,6 +128,17 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 visibleModalConfirmToSendEth: false
             });
+
+        case actionTypes.SHOW_MODAL_COPY_ADDRESS_TO_CLIPBOARD:
+            return Object.assign({}, state, {
+                visibleModalCopyAddressToClipboard: true
+            });
+
+        case actionTypes.HIDE_MODAL_COPY_ADDRESS_TO_CLIPBOARD:
+            return Object.assign({}, state, {
+                visibleModalCopyAddressToClipboard: false
+            });
+            
 
         default:
             return state;

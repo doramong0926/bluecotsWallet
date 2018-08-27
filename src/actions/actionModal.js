@@ -48,15 +48,27 @@ export function hideModalGenerateWallet() {
     };
 }
 
-export function showModalSelectAnotherWallet() {
+export function showModalSelectAnotherWalletForSend() {
   return {
-    type: actionTypes.SHOW_MODAL_SELECT_ANOTHER_WALLET
+    type: actionTypes.SHOW_MODAL_SELECT_ANOTHER_WALLET_FOR_SEND
   };
 }
 
-export function hideModalSelectAnotherWallet() {
+export function hideModalSelectAnotherWalletForSend() {
     return {
-      type: actionTypes.HIDE_MODAL_SELECT_ANOTHER_WALLET
+      type: actionTypes.HIDE_MODAL_SELECT_ANOTHER_WALLET_FOR_SEND
+    };
+}
+
+export function showModalSelectAnotherWalletForReceive() {
+  return {
+    type: actionTypes.SHOW_MODAL_SELECT_ANOTHER_WALLET_FOR_RECEIVE
+  };
+}
+
+export function hideModalSelectAnotherWalletForReceive() {
+    return {
+      type: actionTypes.HIDE_MODAL_SELECT_ANOTHER_WALLET_FOR_RECEIVE
     };
 }
 
@@ -117,5 +129,17 @@ export function showModalConfirmToSendEth() {
 export function hideModalConfirmToSendEth() {
     return {
       type: actionTypes.HIDE_MODAL_CONFIRM_TO_SEND_ETH
+    };
+}
+
+export function showModalCopyAddressToClipboard() {
+  return {
+    type: actionTypes.SHOW_MODAL_COPY_ADDRESS_TO_CLIPBOARD
+  };
+}
+
+export function hideModalCopyAddressToClipboard() {
+    return {
+      type: actionTypes.HIDE_MODAL_COPY_ADDRESS_TO_CLIPBOARD
     };
 }

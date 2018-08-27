@@ -19,24 +19,27 @@ class SelectAnotherWalletIcon extends Component {
     }
 
     handlePress = () => {
-        this.props.showModalSelectAnotherWallet(); 
+        if(this.props.ScreenType == "send") {
+            this.props.showModalSelectAnotherWalletForSend(); 
+        } else {
+            this.props.showModalSelectAnotherWalletForReceive(); 
+        }        
     }
 }
 
 function mapStateToProps(state) {
     return {
-        visibleModalSelectAnotherWallet: state.modal.visibleModalSelectAnotherWallet
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        showModalSelectAnotherWallet: () => {
-            dispatch(ActionCreator.showModalSelectAnotherWallet());
+        showModalSelectAnotherWalletForSend: () => {
+            dispatch(ActionCreator.showModalSelectAnotherWalletForSend());
         },
-        hideModalSelectAnotherWallet: () => {
-            dispatch(ActionCreator.hideModalSelectAnotherWallet());
-        }
+        showModalSelectAnotherWalletForReceive: () => {
+            dispatch(ActionCreator.showModalSelectAnotherWalletForReceive());
+        },
     };
 }
   

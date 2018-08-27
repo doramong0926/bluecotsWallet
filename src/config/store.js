@@ -33,6 +33,7 @@ const persistConfig = {
     version: 1,
     storage,
     //migrate: createMigrate(migrations, { debug: false }),
+    //blacklist: ['walletForReceive']
 };
 
 const store = createStore(
