@@ -36,7 +36,11 @@ class ModalQrCodeScaner extends Component {
 
     componentDidMount() {
         this._requestCameraPermission();
-      }
+    }
+
+    componentWillReceiveProps() {
+        this._requestCameraPermission();
+    }
     
     _requestCameraPermission = async () => {
         const { status } = await Permissions.askAsync(Permissions.CAMERA);
