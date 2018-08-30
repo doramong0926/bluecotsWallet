@@ -143,3 +143,15 @@ export function hideModalCopyAddressToClipboard() {
       type: actionTypes.HIDE_MODAL_COPY_ADDRESS_TO_CLIPBOARD
     };
 }
+
+export function showModalQrCodeScaner() {
+  return {
+    type: actionTypes.SHOW_MODAL_QR_CODE_SCANER
+  };
+}
+
+export function hideModalQrCodeScaner() {
+    return {
+      type: actionTypes.HIDE_MODAL_QR_CODE_SCANER
+    };
+}

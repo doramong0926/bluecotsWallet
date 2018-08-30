@@ -15,6 +15,7 @@ const initialState = {
     visibleModalConfirmToSendBlc: false,
     visibleModalConfirmToSendEth: false,
     visibleModalCopyAddressToClipboard: false,
+    visibleModalQrCodeScaner: false,
 };  
  
 export default (state = initialState, action) => {
@@ -138,7 +139,16 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 visibleModalCopyAddressToClipboard: false
             });
-            
+
+        case actionTypes.SHOW_MODAL_QR_CODE_SCANER:
+            return Object.assign({}, state, {
+                visibleModalQrCodeScaner: true
+            });
+
+        case actionTypes.HIDE_MODAL_QR_CODE_SCANER:
+            return Object.assign({}, state, {
+                visibleModalQrCodeScaner: false
+            });
 
         default:
             return state;

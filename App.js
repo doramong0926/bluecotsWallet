@@ -5,7 +5,7 @@ import { createStackNavigator } from 'react-navigation';
 
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './src/config/store';
-import mainScreen from './src/screens/main/mainScreen'
+import mainScreen from './src/screens/main/mainScreen';
 import ModalCreateWallet from './src/modals/modalCreateWallet';
 import ModalSelectAnotherWalletForSend from './src/modals/modalSelectAnotherWalletForSend';
 import ModalSelectAnotherWalletForReceive from './src/modals/modalSelectAnotherWalletForReceive';
@@ -18,6 +18,7 @@ import ModalConfirmToSendEth from './src/modals/modalConfirmToSendEth';
 import ModalSuccess from './src/modals/modalSuccess';
 import ModalFail from './src/modals/modalFail';
 import ModalCopyAddressToClipboard from './src/modals/modalCopyAddressToClipboard';
+import ModalQrCodeScaner from './src/modals/modalQrCodeScaner';
 
 
 export default class App extends React.Component {
@@ -36,6 +37,7 @@ export default class App extends React.Component {
                     <ModalConfirmToSendBlc />
                     <ModalConfirmToSendEth />
                     <ModalCopyAddressToClipboard />
+                    <ModalQrCodeScaner />
                     <ModalSuccess />
                     <ModalFail />                    
                 </PersistGate>

@@ -8,6 +8,7 @@ import ActionCreator from './../../actions';
 import WalletAddressWithNickNameForSend from './../../components/walletAddressWithNickNameForSend';
 import SelectAnotherWalletIcon from './../../components/selectAnotherWalletIcon';
 import PropTypes from 'prop-types';
+import { Permissions } from 'expo';
 
 
 class BlcSendScreen extends Component{
@@ -61,6 +62,10 @@ class BlcSendScreen extends Component{
                 </View>
                 <View>
                     <Button
+                        onPress={this.handelPressQrcord}
+                        title="qrcord"
+                    />
+                    <Button
                         onPress={this.handelPressPaste}
                         title="paste"
                     />
@@ -72,6 +77,12 @@ class BlcSendScreen extends Component{
                 </View>
             </View>
         );
+    }
+    handelPressQrcord = async () => {      
+        const { status } = await Permissions.askAsync(Permissions.CAMERA);
+        if (status === 'granted') {
+            this.props.showModalQrCodeScaner();
+        }        
     }
 
     handelPressSend = () => {
@@ -120,6 +131,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        showModalQrCodeScaner: () => {
+            dispatch(ActionCreator.showModalQrCodeScaner());
+        },
         showModalConfirmToSendBlc: () => {
             dispatch(ActionCreator.showModalConfirmToSendBlc());
         },

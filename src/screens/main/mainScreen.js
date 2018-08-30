@@ -38,7 +38,7 @@ const MainScreenTabNavigator = createBottomTabNavigator({
         },
         settingsTab:{
             screen:settingsScreen
-        }
+        },    
     }, 
     {
         animationEnabled: true,
