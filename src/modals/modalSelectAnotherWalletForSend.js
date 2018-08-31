@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         walletList: state.wallet.walletList,
-        walletForSend: state.wallet.walletForSend,
+        walletForSend: state.walletTemp.walletForSend,
         visibleModalSelectAnotherWalletForSend: state.modal.visibleModalSelectAnotherWalletForSend,        
     };
 }

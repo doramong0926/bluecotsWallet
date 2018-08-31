@@ -92,9 +92,9 @@ class ModalConfirmToSendBlc extends Component {
 function mapStateToProps(state) {
     return {
         visibleModalConfirmToSendBlc: state.modal.visibleModalConfirmToSendBlc,
-        addressToSendBlc: state.wallet.addressToSendBlc,
-        amountToSendBlc: state.wallet.amountToSendBlc,
-        walletForSend: state.wallet.walletForSend,
+        addressToSendBlc: state.walletTemp.addressToSendBlc,
+        amountToSendBlc: state.walletTemp.amountToSendBlc,
+        walletForSend: state.walletTemp.walletForSend,
     };
 }
 

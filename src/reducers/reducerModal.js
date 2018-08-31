@@ -16,6 +16,9 @@ const initialState = {
     visibleModalConfirmToSendEth: false,
     visibleModalCopyAddressToClipboard: false,
     visibleModalQrCodeScaner: false,
+    visibleModalInfomation: false,
+    modalInfomationText: {title: '', text: ''},    
+    tokenNameForQrCode: '',
 };  
  
 export default (state = initialState, action) => {
@@ -150,6 +153,26 @@ export default (state = initialState, action) => {
                 visibleModalQrCodeScaner: false
             });
 
+        case actionTypes.SHOW_MODAL_INFOMATION:
+            return Object.assign({}, state, {
+                visibleModalInfomation: true
+            });
+
+        case actionTypes.HIDE_MODAL_INFOMATION:
+            return Object.assign({}, state, {
+                visibleModalInfomation: false
+            });
+
+        case actionTypes.SET_MODAL_INFOMATION:
+            return Object.assign({}, state, {
+                modalInfomationText: action.payload,
+            });
+
+        case actionTypes.SET_TOKEN_NAME_FOR_QR_CODE:
+            return Object.assign({}, state, {
+                tokenNameForQrCode: action.payload,
+            });
+            
         default:
             return state;
     }

@@ -13,17 +13,8 @@ const initialState = {
         },
     ],
     defaultWallet: defaultWallet,
-    walletForSend: defaultWallet,
-    walletForReceive: defaultWallet,
     ethBalance: 0,
     blcBalance: 0,
-    ethBalanceForSend: 0,
-    blcBalanceForSend: 0,
-    addressToSendBlc: '',
-    amountToSendBlc: '',
-    addressToSendEth: '',
-    amountToSendEth: '',
-    copyAddressToClipboard: '',
 };  
 
 export default (state = initialState, action) => {
@@ -48,16 +39,6 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 defaultWallet: '',
             });
-
-        case actionTypes.SET_WALLET_FOR_SEND:
-            return Object.assign({}, state, {
-                walletForSend: action.payload,
-            });
-
-        case actionTypes.SET_WALLET_FOR_RECEIVE:
-            return Object.assign({}, state, {
-                walletForReceive: action.payload,
-            });
         
         case actionTypes.SET_ETH_BALANCE:
             return Object.assign({}, state, {
@@ -67,41 +48,6 @@ export default (state = initialState, action) => {
         case actionTypes.SET_BLC_BALANCE:
             return Object.assign({}, state, {
                 blcBalance: action.payload,
-            });
-
-        case actionTypes.SET_ETH_BALANCE_FOR_SEND:
-            return Object.assign({}, state, {
-                ethBalanceForSend: action.payload,
-            });
-
-        case actionTypes.SET_BLC_BALANCE_FOR_SEND:
-            return Object.assign({}, state, {
-                blcBalanceForSend: action.payload,
-            });
-
-        case actionTypes.SET_ADDRESS_TO_SEND_BLC:
-            return Object.assign({}, state, {
-                addressToSendBlc: action.payload,
-            });
-
-        case actionTypes.SET_AMOUNT_TO_SEND_BLC:
-            return Object.assign({}, state, {
-                amountToSendBlc: action.payload,
-            });
-
-        case actionTypes.SET_ADDRESS_TO_SEND_ETH:
-            return Object.assign({}, state, {
-                addressToSendEth: action.payload,
-            });
-
-        case actionTypes.SET_AMOUNT_TO_SEND_ETH:
-            return Object.assign({}, state, {
-                amountToSendEth: action.payload,
-            });
-
-        case actionTypes.SET_COPY_ADDRESS_TO_CLIPBOARD:
-            return Object.assign({}, state, {
-                copyAddressToClipboard: action.payload,
             });
 
         default:

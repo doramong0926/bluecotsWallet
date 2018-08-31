@@ -19,6 +19,7 @@ import ModalSuccess from './src/modals/modalSuccess';
 import ModalFail from './src/modals/modalFail';
 import ModalCopyAddressToClipboard from './src/modals/modalCopyAddressToClipboard';
 import ModalQrCodeScaner from './src/modals/modalQrCodeScaner';
+import ModalInfomation from './src/modals/modalInfomation';
 
 
 export default class App extends React.Component {
@@ -39,7 +40,8 @@ export default class App extends React.Component {
                     <ModalCopyAddressToClipboard />
                     <ModalQrCodeScaner />
                     <ModalSuccess />
-                    <ModalFail />                    
+                    <ModalFail /> 
+                    <ModalInfomation />                   
                 </PersistGate>
             </Provider>    
         );

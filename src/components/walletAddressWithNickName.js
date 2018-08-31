@@ -2,12 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
 class walletAddressWithNickName extends Component {
-    constructor(props, context) {
-        super(props, context);
-    }
-
     static propTypes = {
         defaultWallet: PropTypes.shape({
             walletAddress: PropTypes.string.isRequired,
@@ -23,7 +18,7 @@ class walletAddressWithNickName extends Component {
     renderAddressWithnickName = () => {
         if (this.props.defaultWallet.walletAddress) {
             return (
-                <View>
+                <View style={styles.container}>
                     <Text style={styles.nickName}>{this.props.defaultWallet.nickName}</Text>
                     <Text style={styles.address}>{this.props.defaultWallet.walletAddress}</Text>
                 </View>
@@ -31,7 +26,7 @@ class walletAddressWithNickName extends Component {
         }
         else {
             return (
-                <View>
+                <View style={styles.container}>
                     <Text style={styles.address}>Wallet address is not exist. Please add wallet first.</Text>
                 </View>
             )
@@ -40,15 +35,24 @@ class walletAddressWithNickName extends Component {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 10,
+        padding: 5,
+        margin: 5,
+        backgroundColor: "#347B98",
+    },
     nickName: {
-        fontSize: 15,
-        fontWeight: 'bold',
-        color: 'black',
+        fontSize: 14,
+        color: 'white',
+        textAlign: 'center',
     },
     address: {
-        fontSize: 12,
+        fontSize: 14,
         fontWeight: 'bold',
-        color: 'black',
+        color: 'white',
+        textAlign: 'center',
     },
 })
 

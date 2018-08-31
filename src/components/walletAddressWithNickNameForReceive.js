@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import ActionCreator from './../actions';
 
 class WalletAddressWithNickNameForReceive extends Component {
     constructor(props, context) {
@@ -11,9 +12,15 @@ class WalletAddressWithNickNameForReceive extends Component {
     static propTypes = {
         walletForReceive: PropTypes.shape({
             walletAddress: PropTypes.string.isRequired,
+        }).isRequired,        
+        defaultWallet: PropTypes.shape({
+            walletAddress: PropTypes.string.isRequired,
         }).isRequired,
     };
 
+    componentWillMount() {
+        this.props.setWalletForReceive(this.props.defaultWallet);
+    }
     render() {
         return (
             this.renderAddressWithnickName()
@@ -54,12 +61,16 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        walletForReceive: state.wallet.walletForReceive,
+        walletForReceive: state.walletTemp.walletForReceive,
+        defaultWallet: state.wallet.defaultWallet,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {        
+        setWalletForReceive: (wallet) => {
+            dispatch(ActionCreator.setWalletForReceive(wallet));
+        },
     };
 }
   

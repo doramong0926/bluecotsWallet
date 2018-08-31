@@ -155,3 +155,29 @@ export function hideModalQrCodeScaner() {
       type: actionTypes.HIDE_MODAL_QR_CODE_SCANER
     };
 }
+
+export function showModalInfomation() {
+    return {
+      type: actionTypes.SHOW_MODAL_INFOMATION
+    };
+}
+
+export function hideModalInfomation() {
+    return {
+      type: actionTypes.HIDE_MODAL_INFOMATION
+    };
+}
+
+export function setModalInfomation(infomation) {
+  return {
+    type: actionTypes.SET_MODAL_INFOMATION,
+    payload: infomation
+  };
+}
+
+export function setTokenNameForQrCode(name) {
+  return {
+      type: actionTypes.SET_TOKEN_NAME_FOR_QR_CODE,
+      payload: name
+  };
+}

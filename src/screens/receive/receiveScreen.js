@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import WalletAddressWithNickNameForReceive from './../../components/walletAddressWithNickNameForReceive';
 import SelectAnotherWalletIcon from './../../components/selectAnotherWalletIcon';
 import ActionCreator from './../../actions';
+import PropTypes from 'prop-types';
 //import RNFS from "react-native-fs"
 
 class receiveScreen extends Component{  
@@ -17,8 +18,18 @@ class receiveScreen extends Component{
             <Ionicons name="md-filing" size={30} color={tintColor} />
         )
     };  
-    componentDidMount() {
-        ;
+
+    static propTypes = {
+        walletForReceive: PropTypes.shape({
+            walletAddress: PropTypes.string.isRequired,
+        }).isRequired,        
+        defaultWallet: PropTypes.shape({
+            walletAddress: PropTypes.string.isRequired,
+        }).isRequired,
+    };
+
+    componentWillMount() {
+        this.props.setWalletForReceive(this.props.defaultWallet);
     }
 
     render(){
@@ -98,7 +109,8 @@ class receiveScreen extends Component{
 
 function mapStateToProps(state) {
     return {
-        walletForReceive: state.wallet.walletForReceive,
+        walletForReceive: state.walletTemp.walletForReceive,
+        defaultWallet: state.wallet.defaultWallet,
     };
 }
 
@@ -109,6 +121,9 @@ function mapDispatchToProps(dispatch) {
         },
         setCopyAddressToClipboard: (address) => {
             dispatch(ActionCreator.setCopyAddressToClipboard(address));
+        },
+        setWalletForReceive: (wallet) => {
+            dispatch(ActionCreator.setWalletForReceive(wallet));
         },
     };
 }

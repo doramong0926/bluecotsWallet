@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
+import { Header } from 'react-native-elements'
 import WalletBalanceErc20 from './../../components/walletBalanceErc20';
 
 class WalletScreen extends Component{
@@ -15,8 +15,14 @@ class WalletScreen extends Component{
     };
 
     render() {
-        return (
+        return (            
             <View style={styles.container}>  
+                <Header
+                    backgroundColor={'#092834'}
+                    //leftComponent={{ icon: 'menu', color: '#fff' }}
+                    centerComponent={{ text: 'BlueCots Wallet', style: { fontWeight: 'bold', color: '#fff' } }}
+                    //rightComponent={{ icon: 'home', color: '#fff' }}
+                />
                 <View style={styles.balanceContainer}>
                     <WalletBalanceErc20 />
                 </View>
@@ -34,14 +40,13 @@ export default WalletScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#E4F1F6',
     },
     balanceContainer: {
-        flex: 5,
-        backgroundColor: 'darkcyan',
-        padding: 20,
+        backgroundColor: '#67AFCB',
     },
     gifticonContainer: {
-        flex: 6,
+        flex: 1,
         alignItems: 'center',
         justifyContent : 'center',
     },

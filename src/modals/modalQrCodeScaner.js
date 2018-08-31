@@ -55,9 +55,16 @@ class ModalQrCodeScaner extends Component {
             this.setState({
                 lastScannedData: result.data,
             });
-
-            this.props.setAddressToSendBlc(result.data);
+            if (this.props.tokenNameForQrCode === 'BLC') {
+                this.props.setAddressToSendBlc(result.data);
+            }
+            else if (this.props.tokenNameForQrCode === 'ETH') {
+                this.props.setAddressToSendEth(result.data);
+            }            
             this.props.hideModalQrCodeScaner();
+            const infomation = {title: 'address Scan', text: result.data};
+            this.props.setModalInfomation(infomation);
+            this.props.showModalInfomation();
 /*
             Alert.alert(
                 'Address',
@@ -181,7 +188,8 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         visibleModalQrCodeScaner: state.modal.visibleModalQrCodeScaner,
-        addressToSendBlc: state.wallet.addressToSendBlc,
+        tokenNameForQrCode: state.modal.tokenNameForQrCode,
+        addressToSendBlc: state.walletTemp.addressToSendBlc,
     };
 }
 
@@ -195,6 +203,15 @@ function mapDispatchToProps(dispatch) {
         },
         setAddressToSendBlc: (address) => {
             dispatch(ActionCreator.setAddressToSendBlc(address));
+        },
+        setAddressToSendEth: (address) => {
+            dispatch(ActionCreator.setAddressToSendEth(address));
+        },
+        showModalInfomation: () => {
+            dispatch(ActionCreator.showModalInfomation());
+        },
+        setModalInfomation: (infomation) => {
+            dispatch(ActionCreator.setModalInfomation(infomation));
         },
     };
 }

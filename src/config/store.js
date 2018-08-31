@@ -33,7 +33,7 @@ const persistConfig = {
     version: 1,
     storage,
     //migrate: createMigrate(migrations, { debug: false }),
-    blacklist: ['modal']
+    blacklist: ['modal', 'walletTemp']
 };
 
 const store = createStore(
