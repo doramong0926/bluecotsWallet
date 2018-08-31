@@ -172,9 +172,9 @@ class EthSendScreen extends Component{
         if (walletAddress) {
             const currentETHBalance = await WalletUtils.getBalance({
                 walletAddress: walletAddress,
-                contractAddress: '',
-                symbol: 'ETH', 
-                decimals: 0, 
+                contractAddress:'', 
+                symbol:'ETH', 
+                decimals:0
             });            
             if (currentETHBalance !== undefined) {
                 if (this.props.ethBalanceForSend !== currentETHBalance)
