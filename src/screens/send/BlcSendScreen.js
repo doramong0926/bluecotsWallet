@@ -133,6 +133,8 @@ class BlcSendScreen extends Component{
             return <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
         } else if (!this.addressIsValid(this.props.addressToSendBlc)) {
             return <FormValidationMessage>{'address is wrong.'}</FormValidationMessage>
+        } else {
+            return  <FormValidationMessage labelStyle={{color:'#79C753'}}> {'address is valid.'} </FormValidationMessage>
         }
     }
 
@@ -144,6 +146,8 @@ class BlcSendScreen extends Component{
             return <FormValidationMessage>{'amount is wrong.'}</FormValidationMessage>
         } else if (!this.amountIsEnough(this.props.amountToSendBlc)) {
             return <FormValidationMessage>{'BLC is not enough.'}</FormValidationMessage>
+        } else {
+            return <FormValidationMessage labelStyle={{color:'#79C753'}}>{'amount is valid.'}</FormValidationMessage>
         }
     }
 

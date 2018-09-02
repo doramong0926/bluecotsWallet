@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ActionCreator from './../actions';
@@ -30,10 +30,15 @@ class WalletAddressWithNickNameForReceive extends Component {
     renderAddressWithnickName = () => {
         if (this.props.walletForReceive.walletAddress) {
             return (
-                <View>
-                    <Text style={styles.nickName}>{this.props.walletForReceive.nickName}</Text>
-                    <Text style={styles.address}>{this.props.walletForReceive.walletAddress}</Text>
-                </View>
+                <TouchableHighlight onPress={() => this.chageWallet()} underlayColor="gray">
+                    <View style={styles.container}>
+                        <Text style={styles.nickName}>{this.props.walletForReceive.nickName}</Text>
+                        <Text style={styles.address}>{this.props.walletForReceive.walletAddress}</Text>
+                        <View style={{paddingTop:5}}>
+                                <Text style={{textAlign: 'center', color:'#BCBCBE'}}>Click to change wallet.</Text>
+                        </View>
+                    </View>
+                </TouchableHighlight>
             );
         }
         else {
@@ -44,18 +49,31 @@ class WalletAddressWithNickNameForReceive extends Component {
             )
         }
     };  
+    chageWallet = () => {
+        this.props.showModalSelectAnotherWalletForReceive(); 
+    }
 }
 
 const styles = StyleSheet.create({
+    container: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#67AFCB',
+        margin: 5,        
+        padding: 5,
+        borderRadius: 10,
+    },
     nickName: {
         fontSize: 15,
         fontWeight: 'bold',
         color: 'black',
+        textAlign: 'center',
     },
     address: {
         fontSize: 12,
         fontWeight: 'bold',
         color: 'black',
+        textAlign: 'center',
     },
 })
 
@@ -70,6 +88,9 @@ function mapDispatchToProps(dispatch) {
     return {        
         setWalletForReceive: (wallet) => {
             dispatch(ActionCreator.setWalletForReceive(wallet));
+        },
+        showModalSelectAnotherWalletForReceive: () => {
+            dispatch(ActionCreator.showModalSelectAnotherWalletForReceive());
         },
     };
 }

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Clipboard, CameraRoll , ToastAndroid } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import QRCode from 'react-native-qrcode-svg';
-import { Button } from 'react-native-elements'
+import { Button, Header } from 'react-native-elements'
 import { connect } from 'react-redux';
 import WalletAddressWithNickNameForReceive from './../../components/walletAddressWithNickNameForReceive';
 import SelectAnotherWalletIcon from './../../components/selectAnotherWalletIcon';
@@ -34,31 +34,50 @@ class receiveScreen extends Component{
 
     render(){
         return (
-            <View style={style.container}>
-                <View style={{flex: 4, alignItems: 'center', justifyContent: 'center'}}>
-                    {this.renderQrCode()}
+            <View style={styles.container}>
+                <Header
+                    backgroundColor={'#092834'}
+                    //leftComponent={{ icon: 'menu', color: '#fff' }}
+                    centerComponent={{ text: 'Receive', style: { fontWeight: 'bold', color: '#fff' } }}
+                    //rightComponent={{ icon: 'home', color: '#fff' }}
+                />                
+                <View>
+                    <WalletAddressWithNickNameForReceive />
                 </View>
-                <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-                    <View style={{flex:9, alignItems: 'center', justifyContent: 'center'}}>
-                        <WalletAddressWithNickNameForReceive />
+                <View style={styles.container2}>
+                    <View style={styles.qrCode}>
+                        {this.renderQrCode()}
                     </View>
-                    <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
-                        <SelectAnotherWalletIcon ScreenType='receive' />
-                    </View>                    
-                </View>
-                <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-                    <Button
-                        onPress={this.handlePressCopy}
-                        title="Copy address"
-                    />
-                    <Button
-                        disabled={false}
-                        onPress={this.handlePressToSave}
-                        title="Save QR-code"
-                    />
-                </View>
-                <View style={{flex: 5, alignItems: 'center', justifyContent: 'center'}}>
-                    <Text> transaction history</Text>
+                    <View style={{flexDirection: 'row', justifyContent:'center', alignItems: 'flex-end'}}>                    
+                        <Button style={styles.button}
+                            onPress={this.handlePressCopy}
+                            icon={{name: 'copy', type: 'font-awesome'}}
+                            title="Copy address"
+                            buttonStyle={{
+                                backgroundColor: "#67AFCB",
+                                borderColor: "transparent", 
+                                borderRadius: 5
+                            }}
+                            containerViewStyle={{
+                                alignSelf: 'stretch',
+                                margin: 1,
+                            }}
+                        />
+                        <Button style={styles.button}
+                            onPress={this.handlePressToSave}
+                            icon={{name: 'save', type: 'font-awesome'}}
+                            title="Save QR-Code"
+                            buttonStyle={{
+                                backgroundColor: "#67AFCB",
+                                borderColor: "transparent", 
+                                borderRadius: 5
+                            }}
+                            containerViewStyle={{
+                                alignSelf: 'stretch',
+                                margin: 1,
+                            }}
+                        />
+                    </View>
                 </View>
             </View>  
         );        
@@ -69,7 +88,7 @@ class receiveScreen extends Component{
         {
             return (
                 <QRCode 
-                    size = {200} 
+                    size = {280} 
                     value={this.props.walletForReceive.walletAddress}
                     getRef={(c) => (this.svg = c)}
                 />
@@ -130,10 +149,20 @@ function mapDispatchToProps(dispatch) {
   
 export default connect(mapStateToProps, mapDispatchToProps)(receiveScreen);
  
-const style = StyleSheet.create({
-    container: {
+
+const styles = StyleSheet.create({
+    container: {        
         flex: 1,
+        backgroundColor: '#E4F1F6',   
+    },
+    container2: {                
+        alignItems: 'center',     
+    },
+    qrCode: {
+        backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
-    }
+        padding: 20,
+        margin: 10,
+    },
 })
