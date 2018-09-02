@@ -59,22 +59,6 @@ class EthSendScreen extends Component{
                     <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                         <View style={{flex:1}}>
                             <Button
-                                onPress={this.handelPressQrcord}
-                                icon={{name: 'qrcode', type: 'font-awesome'}}
-                                title="QR-Code"
-                                buttonStyle={{
-                                    backgroundColor: "#67AFCB",
-                                    borderColor: "transparent", 
-                                    borderRadius: 5
-                                }}
-                                containerViewStyle={{
-                                    // alignSelf: 'stretch',
-                                    // margin: 1,
-                                }}
-                            />
-                        </View>
-                        <View style={{flex:1}}>
-                            <Button
                                 onPress={this.handelPressPaste}
                                 icon={{name: 'copy', type: 'font-awesome'}}
                                 title="Paste"
@@ -89,6 +73,22 @@ class EthSendScreen extends Component{
                                 }}
                             />
                         </View>
+                        <View style={{flex:1}}>
+                            <Button
+                                onPress={this.handelPressQrcord}
+                                icon={{name: 'qrcode', type: 'font-awesome'}}
+                                title="QR-Code"
+                                buttonStyle={{
+                                    backgroundColor: "#67AFCB",
+                                    borderColor: "transparent", 
+                                    borderRadius: 5
+                                }}
+                                containerViewStyle={{
+                                    // alignSelf: 'stretch',
+                                    // margin: 1,
+                                }}
+                            />
+                        </View>                        
                         <View style={{flex:1}}>
                             <Button
                                 onPress={this.handelPressClear}

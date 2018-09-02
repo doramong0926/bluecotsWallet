@@ -3,7 +3,7 @@
 import actionTypes from './../actions/actionTypes';
 
 const initialState = {  
-    visibleModalCreateWallet: false,
+    visibleModalAddWallet: false,
     visibleModalDefaultWalletSettings: false,
     visibleModalRestoreWallet: false,
     visibleModalGenerateWallet: false,
@@ -17,20 +17,20 @@ const initialState = {
     visibleModalCopyAddressToClipboard: false,
     visibleModalQrCodeScaner: false,
     visibleModalInfomation: false,
-    modalInfomationText: {title: '', text: ''},    
+    modalInfomationText: {title: '', message1: '', message2: ''},    
     tokenNameForQrCode: '',
 };  
  
 export default (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.SHOW_MODAL_CREATE_WALLET:
+        case actionTypes.SHOW_MODAL_ADD_WALLET:
             return Object.assign({}, state, {
-                visibleCreateWalletModal: true
+                visibleModalAddWallet: true
             });
 
-        case actionTypes.HIDE_MODAL_CREATE_WALLET:
+        case actionTypes.HIDE_MODAL_ADD_WALLET:
             return Object.assign({}, state, {
-                visibleCreateWalletModal: false
+                visibleModalAddWallet: false
             });
 
         case actionTypes.SHOW_MODAL_DEFAULT_WALLET_SETTINGS:

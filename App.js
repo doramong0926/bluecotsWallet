@@ -6,7 +6,7 @@ import { createStackNavigator } from 'react-navigation';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './src/config/store';
 import mainScreen from './src/screens/main/mainScreen';
-import ModalCreateWallet from './src/modals/modalCreateWallet';
+import ModalAddWallet from './src/modals/modalAddWallet';
 import ModalSelectAnotherWalletForSend from './src/modals/modalSelectAnotherWalletForSend';
 import ModalSelectAnotherWalletForReceive from './src/modals/modalSelectAnotherWalletForReceive';
 import ModalDefaultWalletSettings from './src/modals/modalDefaultWalletSettings';
@@ -28,7 +28,7 @@ export default class App extends React.Component {
             <Provider store={store}>
                 <PersistGate persistor={persistor}>
                     <AppStackNavigator />                    
-                    <ModalCreateWallet />
+                    <ModalAddWallet />
                     <ModalDefaultWalletSettings />
                     <ModalGenerateWallet />
                     <ModalRestoreWallet /> 

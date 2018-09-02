@@ -1,11 +1,10 @@
-
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import ActionCreator from './../actions';
 import { connect } from 'react-redux';
 
-class CreateWalletIcon extends Component {
+class MainWalletMenu extends Component {
     constructor(props, context) {
         super(props, context);
     }
@@ -18,10 +17,6 @@ class CreateWalletIcon extends Component {
                     <Text style={styles.iconText}>  Add </Text>
                 </View>
                 <View style={styles.iconView}>
-                    <Ionicons name="ios-swap-outline" onPress={this.handlePressChange} size={30} color="black" />
-                    <Text style={styles.iconText}> Change </Text>
-                </View>
-                <View style={styles.iconView}>
                     <Ionicons name="ios-settings-outline" onPress={this.handlePressSettings} size={30} color="black" />
                     <Text style={styles.iconText}> Settings </Text>
                 </View> 
@@ -30,11 +25,7 @@ class CreateWalletIcon extends Component {
     }
 
     handlePressAdd = () => {
-        this.props.showModalCreateWallet();
-    }
-
-    handlePressChange = () => {
-        this.props.showModalChangeDefaultWallet(); 
+        this.props.showModalAddWallet();
     }
 
     handlePressSettings = () => {
@@ -50,8 +41,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        showModalCreateWallet: () => {
-            dispatch(ActionCreator.showModalCreateWallet());
+        showModalAddWallet: () => {
+            dispatch(ActionCreator.showModalAddWallet());
         },
         showModalChangeDefaultWallet: () => {
             dispatch(ActionCreator.showModalChangeDefaultWallet());
@@ -80,4 +71,4 @@ const styles = StyleSheet.create({
     }
 });
   
-export default connect(mapStateToProps, mapDispatchToProps)(CreateWalletIcon);
+export default connect(mapStateToProps, mapDispatchToProps)(MainWalletMenu);

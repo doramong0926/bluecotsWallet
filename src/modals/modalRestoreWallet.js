@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
-import { View, Clipboard, Alert } from 'react-native';
-import { FormLabel, FormInput, Button } from 'react-native-elements';
+import { View, Text, Clipboard, StyleSheet } from 'react-native';
+import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements';
 import Modal from 'react-native-simple-modal';
 import EthUtil from 'ethereumjs-util';
 import EthereumJsWallet from 'ethereumjs-wallet';
@@ -45,7 +45,7 @@ class ModalRestoreWallet extends Component {
                     justifyContent: "center"
                 }}
                 modalStyle={{
-                    borderRadius: 2,
+                    borderRadius: 10,
                     margin: 20,
                     padding: 10,
                     backgroundColor: "white"
@@ -55,30 +55,96 @@ class ModalRestoreWallet extends Component {
                     flex: 1
                 }}
             >
+                <View style={styles.heaerContainer}>
+                    <Text style={styles.headerText}>Add wallet - RESTORE</Text>
+                </View>
                 <View>
-                    <View>
-                        <FormLabel>nickName</FormLabel>
-                        <FormInput value={this.state.nickName} onChangeText={(value) => this.setState({nickName: value})}/>
-                    </View>
-                    <View>
-                        <FormLabel>PrivateKey</FormLabel>
-                        <FormInput value={this.state.privateKey} onChangeText={(value) => this.setState({privateKey: value})}/>
-                    </View>
-                    <View>
+                    <FormLabel>Nickname</FormLabel>
+                    <FormInput containerStyle={styles.inputContainer} value={this.state.nickName} onChangeText={(value) => this.setState({nickName: value})}/>
+                    {this.nickNameValidationMsg()}
+                </View>
+                <View>
+                    <FormLabel>PrivateKey</FormLabel>
+                    <FormInput containerStyle={styles.inputContainer} editable={false} value={this.state.privateKey} onChangeText={(value) => this.setState({privateKey: value})}/>
+                    {this.privateKeyValidationMsg()}
+                </View>
+                <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                    <View style={{flex:1}}>
                         <Button
                             onPress={this.readPrivateKeyFromClipboard}
-                            title="paste"
-                        />
-                        <Button
-                            disabled={!this.isValidRestoreButton()}
-                            onPress={this.restoreWallet}
-                            title="restore"
+                            icon={{name: 'copy', type: 'font-awesome'}}
+                            title="Paste"
+                            buttonStyle={{
+                                backgroundColor: "#67AFCB",
+                                borderColor: "transparent", 
+                                borderRadius: 5
+                            }}
+                            containerViewStyle={{
+                                // alignSelf: 'stretch',
+                                // margin: 1,
+                            }}
                         />
                     </View>
+                    <View style={{flex:1}}>
+                        <Button
+                            onPress={this.readPrivateKeyFromFile}
+                            icon={{name: 'file-text-o', type: 'font-awesome'}}
+                            title="Select"
+                            buttonStyle={{
+                                backgroundColor: "#67AFCB",
+                                borderColor: "transparent", 
+                                borderRadius: 5
+                            }}
+                            containerViewStyle={{
+                                // alignSelf: 'stretch',
+                                // margin: 1,
+                            }}
+                        />
+                    </View>
+                </View>
+                <View style={styles.restoreButton}>
+                    <Button
+                        disabled={!this.isValidRestoreButton()}
+                        onPress={this.restoreWallet}
+                        title="RESTORE"
+                        buttonStyle={{
+                            backgroundColor: "#BD3D3A",
+                            borderColor: "transparent", 
+                            borderRadius: 5
+                        }}
+                        containerViewStyle={{
+                            // alignSelf: 'stretch',
+                            // margin: 20,
+                        }}
+                    />
                 </View>
             </Modal>
         );
     }
+
+    nickNameValidationMsg = () =>
+    {
+        if (this.isEmptString(this.state.nickName)) {
+            return <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
+        } else if (this.isUsedNickName(this.state.nickName)){
+            return <FormValidationMessage>{'Nickname(' + this.state.nickName + ') already be used.'}</FormValidationMessage>
+        } else {
+            return <FormValidationMessage labelStyle={{color:'#79C753'}}>{'Nickname is valid.'}</FormValidationMessage>
+        }
+    }
+
+    privateKeyValidationMsg = () =>
+    {
+        if (this.isEmptString(this.state.privateKey)) {
+            return <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
+        } else if (!this.isValidPrivateKey(this.state.privateKey)){
+            return <FormValidationMessage>{'PrivateKey is not valid'}</FormValidationMessage>
+        } else if (this.isUsedPrivateKey(this.state.privateKey)){
+            return <FormValidationMessage>{'PrivateKey already be used.'}</FormValidationMessage>
+        } else {
+            return <FormValidationMessage labelStyle={{color:'#79C753'}}>{'PrivateKey is valid.'}</FormValidationMessage>
+        }
+    }    
 
     closeModal = () => {
         this.setState({
@@ -96,70 +162,30 @@ class ModalRestoreWallet extends Component {
             Buffer.from(privateKey, 'hex'),
         );
 
-        if (!WalletUtils.addressIsValid(walletFromEth.getAddressString())) {
-            Alert.alert(
-                'Fail to restore wallet from PrivateKey',
-                'please check your privateKey',
-                [
-                    {text: 'OK', onPress: () => console.log('wallet address is wrong : '+ walletFromEth.getAddressString())},
-                ]
-            );
-        } else {
-            const wallet = {
-                id : uuid.v4(),
-                nickName: nickName,
-                name: 'Bluecots',
-                symbol: 'BLC',
-                walletAddress: walletFromEth.getAddressString(),
-                privateKey: walletFromEth.getPrivateKey().toString('hex') 
-            }
-            const registedWalletList1 = this.props.walletList
-                .filter(wallet => wallet.symbol === 'BLC')
-                .map(wallet => wallet.walletAddress);
-
-            const registedWalletList2 = this.props.walletList
-                .filter(wallet => wallet.symbol === 'BLC')
-                .map(wallet => wallet.nickName);
-            
-            if (registedWalletList1.includes(walletFromEth.getAddressString())) {
-                Alert.alert(
-                    'This address is already registed',
-                    wallet.walletAddress,
-                    [
-                        {
-                            text: 'OK', onPress: () => {}
-                        }
-                    ]
-                );
-            } else if (registedWalletList2.includes(nickName)) {
-                Alert.alert(
-                    'This nickName is already registed',
-                    wallet.nickName,
-                    [
-                        {
-                            text: 'OK', onPress: () => {}
-                        }
-                    ]
-                );
-            } else {
-                this.props.addWallet(wallet);
-                this.props.setDefaultWallet(wallet);   
-                this.props.setWalletForSend(wallet);
-                this.props.setWalletForReceive(wallet);
-                setTimeout(() => {
-                    this.updateWalletBalance(this.props.defaultWallet.walletAddress);
-                    Alert.alert(
-                        'Success to restore wallet from PrivateKey',
-                        this.props.defaultWallet.walletAddress,
-                        [
-                            {
-                                text: 'OK', onPress: () => {}
-                            }
-                        ]
-                    );
-                },);    
-            }
+        const wallet = {
+            id : uuid.v4(),
+            nickName: nickName,
+            name: 'Bluecots',
+            symbol: 'BLC',
+            walletAddress: walletFromEth.getAddressString(),
+            privateKey: walletFromEth.getPrivateKey().toString('hex') 
         }
+        
+        this.props.addWallet(wallet);
+        this.props.setDefaultWallet(wallet);   
+        this.props.setWalletForSend(wallet);
+        this.props.setWalletForReceive(wallet);
+
+        setTimeout(() => {
+            this.updateWalletBalance(this.props.defaultWallet.walletAddress);
+            const infomation = {
+                title: 'INFOMATION', 
+                message1: 'Success to restore wallet', 
+                message2: this.props.defaultWallet.walletAddress
+            };
+            this.props.setModalInfomation(infomation);
+            this.props.showModalInfomation();
+        },);    
         
         this.setState({
             nickName: '',
@@ -201,10 +227,14 @@ class ModalRestoreWallet extends Component {
         this.setState({ privateKey }); 
     };
 
+    readPrivateKeyFromFile = async () => {   
+        ;
+    };
+
     isValidRestoreButton = () => {
-        if (this.isValidPrivateKey(this.state.privateKey))
+        if (this.isValidPrivateKey(this.state.privateKey) && !this.isUsedPrivateKey(this.state.privateKey))
         {
-            if (!this.isEmptString(this.state.nickName))
+            if (!this.isEmptString(this.state.nickName) && !this.isUsedNickName(this.state.nickName))
             {
                 return true;
             }
@@ -215,7 +245,14 @@ class ModalRestoreWallet extends Component {
     isValidPrivateKey = (h) => {
         try {
             if (EthUtil.isValidPrivate(Buffer.from(h, 'hex'))) {
-                return true;
+                const walletFromEth = EthereumJsWallet.fromPrivateKey(
+                    Buffer.from(h, 'hex'),
+                );
+                if (WalletUtils.addressIsValid(walletFromEth.getAddressString())) {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }
@@ -233,6 +270,30 @@ class ModalRestoreWallet extends Component {
         }
     }
 
+    isUsedNickName = (nickName) => {
+        const registedWalletList = this.props.walletList
+            .filter(wallet => wallet.symbol === 'BLC')
+            .map(wallet => wallet.nickName);
+        if (registedWalletList.includes(nickName)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    isUsedPrivateKey = (privateKey) => {
+        const walletFromEth = EthereumJsWallet.fromPrivateKey(
+            Buffer.from(privateKey, 'hex'),
+        );
+        const registedWalletList = this.props.walletList
+            .filter(wallet => wallet.symbol === 'BLC')
+            .map(wallet => wallet.walletAddress); 
+        if (registedWalletList.includes(walletFromEth.getAddressString())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 function mapStateToProps(state) {
@@ -276,6 +337,34 @@ function mapDispatchToProps(dispatch) {
             dispatch(ActionCreator.setBlcBalanceForSend(balance));
         },
     };
-}
-  
+}  
+
+const styles = StyleSheet.create({
+    heaerContainer: {
+        backgroundColor: '#67AFCB',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+        borderRadius: 10,
+    },
+    headerText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: 'black',
+        textAlign: 'center'
+    },
+    menuText: {
+        marginTop: 5, 
+        textAlign: 'center'
+    },
+    inputContainer: {
+        // borderColor: '#67AFCB',
+        // borderWidth: 1,
+        // paddingHorizontal: 10,
+    },
+    restoreButton: {
+        marginTop: 15, 
+    },
+})
+
 export default connect(mapStateToProps, mapDispatchToProps)(ModalRestoreWallet);

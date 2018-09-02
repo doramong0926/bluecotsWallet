@@ -62,34 +62,13 @@ class ModalQrCodeScaner extends Component {
                 this.props.setAddressToSendEth(result.data);
             }            
             this.props.hideModalQrCodeScaner();
-            const infomation = {title: 'address Scan', text: result.data};
+            const infomation = {
+                title:'INFOMATION',
+                message1: 'address from QR-Code scaner', 
+                message2: result.data
+            };
             this.props.setModalInfomation(infomation);
             this.props.showModalInfomation();
-/*
-            Alert.alert(
-                'Address',
-                result.data,
-                [
-                    {
-                        text: 'Select',
-                        onPress: () => {
-                            this.props.setAddressToSendBlc(result.data);
-                            this.props.hideModalQrCodeScaner();
-                        }
-                    },
-                    { 
-                        text: 'Try again', 
-                        onPress: () => {
-                            this.setState({
-                                lastScannedData: null,
-                            });
-                            this.props.showModalQrCodeScaner();
-                        } 
-                    },
-                ],
-                { cancellable: false }
-            );
-*/            
         }
     };
 
@@ -110,7 +89,7 @@ class ModalQrCodeScaner extends Component {
                     justifyContent: "center"
                 }}
                 modalStyle={{
-                    borderRadius: 2,
+                    borderRadius: 10,
                     margin: 20,
                     padding: 10,
                     backgroundColor: "white",
@@ -122,7 +101,10 @@ class ModalQrCodeScaner extends Component {
                     flex: 1
                 }}
             >
-                <View style={styles.container}>   
+                <View style={styles.heaerContainer}>
+                    <Text style={styles.headerText}>QR-Code Scanner</Text>
+                </View>
+                <View style={styles.qrCodeContainer}>   
                     {this.state.hasCameraPermission === null
                         ? <Text>Requesting for camera permission</Text>
                         : this.state.hasCameraPermission === false
@@ -139,6 +121,24 @@ class ModalQrCodeScaner extends Component {
                                 />
                     }
                 </View>
+                <View style={{marginVertical: 5}}>
+                    <Text style={{textAlign: 'center'}}> Please focus on qr-code.</Text>
+                </View>
+                <View style={styles.bottomContainer}>                    
+                    <Button
+                        onPress={this.closeModal}
+                        title="Close"
+                        buttonStyle={{
+                            backgroundColor: "#BD3D3A",
+                            borderColor: "transparent", 
+                            borderRadius: 5
+                        }}
+                        containerViewStyle={{
+                            // alignSelf: 'flex-end',
+                            // margin: 20,
+                        }}
+                    />
+                </View>
             </Modal>
         );
     }  
@@ -152,36 +152,29 @@ class ModalQrCodeScaner extends Component {
 }
     
 const styles = StyleSheet.create({
-    container: {
+    heaerContainer: {
+        backgroundColor: '#67AFCB',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+        borderRadius: 10,
+    },
+    headerText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: 'black',
+        textAlign: 'center'
+    },
+    qrCodeContainer: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#000',
+        marginTop: 10,
+        marginBottom: 5,
     },
-    bottomBar: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        padding: 15,
-        flexDirection: 'row',
-    },
-    url: {
-        flex: 1,
-    },
-    urlText: {
-        color: '#fff',
-        fontSize: 20,
-    },
-    cancelButton: {
-        marginLeft: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    cancelButtonText: {
-        color: 'rgba(255,255,255,0.8)',
-        fontSize: 18,
+    bottomContainer: {
+        marginVertical: 5,
     },
 });
 

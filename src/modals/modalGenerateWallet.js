@@ -112,17 +112,17 @@ class ModalGenerateWallet extends Component {
         this.props.addWallet(wallet);
         this.props.setDefaultWallet(wallet);
         this.props.setWalletForSend(wallet);
-        this.props.setWalletForReceive(wallet);
-
-        const infomation = {
-            title: 'Success to generate wallet', 
-            text: this.props.defaultWallet.walletAddress
-        };
-        this.props.setModalInfomation(infomation);
-        this.props.showModalInfomation();
+        this.props.setWalletForReceive(wallet);        
 
         setTimeout(() => {
             this.updateWalletBalance(this.props.defaultWallet.walletAddress); 
+            const infomation = {
+                title: 'INFOMATION', 
+                message1: 'Success to generate wallet', 
+                message2: this.props.defaultWallet.walletAddress
+            };
+            this.props.setModalInfomation(infomation);
+            this.props.showModalInfomation();
         },);     
         this.setState({
             nickName: '',

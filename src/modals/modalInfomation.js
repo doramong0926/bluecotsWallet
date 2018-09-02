@@ -41,25 +41,24 @@ class ModalInfomation extends Component {
                 <View style={styles.heaerContainer}>
                     <Text style={styles.headerText}> {this.props.modalInfomationText.title}</Text>
                 </View>
-                <View style={{alignItems: 'center', justifyContent: 'center'}}>  
-                    <View>  
-                        <Text style={styles.menuText}> {this.props.modalInfomationText.text} </Text>
-                    </View>
-                    <View style={styles.closeButton}>
-                        <Button
-                            onPress={this.handlePressClose}
-                            title="Close"
-                            buttonStyle={{
-                                backgroundColor: "#BD3D3A",
-                                borderColor: "transparent", 
-                                borderRadius: 5
-                            }}
-                            containerViewStyle={{
-                                // alignSelf: 'flex-end',
-                                // margin: 20,
-                            }}
-                        />
-                    </View>
+                <View style={styles.messageContainer}>  
+                    <Text style={styles.menuText}>{this.props.modalInfomationText.message1}</Text>                      
+                    <Text style={styles.menuText}>{this.props.modalInfomationText.message2}</Text>                      
+                </View>
+                <View style={styles.buttonContainer}>
+                    <Button
+                        onPress={this.handlePressClose}
+                        title="Close"
+                        buttonStyle={{
+                            backgroundColor: "#BD3D3A",
+                            borderColor: "transparent", 
+                            borderRadius: 5
+                        }}
+                        containerViewStyle={{
+                            // alignSelf: 'flex-end',
+                            // margin: 20,
+                        }}
+                    />
                 </View>
             </Modal>
         );
@@ -67,7 +66,7 @@ class ModalInfomation extends Component {
 
     handlePressClose = () => {
         this.props.hideModalInfomation();
-        const infomation = {title:'', text: ''};
+        const infomation = {title:'', message: ''};
         this.props.setModalInfomation(infomation);
     }
 }
@@ -108,16 +107,14 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     menuText: {
-        marginTop: 5, 
         textAlign: 'left'
     },
-    inputContainer: {
-        // borderColor: '#67AFCB',
-        // borderWidth: 1,
-        // paddingHorizontal: 10,
+    buttonContainer: {
+        marginVertical: 5,
     },
-    closeButton: {
-        marginTop: 5,
+    messageContainer: {
+        marginVertical : 10,
+        paddingHorizontal: 10,
     }
 })
   

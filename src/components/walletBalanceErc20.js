@@ -8,7 +8,7 @@ import ETH_ICON_IMAGE from './images/ethereum_40x40.png';
 import BLC_ICON_IMAGE from './images/bluecots_COIN_40x40.png';
 import TokenSymbolWithName from './tokenSymbolWithName';
 import WalletAddressWithNickName from './walletAddressWithNickName';
-import CreateWalletIcon from './createWalletIcon';
+import MainWalletMenu from './mainWalletMenu';
 import PropTypes from 'prop-types';
 
 class WalletBalanceErc20 extends Component {
@@ -60,7 +60,7 @@ class WalletBalanceErc20 extends Component {
                     </View>
                 </View>
                 <View>
-                    <CreateWalletIcon/>
+                    <MainWalletMenu/>
                 </View>
             </View>
         );

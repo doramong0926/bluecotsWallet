@@ -59,9 +59,9 @@ class BlcSendScreen extends Component{
                     <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                         <View style={{flex:1}}>
                             <Button
-                                onPress={this.handelPressQrcord}
-                                icon={{name: 'qrcode', type: 'font-awesome'}}
-                                title="QR-Code"
+                                onPress={this.handelPressPaste}
+                                icon={{name: 'copy', type: 'font-awesome'}}
+                                title="Paste"
                                 buttonStyle={{
                                     backgroundColor: "#67AFCB",
                                     borderColor: "transparent", 
@@ -75,9 +75,9 @@ class BlcSendScreen extends Component{
                         </View>
                         <View style={{flex:1}}>
                             <Button
-                                onPress={this.handelPressPaste}
-                                icon={{name: 'copy', type: 'font-awesome'}}
-                                title="Paste"
+                                onPress={this.handelPressQrcord}
+                                icon={{name: 'qrcode', type: 'font-awesome'}}
+                                title="QR-Code"
                                 buttonStyle={{
                                     backgroundColor: "#67AFCB",
                                     borderColor: "transparent", 

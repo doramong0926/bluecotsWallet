@@ -1,14 +1,14 @@
 import actionTypes from './actionTypes';
 
-export function showModalCreateWallet() {
+export function showModalAddWallet() {
   return {
-    type: actionTypes.SHOW_MODAL_CREATE_WALLET
+    type: actionTypes.SHOW_MODAL_ADD_WALLET
   };
 }
 
-export function hideModalCreateWallet() {
+export function hideModalAddWallet() {
     return {
-      type: actionTypes.HIDE_MODAL_CREATE_WALLET
+      type: actionTypes.HIDE_MODAL_ADD_WALLET
     };
 }
 

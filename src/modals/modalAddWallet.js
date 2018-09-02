@@ -6,7 +6,7 @@ import ActionCreator from './../actions';
 import { connect } from 'react-redux';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
-class ModalCreateWallet extends Component {
+class ModalAddWallet extends Component {
     constructor(props, context) {
         super(props, context);
     }
@@ -15,12 +15,12 @@ class ModalCreateWallet extends Component {
         return (
             <Modal 
                 offset={0}
-                open={this.props.visibleModalCreateWallet}
+                open={this.props.visibleModalAddWallet}
                 animationDuration={200}
                 animationTension={40}
                 closeOnTouchOutside={true}
                 disableOnBackPress={false}
-                modalDidClose={() => {this.props.hideModalCreateWallet()}}
+                modalDidClose={() => {this.props.hideModalAddWallet()}}
                 modalDidOpen={() => undefined}
                 modalProps={undefined}
                 containerProps={undefined}
@@ -65,28 +65,28 @@ class ModalCreateWallet extends Component {
     }
 
     handleResotrePress = () => {
-        this.props.hideModalCreateWallet();
+        this.props.hideModalAddWallet();
         this.props.showModalRestoreWallet();
     }
     handleNewPress = () => {
-        this.props.hideModalCreateWallet();
+        this.props.hideModalAddWallet();
         this.props.showModalGenerateWallet(); 
     }
 }
 
 function mapStateToProps(state) {
     return {
-        visibleModalCreateWallet: state.modal.visibleCreateWalletModal
+        visibleModalAddWallet: state.modal.visibleModalAddWallet
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        showModalCreateWallet: () => {
-            dispatch(ActionCreator.showModalCreateWallet());
+        showModalAddeWallet: () => {
+            dispatch(ActionCreator.showModalAddeWallet());
         },
-        hideModalCreateWallet: () => {
-            dispatch(ActionCreator.hideModalCreateWallet());
+        hideModalAddWallet: () => {
+            dispatch(ActionCreator.hideModalAddWallet());
         },
         showModalRestoreWallet: () => {
             dispatch(ActionCreator.showModalRestoreWallet());
@@ -123,5 +123,5 @@ const styles = StyleSheet.create({
     }
 })
   
-export default connect(mapStateToProps, mapDispatchToProps)(ModalCreateWallet);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalAddWallet);
 
