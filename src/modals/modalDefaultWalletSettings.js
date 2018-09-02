@@ -4,6 +4,7 @@ import { Text, View, TouchableHighlight, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import ActionCreator from './../actions';
 import Modal from 'react-native-simple-modal';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 class ModalDefaultWalletSettings extends Component {  
     constructor(props, context) {
@@ -27,7 +28,7 @@ class ModalDefaultWalletSettings extends Component {
                     justifyContent: "center"
                 }}
                 modalStyle={{
-                    borderRadius: 2,
+                    borderRadius: 10,
                     margin: 20,
                     padding: 10,
                     backgroundColor: "white"
@@ -37,25 +38,34 @@ class ModalDefaultWalletSettings extends Component {
                     flex: 1
                 }}
             >
-                <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                    <TouchableHighlight onPress={() => this.handleSelectPress()} underlayColor="gray">
-                        <View style={{flexDirection: 'row', margin: 10}}>
-                            <Text style={{marginTop: 5, textAlign: 'justify'}}>Select another wallet</Text>
-                        </View>  
-                    </TouchableHighlight>
+                <View style={styles.heaerContainer}>
+                    <Text style={styles.headerText}>Default Wallet settings</Text>
+                </View>
+                <View style={{justifyContent: 'center'}}>
                     <TouchableHighlight onPress={() => this.handleModifyNickNamePress()} underlayColor="gray">
                         <View style={{flexDirection: 'row', margin: 10}}>   
-                            <Text style={{marginTop: 5, textAlign: 'justify'}}>Modify nickname</Text>
+                            <Text style={styles.menuText}>Modify nickname</Text>
+                            <View style={{flex: 1, alignItems:'flex-end', justifyContent:'center'}} >
+                                <Ionicons name="ios-arrow-dropdown" size={20} />
+                            </View>
                         </View>
                     </TouchableHighlight>
+                    <View style={{borderColor: 'gray', borderWidth: 0.5}}></View>
                     <TouchableHighlight onPress={() => this.handleBackupPress()} underlayColor="gray">
                         <View style={{flexDirection: 'row', margin: 10}}>
-                            <Text style={{marginTop: 5, textAlign: 'justify'}}>Backup wallet</Text>
+                            <Text style={styles.menuText}>Backup wallet</Text>
+                            <View style={{flex: 1, alignItems:'flex-end', justifyContent:'center'}} >
+                                <Ionicons name="ios-arrow-dropdown" size={20} />
+                            </View>
                         </View>
                     </TouchableHighlight>
+                    <View style={{borderColor: 'gray', borderWidth: 0.5}}></View>
                     <TouchableHighlight onPress={() => this.handleBackupPress()} underlayColor="gray">
                         <View style={{flexDirection: 'row', margin: 10}}>
-                            <Text style={{marginTop: 5, textAlign: 'justify'}}>Delete wallet</Text>
+                            <Text style={styles.menuText}>Delete wallet</Text>
+                            <View style={{flex: 1, alignItems:'flex-end', justifyContent:'center'}} >
+                                <Ionicons name="ios-arrow-dropdown" size={20} />
+                            </View>
                         </View>
                     </TouchableHighlight>
                 </View>
@@ -96,5 +106,25 @@ function mapDispatchToProps(dispatch) {
         },
     };
 }
+
+const styles = StyleSheet.create({
+    heaerContainer: {
+        backgroundColor: '#67AFCB',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+        borderRadius: 10,
+    },
+    headerText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: 'black',
+        textAlign: 'center'
+    },
+    menuText: {
+        marginTop: 5, 
+        textAlign: 'center'
+    }
+})
   
 export default connect(mapStateToProps, mapDispatchToProps)(ModalDefaultWalletSettings);

@@ -44,7 +44,7 @@ class WalletAddressWithNickNameForReceive extends Component {
         else {
             return (
                 <View>
-                    <Text style={styles.address}>Wallet address is not exist. Please add wallet first.</Text>
+                    <Text style={styles.address}>Please add wallet first.</Text>
                 </View>
             )
         }
@@ -59,18 +59,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#67AFCB',
-        margin: 5,        
+        marginVertical: 10,
+        marginHorizontal: 15,
         padding: 5,
         borderRadius: 10,
     },
     nickName: {
-        fontSize: 15,
-        fontWeight: 'bold',
+        fontSize: 14,
         color: 'black',
         textAlign: 'center',
     },
     address: {
-        fontSize: 12,
+        fontSize: 14,
         fontWeight: 'bold',
         color: 'black',
         textAlign: 'center',

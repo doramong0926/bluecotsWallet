@@ -43,16 +43,16 @@ class BlcSendScreen extends Component{
 
     render(){
         return (
-            <View>
+            <View style={{flex:1}}>
                 <WalletAddressWithNickNameForSend tokenName='BLC'/>
-                <View style={styles.formInput}>
+                <View>
                     <FormLabel>Amount to send BLC</FormLabel>
-                    <FormInput value={this.props.amountToSendBlc.toString()} onChangeText={(value) => this.props.setAmountToSendBlc(value)}/>                    
+                    <FormInput containerStyle={styles.inputContainer} underlineColorAndroid='transparent' value={this.props.amountToSendBlc.toString()} onChangeText={(value) => this.props.setAmountToSendBlc(value)}/>                    
                     {this.amountValidationMsg()}
                 </View>
-                <View style={styles.formInput}>
+                <View>
                     <FormLabel>Address to send BLC</FormLabel>
-                    <FormInput style editable={false} value={this.props.addressToSendBlc} onChangeText={(value) => this.props.setAddressToSendBlc(value)}/>
+                    <FormInput containerStyle={styles.inputContainer} underlineColorAndroid='transparent' editable={false} value={this.props.addressToSendBlc} onChangeText={(value) => this.props.setAddressToSendBlc(value)}/>
                     {this.addressValidationMsg()}
                 </View>
                 <View>
@@ -68,13 +68,13 @@ class BlcSendScreen extends Component{
                                     borderRadius: 5
                                 }}
                                 containerViewStyle={{
-                                    alignSelf: 'stretch',
-                                    margin: 1,
+                                    // alignSelf: 'stretch',
+                                    // margin: 1,
                                 }}
                             />
                         </View>
                         <View style={{flex:1}}>
-                            <Button style={styles.button}
+                            <Button
                                 onPress={this.handelPressPaste}
                                 icon={{name: 'copy', type: 'font-awesome'}}
                                 title="Paste"
@@ -84,13 +84,13 @@ class BlcSendScreen extends Component{
                                     borderRadius: 5
                                 }}
                                 containerViewStyle={{
-                                    alignSelf: 'stretch',
-                                    margin: 1,
+                                    // alignSelf: 'stretch',
+                                    // margin: 1,
                                 }}
                             />
                         </View>
                         <View style={{flex:1}}>
-                            <Button style={styles.button}
+                            <Button
                                 onPress={this.handelPressClear}
                                 icon={{name: 'trash-o', type: 'font-awesome'}}
                                 title="Clear"
@@ -100,14 +100,14 @@ class BlcSendScreen extends Component{
                                     borderRadius: 5
                                 }}
                                 containerViewStyle={{
-                                    alignSelf: 'stretch',
-                                    margin: 1,
+                                    // alignSelf: 'stretch',
+                                    // margin: 1,
                                 }}
                             />
                         </View>
                     </View>           
                 </View>    
-                <View style={{justifyContent: 'flex-end'}}>
+                <View style={{flex:1, justifyContent: 'flex-end', marginBottom: 10}}>
                     <Button
                         disabled={!this.addressIsValid(this.props.addressToSendBlc) || !this.amountIsValid(this.props.amountToSendBlc)}
                         onPress={this.handelPressSend}
@@ -118,8 +118,8 @@ class BlcSendScreen extends Component{
                             borderRadius: 5
                         }}
                         containerViewStyle={{
-                            alignSelf: 'stretch',
-                            margin: 20,
+                            // alignSelf: 'stretch',
+                            // margin: 20,
                         }}
                     />
                 </View>
@@ -259,8 +259,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'black',
     },
-    formInput: {
-        margin: 5,
-        borderColor: 'blue',
+    inputContainer: {
+        borderColor: '#67AFCB',
+        borderWidth: 1,
+        paddingHorizontal: 10,
     }
 })

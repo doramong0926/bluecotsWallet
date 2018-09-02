@@ -6,7 +6,6 @@ import QRCode from 'react-native-qrcode-svg';
 import { Button, Header } from 'react-native-elements'
 import { connect } from 'react-redux';
 import WalletAddressWithNickNameForReceive from './../../components/walletAddressWithNickNameForReceive';
-import SelectAnotherWalletIcon from './../../components/selectAnotherWalletIcon';
 import ActionCreator from './../../actions';
 import PropTypes from 'prop-types';
 //import RNFS from "react-native-fs"
@@ -48,33 +47,35 @@ class receiveScreen extends Component{
                     <View style={styles.qrCode}>
                         {this.renderQrCode()}
                     </View>
-                    <View style={{flexDirection: 'row', justifyContent:'center', alignItems: 'flex-end'}}>                    
-                        <Button style={styles.button}
+                    <View style={styles.buttonContainer}>                    
+                        <Button
                             onPress={this.handlePressCopy}
                             icon={{name: 'copy', type: 'font-awesome'}}
-                            title="Copy address"
+                            title="Copy"
                             buttonStyle={{
                                 backgroundColor: "#67AFCB",
                                 borderColor: "transparent", 
                                 borderRadius: 5
                             }}
                             containerViewStyle={{
-                                alignSelf: 'stretch',
-                                margin: 1,
+                                // alignSelf: 'stretch',
+                                // margin: 1,
+                                width: 100,
                             }}
                         />
-                        <Button style={styles.button}
+                        <Button
                             onPress={this.handlePressToSave}
                             icon={{name: 'save', type: 'font-awesome'}}
-                            title="Save QR-Code"
+                            title="Save"
                             buttonStyle={{
                                 backgroundColor: "#67AFCB",
                                 borderColor: "transparent", 
                                 borderRadius: 5
                             }}
                             containerViewStyle={{
-                                alignSelf: 'stretch',
-                                margin: 1,
+                                // alignSelf: 'stretch',
+                                // margin: 1,
+                                width: 100,
                             }}
                         />
                     </View>
@@ -88,14 +89,14 @@ class receiveScreen extends Component{
         {
             return (
                 <QRCode 
-                    size = {280} 
+                    size = {220} 
                     value={this.props.walletForReceive.walletAddress}
                     getRef={(c) => (this.svg = c)}
                 />
             )
         } else {
             return (
-                <Text> need to add wallet </Text>
+                <Text> need to add wallet first</Text>
             )
         }
         
@@ -163,6 +164,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20,
-        margin: 10,
+        marginVertical: 10,
+        marginHorizontal: 15,
+        borderRadius: 10,
     },
+    buttonContainer: {
+        flexDirection: 'row', 
+        justifyContent:'center', 
+        alignItems: 'center',
+        marginVertical: 10,
+    }
 })

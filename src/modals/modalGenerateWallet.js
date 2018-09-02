@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
-import { View, Alert } from 'react-native';
-import { FormLabel, FormInput, Button } from 'react-native-elements';
+import { View, Text, StyleSheet } from 'react-native';
+import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements';
 import Modal from 'react-native-simple-modal';
 import ActionCreator from './../actions';
 import { connect } from 'react-redux';
@@ -42,7 +42,7 @@ class ModalGenerateWallet extends Component {
                     justifyContent: "center"
                 }}
                 modalStyle={{
-                    borderRadius: 2,
+                    borderRadius: 10,
                     margin: 20,
                     padding: 10,
                     backgroundColor: "white"
@@ -52,21 +52,43 @@ class ModalGenerateWallet extends Component {
                     flex: 1
                 }}
             >
+                <View style={styles.heaerContainer}>
+                    <Text style={styles.headerText}>Add wallet - NEW</Text>
+                </View>
                 <View>
-                    <View>
-                        <FormLabel>nickName</FormLabel>
-                        <FormInput value={this.state.nickName} onChangeText={(value) => this.setState({nickName: value})}/>
-                    </View>
-                    <View>
-                        <Button
-                            disabled={!this.isValidGenerateButton()}
-                            onPress={this.generateWallet}
-                            title="generate"
-                        />
-                    </View>
+                    <FormLabel>Nickname</FormLabel>
+                    <FormInput containerStyle={styles.inputContainer} value={this.state.nickName} onChangeText={(value) => this.setState({nickName: value})}/>
+                    {this.nickNameValidationMsg()}
+                </View>
+                <View style={styles.generateButton}>
+                    <Button
+                        disabled={!this.isValidGenerateButton()}
+                        onPress={this.generateWallet}
+                        title="GENERATE"
+                        buttonStyle={{
+                            backgroundColor: "#BD3D3A",
+                            borderColor: "transparent", 
+                            borderRadius: 5
+                        }}
+                        containerViewStyle={{
+                            // alignSelf: 'stretch',
+                            // margin: 20,
+                        }}
+                    />
                 </View>
             </Modal>
         );
+    }
+
+    nickNameValidationMsg = () =>
+    {
+        if (this.isEmptString(this.state.nickName)) {
+            return <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
+        } else if (this.isUsedNickName(this.state.nickName)){
+            return <FormValidationMessage>{'Nickname(' + this.state.nickName + ') already be used.'}</FormValidationMessage>
+        } else {
+            return <FormValidationMessage labelStyle={{color:'#79C753'}}>{'Nickname is valid.'}</FormValidationMessage>
+        }
     }
 
     closeModal = () => {
@@ -87,51 +109,21 @@ class ModalGenerateWallet extends Component {
             walletAddress: walletFromEth.getAddressString(),
             privateKey: walletFromEth.getPrivateKey().toString('hex') 
         }
-        const registedWalletList1 = this.props.walletList
-                .filter(wallet => wallet.symbol === 'BLC')
-                .map(wallet => wallet.walletAddress);
-        const registedWalletList2 = this.props.walletList
-            .filter(wallet => wallet.symbol === 'BLC')
-            .map(wallet => wallet.nickName);
+        this.props.addWallet(wallet);
+        this.props.setDefaultWallet(wallet);
+        this.props.setWalletForSend(wallet);
+        this.props.setWalletForReceive(wallet);
 
-        if (registedWalletList1.includes(walletFromEth.getAddressString())) {
-            Alert.alert(
-                'This address is already registed',
-                wallet.walletAddress,
-                [
-                    {
-                        text: 'OK', onPress: () => {}
-                    }
-                ]
-            );
-        } else if (registedWalletList2.includes(nickName)) {
-            Alert.alert(
-                'This nickName is already registed',
-                wallet.nickName,
-                [
-                    {
-                        text: 'OK', onPress: () => {}
-                    }
-                ]
-            );
-        } else {
-                this.props.addWallet(wallet);
-                this.props.setDefaultWallet(wallet);
-                this.props.setWalletForSend(wallet);
-                this.props.setWalletForReceive(wallet);
-                setTimeout(() => {
-                    Alert.alert(
-                        'Success to generate wallet',
-                        this.props.defaultWallet.walletAddress,
-                        [
-                            {
-                                text: 'OK', onPress: () => {}
-                            }
-                        ]
-                    );
-                    this.updateWalletBalance(this.props.defaultWallet.walletAddress); 
-                  },);     
-        }
+        const infomation = {
+            title: 'Success to generate wallet', 
+            text: this.props.defaultWallet.walletAddress
+        };
+        this.props.setModalInfomation(infomation);
+        this.props.showModalInfomation();
+
+        setTimeout(() => {
+            this.updateWalletBalance(this.props.defaultWallet.walletAddress); 
+        },);     
         this.setState({
             nickName: '',
         })
@@ -167,12 +159,24 @@ class ModalGenerateWallet extends Component {
         }
     }
 
+    isUsedNickName = (nickName) => {
+        const registedWalletList = this.props.walletList
+            .filter(wallet => wallet.symbol === 'BLC')
+            .map(wallet => wallet.nickName);
+        if (registedWalletList.includes(nickName)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     isValidGenerateButton = () => {
-        if (!this.isEmptString(this.state.nickName))
+        if (!this.isEmptString(this.state.nickName) && !this.isUsedNickName(this.state.nickName))
         {
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     isEmptString = (s) => {
@@ -221,7 +225,41 @@ function mapDispatchToProps(dispatch) {
         setBlcBalanceForSend: (balance) => {
             dispatch(ActionCreator.setBlcBalanceForSend(balance));
         },
+        showModalInfomation: () => {
+            dispatch(ActionCreator.showModalInfomation());
+        },
+        setModalInfomation: (infomation) => {
+            dispatch(ActionCreator.setModalInfomation(infomation));
+        },
     };
 }
+
+const styles = StyleSheet.create({
+    heaerContainer: {
+        backgroundColor: '#67AFCB',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+        borderRadius: 10,
+    },
+    headerText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: 'black',
+        textAlign: 'center'
+    },
+    menuText: {
+        marginTop: 5, 
+        textAlign: 'center'
+    },
+    inputContainer: {
+        // borderColor: '#67AFCB',
+        // borderWidth: 1,
+        // paddingHorizontal: 10,
+    },
+    generateButton: {
+        marginTop: 5, 
+    },
+})
   
 export default connect(mapStateToProps, mapDispatchToProps)(ModalGenerateWallet);

@@ -1,10 +1,10 @@
 
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableHighlight, StyleSheet } from 'react-native';
 import Modal from 'react-native-simple-modal';
-import { Ionicons } from '@expo/vector-icons';
 import ActionCreator from './../actions';
 import { connect } from 'react-redux';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 class ModalCreateWallet extends Component {
     constructor(props, context) {
@@ -28,7 +28,7 @@ class ModalCreateWallet extends Component {
                     justifyContent: "center"
                 }}
                 modalStyle={{
-                    borderRadius: 2,
+                    borderRadius: 10,
                     margin: 20,
                     padding: 10,
                     backgroundColor: "white"
@@ -38,15 +38,27 @@ class ModalCreateWallet extends Component {
                     flex: 1
                 }}
             >
-                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>  
-                    <View style={{margin: 10}}>
-                        <Ionicons name="ios-refresh-circle-outline" onPress={this.handleResotrePress} size={60} color="black" />   
-                        <Text style={{marginTop: 5, textAlign: 'center'}}>restore</Text>
-                    </View>
-                    <View style={{margin: 10}}>
-                        <Ionicons name="ios-add-circle-outline" onPress={this.handleNewPress} size={60} color="black" />
-                        <Text style={{marginTop: 5, textAlign: 'center'}}>new</Text>
-                    </View>
+                <View style={styles.heaerContainer}>
+                    <Text style={styles.headerText}>Add Wallet</Text>
+                </View>
+                <View style={{justifyContent: 'center'}}>
+                    <TouchableHighlight onPress={() => this.handleNewPress()} underlayColor="gray">
+                        <View style={{flexDirection: 'row', margin: 10}}>   
+                            <Text style={styles.menuText}>New</Text>
+                            <View style={{flex: 1, alignItems:'flex-end', justifyContent:'center'}} >
+                                <Ionicons name="ios-arrow-dropdown" size={20} />
+                            </View>
+                        </View>
+                    </TouchableHighlight>
+                    <View style={{borderColor: 'gray', borderWidth: 0.5}}></View>
+                    <TouchableHighlight onPress={() => this.handleResotrePress()} underlayColor="gray">
+                        <View style={{flexDirection: 'row', margin: 10}}>   
+                            <Text style={styles.menuText}>Restore</Text>
+                            <View style={{flex: 1, alignItems:'flex-end', justifyContent:'center'}} >
+                                <Ionicons name="ios-arrow-dropdown" size={20} />
+                            </View>
+                        </View>
+                    </TouchableHighlight>
                 </View>
             </Modal>
         );
@@ -90,6 +102,26 @@ function mapDispatchToProps(dispatch) {
         }
     };
 }
+
+const styles = StyleSheet.create({
+    heaerContainer: {
+        backgroundColor: '#67AFCB',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+        borderRadius: 10,
+    },
+    headerText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: 'black',
+        textAlign: 'center'
+    },
+    menuText: {
+        marginTop: 5, 
+        textAlign: 'center'
+    }
+})
   
 export default connect(mapStateToProps, mapDispatchToProps)(ModalCreateWallet);
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import ActionCreator from './../actions';
 import WalletUtils from './../utils/wallet';
@@ -9,7 +9,6 @@ import BLC_ICON_IMAGE from './images/bluecots_COIN_40x40.png';
 import TokenSymbolWithName from './tokenSymbolWithName';
 import WalletAddressWithNickName from './walletAddressWithNickName';
 import CreateWalletIcon from './createWalletIcon';
-import { store } from './../config/store';
 import PropTypes from 'prop-types';
 
 class WalletBalanceErc20 extends Component {
@@ -36,24 +35,24 @@ class WalletBalanceErc20 extends Component {
                 <View>
                     <WalletAddressWithNickName />
                 </View>
-                <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                    <View style={{flexDirection: 'row', margin: 10}}>
+                <View style={styles.container}>
+                    <View style={styles.containerBalance}>
                         <View style={{flex: 2, flexDirection: 'row'}}>
                             <TokenSymbolWithName icon={ETH_ICON_IMAGE} tokenString={'ETH'} tokenName={'ethereum'} />
                         </View>
                         <View style={{flex: 5, flexDirection: 'row', justifyContent: 'flex-end'}}>
-                            <Text style={{fontSize : 30, fontWeight: 'bold', textAlign:'center' }}>
+                            <Text style={styles.balanceText}>
                                 {(this.props.ethBalance) ? this.props.ethBalance.toFixed(3): '0.000'}
                             </Text>
                             <Text style={{fontSize :10, textAlign: 'center' }}> ETH</Text>
                         </View>
                     </View>
-                    <View style={{flexDirection: 'row', margin: 10}}>
+                    <View style={styles.containerBalance}>
                         <View style={{flex: 2, flexDirection: 'row'}}>
                             <TokenSymbolWithName icon={BLC_ICON_IMAGE} tokenString={'BLC'} tokenName={'bluecots'} />
                         </View>
                         <View style={{flex: 5, flexDirection: 'row', justifyContent: 'flex-end'}}>
-                            <Text style={{fontSize : 30, fontWeight: 'bold', textAlign: 'center' }}>
+                            <Text style={styles.balanceText}>
                                 {(this.props.blcBalance) ? this.props.blcBalance.toFixed(3): '0.000'}
                             </Text>
                             <Text style={{fontSize :10, textAlign: 'center' }}> BLC</Text>
@@ -115,6 +114,24 @@ function mapDispatchToProps(dispatch) {
         },
     };
 }
+
+const styles = StyleSheet.create({
+    container: {
+        alignItems: 'center', 
+        justifyContent: 'center'
+    },
+    containerBalance: {
+        flexDirection: 'row', 
+        marginHorizontal: 15, 
+        marginVertical: 10
+    },
+    balanceText: {
+        fontSize : 30, 
+        fontWeight: 'bold', 
+        textAlign:'center',
+        color: '#BD3D3A',
+    }
+})
   
 export default connect(mapStateToProps, mapDispatchToProps)(WalletBalanceErc20);
 

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import ActionCreator from './../actions';
+
 class walletAddressWithNickName extends Component {
     static propTypes = {
         defaultWallet: PropTypes.shape({
@@ -18,10 +20,15 @@ class walletAddressWithNickName extends Component {
     renderAddressWithnickName = () => {
         if (this.props.defaultWallet.walletAddress) {
             return (
-                <View style={styles.container}>
-                    <Text style={styles.nickName}>{this.props.defaultWallet.nickName}</Text>
-                    <Text style={styles.address}>{this.props.defaultWallet.walletAddress}</Text>
-                </View>
+                <TouchableHighlight onPress={() => this.chageWallet()} underlayColor="gray">
+                    <View style={styles.container}>
+                        <Text style={styles.nickName}>{this.props.defaultWallet.nickName}</Text>
+                        <Text style={styles.address}>{this.props.defaultWallet.walletAddress}</Text>
+                        <View style={{paddingTop:5}}>
+                            <Text style={{textAlign: 'center', color:'#BCBCBE'}}>Click to change wallet</Text>
+                        </View>   
+                    </View>
+                </TouchableHighlight>     
             );
         }
         else {
@@ -32,6 +39,9 @@ class walletAddressWithNickName extends Component {
             )
         }
     };  
+    chageWallet = () => {
+        this.props.showModalChangeDefaultWallet(); 
+    }
 }
 
 const styles = StyleSheet.create({
@@ -40,18 +50,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 10,
         padding: 5,
-        margin: 5,
+        marginVertical: 10,
+        marginHorizontal: 15,
         backgroundColor: "#347B98",
     },
     nickName: {
         fontSize: 14,
-        color: 'white',
+        color: 'black',
         textAlign: 'center',
     },
     address: {
         fontSize: 14,
         fontWeight: 'bold',
-        color: 'white',
+        color: 'black',
         textAlign: 'center',
     },
 })
@@ -63,7 +74,10 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return {        
+    return {     
+        showModalChangeDefaultWallet: () => {
+            dispatch(ActionCreator.showModalChangeDefaultWallet());
+        },
     };
 }
   

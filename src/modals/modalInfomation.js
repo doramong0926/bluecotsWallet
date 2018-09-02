@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import Modal from 'react-native-simple-modal';
 import ActionCreator from '../actions';
 import { connect } from 'react-redux';
@@ -28,7 +28,7 @@ class ModalInfomation extends Component {
                     justifyContent: "center"
                 }}
                 modalStyle={{
-                    borderRadius: 2,
+                    borderRadius: 10,
                     margin: 20,
                     padding: 10,
                     backgroundColor: "white"
@@ -38,15 +38,26 @@ class ModalInfomation extends Component {
                     flex: 1
                 }}
             >
+                <View style={styles.heaerContainer}>
+                    <Text style={styles.headerText}> {this.props.modalInfomationText.title}</Text>
+                </View>
                 <View style={{alignItems: 'center', justifyContent: 'center'}}>  
                     <View>  
-                        <Text> {this.props.modalInfomationText.title} </Text>
-                        <Text> {this.props.modalInfomationText.text} </Text>
+                        <Text style={styles.menuText}> {this.props.modalInfomationText.text} </Text>
                     </View>
-                    <View>
+                    <View style={styles.closeButton}>
                         <Button
                             onPress={this.handlePressClose}
                             title="Close"
+                            buttonStyle={{
+                                backgroundColor: "#BD3D3A",
+                                borderColor: "transparent", 
+                                borderRadius: 5
+                            }}
+                            containerViewStyle={{
+                                // alignSelf: 'flex-end',
+                                // margin: 20,
+                            }}
                         />
                     </View>
                 </View>
@@ -81,6 +92,34 @@ function mapDispatchToProps(dispatch) {
         },
     };
 }
+
+const styles = StyleSheet.create({
+    heaerContainer: {
+        backgroundColor: '#67AFCB',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+        borderRadius: 10,
+    },
+    headerText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: 'black',
+        textAlign: 'center'
+    },
+    menuText: {
+        marginTop: 5, 
+        textAlign: 'left'
+    },
+    inputContainer: {
+        // borderColor: '#67AFCB',
+        // borderWidth: 1,
+        // paddingHorizontal: 10,
+    },
+    closeButton: {
+        marginTop: 5,
+    }
+})
   
 export default connect(mapStateToProps, mapDispatchToProps)(ModalInfomation);
 
