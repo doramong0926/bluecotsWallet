@@ -12,6 +12,11 @@ class ModalConfirmToSendEth extends Component {
         super(props, context);
     }
 
+    state = {
+        gasForSend: 0,
+        isEnoughEth: false,
+    };
+
     render() {
         return (
             <Modal 
@@ -21,8 +26,8 @@ class ModalConfirmToSendEth extends Component {
                 animationTension={40}
                 closeOnTouchOutside={true}
                 disableOnBackPress={false}
-                modalDidClose={() => {this.props.hideModalConfirmToSendEth()}}
-                modalDidOpen={() => undefined}
+                modalDidClose={() => {this.modalClose()}}
+                modalDidOpen={() => {this.modalOpen()}}
                 modalProps={undefined}
                 containerProps={undefined}
                 containerStyle={{
@@ -43,11 +48,15 @@ class ModalConfirmToSendEth extends Component {
                     <Text style={styles.headerText}>Confirmation</Text>
                 </View>
                 <View style={styles.messageContainer}>  
-                    <Text style={styles.messageText}>Are you sure to send {this.props.amountToSendEth} ETH to {this.props.addressToSendEth}</Text>
+                    {this.renderMessage()}            
+                    <Text style={styles.messageText}>txFee : {this.state.gasForSend.toFixed(14)} ETH</Text>                    
                 </View>
                 <View style={styles.buttonContainer}>
                     <View style={{flex:1}}>
                         <Button
+                            disabled={
+                                !this.state.isEnoughEth
+                            }
                             onPress={this.handelPressOk}
                             title="SEND"
                             buttonStyle={{
@@ -63,7 +72,7 @@ class ModalConfirmToSendEth extends Component {
                     </View>
                     <View style={{flex:1}}>
                         <Button
-                            onPress={this.handelPressCancel}
+                            onPress={this.modalClose}
                             title="CANCEL"
                             buttonStyle={{
                                 backgroundColor: "#BCBCBE",
@@ -81,6 +90,14 @@ class ModalConfirmToSendEth extends Component {
         );
     }
 
+    renderMessage = () => {
+        if (this.state.isEnoughEth) {                        
+            return <Text style={styles.messageText}>Are you sure to send {this.props.amountToSendEth} ETH to {this.props.addressToSendEth}</Text>
+        } else {
+            return <Text style={styles.messageText}>You don't have enough gas.</Text>
+        }
+    }
+
     handelPressOk = () => {
         this.sendTransaction();
         setTimeout(() => {
@@ -91,8 +108,42 @@ class ModalConfirmToSendEth extends Component {
         this.props.showModalSpinner('sending');
     }
 
-    handelPressCancel = () => {
+    modalClose = () => {
         this.props.hideModalConfirmToSendEth();
+        this.setState({gasForSend: 0});
+        this.setState({isEnoughEth: false});
+    }
+
+    modalOpen = () => {
+        this.isEnoughGas();
+    }
+
+    isEnoughGas = async () => {
+        try {
+            const gasLimit = await WalletUtils.getEstimateGasForEth(
+                    this.props.walletForSend.walletAddress,
+                    this.props.addressToSendEth,
+                    this.props.amountToSendEth
+            )
+            const gasPriceData = await WalletUtils.getGasPrice();
+            if (gasLimit === undefined || gasPriceData === undefined) {
+                this.setState({isEnoughEth: false});
+                return false;
+            } else {
+                const txFee = gasLimit.wei * gasPriceData;
+                this.setState({gasForSend: txFee});
+                if (txFee + this.props.amountToSendEth <= this.props.ethBalanceForSend) {
+                    this.setState({isEnoughEth: true});
+                    return true;
+                } else {
+                    this.setState({isEnoughEth: false});
+                    return false;
+                }     
+            }  
+        } catch (error) {
+            this.setState({isEnoughEth: false});
+            return false;
+        }
     }
 
     sendTransaction = async () => {
@@ -134,6 +185,7 @@ function mapStateToProps(state) {
         addressToSendEth: state.walletTemp.addressToSendEth,
         amountToSendEth: state.walletTemp.amountToSendEth,
         walletForSend: state.walletTemp.walletForSend,
+        ethBalanceForSend: state.walletTemp.ethBalanceForSend,
     };
 }
 

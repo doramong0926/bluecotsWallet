@@ -73,7 +73,7 @@ class ModalConfirmToSendBlc extends Component {
                     </View>
                     <View style={{flex:1}}>
                         <Button
-                            onPress={this.handelPressCancel}
+                            onPress={this.modalClose}
                             title="CANCEL"
                             buttonStyle={{
                                 backgroundColor: "#BCBCBE",
@@ -95,7 +95,7 @@ class ModalConfirmToSendBlc extends Component {
         if (this.state.isEnoughEth) {
             return <Text style={styles.messageText}>Are you sure to send {this.props.amountToSendBlc} BLC to {this.props.addressToSendBlc}</Text>            
         } else {
-            return <Text style={styles.messageText}>You don't have enough gas. {this.props.amountToSendBlc} BLC to {this.props.addressToSendBlc}</Text>
+            return <Text style={styles.messageText}>You don't have enough gas.</Text>
         }
     }
 
@@ -107,12 +107,6 @@ class ModalConfirmToSendBlc extends Component {
             this.props.setAmountToSendBlc('');
         },);
         this.props.showModalSpinner('sending');
-    }
-
-    handelPressCancel = () => {
-        this.props.hideModalConfirmToSendBlc();
-        this.setState({gasForSend: 0});
-        this.setState({isEnoughEth: false});
     }
 
     modalClose = () => {
@@ -135,16 +129,28 @@ class ModalConfirmToSendBlc extends Component {
                     this.props.amountToSendBlc
             )
             const gasPriceData = await WalletUtils.getGasPrice();
-            const txFee = gasLimit.wei * gasPriceData;
-            this.setState({gasForSend: txFee});
-            if ((txFee) <= this.props.ethBalanceForSend) {
-                this.setState({isEnoughEth: true});
-                return true;
-            } else {
+            if (gasLimit === undefined || gasPriceData === undefined) {
                 this.setState({isEnoughEth: false});
                 return false;
-            }            
+            } else {
+                const txFee = gasLimit.wei * gasPriceData;
+                this.setState({gasForSend: txFee});
+                console.log(this.props.ethBalanceForSend)
+                console.log(this.props.ethBalanceForSend)
+                console.log(this.props.ethBalanceForSend)
+                console.log(this.props.ethBalanceForSend)
+                console.log(this.props.ethBalanceForSend)
+                
+                if ((txFee) <= this.props.ethBalanceForSend) {
+                    this.setState({isEnoughEth: true});
+                    return true;
+                } else {
+                    this.setState({isEnoughEth: false});
+                    return false;
+                }   
+            }      
         } catch (error) {
+            this.setState({isEnoughEth: false});
             return false;
         }
     }

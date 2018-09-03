@@ -59,9 +59,9 @@ class WalletAddressWithNickNameForSend extends Component {
     
     renderBalance = () => {
         if (this.props.tokenName === 'BLC') {
-            return <Text style={styles.balance}> {this.props.blcBalanceForSend.toFixed(10)} BLC</Text>
+            return <Text style={styles.balance}> {this.props.blcBalanceForSend} BLC</Text>
         } else if (this.props.tokenName === 'ETH') {
-            return <Text style={styles.balance}> {this.props.ethBalanceForSend.toFixed(10)} ETH</Text>
+            return <Text style={styles.balance}> {this.props.ethBalanceForSend} ETH</Text>
         }
     }
 

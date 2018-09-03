@@ -6,7 +6,6 @@ import ProviderEngine from 'web3-provider-engine';
 import WalletSubprovider from 'web3-provider-engine/subproviders/wallet';
 import ProviderSubprovider from 'web3-provider-engine/subproviders/provider';
 import { store } from '../config/store';
-import actionTypes from './../actions/actionTypes';
 
 //import AnalyticsUtils from './analytics';
 import { erc20Abi } from './../config/constants';
@@ -163,7 +162,6 @@ export default class WalletUtils {
           if (error) {
             reject(error);
           }
-  
           const balance = weiBalance / Math.pow(10, 18);
   
           // AnalyticsUtils.trackEvent('Get ETH balance', {
@@ -243,20 +241,20 @@ export default class WalletUtils {
     const web3 = new Web3(this.getWeb3HTTPProvider());
     return new Promise((resolve, reject) => {
       web3.eth
-        .estimateGas(
-          { to: toAddress, 
+        .estimateGas({ to: toAddress, 
             from: fromAddress, 
-            value: value }, (error, data) => {
-          if (error) {
-            console.log("error : " + error );
-            reject(error);
-          }
-          const weiPrice = web3.toWei(data, 'gwei');
-          const gasLimit = {
-              wei: data,
-              eth: web3.fromWei(weiPrice, 'ether')
-          };
-          resolve(gasLimit);
+            value: web3.toWei(value, 'ether')
+          }, (error, data) => {
+            if (error) {
+              console.log("error : " + error );
+              reject(error);
+            }
+            const weiPrice = web3.toWei(data, 'gwei');
+            const gasLimit = {
+                wei: data,
+                eth: web3.fromWei(weiPrice, 'ether')
+            };
+            resolve(gasLimit);
         });
     });
   }

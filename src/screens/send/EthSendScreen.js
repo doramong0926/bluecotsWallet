@@ -28,6 +28,10 @@ class EthSendScreen extends Component{
         }).isRequired,
     };
 
+    state = {
+        gasForSend: 0,
+    };
+
     componentDidMount() {
         this.updateWalletBalance(this.props.walletForSend.walletAddress);
         setInterval(() => {
@@ -185,13 +189,26 @@ class EthSendScreen extends Component{
                 contractAddress:'', 
                 symbol:'ETH', 
                 decimals:0
-            });            
+            });
             if (currentETHBalance !== undefined) {
                 if (this.props.ethBalanceForSend !== currentETHBalance)
                 {
                     this.props.setEthBalanceForSend(currentETHBalance);
                 }
-            }    
+            }
+            /*  
+            const gasLimit = await WalletUtils.getEstimateGasForEth(
+                this.props.walletForSend.walletAddress,
+                this.props.addressToSendEth,
+                this.props.amountToSendEth
+            )
+            const gasPriceData = await WalletUtils.getGasPrice();
+            var txFee = 0;
+            if (gasLimit !== undefined && gasPriceData !== undefined) {
+                txFee = gasLimit.wei * gasPriceData;
+                this.setState({gasForSend: txFee});
+            }
+            */     
         }
     }   
 
