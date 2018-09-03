@@ -103,11 +103,16 @@ class receiveScreen extends Component{
     }
 
     handlePressCopy = async () => {
-        this.props.setCopyAddressToClipboard('');
         Clipboard.setString(this.props.walletForReceive.walletAddress);
         const address = await Clipboard.getString();
-        this.props.setCopyAddressToClipboard(address);
-        this.props.showModalCopyAddressToClipboard();
+        const infomation = {
+            title: 'INFOMATION', 
+            message1: 'Success to copy address to clipboard.', 
+            message2: 'Please check the address one more time.',
+            message3: address,
+        };
+        this.props.setModalInfomation(infomation);
+        this.props.showModalInfomation();
     };
 
     handlePressToSave = () => {
@@ -136,14 +141,14 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        showModalCopyAddressToClipboard: () => {
-            dispatch(ActionCreator.showModalCopyAddressToClipboard());
-        },
-        setCopyAddressToClipboard: (address) => {
-            dispatch(ActionCreator.setCopyAddressToClipboard(address));
-        },
         setWalletForReceive: (wallet) => {
             dispatch(ActionCreator.setWalletForReceive(wallet));
+        },
+        showModalInfomation: () => {
+            dispatch(ActionCreator.showModalInfomation());
+        },
+        setModalInfomation: (infomation) => {
+            dispatch(ActionCreator.setModalInfomation(infomation));
         },
     };
 }

@@ -15,12 +15,9 @@ import ModalRestoreWallet from './src/modals/modalRestoreWallet';
 import ModalChangeDefaultWallet from './src/modals/modalChangeDefaultWallet';
 import ModalConfirmToSendBlc from './src/modals/modalConfirmToSendBlc';
 import ModalConfirmToSendEth from './src/modals/modalConfirmToSendEth';
-import ModalSuccess from './src/modals/modalSuccess';
-import ModalFail from './src/modals/modalFail';
-import ModalCopyAddressToClipboard from './src/modals/modalCopyAddressToClipboard';
 import ModalQrCodeScaner from './src/modals/modalQrCodeScaner';
 import ModalInfomation from './src/modals/modalInfomation';
-
+import ModalSpinner from './src/modals/modalSpinner'
 
 export default class App extends React.Component {
     render() {
@@ -37,11 +34,9 @@ export default class App extends React.Component {
                     <ModalChangeDefaultWallet />
                     <ModalConfirmToSendBlc />
                     <ModalConfirmToSendEth />
-                    <ModalCopyAddressToClipboard />
                     <ModalQrCodeScaner />
-                    <ModalSuccess />
-                    <ModalFail /> 
-                    <ModalInfomation />                   
+                    <ModalInfomation />
+                    <ModalSpinner />                   
                 </PersistGate>
             </Provider>    
         );

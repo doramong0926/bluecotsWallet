@@ -84,30 +84,6 @@ export function hideModalChangeDefaultWallet() {
     };
 }
 
-export function showModalSuccess() {
-  return {
-    type: actionTypes.SHOW_MODAL_SUCCESS
-  };
-}
-
-export function hideModalSuccess() {
-    return {
-      type: actionTypes.HIDE_MODAL_SUCCESS
-    };
-}
-
-export function showModalFail() {
-  return {
-    type: actionTypes.SHOW_MODAL_FAIL
-  };
-}
-
-export function hideModalFail() {
-    return {
-      type: actionTypes.HIDE_MODAL_FAIL
-    };
-}
-
 export function showModalConfirmToSendBlc() {
   return {
     type: actionTypes.SHOW_MODAL_CONFIRM_TO_SEND_BLC
@@ -129,18 +105,6 @@ export function showModalConfirmToSendEth() {
 export function hideModalConfirmToSendEth() {
     return {
       type: actionTypes.HIDE_MODAL_CONFIRM_TO_SEND_ETH
-    };
-}
-
-export function showModalCopyAddressToClipboard() {
-  return {
-    type: actionTypes.SHOW_MODAL_COPY_ADDRESS_TO_CLIPBOARD
-  };
-}
-
-export function hideModalCopyAddressToClipboard() {
-    return {
-      type: actionTypes.HIDE_MODAL_COPY_ADDRESS_TO_CLIPBOARD
     };
 }
 
@@ -179,5 +143,18 @@ export function setTokenNameForQrCode(name) {
   return {
       type: actionTypes.SET_TOKEN_NAME_FOR_QR_CODE,
       payload: name
+  };
+}
+
+export function showModalSpinner(message) {
+  return {
+      type: actionTypes.SHOW_MODAL_SPINNER,
+      payload: message
+  };
+}
+
+export function hideModalSpinner() {
+  return {
+      type: actionTypes.HIDE_MODAL_SPINNER,
   };
 }

@@ -10,15 +10,14 @@ const initialState = {
     visibleModalSelectAnotherWalletForSend: false,
     visibleModalSelectAnotherWalletForReceive: false,
     visibleModalChangeDefaultWallet: false,
-    visibleModalSuccess: false,
-    visibleModalFail: false,
     visibleModalConfirmToSendBlc: false,
     visibleModalConfirmToSendEth: false,
-    visibleModalCopyAddressToClipboard: false,
     visibleModalQrCodeScaner: false,
     visibleModalInfomation: false,
-    modalInfomationText: {title: '', message1: '', message2: ''},    
+    modalInfomationText: {title: '', message1: '', message2: '', message3: ''},    
     tokenNameForQrCode: '',
+    visibleModalSpinner: false,
+    spinnerText: '',  
 };  
  
 export default (state = initialState, action) => {
@@ -91,27 +90,7 @@ export default (state = initialState, action) => {
         case actionTypes.HIDE_MODAL_CHANGE_DEFAULT_WALLET:
             return Object.assign({}, state, {
                 visibleModalChangeDefaultWallet: false
-            });
-
-        case actionTypes.SHOW_MODAL_SUCCESS:
-            return Object.assign({}, state, {
-                visibleModalSuccess: true
-            });
-
-        case actionTypes.HIDE_MODAL_SUCCESS:
-            return Object.assign({}, state, {
-                visibleModalSuccess: false
-            });
-
-        case actionTypes.SHOW_MODAL_FAIL:
-            return Object.assign({}, state, {
-                visibleModalFail: true
-            });
-
-        case actionTypes.HIDE_MODAL_FAIL:
-            return Object.assign({}, state, {
-                visibleModalFail: false
-            });            
+            });      
 
         case actionTypes.SHOW_MODAL_CONFIRM_TO_SEND_BLC:
             return Object.assign({}, state, {
@@ -131,16 +110,6 @@ export default (state = initialState, action) => {
         case actionTypes.HIDE_MODAL_CONFIRM_TO_SEND_ETH:
             return Object.assign({}, state, {
                 visibleModalConfirmToSendEth: false
-            });
-
-        case actionTypes.SHOW_MODAL_COPY_ADDRESS_TO_CLIPBOARD:
-            return Object.assign({}, state, {
-                visibleModalCopyAddressToClipboard: true
-            });
-
-        case actionTypes.HIDE_MODAL_COPY_ADDRESS_TO_CLIPBOARD:
-            return Object.assign({}, state, {
-                visibleModalCopyAddressToClipboard: false
             });
 
         case actionTypes.SHOW_MODAL_QR_CODE_SCANER:
@@ -171,6 +140,18 @@ export default (state = initialState, action) => {
         case actionTypes.SET_TOKEN_NAME_FOR_QR_CODE:
             return Object.assign({}, state, {
                 tokenNameForQrCode: action.payload,
+            });
+
+        case actionTypes.SHOW_MODAL_SPINNER:
+            return Object.assign({}, state, {
+                visibleModalSpinner: true,
+                spinnerText: action.payload,
+            });
+
+        case actionTypes.HIDE_MODAL_SPINNER:
+            return Object.assign({}, state, {
+                visibleModalSpinner: false,
+                spinnerText: '',
             });
             
         default:

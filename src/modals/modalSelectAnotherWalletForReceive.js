@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Text, View, ListView, TouchableHighlight, Alert, Clipboard, StyleSheet } from 'react-native';
+import { Text, View, ListView, TouchableHighlight, StyleSheet } from 'react-native';
 import Modal from 'react-native-simple-modal';
 import ActionCreator from './../actions';
 import { connect } from 'react-redux';
@@ -48,7 +48,7 @@ class ModalSelectAnotherWalletForReceive extends Component {
                     justifyContent: "center"
                 }}
                 modalStyle={{
-                    borderRadius: 2,
+                    borderRadius: 10,
                     margin: 20,
                     padding: 10,
                     backgroundColor: "white"
@@ -58,16 +58,16 @@ class ModalSelectAnotherWalletForReceive extends Component {
                     flex: 1
                 }}
             >
-                <View>
-                    <Text style={{textAlign: 'center'}}>Wallet List</Text>
+                <View style={styles.heaerContainer}>
+                    <Text style={styles.headerText}>Wallet List</Text>
                 </View>
                 <View>
                     <ListView
                         dataSource={this.state.dataSourceForWalletList}
                         renderRow={this.renderWalletList}
-                        style={styles.listView}
+                        style={styles.listViewContainer}
                     />
-                </View>  
+                </View> 
             </Modal>
         );
     }
@@ -83,16 +83,19 @@ class ModalSelectAnotherWalletForReceive extends Component {
     renderWalletList = (wallet) => {
         if (wallet.walletAddress !== undefined && wallet.walletAddress !== '') {
             return (
-                <TouchableHighlight onPress={() => this.handlePress(wallet)} underlayColor="gray">
-                    <View style={{flexDirection: 'row', margin: 10}}>
-                        <View style={{flex:4}}>
-                            <Text> {wallet.nickName} </Text>
-                        </View>
-                        <View style={{flex:6}}>
-                            <Text> {wallet.walletAddress.substring(0,18)}... </Text>
-                        </View>
-                    </View>
-                </TouchableHighlight>
+                <View>
+                    <TouchableHighlight onPress={() => this.handlePress(wallet)} underlayColor="gray">
+                        <View style={{flexDirection: 'row', margin: 10}}>
+                            <View style={{flex:4}}>
+                                <Text> {wallet.nickName} </Text>
+                            </View>
+                            <View style={{flex:6}}>
+                                <Text> {wallet.walletAddress.substring(0,18)}... </Text>
+                            </View>
+                        </View>                                        
+                    </TouchableHighlight>
+                    <View style={{borderColor: 'gray', borderWidth: 0.5}}></View>
+                </View>
             );
         } else {
             return (
@@ -111,12 +114,6 @@ class ModalSelectAnotherWalletForReceive extends Component {
         this.state.dataSourceForWalletList = this.state.dataSourceForWalletList.cloneWithRows(this.props.walletList);
     };
 }
-
-const styles = StyleSheet.create({
-    listView: {
-        paddingTop: 20,
-      },
-})
 
 function mapStateToProps(state) {
     return {
@@ -139,5 +136,24 @@ function mapDispatchToProps(dispatch) {
         },
     };
 }
+
+const styles = StyleSheet.create({
+    listViewContainer: {
+        paddingTop: 20,
+    }, 
+    heaerContainer: {
+        backgroundColor: '#67AFCB',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+        borderRadius: 10,
+    },
+    headerText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: 'black',
+        textAlign: 'center'
+    },
+})
   
 export default connect(mapStateToProps, mapDispatchToProps)(ModalSelectAnotherWalletForReceive);

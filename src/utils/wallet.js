@@ -201,7 +201,46 @@ export default class WalletUtils {
     });
   }
 
-  static getEstimateGas(fromAddress, toAddress, value){
+  static getGasPrice(){
+    const web3 = new Web3(this.getWeb3HTTPProvider());
+    return new Promise((resolve, reject) => {
+      web3.eth.getGasPrice((error, data) => {
+          if (error) {
+            console.log("error : " + error );
+            reject(error);
+          }
+          const gasPrice = web3.fromWei(data, 'ether');
+          resolve(gasPrice);
+        });
+    });
+  }
+
+  static getEstimateGasForErc20(contractAddress, decimals, fromAddress, toAddress, value){
+    const web3 = new Web3(this.getWeb3HTTPProvider());
+    return new Promise((resolve, reject) => {
+      web3.eth
+      .contract(erc20Abi)
+      .at(contractAddress)
+      .transfer.estimateGas(
+          toAddress,
+          value * Math.pow(10, decimals),
+          {from: fromAddress}, (error, data) => {
+          if (error) {
+            console.log("error : " + error );
+            reject(error);
+          }
+          const weiPrice = web3.toWei(data, 'gwei');
+          const gasLimit = {
+              wei: data,
+              eth: web3.fromWei(weiPrice, 'ether')
+          };
+          resolve(gasLimit);
+        });
+    });
+  }
+
+  static getEstimateGasForEth(fromAddress, toAddress, value){
+    const web3 = new Web3(this.getWeb3HTTPProvider());
     return new Promise((resolve, reject) => {
       web3.eth
         .estimateGas(
@@ -209,9 +248,14 @@ export default class WalletUtils {
             from: fromAddress, 
             value: value }, (error, data) => {
           if (error) {
+            console.log("error : " + error );
             reject(error);
           }
-          const gasLimit = data;
+          const weiPrice = web3.toWei(data, 'gwei');
+          const gasLimit = {
+              wei: data,
+              eth: web3.fromWei(weiPrice, 'ether')
+          };
           resolve(gasLimit);
         });
     });

@@ -42,8 +42,9 @@ class ModalInfomation extends Component {
                     <Text style={styles.headerText}> {this.props.modalInfomationText.title}</Text>
                 </View>
                 <View style={styles.messageContainer}>  
-                    <Text style={styles.menuText}>{this.props.modalInfomationText.message1}</Text>                      
-                    <Text style={styles.menuText}>{this.props.modalInfomationText.message2}</Text>                      
+                    <Text style={styles.messageText}>{this.props.modalInfomationText.message1}</Text>                      
+                    <Text style={styles.messageText}>{this.props.modalInfomationText.message2}</Text>                      
+                    <Text style={styles.messageText}>{this.props.modalInfomationText.message3}</Text>                      
                 </View>
                 <View style={styles.buttonContainer}>
                     <Button
@@ -105,17 +106,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'black',
         textAlign: 'center'
+    },   
+    messageContainer: {
+        marginVertical : 10,
+        paddingHorizontal: 10,
     },
-    menuText: {
+    messageText: {
         textAlign: 'left'
     },
     buttonContainer: {
         marginVertical: 5,
     },
-    messageContainer: {
-        marginVertical : 10,
-        paddingHorizontal: 10,
-    }
 })
   
 export default connect(mapStateToProps, mapDispatchToProps)(ModalInfomation);

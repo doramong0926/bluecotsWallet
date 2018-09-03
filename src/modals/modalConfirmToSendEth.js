@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements'
 import Modal from 'react-native-simple-modal';
 import ActionCreator from './../actions';
@@ -29,7 +29,7 @@ class ModalConfirmToSendEth extends Component {
                     justifyContent: "center"
                 }}
                 modalStyle={{
-                    borderRadius: 2,
+                    borderRadius: 10,
                     margin: 20,
                     padding: 10,
                     backgroundColor: "white"
@@ -39,17 +39,44 @@ class ModalConfirmToSendEth extends Component {
                     flex: 1
                 }}
             >
-                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>  
-                    <Text>Are you sure to send {this.props.amountToSendEth} ETH to {this.props.addressToSendEth}</Text>
+                <View style={styles.heaerContainer}>
+                    <Text style={styles.headerText}>Confirmation</Text>
                 </View>
-                <Button
-                    onPress={this.handelPressOk}
-                    title="OK"
-                />
-                <Button
-                    onPress={this.handelPressCancel}
-                    title="CANCEL"
-                />
+                <View style={styles.messageContainer}>  
+                    <Text style={styles.messageText}>Are you sure to send {this.props.amountToSendEth} ETH to {this.props.addressToSendEth}</Text>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <View style={{flex:1}}>
+                        <Button
+                            onPress={this.handelPressOk}
+                            title="SEND"
+                            buttonStyle={{
+                                backgroundColor: "#BD3D3A",
+                                borderColor: "transparent", 
+                                borderRadius: 5
+                            }}
+                            containerViewStyle={{
+                                // alignSelf: 'flex-end',
+                                // margin: 20,
+                            }}
+                        />
+                    </View>
+                    <View style={{flex:1}}>
+                        <Button
+                            onPress={this.handelPressCancel}
+                            title="CANCEL"
+                            buttonStyle={{
+                                backgroundColor: "#BCBCBE",
+                                borderColor: "transparent", 
+                                borderRadius: 5
+                            }}
+                            containerViewStyle={{
+                                // alignSelf: 'flex-end',
+                                // margin: 20,
+                            }}
+                        />
+                    </View>
+                </View>
             </Modal>
         );
     }
@@ -61,6 +88,7 @@ class ModalConfirmToSendEth extends Component {
             this.props.setAddressToSendEth('');
             this.props.setAmountToSendEth('');
         },);
+        this.props.showModalSpinner('sending');
     }
 
     handelPressCancel = () => {
@@ -79,14 +107,25 @@ class ModalConfirmToSendEth extends Component {
                 this.props.addressToSendEth,
                 this.props.amountToSendEth,
             );
-            this.props.showModalSuccess();
+            this.props.hideModalSpinner();
+            const infomation = {
+                title: 'SUCCESS', 
+                message1: 'Success to send ETH', 
+            };
+            this.props.setModalInfomation(infomation);
+            this.props.showModalInfomation();
         } catch (error) {
             console.log('sendTransaction error : ' + error);
-            this.props.showModalFail();
+            this.props.hideModalSpinner();
+            const infomation = {
+                title: 'FAIL', 
+                message1: 'Fail to send ETH', 
+                message2: 'Please check your transaction'
+            };
+            this.props.setModalInfomation(infomation);
+            this.props.showModalInfomation();
         }
-    };
-
-    
+    };    
 }
 
 function mapStateToProps(state) {
@@ -100,12 +139,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        showModalSuccess: () => {
-            dispatch(ActionCreator.showModalSuccess());
-        },
-        showModalFail: () => {
-            dispatch(ActionCreator.showModalFail());
-        },
         showModalConfirmToSendEth: () => {
             dispatch(ActionCreator.showModalConfirmToSendEth());
         },
@@ -118,8 +151,47 @@ function mapDispatchToProps(dispatch) {
         setAmountToSendEth: (balance) => {
             dispatch(ActionCreator.setAmountToSendEth(balance));
         },
+        showModalInfomation: () => {
+            dispatch(ActionCreator.showModalInfomation());
+        },
+        setModalInfomation: (infomation) => {
+            dispatch(ActionCreator.setModalInfomation(infomation));
+        },
+        showModalSpinner: (message) => {
+            dispatch(ActionCreator.showModalSpinner(message));
+        },
+        hideModalSpinner: () => {
+            dispatch(ActionCreator.hideModalSpinner());
+        },
     };
 }
+
+const styles = StyleSheet.create({
+    heaerContainer: {
+        backgroundColor: '#67AFCB',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+        borderRadius: 10,
+    },
+    headerText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: 'black',
+        textAlign: 'center'
+    },
+    messageContainer: {
+        marginVertical : 10,
+        paddingHorizontal: 10,
+    },
+    messageText: {
+        textAlign: 'left'
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        marginVertical: 5,
+    },
+})
   
 export default connect(mapStateToProps, mapDispatchToProps)(ModalConfirmToSendEth);
 

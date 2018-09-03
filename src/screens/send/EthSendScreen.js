@@ -1,8 +1,7 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Clipboard } from 'react-native';
+import { StyleSheet, View, Clipboard } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import WalletUtils from './../../utils/wallet';
 import { connect } from 'react-redux';
 import ActionCreator from './../../actions';
@@ -109,7 +108,12 @@ class EthSendScreen extends Component{
                 </View>    
                 <View style={{flex:1, justifyContent: 'flex-end', marginBottom: 10}}>
                     <Button
-                        disabled={!this.addressIsValid(this.props.addressToSendEth) || !this.amountIsValid(this.props.amountToSendEth)}
+                        disabled={
+                            !this.addressIsValid(this.props.addressToSendEth) || 
+                            !this.amountIsValid(this.props.amountToSendEth) ||
+                            !this.amountIsEnough(this.props.amountToSendEth) ||
+                            this.isSameAddressWithTxAddress(this.props.walletForSend.walletAddress)
+                        }
                         onPress={this.handelPressSend}
                         title="Send"
                         buttonStyle={{
@@ -133,6 +137,8 @@ class EthSendScreen extends Component{
             return <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
         } else if (!this.addressIsValid(this.props.addressToSendEth)) {
             return <FormValidationMessage>{'address is wrong.'}</FormValidationMessage>
+        } else if (this.isSameAddressWithTxAddress(this.props.walletForSend.walletAddress)) {
+            return <FormValidationMessage>{'You can not send ETH to same address.'}</FormValidationMessage>
         } else {
             return <FormValidationMessage labelStyle={{color:'#79C753'}}>{'address is valid.'}</FormValidationMessage>
         }
@@ -188,6 +194,14 @@ class EthSendScreen extends Component{
             }    
         }
     }   
+
+    isSameAddressWithTxAddress = (walletAddress) => {
+        if (walletAddress === this.props.addressToSendEth) {        
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     addressIsValid = (walletAddress) => {
         return WalletUtils.addressIsValid(walletAddress);

@@ -1,8 +1,7 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Clipboard } from 'react-native';
+import { StyleSheet, View, Clipboard } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import WalletUtils from './../../utils/wallet';
 import { connect } from 'react-redux';
 import ActionCreator from './../../actions';
@@ -109,7 +108,12 @@ class BlcSendScreen extends Component{
                 </View>    
                 <View style={{flex:1, justifyContent: 'flex-end', marginBottom: 10}}>
                     <Button
-                        disabled={!this.addressIsValid(this.props.addressToSendBlc) || !this.amountIsValid(this.props.amountToSendBlc)}
+                        disabled={
+                            !this.addressIsValid(this.props.addressToSendBlc) || 
+                            !this.amountIsValid(this.props.amountToSendBlc) || 
+                            !this.amountIsEnough(this.props.amountToSendBlc) ||
+                            this.isSameAddressWithTxAddress(this.props.walletForSend.walletAddress)
+                        }
                         onPress={this.handelPressSend}
                         title="Send"
                         buttonStyle={{
@@ -133,6 +137,8 @@ class BlcSendScreen extends Component{
             return <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
         } else if (!this.addressIsValid(this.props.addressToSendBlc)) {
             return <FormValidationMessage>{'address is wrong.'}</FormValidationMessage>
+        } else if (this.isSameAddressWithTxAddress(this.props.walletForSend.walletAddress)) {
+            return <FormValidationMessage>{'You can not send BLC to same address.'}</FormValidationMessage>
         } else {
             return  <FormValidationMessage labelStyle={{color:'#79C753'}}> {'address is valid.'} </FormValidationMessage>
         }
@@ -188,6 +194,14 @@ class BlcSendScreen extends Component{
             }    
         }
     }   
+
+    isSameAddressWithTxAddress = (walletAddress) => {
+        if (walletAddress === this.props.addressToSendBlc) {        
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     addressIsValid = (walletAddress) => {
         return WalletUtils.addressIsValid(walletAddress);
