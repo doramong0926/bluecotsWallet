@@ -6,6 +6,17 @@ import Modal from 'react-native-simple-modal';
 import ActionCreator from './../actions';
 import { connect } from 'react-redux';
 import WalletUtils from './../utils/wallet';
+import { 
+	ETHERSCAN_API_KEY,
+	INFURA_API_KEY ,
+	SEGMENT_API_KEY,
+	NETWORK,
+	DEFAULT_TOKEN_NAME,
+	DEFAULT_TOKEN_SYMBOL,
+	DEFAULT_TOKEN_CONTRACT_ADDRESS,
+	DEFAULT_TOKEN_DECIMALS,
+	WALLET_VERSION
+ } from './../config/constants';
 
 class ModalConfirmToSendBlc extends Component {
     constructor(props, context) {
@@ -159,9 +170,9 @@ class ModalConfirmToSendBlc extends Component {
         try {  
             await WalletUtils.sendTransaction(
                 { 
-                    contractAddress: process.env.DEFAULT_TOKEN_CONTRACT_ADDRESS,
-                    symbol: process.env.DEFAULT_TOKEN_SYMBOL, 
-                    decimals: process.env.DEFAULT_TOKEN_DECIMALS
+                    contractAddress: DEFAULT_TOKEN_CONTRACT_ADDRESS,
+                    symbol: DEFAULT_TOKEN_SYMBOL, 
+                    decimals: DEFAULT_TOKEN_DECIMALS
                 },
                 this.props.walletForSend,
                 this.props.addressToSendBlc,

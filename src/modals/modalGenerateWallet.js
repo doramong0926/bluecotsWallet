@@ -8,6 +8,18 @@ import { connect } from 'react-redux';
 import EthereumJsWallet from 'ethereumjs-wallet';
 import WalletUtils from './../utils/wallet';
 import PropTypes from 'prop-types';
+import { 
+	ETHERSCAN_API_KEY,
+	INFURA_API_KEY ,
+	SEGMENT_API_KEY,
+	NETWORK,
+	DEFAULT_TOKEN_NAME,
+	DEFAULT_TOKEN_SYMBOL,
+	DEFAULT_TOKEN_CONTRACT_ADDRESS,
+	DEFAULT_TOKEN_DECIMALS,
+	WALLET_VERSION
+ } from './../config/constants';
+ 
 const uuid = require('uuid')
 
 class ModalGenerateWallet extends Component {     
@@ -140,9 +152,9 @@ class ModalGenerateWallet extends Component {
             });
                 const currentBLCBalance = await WalletUtils.getBalance({
                 walletAddress: walletAddress,
-                contractAddress: process.env.DEFAULT_TOKEN_CONTRACT_ADDRESS,
-                symbol: process.env.DEFAULT_TOKEN_SYMBOL, 
-                decimals: process.env.DEFAULT_TOKEN_DECIMALS, 
+                contractAddress: DEFAULT_TOKEN_CONTRACT_ADDRESS,
+                symbol: DEFAULT_TOKEN_SYMBOL, 
+                decimals: DEFAULT_TOKEN_DECIMALS, 
             });
             if (currentETHBalance !== undefined) {
                 if (this.props.ethBalance !== currentETHBalance)

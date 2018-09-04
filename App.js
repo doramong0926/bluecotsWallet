@@ -20,7 +20,7 @@ import ModalInfomation from './src/modals/modalInfomation';
 import ModalSpinner from './src/modals/modalSpinner'
 
 export default class App extends React.Component {
-    render() {
+    render() {        
         return (
             <Provider store={store}>
                 <PersistGate persistor={persistor}>

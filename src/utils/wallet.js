@@ -6,6 +6,17 @@ import ProviderEngine from 'web3-provider-engine';
 import WalletSubprovider from 'web3-provider-engine/subproviders/wallet';
 import ProviderSubprovider from 'web3-provider-engine/subproviders/provider';
 import { store } from '../config/store';
+import { 
+	ETHERSCAN_API_KEY,
+	INFURA_API_KEY ,
+	SEGMENT_API_KEY,
+	NETWORK,
+	DEFAULT_TOKEN_NAME,
+	DEFAULT_TOKEN_SYMBOL,
+	DEFAULT_TOKEN_CONTRACT_ADDRESS,
+	DEFAULT_TOKEN_DECIMALS,
+	WALLET_VERSION
+ } from './../config/constants';
 
 //import AnalyticsUtils from './analytics';
 import { erc20Abi } from './../config/constants';
@@ -25,19 +36,19 @@ export default class WalletUtils {
     switch (store.getState().config.network) {
       case 'ropsten':
         return new Web3.providers.HttpProvider(
-          `https://ropsten.infura.io/${process.env.INFURA_API_KEY}`,
+          `https://ropsten.infura.io/${INFURA_API_KEY}`,
         );
       case 'kovan':
         return new Web3.providers.HttpProvider(
-          `https://kovan.infura.io/${process.env.INFURA_API_KEY}`,
+          `https://kovan.infura.io/${INFURA_API_KEY}`,
         );
       case 'rinkeby':
         return new Web3.providers.HttpProvider(
-          `https://rinkeby.infura.io/${process.env.INFURA_API_KEY}`,
+          `https://rinkeby.infura.io/${INFURA_API_KEY}`,
         );
       default:
         return new Web3.providers.HttpProvider(
-          `https://mainnet.infura.io/${process.env.INFURA_API_KEY}`,
+          `https://mainnet.infura.io/${INFURA_API_KEY}`,
         );
     }
   }
@@ -121,7 +132,7 @@ export default class WalletUtils {
   static async getERC20Transactions(contractAddress, walletAddress, decimals) {
     return fetch(
       `https://${this.getEtherscanApiSubdomain()}.etherscan.io/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${walletAddress}&sort=desc&apikey=${
-        process.env.ETHERSCAN_API_KEY
+        ETHERSCAN_API_KEY
       }`,
     )
       .then(response => response.json())

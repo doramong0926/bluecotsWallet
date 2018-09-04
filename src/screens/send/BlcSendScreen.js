@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Clipboard } from 'react-native';
+import { StyleSheet, View, Text, Clipboard, TouchableHighlight } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'
 import WalletUtils from './../../utils/wallet';
 import { connect } from 'react-redux';
@@ -9,6 +9,17 @@ import WalletAddressWithNickNameForSend from './../../components/walletAddressWi
 import PropTypes from 'prop-types';
 import { Permissions } from 'expo';
 
+import { 
+	ETHERSCAN_API_KEY,
+	INFURA_API_KEY ,
+	SEGMENT_API_KEY,
+	NETWORK,
+	DEFAULT_TOKEN_NAME,
+	DEFAULT_TOKEN_SYMBOL,
+	DEFAULT_TOKEN_CONTRACT_ADDRESS,
+	DEFAULT_TOKEN_DECIMALS,
+	WALLET_VERSION
+ } from './../../config/constants';
 
 class BlcSendScreen extends Component{
     constructor(props, context) {
@@ -46,7 +57,12 @@ class BlcSendScreen extends Component{
                 <WalletAddressWithNickNameForSend tokenName='BLC'/>
                 <View>
                     <FormLabel>Amount to send BLC</FormLabel>
-                    <FormInput containerStyle={styles.inputContainer} underlineColorAndroid='transparent' value={this.props.amountToSendBlc.toString()} onChangeText={(value) => this.props.setAmountToSendBlc(value)}/>                    
+                    <FormInput 
+                        containerStyle={styles.inputContainer} 
+                        underlineColorAndroid='transparent' 
+                        value={this.props.amountToSendBlc.toString()} 
+                        onChangeText={(value) => this.props.setAmountToSendBlc(value)                            
+                    }/>
                     {this.amountValidationMsg()}
                 </View>
                 <View>
@@ -131,6 +147,10 @@ class BlcSendScreen extends Component{
         );
     }
 
+    setMaxAmount = () => {        
+        this.props.setAmountToSendBlc(this.props.blcBalanceForSend);
+    }
+
     addressValidationMsg = () =>
     {
         if (this.props.addressToSendBlc === '' || this.props.addressToSendBlc === null) {
@@ -171,6 +191,7 @@ class BlcSendScreen extends Component{
 
     handelPressClear = () => {
         this.props.setAddressToSendBlc('');
+        this.props.setAmountToSendBlc('');
     }
     
     handelPressPaste = async () => {
@@ -182,9 +203,9 @@ class BlcSendScreen extends Component{
         if (walletAddress) {
             const currentBLCBalance = await WalletUtils.getBalance({
                 walletAddress: walletAddress,
-                contractAddress: process.env.DEFAULT_TOKEN_CONTRACT_ADDRESS,
-                symbol: process.env.DEFAULT_TOKEN_SYMBOL, 
-                decimals: process.env.DEFAULT_TOKEN_DECIMALS, 
+                contractAddress: DEFAULT_TOKEN_CONTRACT_ADDRESS,
+                symbol: DEFAULT_TOKEN_SYMBOL, 
+                decimals: DEFAULT_TOKEN_DECIMALS, 
             });            
             if (currentBLCBalance !== undefined) {
                 if (this.props.blcBalanceForSend !== currentBLCBalance)
@@ -277,5 +298,10 @@ const styles = StyleSheet.create({
         borderColor: '#67AFCB',
         borderWidth: 1,
         paddingHorizontal: 10,
+    },
+    maxText: {
+        color: 'red',
+        fontWeight: 'bold',
+        alignItems: 'center',
     }
 })

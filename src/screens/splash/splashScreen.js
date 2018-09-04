@@ -2,6 +2,17 @@
 import './../../../shim';
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Animated, Image, Easing } from 'react-native';
+import { 
+	ETHERSCAN_API_KEY,
+	INFURA_API_KEY ,
+	SEGMENT_API_KEY,
+	NETWORK,
+	DEFAULT_TOKEN_NAME,
+	DEFAULT_TOKEN_SYMBOL,
+	DEFAULT_TOKEN_CONTRACT_ADDRESS,
+	DEFAULT_TOKEN_DECIMALS,
+	WALLET_VERSION
+ } from './../../config/constants';
 
 class splashScreen extends Component {
 
@@ -54,7 +65,7 @@ class splashScreen extends Component {
             outputRange: ['0deg', '360deg']
         });
         const bluecotsLogoImg = require('./image/bluecots_COIN.png');
-        const appVersion = process.env.WALLET_VERSION;
+        const appVersion = WALLET_VERSION;
 
         let Splash_Screen = ( 
             <View style={style.container}>

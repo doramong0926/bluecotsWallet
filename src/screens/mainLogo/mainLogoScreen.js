@@ -2,7 +2,17 @@
 import './../../../shim';
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Animated, Image, Easing } from 'react-native';
-import { Icon } from 'native-base';
+import { 
+	ETHERSCAN_API_KEY,
+	INFURA_API_KEY ,
+	SEGMENT_API_KEY,
+	NETWORK,
+	DEFAULT_TOKEN_NAME,
+	DEFAULT_TOKEN_SYMBOL,
+	DEFAULT_TOKEN_CONTRACT_ADDRESS,
+	DEFAULT_TOKEN_DECIMALS,
+	WALLET_VERSION
+ } from './../../config/constants';
 
 class MainLogoScreen extends Component {
     static navigationOptions = {
@@ -36,7 +46,7 @@ class MainLogoScreen extends Component {
             outputRange: ['0deg', '360deg']
         });
         const bluecotsLogoImg = require('./images/bluecots_COIN.png');
-        const appVersion = process.env.WALLET_VERSION;
+        const appVersion = WALLET_VERSION;
         return (
             <View style={style.container}>
                 <View style={style.container}>

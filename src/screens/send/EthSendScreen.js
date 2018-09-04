@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Clipboard } from 'react-native';
+import { StyleSheet, View, Text, Clipboard, TouchableHighlight } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'
 import WalletUtils from './../../utils/wallet';
 import { connect } from 'react-redux';
@@ -135,6 +135,19 @@ class EthSendScreen extends Component{
         );
     }
 
+    setMaxAmount = async() => {
+        const gasLimit = await WalletUtils.getEstimateGasForEth(
+            this.props.walletForSend.walletAddress,
+            this.props.addressToSendEth,
+            this.props.ethBalanceForSend
+        )
+        const gasPriceData = await WalletUtils.getGasPrice();
+        if (gasLimit !== undefined && gasPriceData !== undefined) {
+            const txFee = gasLimit.wei * gasPriceData;
+            this.props.setAmountToSendEth(this.props.ethBalanceForSend - txFee);
+        }
+    }
+
     addressValidationMsg = () =>
     {
         if (this.props.addressToSendEth === '' || this.props.addressToSendEth === null) {
@@ -175,6 +188,7 @@ class EthSendScreen extends Component{
 
     handelPressClear = () => {
         this.props.setAddressToSendEth('');
+        this.props.setAmountToSendEth('');
     }
     
     handelPressPaste = async () => {

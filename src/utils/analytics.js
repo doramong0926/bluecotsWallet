@@ -2,8 +2,19 @@ import { AsyncStorage } from 'react-native';
 // import Config from 'react-native-config';
 import Analytics from 'analytics-react-native';
 import { store } from '../config/store';
+import { 
+	ETHERSCAN_API_KEY,
+	INFURA_API_KEY ,
+	SEGMENT_API_KEY,
+	NETWORK,
+	DEFAULT_TOKEN_NAME,
+	DEFAULT_TOKEN_SYMBOL,
+	DEFAULT_TOKEN_CONTRACT_ADDRESS,
+	DEFAULT_TOKEN_DECIMALS,
+	WALLET_VERSION
+ } from './../config/constants';
 
-const analytics = new Analytics(process.env.SEGMENT_API_KEY);
+const analytics = new Analytics(SEGMENT_API_KEY);
 
 function guid() {
   function s4() {
