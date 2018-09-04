@@ -7,9 +7,9 @@ const initialState = {
     ethBalanceForSend: 0,
     blcBalanceForSend: 0,
     addressToSendBlc: '',
-    amountToSendBlc: '',
+    amountToSendBlc: 0,
     addressToSendEth: '',
-    amountToSendEth: '',
+    amountToSendEth: 0,
     copyAddressToClipboard: '',
 };  
 

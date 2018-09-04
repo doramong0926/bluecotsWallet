@@ -133,8 +133,8 @@ class ModalConfirmToSendBlc extends Component {
     isEnoughGas = async () => {
         try {
             const gasLimit = await WalletUtils.getEstimateGasForErc20(
-                    process.env.DEFAULT_TOKEN_CONTRACT_ADDRESS,
-                    process.env.DEFAULT_TOKEN_DECIMALS, 
+                    DEFAULT_TOKEN_CONTRACT_ADDRESS,
+                    DEFAULT_TOKEN_DECIMALS, 
                     this.props.walletForSend.walletAddress,
                     this.props.addressToSendBlc,
                     this.props.amountToSendBlc

@@ -50,7 +50,7 @@ class EthSendScreen extends Component{
                 <WalletAddressWithNickNameForSend tokenName='ETH'/>
                 <View>
                     <FormLabel>Amount to send ETH</FormLabel>
-                    <FormInput containerStyle={styles.inputContainer} underlineColorAndroid='transparent' value={this.props.amountToSendEth.toString()} onChangeText={(value) => this.props.setAmountToSendEth(value)}/>                    
+                    <FormInput containerStyle={styles.inputContainer} underlineColorAndroid='transparent' value={this.props.amountToSendEth.toString()} onChangeText={(value) => this.props.setAmountToSendEth(value)}/>
                     {this.amountValidationMsg()}
                 </View>
                 <View>
@@ -135,18 +135,18 @@ class EthSendScreen extends Component{
         );
     }
 
-    setMaxAmount = async() => {
-        const gasLimit = await WalletUtils.getEstimateGasForEth(
-            this.props.walletForSend.walletAddress,
-            this.props.addressToSendEth,
-            this.props.ethBalanceForSend
-        )
-        const gasPriceData = await WalletUtils.getGasPrice();
-        if (gasLimit !== undefined && gasPriceData !== undefined) {
-            const txFee = gasLimit.wei * gasPriceData;
-            this.props.setAmountToSendEth(this.props.ethBalanceForSend - txFee);
-        }
-    }
+    // setMaxAmount = async() => {
+    //     const gasLimit = await WalletUtils.getEstimateGasForEth(
+    //         this.props.walletForSend.walletAddress,
+    //         this.props.addressToSendEth,
+    //         this.props.ethBalanceForSend
+    //     )
+    //     const gasPriceData = await WalletUtils.getGasPrice();
+    //     if (gasLimit !== undefined && gasPriceData !== undefined) {
+    //         const txFee = gasLimit.wei * gasPriceData;
+    //         this.props.setAmountToSendEth(this.props.ethBalanceForSend - txFee);
+    //     }
+    // }
 
     addressValidationMsg = () =>
     {

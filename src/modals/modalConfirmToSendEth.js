@@ -132,7 +132,7 @@ class ModalConfirmToSendEth extends Component {
             } else {
                 const txFee = gasLimit.wei * gasPriceData;
                 this.setState({gasForSend: txFee});
-                if (txFee + this.props.amountToSendEth <= this.props.ethBalanceForSend) {
+                if (this.props.amountToSendEth <= this.props.ethBalanceForSend - txFee) {
                     this.setState({isEnoughEth: true});
                     return true;
                 } else {
