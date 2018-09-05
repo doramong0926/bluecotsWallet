@@ -6,6 +6,7 @@ import WalletScreen from './../wallet/walletScreen'
 import itemsScreen from './../items/itemsScreen'
 import sendScreen from './../send/sendScreen'
 import receiveScreen from './../receive/receiveScreen'
+import historyScreen from './../history/historyScreen'
 import settingsScreen from './../settings/settingsScreen'
 
 class mainScreen extends Component{
@@ -36,9 +37,12 @@ const MainScreenTabNavigator = createBottomTabNavigator({
         receiveTab:{
             screen:receiveScreen
         },
+        historyTab:{
+            screen:historyScreen
+        },   
         settingsTab:{
             screen:settingsScreen
-        },    
+        },
     }, 
     {
         animationEnabled: true,

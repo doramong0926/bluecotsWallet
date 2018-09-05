@@ -60,14 +60,21 @@ class BlcSendScreen extends Component{
                     <FormInput 
                         containerStyle={styles.inputContainer} 
                         underlineColorAndroid='transparent' 
+                        keyboardType = 'numeric'
                         value={this.props.amountToSendBlc.toString()} 
-                        onChangeText={(value) => this.props.setAmountToSendBlc(value)                            
+                        onChangeText={(value) => this.props.setAmountToSendBlc(value)
                     }/>
                     {this.amountValidationMsg()}
                 </View>
                 <View>
                     <FormLabel>Address to send BLC</FormLabel>
-                    <FormInput containerStyle={styles.inputContainer} underlineColorAndroid='transparent' editable={false} value={this.props.addressToSendBlc} onChangeText={(value) => this.props.setAddressToSendBlc(value)}/>
+                    <FormInput 
+                        containerStyle={styles.inputContainer} 
+                        underlineColorAndroid='transparent' 
+                        editable={false} 
+                        value={this.props.addressToSendBlc} 
+                        onChangeText={(value) => this.props.setAddressToSendBlc(value)}
+                    />
                     {this.addressValidationMsg()}
                 </View>
                 <View>

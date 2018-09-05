@@ -9,6 +9,7 @@ import mainScreen from './src/screens/main/mainScreen';
 import ModalAddWallet from './src/modals/modalAddWallet';
 import ModalSelectAnotherWalletForSend from './src/modals/modalSelectAnotherWalletForSend';
 import ModalSelectAnotherWalletForReceive from './src/modals/modalSelectAnotherWalletForReceive';
+import ModalSelectAnotherWalletForHistory from './src/modals/modalSelectAnotherWalletForHistory';
 import ModalDefaultWalletSettings from './src/modals/modalDefaultWalletSettings';
 import ModalGenerateWallet from './src/modals/modalGenerateWallet';
 import ModalRestoreWallet from './src/modals/modalRestoreWallet';
@@ -23,20 +24,21 @@ export default class App extends React.Component {
     render() {        
         return (
             <Provider store={store}>
-                <PersistGate persistor={persistor}>
-                    <AppStackNavigator />                    
+                <PersistGate persistor={persistor}>        
+                    <AppStackNavigator />            
                     <ModalAddWallet />
                     <ModalDefaultWalletSettings />
                     <ModalGenerateWallet />
                     <ModalRestoreWallet /> 
                     <ModalSelectAnotherWalletForSend />
                     <ModalSelectAnotherWalletForReceive />
+                    <ModalSelectAnotherWalletForHistory />
                     <ModalChangeDefaultWallet />
                     <ModalConfirmToSendBlc />
                     <ModalConfirmToSendEth />
                     <ModalQrCodeScaner />
                     <ModalInfomation />
-                    <ModalSpinner />                   
+                    <ModalSpinner />
                 </PersistGate>
             </Provider>    
         );

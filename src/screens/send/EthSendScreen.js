@@ -16,7 +16,7 @@ class EthSendScreen extends Component{
     }
 
     static navigationOptions = {
-        tabBarLabel: 'ETH'
+        tabBarLabel: 'ETH',
     };
 
     static propTypes = {
@@ -50,12 +50,24 @@ class EthSendScreen extends Component{
                 <WalletAddressWithNickNameForSend tokenName='ETH'/>
                 <View>
                     <FormLabel>Amount to send ETH</FormLabel>
-                    <FormInput containerStyle={styles.inputContainer} underlineColorAndroid='transparent' value={this.props.amountToSendEth.toString()} onChangeText={(value) => this.props.setAmountToSendEth(value)}/>
+                    <FormInput 
+                        containerStyle={styles.inputContainer} 
+                        underlineColorAndroid='transparent' 
+                        keyboardType = 'numeric'
+                        value={this.props.amountToSendEth.toString()} 
+                        onChangeText={(value) => this.props.setAmountToSendEth(value)}
+                    />
                     {this.amountValidationMsg()}
                 </View>
                 <View>
                     <FormLabel>Address to send ETH</FormLabel>
-                    <FormInput containerStyle={styles.inputContainer} underlineColorAndroid='transparent' editable={false} value={this.props.addressToSendEth} onChangeText={(value) => this.props.setAddressToSendEth(value)}/>
+                    <FormInput 
+                        containerStyle={styles.inputContainer} 
+                        underlineColorAndroid='transparent' 
+                        editable={false} 
+                        value={this.props.addressToSendEth} 
+                        onChangeText={(value) => this.props.setAddressToSendEth(value)}
+                    />
                     {this.addressValidationMsg()}
                 </View>
                 <View>

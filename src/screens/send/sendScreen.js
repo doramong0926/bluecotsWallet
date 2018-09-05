@@ -29,6 +29,7 @@ class sendScreen extends Component{
         );
     }
 }
+
 export default sendScreen;
 
 const styles = StyleSheet.create({
@@ -47,7 +48,7 @@ const SendScreenTabNavigator = createMaterialTopTabNavigator({
     },
 }, 
 {
-    animationEnabled: false,
+    animationEnabled: true,
     swipeEnabled: true,
     tabBarOptions: {
         labelStyle: {

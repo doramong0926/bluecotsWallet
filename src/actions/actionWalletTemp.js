@@ -21,6 +21,13 @@ export function setEthBalanceForSend(balance) {
     };
 }
 
+export function setWalletForHistory(wallet) {
+    return {
+        type: actionTypes.SET_WALLET_FOR_HISTORY,
+        payload: wallet
+    };
+}
+
 export function setBlcBalanceForSend(balance) {
     return {
         type: actionTypes.SET_BLC_BALANCE_FOR_SEND,

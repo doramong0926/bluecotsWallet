@@ -7,16 +7,16 @@ import WalletSubprovider from 'web3-provider-engine/subproviders/wallet';
 import ProviderSubprovider from 'web3-provider-engine/subproviders/provider';
 import { store } from '../config/store';
 import { 
-	ETHERSCAN_API_KEY,
-	INFURA_API_KEY ,
-	SEGMENT_API_KEY,
-	NETWORK,
-	DEFAULT_TOKEN_NAME,
-	DEFAULT_TOKEN_SYMBOL,
-	DEFAULT_TOKEN_CONTRACT_ADDRESS,
-	DEFAULT_TOKEN_DECIMALS,
-	WALLET_VERSION
- } from './../config/constants';
+  ETHERSCAN_API_KEY,
+  INFURA_API_KEY ,
+  SEGMENT_API_KEY,
+  NETWORK,
+  DEFAULT_TOKEN_NAME,
+  DEFAULT_TOKEN_SYMBOL,
+  DEFAULT_TOKEN_CONTRACT_ADDRESS,
+  DEFAULT_TOKEN_DECIMALS,
+  WALLET_VERSION
+} from './../config/constants';
 
 //import AnalyticsUtils from './analytics';
 import { erc20Abi } from './../config/constants';
@@ -106,7 +106,7 @@ export default class WalletUtils {
   static getEthTransactions(walletAddress) {
     return fetch(
       `https://${this.getEtherscanApiSubdomain()}.etherscan.io/api?module=account&action=txlist&address=${walletAddress}&sort=desc&apikey=${
-        process.env.ETHERSCAN_API_KEY
+        ETHERSCAN_API_KEY
       }`,
     )
       .then(response => response.json())
@@ -130,23 +130,25 @@ export default class WalletUtils {
    * @param {String} contractAddress
    */
   static async getERC20Transactions(contractAddress, walletAddress, decimals) {
+    
     return fetch(
-      `https://${this.getEtherscanApiSubdomain()}.etherscan.io/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${walletAddress}&sort=desc&apikey=${
-        ETHERSCAN_API_KEY
-      }`,
+      'https://api-ropsten.etherscan.io/api?module=account&action=tokentx&contractaddress=0x0cd4bf09b96d308dafa18d5d6b62d7eb5d774396&address=0xa0418a1e8384e31c4eec5fff49050095c69ffb92&sort=desc&apikey=ZGZW3C6175M2MNQTS14HDDIGBYFDHEMXBR'
+      // 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=account&action=tokentx&contractaddress=' + contractAddress + '&address=' + walletAddress + '&sort=desc&apikey=' + ETHERSCAN_API_KEY
     )
       .then(response => response.json())
       .then(data => {
         if (data.message !== 'OK') {
           return [];
         }
-
+        return data.result;
+/*
         return data.result.map(t => ({
           from: t.from,
           timestamp: t.timeStamp,
           transactionHash: t.hash,
           value: (parseInt(t.value, 10) / Math.pow(10, decimals)).toFixed(2),
         }));
+*/
       });
   }
 

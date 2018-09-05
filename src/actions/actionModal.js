@@ -72,6 +72,18 @@ export function hideModalSelectAnotherWalletForReceive() {
     };
 }
 
+export function showModalSelectAnotherWalletForHistory() {
+  return {
+    type: actionTypes.SHOW_MODAL_SELECT_ANOTHER_WALLET_FOR_HISTORY
+  };
+}
+
+export function hideModalSelectAnotherWalletForHistory() {
+    return {
+      type: actionTypes.HIDE_MODAL_SELECT_ANOTHER_WALLET_FOR_HISTORY
+    };
+}
+
 export function showModalChangeDefaultWallet() {
   return {
     type: actionTypes.SHOW_MODAL_CHANGE_DEFAULT_WALLET
