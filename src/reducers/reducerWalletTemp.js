@@ -12,10 +12,16 @@ const initialState = {
     addressToSendEth: '',
     amountToSendEth: '',
     copyAddressToClipboard: '',
+    isLoadingTxData: true,
 };  
 
 export default (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.SET_IS_LOADING_TX_DATA:
+            return Object.assign({}, state, {
+                isLoadingTxData: action.payload,
+        });
+
         case actionTypes.SET_WALLET_FOR_SEND:
             return Object.assign({}, state, {
                 walletForSend: action.payload,

@@ -107,6 +107,7 @@ class ModalSelectAnotherWalletForHistory extends Component {
 
     handlePress = (wallet) => {
         this.props.setWalletForHistory(wallet);
+        this.props.setIsLoadingTxData(true);
         this.props.hideModalSelectAnotherWalletForHistory();
     }
 
@@ -133,6 +134,9 @@ function mapDispatchToProps(dispatch) {
         },
         hideModalSelectAnotherWalletForHistory: () => {
             dispatch(ActionCreator.hideModalSelectAnotherWalletForHistory());
+        },
+        setIsLoadingTxData: (value) => {
+            dispatch(ActionCreator.setIsLoadingTxData(value));
         },
     };
 }

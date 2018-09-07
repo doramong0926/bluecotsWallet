@@ -24,6 +24,11 @@ import { erc20Abi } from './../config/constants';
 
 export default class WalletUtils {
   
+  static fromWei(value) {
+      const web3 = new Web3(this.getWeb3HTTPProvider());
+      return web3.fromWei(value, 'ether');
+  }
+
   static generateWallet() {
       return EthereumJsWallet.generate();
   }
@@ -92,7 +97,7 @@ export default class WalletUtils {
    *
    * @param {Object} token
    */
-  static getTransactions({ contractAddress, walletAddress, decimals, symbol }) {
+  static getTransactions(contractAddress, walletAddress, decimals, symbol) {
     if (symbol === 'ETH') {
       return this.getEthTransactions();
     }
@@ -130,17 +135,19 @@ export default class WalletUtils {
    * @param {String} contractAddress
    */
   static async getERC20Transactions(contractAddress, walletAddress, decimals) {
-    
-    return fetch(
-      'https://api-ropsten.etherscan.io/api?module=account&action=tokentx&contractaddress=0x0cd4bf09b96d308dafa18d5d6b62d7eb5d774396&address=0xa0418a1e8384e31c4eec5fff49050095c69ffb92&sort=desc&apikey=ZGZW3C6175M2MNQTS14HDDIGBYFDHEMXBR'
-      // 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=account&action=tokentx&contractaddress=' + contractAddress + '&address=' + walletAddress + '&sort=desc&apikey=' + ETHERSCAN_API_KEY
-    )
+    const fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=account&action=tokentx&contractaddress=' + contractAddress + '&address=' + walletAddress + '&sort=desc&apikey=' + ETHERSCAN_API_KEY;
+    // const fetchString = 'https://api-ropsten.etherscan.io/api?module=account&action=tokentx&contractaddress=0x0cd4bf09b96d308dafa18d5d6b62d7eb5d774396&address=0xa0418a1e8384e31c4eec5fff49050095c69ffb92&sort=desc&apikey=ZGZW3C6175M2MNQTS14HDDIGBYFDHEMXBR'
+    console.log('fetchString : ' + fetchString);
+    return fetch(fetchString)    
       .then(response => response.json())
       .then(data => {
-        if (data.message !== 'OK') {
-          return [];
-        }
-        return data.result;
+        return data;
+        // if (data.message !== 'OK') {
+        //   console.log('getERC20Transactions not ok : ' + data.message);
+        //   return [{}];
+        // }
+        // console.log('getERC20Transactions ok : ' + data.message);
+        // return data.result;
 /*
         return data.result.map(t => ({
           from: t.from,
