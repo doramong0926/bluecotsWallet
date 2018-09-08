@@ -68,7 +68,7 @@ class ModalRestoreWallet extends Component {
                     flex: 1
                 }}
             >
-                <View style={styles.heaerContainer}>
+                <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>Add wallet - RESTORE</Text>
                 </View>
                 <View>
@@ -359,7 +359,7 @@ function mapDispatchToProps(dispatch) {
 }  
 
 const styles = StyleSheet.create({
-    heaerContainer: {
+    headerContainer: {
         backgroundColor: '#67AFCB',
         alignItems: 'center',
         justifyContent: 'center',

@@ -55,7 +55,7 @@ class ModalConfirmToSendBlc extends Component {
                     flex: 1
                 }}
             >
-                <View style={styles.heaerContainer}>
+                <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>Confirmation</Text>
                 </View>
                 <View style={styles.messageContainer}>                
@@ -239,7 +239,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 const styles = StyleSheet.create({
-    heaerContainer: {
+    headerContainer: {
         backgroundColor: '#67AFCB',
         alignItems: 'center',
         justifyContent: 'center',

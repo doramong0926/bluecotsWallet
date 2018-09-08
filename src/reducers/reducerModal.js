@@ -14,10 +14,22 @@ const initialState = {
     visibleModalConfirmToSendBlc: false,
     visibleModalConfirmToSendEth: false,
     visibleModalQrCodeScaner: false,
+    visibleModalSpinner: false,
     visibleModalInfomation: false,
     modalInfomationText: {title: '', message1: '', message2: '', message3: ''},    
+    visibleModalTransactionHistory: false,
+    modalTransactionHistoryInfomation: {
+        blockNumber: '',
+        timeStamp: '',
+        hash : '',
+        from: '',
+        value: '',
+        to: '',
+        gasUsed: '',
+        symbol: '',
+        status: '',
+    },
     tokenNameForQrCode: '',
-    visibleModalSpinner: false,
     spinnerText: '',  
 };  
  
@@ -163,6 +175,21 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 visibleModalSpinner: false,
                 spinnerText: '',
+            });
+
+        case actionTypes.SHOW_MODAL_TRANSACTION_HISTORY:
+            return Object.assign({}, state, {
+                visibleModalTransactionHistory: true
+            });
+
+        case actionTypes.HIDE_MODAL_TRANSACTION_HISTORY:
+            return Object.assign({}, state, {
+                visibleModalTransactionHistory: false
+            });
+
+        case actionTypes.SET_MODAL_TRANSACTION_HISTORY_INFOMATION:
+            return Object.assign({}, state, {
+                modalTransactionHistoryInfomation: action.payload,
             });
             
         default:

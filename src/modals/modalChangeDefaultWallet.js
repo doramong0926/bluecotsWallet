@@ -15,7 +15,7 @@ import {
 	DEFAULT_TOKEN_SYMBOL,
 	DEFAULT_TOKEN_CONTRACT_ADDRESS,
 	DEFAULT_TOKEN_DECIMALS,
-	WALLET_VERSION
+    WALLET_VERSION,
  } from './../config/constants';
 
 class ModalChangeDefaultWallet extends Component {
@@ -70,7 +70,7 @@ class ModalChangeDefaultWallet extends Component {
                     flex: 1
                 }}
             >
-                <View style={styles.heaerContainer}>
+                <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>Wallet List</Text>
                 </View>
                 <View>
@@ -121,6 +121,7 @@ class ModalChangeDefaultWallet extends Component {
         this.props.setDefaultWallet(wallet);
         this.props.setWalletForSend(wallet);
         this.props.setWalletForReceive(wallet);
+        this.props.setIsLoadingTxData(true);
         setTimeout(() => {
             this.updateWalletBalance(this.props.defaultWallet.walletAddress);
             this.props.hideModalChangeDefaultWallet();
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
     listViewContainer: {
         paddingTop: 20,
     }, 
-    heaerContainer: {
+    headerContainer: {
         backgroundColor: '#67AFCB',
         alignItems: 'center',
         justifyContent: 'center',
@@ -216,7 +217,10 @@ function mapDispatchToProps(dispatch) {
         },
         hideModalChangeDefaultWallet: () => {
             dispatch(ActionCreator.hideModalChangeDefaultWallet());
-        }
+        },
+        setIsLoadingTxData: (value) => {
+            dispatch(ActionCreator.setIsLoadingTxData(value));
+        },
     };
 }
   

@@ -116,6 +116,7 @@ class receiveScreen extends Component{
     };
 
     handlePressToSave = () => {
+        
         /*
         this.svg.toDataURL((data) => {
             filePath = RNFS.CachesDirectoryPath + "/" + this.props.walletForReceive.walletAddress + ".png";

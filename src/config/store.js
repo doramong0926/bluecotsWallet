@@ -42,6 +42,7 @@ const store = createStore(
         ? applyMiddleware(ReduxThunk)
         : applyMiddleware(ReduxThunk, createLogger()),
 );
+//: applyMiddleware(ReduxThunk, createLogger()),
 
 const persistor = persistStore(store);
 // persistor.purge();

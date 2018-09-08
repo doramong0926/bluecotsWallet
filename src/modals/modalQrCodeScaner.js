@@ -101,7 +101,7 @@ class ModalQrCodeScaner extends Component {
                     flex: 1
                 }}
             >
-                <View style={styles.heaerContainer}>
+                <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>QR-Code Scanner</Text>
                 </View>
                 <View style={styles.qrCodeContainer}>   
@@ -152,7 +152,7 @@ class ModalQrCodeScaner extends Component {
 }
     
 const styles = StyleSheet.create({
-    heaerContainer: {
+    headerContainer: {
         backgroundColor: '#67AFCB',
         alignItems: 'center',
         justifyContent: 'center',

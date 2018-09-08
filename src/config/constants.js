@@ -17,6 +17,30 @@ const defaultWallet = {
     privateKey: '',
 };
 
+const defaultTransactionData = [
+  {
+    blockNumber: '',
+    timeStamp: '',
+    hash : '',
+    from: '',
+    value: '',
+    to: '',
+    gasUsed: '',
+  }
+]
+
+const defaultModalTransactionInfomation = {
+  blockNumber: "",
+  timeStamp: "",
+  hash : "",
+  from: "",
+  value: "",
+  to: "",
+  gasUsed: "",
+  symbol: "",
+  status: ""
+}
+
 const erc20Abi = [
     {
       name: 'balanceOf',
@@ -72,4 +96,5 @@ export {
 	DEFAULT_TOKEN_CONTRACT_ADDRESS,
 	DEFAULT_TOKEN_DECIMALS,
   WALLET_VERSION,
+  defaultTransactionData,
  };

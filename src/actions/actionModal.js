@@ -170,3 +170,25 @@ export function hideModalSpinner() {
       type: actionTypes.HIDE_MODAL_SPINNER,
   };
 }
+
+export function showModalTransactionHistory() {
+  return {
+      type: actionTypes.SHOW_MODAL_TRANSACTION_HISTORY,
+  };
+}
+
+export function hideModalTransactionHistory() {
+  return {
+      type: actionTypes.HIDE_MODAL_TRANSACTION_HISTORY,
+  };
+}
+
+export function setModalTransactionHistoryInfomation(infomation) {
+  return {
+      type: actionTypes.SET_MODAL_TRANSACTION_HISTORY_INFOMATION,
+      payload: infomation
+  };
+}
+
+
+

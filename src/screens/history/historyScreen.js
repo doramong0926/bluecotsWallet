@@ -9,6 +9,7 @@ import ActionCreator from './../../actions';
 import PropTypes from 'prop-types';
 import WalletUtils from './../../utils/wallet';
 import Moment from 'react-moment';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import { 
     ETHERSCAN_API_KEY,
@@ -19,7 +20,9 @@ import {
     DEFAULT_TOKEN_SYMBOL,
     DEFAULT_TOKEN_CONTRACT_ADDRESS,
     DEFAULT_TOKEN_DECIMALS,
-    WALLET_VERSION
+    WALLET_VERSION,
+    defaultTransactionData,
+    defaultModalTransactionInfomation,
   } from './../../config/constants';
 
 //import RNFS from "react-native-fs"
@@ -43,22 +46,12 @@ class historyScreen extends Component{
         }).isRequired,
     };
 
-    
-
     state = {
         dataSourceForTransaction: new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2,
         }),
-        isLoading: true,
-        txData: [
-            {
-                blockNumber: '',
-                timeStamp: '',
-                hash : '',
-                from: '',
-                value: '',
-            },
-        ],
+        transactionHistoryData: defaultTransactionData,
+        isNoTransactionData: true
     };
 
     componentWillMount() {
@@ -71,7 +64,9 @@ class historyScreen extends Component{
     componentDidMount() {
         this.fetchTransaction();
         setInterval(() => {
-            this.fetchTransaction();
+            if (this.state.isLoadingTxData == false) {
+                this.fetchTransaction();
+            }
         }, 5000)
     }
 
@@ -80,7 +75,6 @@ class historyScreen extends Component{
     }
 
     render(){
-        const unixTimestamp = 198784740;
         return (
             <View style={styles.container}>
                 <Header
@@ -100,26 +94,55 @@ class historyScreen extends Component{
     renderListView = () => {
         if (this.props.isLoadingTxData === true) {
             return (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',}}>
-                    <Text> data fetching... </Text>
+                <View>                
+                    <Spinner visible={this.props.isLoadingTxData} cancelable={true} textContent="fetching" textStyle={{fontSize:20, fontWeight:'normal', color: '#FFF'}}/>
                 </View>
             )
         } else {
             return ( 
                 <View style={{ flex: 1, alignItems: 'center'}}>
-                    <View style={{margin: 5, borderColor: 'gray', borderWidth: 0.5}}></View>
-                    <ListView
-                        dataSource={this.state.dataSourceForTransaction}
-                        renderRow={this.renderTransaction}
-                        style={styles.listViewContainer}
-                    />
+                    {
+                        (this.state.isNoTransactionData == true) ? 
+                        (
+                            <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
+                                <Text>There is no transactions.</Text>
+                            </View>
+                        ) :
+                        (
+                            <View>
+                                <View style={styles.statusContainer}>
+                                    <View style={styles.statusIconContainer}>
+                                        <View style={styles.statusIcon1}>
+                                        </View>
+                                        <Text style={styles.statusGuideFont}> Success</Text>
+                                    </View>
+                                    <View style={styles.statusIconContainer}>
+                                        <View style={styles.statusIcon2}>
+                                        </View>
+                                        <Text style={styles.statusGuideFont}> Pending</Text>
+                                    </View>
+                                    <View style={styles.statusIconContainer}>
+                                        <View style={styles.statusIcon3}>
+                                        </View>
+                                        <Text style={styles.statusGuideFont}> Failure</Text>
+                                    </View>
+                                </View>
+                                <View style={{marginHorizontal: 20, marginTop: 10, borderColor: 'gray', borderWidth: 0.5}}></View>            
+                                <ListView
+                                    dataSource={this.state.dataSourceForTransaction}
+                                    renderRow={this.renderTransaction}
+                                    style={styles.listViewContainer}
+                                />
+                            </View>
+                        )
+                    }     
                 </View>
             )
         }
     }
 
     renderTransaction = (txData) => {
-        if (txData.from !== undefined && txData.from !== '') {
+        if (txData.from !== undefined && txData.from !== '' && txData.value !== '0') {
             return (
                 <View>
                     <TouchableHighlight onPress={() => this.handlePress(txData)} underlayColor="gray">
@@ -128,33 +151,47 @@ class historyScreen extends Component{
                             <View style={{width: 60, borderRadius:50, backgroundColor:'green'}}>
                                 {
                                     (txData.from == this.props.walletForHistory.walletAddress) ? 
-                                        ( <Text style={{textAlign:'center'}}>Sent</Text> ) : 
-                                        ( <Text style={{textAlign:'center'}}>Received</Text> )
+                                        ( <Text style={{fontSize:12, textAlign:'center'}}>Sent</Text> ) : 
+                                        ( <Text style={{fontSize:12, textAlign:'center'}}>Received</Text> )
                                 }
                             </View>
                             <Text> {WalletUtils.fromWei(txData.value)} BLC (</Text>
                             <Moment unix fromNow element={Text} >{txData.timeStamp}</Moment>
                             <Text>)</Text>           
-                        </View>
-                        <Text>{txData.hash}</Text>
+                        </View>      
+                            {                  
+                                (txData.from == this.props.walletForHistory.walletAddress) ? 
+                                (<Text style={{fontSize: 12}}>to : {txData.to}</Text>) :
+                                (<Text style={{fontSize: 12}}>from : {txData.from}</Text>)
+                            }
                     </View>
                     </TouchableHighlight>
-                    <View style={{margin: 10, borderColor: 'gray', borderWidth: 0.5}}></View>
+                    <View style={{marginHorizontal: 10, marginVertical: 5, borderColor: 'gray', borderWidth: 0.5}}></View>
                 </View>
              ) 
+        }
+        else {
+            return (
+                <View></View>
+            )
         }
     }
 
     handlePress = (txData) => {
         const infomation = {
-            title: 'TRANSACTION', 
-            message1: 'Timestamp' + txData.timeStamp, 
-            message2: 'TXID : ' + txData.hash, 
-            message3: 'Sent ' + WalletUtils.fromWei(txData.value) + ' BLC', 
-            
-        };
-        this.props.setModalInfomation(infomation);
-        this.props.showModalInfomation();
+            blockNumber: txData.blockNumber,
+            timeStamp: txData.timeStamp,
+            hash : txData.hash,
+            from: txData.from,
+            value: txData.value,
+            to: txData.to,
+            gasUsed: txData.gasUsed,
+            symbol: "BLC",
+            status: "Success"
+        }
+
+        this.props.setModalTransactionHistoryInfomation(infomation);
+        this.props.showModalTransactionHistory();
     } 
 
     fetchTransaction = async() => {
@@ -168,12 +205,17 @@ class historyScreen extends Component{
             )
             
             if (txData.message === 'OK') {
-                console.log("fetching wallet address: " + this.props.walletForHistory.walletAddress)
-                this.setState({txData: txData.result})                
-                this.state.dataSourceForTransaction = this.state.dataSourceForTransaction.cloneWithRows(this.state.txData)
+                console.log("fetching wallet address: " + this.props.walletForHistory.walletAddress);
+                this.setState({transactionHistoryData: txData.result});
+                this.state.dataSourceForTransaction = this.state.dataSourceForTransaction.cloneWithRows(this.state.transactionHistoryData)
+                this.setState({isNoTransactionData: false});
                 this.props.setIsLoadingTxData(false);
+                
             } else if (txData.message === 'No transactions found') {
-                this.props.setIsLoadingTxData(true);
+                this.setState({transactionHistoryData: defaultTransactionData});
+                this.state.dataSourceForTransaction = this.state.dataSourceForTransaction.cloneWithRows(this.state.transactionHistoryData)
+                this.setState({isNoTransactionData: true});
+                this.props.setIsLoadingTxData(false);
             } else {
                 ;
             }
@@ -185,7 +227,7 @@ function mapStateToProps(state) {
     return {
         walletForHistory: state.walletTemp.walletForHistory,
         defaultWallet: state.wallet.defaultWallet,
-        isLoadingTxData:state.walletTemp.isLoadingTxData,
+        isLoadingTxData: state.walletTemp.isLoadingTxData,
     };
 }
 
@@ -194,20 +236,14 @@ function mapDispatchToProps(dispatch) {
         setWalletForHistory: (wallet) => {
             dispatch(ActionCreator.setWalletForHistory(wallet));
         },
-        showModalInfomation: () => {
-            dispatch(ActionCreator.showModalInfomation());
-        },
-        setModalInfomation: (infomation) => {
-            dispatch(ActionCreator.setModalInfomation(infomation));
-        },
         setIsLoadingTxData: (value) => {
             dispatch(ActionCreator.setIsLoadingTxData(value));
+        },        
+        showModalTransactionHistory: () => {
+            dispatch(ActionCreator.showModalTransactionHistory());
         },
-        showModalInfomation: () => {
-            dispatch(ActionCreator.showModalInfomation());
-        },
-        setModalInfomation: (infomation) => {
-            dispatch(ActionCreator.setModalInfomation(infomation));
+        setModalTransactionHistoryInfomation: (infomation) => {
+            dispatch(ActionCreator.setModalTransactionHistoryInfomation(infomation));
         },
     };
 }
@@ -229,5 +265,39 @@ const styles = StyleSheet.create({
         flex: 1,
         margin : 5,
         padding: 5,
+    },
+    statusContainer: {
+        marginHorizontal: 20, 
+        marginVertical: 5, 
+        flexDirection:'row', 
+        alignItems: 'center',
+        justifyContent: 'center',
     }, 
+    statusIconContainer: {
+        flexDirection: 'row',
+        marginHorizontal: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    statusIcon1: {
+        width:10, 
+        height:10, 
+        backgroundColor: 'green', 
+        borderRadius:100
+    },
+    statusIcon2: {
+        width:10, 
+        height:10, 
+        backgroundColor: 'orange', 
+        borderRadius:100
+    },
+    statusIcon3: {
+        width:10, 
+        height:10, 
+        backgroundColor: 'red', 
+        borderRadius:100
+    },
+    statusGuideFont: {
+        fontSize: 12,
+    }
 })

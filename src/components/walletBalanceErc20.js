@@ -76,7 +76,7 @@ class WalletBalanceErc20 extends Component {
             </View>
         );
     }    
-
+    
     updateWalletBalance = async () => {
         if (this.props.defaultWallet.walletAddress) {
                 const currentETHBalance = await WalletUtils.getBalance({

@@ -38,7 +38,7 @@ class ModalDefaultWalletSettings extends Component {
                     flex: 1
                 }}
             >
-                <View style={styles.heaerContainer}>
+                <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>Default Wallet settings</Text>
                 </View>
                 <View style={{justifyContent: 'center'}}>
@@ -108,7 +108,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 const styles = StyleSheet.create({
-    heaerContainer: {
+    headerContainer: {
         backgroundColor: '#67AFCB',
         alignItems: 'center',
         justifyContent: 'center',
