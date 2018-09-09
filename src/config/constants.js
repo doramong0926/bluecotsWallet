@@ -26,6 +26,8 @@ const defaultTransactionData = [
     value: '',
     to: '',
     gasUsed: '',
+    isError: '',
+    txreceipt_status: '',
   }
 ]
 

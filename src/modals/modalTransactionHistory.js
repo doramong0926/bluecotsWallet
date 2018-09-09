@@ -7,7 +7,6 @@ import WalletUtils from './../utils/wallet';
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
 import PropTypes from 'prop-types';
-import { defaultModalTransactionInfomation } from './../config/constants';
 import ActionCreator from './../actions';
 
 class ModalTransactionHistory extends Component {     
@@ -52,15 +51,15 @@ class ModalTransactionHistory extends Component {
                 <TouchableHighlight onPress={() => this.handlePress()} underlayColor="gray">
                     <View style={styles.messageContainer}>
                         <View>
-                            <Moment unix element={Text} >{this.props.modalTransactionHistoryInfomation.timeStamp}</Moment>                    
-                            <Text>Block  : {this.props.modalTransactionHistoryInfomation.blockNumber}</Text>
+                            <Moment style={{textAlign:'center', marginBottom: 5}} unix element={Text} >{this.props.modalTransactionHistoryInfomation.timeStamp}</Moment>                    
+                            <Text>Block : {this.props.modalTransactionHistoryInfomation.blockNumber}</Text>
                             <Text>Status : {this.props.modalTransactionHistoryInfomation.status}</Text>
-                            <Text>Value  : {WalletUtils.fromWei(this.props.modalTransactionHistoryInfomation.value)} {this.props.modalTransactionHistoryInfomation.symbol}</Text>
-                            <Text>Fee    : {WalletUtils.fromWei(this.props.modalTransactionHistoryInfomation.gasUsed)} ETH</Text>
+                            <Text>Value : {WalletUtils.fromWei(this.props.modalTransactionHistoryInfomation.value, 'ether')} {this.props.modalTransactionHistoryInfomation.symbol}</Text>
+                            <Text>Fee : {WalletUtils.fromWei(WalletUtils.toWei(this.props.modalTransactionHistoryInfomation.gasUsed, 'gwei'),'ether')} ETH</Text>
                             <View>
                                 <View style={{flexDirection: 'row'}}>
                                     <View>
-                                        <Text>From   : </Text>
+                                        <Text>From : </Text>
                                     </View>
                                     <View>
                                         <Text>{this.props.modalTransactionHistoryInfomation.from}</Text>
@@ -68,7 +67,7 @@ class ModalTransactionHistory extends Component {
                                 </View>
                                 <View style={{flexDirection: 'row'}}>
                                     <View>
-                                        <Text>To     : </Text>
+                                        <Text>To : </Text>
                                     </View>
                                     <View>
                                         <Text>{this.props.modalTransactionHistoryInfomation.to}</Text>
@@ -76,7 +75,7 @@ class ModalTransactionHistory extends Component {
                                 </View>
                                 <View style={{flexDirection: 'row'}}>
                                     <View>
-                                        <Text>TxID   : </Text>
+                                        <Text>TxID : </Text>
                                     </View>
                                     <View>
                                         <Text>{this.props.modalTransactionHistoryInfomation.hash}</Text>
@@ -109,7 +108,6 @@ class ModalTransactionHistory extends Component {
     }
 
     closeModal = () => {
-        this.props.setModalTransactionHistoryInfomation(defaultModalTransactionInfomation);
         this.props.hideModalTransactionHistory();
     }
 
@@ -135,9 +133,6 @@ function mapDispatchToProps(dispatch) {
     return {
         hideModalTransactionHistory: () => {
             dispatch(ActionCreator.hideModalTransactionHistory());
-        },
-        setModalTransactionHistoryInfomation: (infomation) => {
-            dispatch(ActionCreator.setModalTransactionHistoryInfomation(infomation));
         },
     };
 }  

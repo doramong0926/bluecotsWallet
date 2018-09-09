@@ -168,7 +168,7 @@ class ModalConfirmToSendBlc extends Component {
 
     sendTransaction = async () => {
         try {  
-            await WalletUtils.sendTransaction(
+            const txid = await WalletUtils.sendTransaction(
                 { 
                     contractAddress: DEFAULT_TOKEN_CONTRACT_ADDRESS,
                     symbol: DEFAULT_TOKEN_SYMBOL, 
@@ -182,6 +182,7 @@ class ModalConfirmToSendBlc extends Component {
             const infomation = {
                 title: 'SUCCESS', 
                 message1: 'Success to send BLC', 
+                transactionId: txid,
             };
             this.props.setModalInfomation(infomation);
             this.props.showModalInfomation();

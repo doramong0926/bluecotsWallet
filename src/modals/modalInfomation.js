@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TouchableHighlight, Linking } from 'react-native';
 import Modal from 'react-native-simple-modal';
 import ActionCreator from '../actions';
 import { connect } from 'react-redux';
@@ -44,7 +44,23 @@ class ModalInfomation extends Component {
                 <View style={styles.messageContainer}>  
                     <Text style={styles.messageText}>{this.props.modalInfomationText.message1}</Text>                      
                     <Text style={styles.messageText}>{this.props.modalInfomationText.message2}</Text>                      
-                    <Text style={styles.messageText}>{this.props.modalInfomationText.message3}</Text>                      
+                    <Text style={styles.messageText}>{this.props.modalInfomationText.message3}</Text>
+                    {
+                        (this.props.modalInfomationText.transactionId !== '' && this.props.modalInfomationText.transactionId !== undefined) ?
+                        (
+                            <TouchableHighlight onPress={() => this.handlePressTxid(this.props.modalInfomationText.transactionId)} underlayColor="gray">
+                                <View>
+                                    <Text style={styles.messageText}>{this.props.modalInfomationText.transactionId}</Text>
+                                    <View style={{marginTop: 5}}>
+                                        <Text style={{textAlign: 'center', color: 'gray'}}>Click to check txid</Text> 
+                                    </View>
+                                </View>
+                            </TouchableHighlight>
+                        ) : 
+                        (
+                            <View></View>
+                        )
+                    }
                 </View>
                 <View style={styles.buttonContainer}>
                     <Button
@@ -63,6 +79,15 @@ class ModalInfomation extends Component {
                 </View>
             </Modal>
         );
+    }
+
+    handlePressTxid = (txid) => {
+        const address = "https://ropsten.etherscan.io/tx/" + txid;
+        Linking.canOpenURL(address).then(supported => {
+            if (supported) {
+                Linking.openURL(address);
+            } 
+        });
     }
 
     handlePressClose = () => {

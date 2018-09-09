@@ -148,7 +148,7 @@ class ModalConfirmToSendEth extends Component {
 
     sendTransaction = async () => {
         try {  
-            await WalletUtils.sendTransaction(
+            const txid = await WalletUtils.sendTransaction(
                 { 
                     contractAddress:'', 
                     symbol:'ETH', 
@@ -158,10 +158,12 @@ class ModalConfirmToSendEth extends Component {
                 this.props.addressToSendEth,
                 this.props.amountToSendEth,
             );
+
             this.props.hideModalSpinner();
             const infomation = {
                 title: 'SUCCESS', 
-                message1: 'Success to send ETH', 
+                message1: 'Success to send ETH',
+                transactionId: txid,
             };
             this.props.setModalInfomation(infomation);
             this.props.showModalInfomation();

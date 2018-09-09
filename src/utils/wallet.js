@@ -24,11 +24,17 @@ import { erc20Abi } from './../config/constants';
 
 export default class WalletUtils {
   
-  static fromWei(value) {
+  static fromWei(value, tokenName) {
       const web3 = new Web3(this.getWeb3HTTPProvider());
-      return web3.fromWei(value, 'ether');
+      return web3.fromWei(value, tokenName);
   }
 
+  static toWei(value, tokenName) {
+      const web3 = new Web3(this.getWeb3HTTPProvider());
+      return web3.toWei(value, tokenName);
+}
+
+  
   static generateWallet() {
       return EthereumJsWallet.generate();
   }
@@ -91,6 +97,14 @@ export default class WalletUtils {
     return web3;
   }
 
+  static getTxReceiptStatus(txid) {
+    const fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=transaction&action=gettxreceiptstatus&txhash=' + txid + '&apikey=' + ETHERSCAN_API_KEY;
+    return fetch(fetchString)
+      .then(response => response.json())
+      .then(data => {
+          return data; 
+      });
+  }
 
   /**
    * Fetch a list of transactions for the user's wallet concerning the given token
@@ -99,7 +113,7 @@ export default class WalletUtils {
    */
   static getTransactions(contractAddress, walletAddress, decimals, symbol) {
     if (symbol === 'ETH') {
-      return this.getEthTransactions();
+      return this.getEthTransactions(walletAddress);
     }
 
     return this.getERC20Transactions(contractAddress, walletAddress, decimals);
@@ -109,23 +123,11 @@ export default class WalletUtils {
    * Fetch a list of ETH transactions for the user's wallet
    */
   static getEthTransactions(walletAddress) {
-    return fetch(
-      `https://${this.getEtherscanApiSubdomain()}.etherscan.io/api?module=account&action=txlist&address=${walletAddress}&sort=desc&apikey=${
-        ETHERSCAN_API_KEY
-      }`,
-    )
+    const fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=account&action=txlist&address=' + walletAddress + '&sort=desc&apikey=' + ETHERSCAN_API_KEY;
+    return fetch(fetchString)
       .then(response => response.json())
       .then(data => {
-        if (data.message !== 'OK') {
-          return [];
-        }
-
-        return data.result.filter(t => t.value !== '0').map(t => ({
-          from: t.from,
-          timestamp: t.timeStamp,
-          transactionHash: t.hash,
-          value: (parseInt(t.value, 10) / 1e18).toFixed(2),
-        }));
+          return data; 
       });
   }
 
@@ -136,26 +138,10 @@ export default class WalletUtils {
    */
   static async getERC20Transactions(contractAddress, walletAddress, decimals) {
     const fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=account&action=tokentx&contractaddress=' + contractAddress + '&address=' + walletAddress + '&sort=desc&apikey=' + ETHERSCAN_API_KEY;
-    // const fetchString = 'https://api-ropsten.etherscan.io/api?module=account&action=tokentx&contractaddress=0x0cd4bf09b96d308dafa18d5d6b62d7eb5d774396&address=0xa0418a1e8384e31c4eec5fff49050095c69ffb92&sort=desc&apikey=ZGZW3C6175M2MNQTS14HDDIGBYFDHEMXBR'
-    console.log('fetchString : ' + fetchString);
     return fetch(fetchString)    
-      .then(response => response.json())
-      .then(data => {
-        return data;
-        // if (data.message !== 'OK') {
-        //   console.log('getERC20Transactions not ok : ' + data.message);
-        //   return [{}];
-        // }
-        // console.log('getERC20Transactions ok : ' + data.message);
-        // return data.result;
-/*
-        return data.result.map(t => ({
-          from: t.from,
-          timestamp: t.timeStamp,
-          transactionHash: t.hash,
-          value: (parseInt(t.value, 10) / Math.pow(10, decimals)).toFixed(2),
-        }));
-*/
+        .then(response => response.json())
+        .then(data => {
+          return data; 
       });
   }
 
@@ -313,7 +299,6 @@ export default class WalletUtils {
    */
   static sendETHTransaction(fromWallet, toAddress, amount) {
     const web3 = this.getWeb3Instance(fromWallet);
-
     
     // AnalyticsUtils.trackEvent('Send ETH transaction', {
     //   value: amount,

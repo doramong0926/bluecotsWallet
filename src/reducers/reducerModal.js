@@ -16,7 +16,7 @@ const initialState = {
     visibleModalQrCodeScaner: false,
     visibleModalSpinner: false,
     visibleModalInfomation: false,
-    modalInfomationText: {title: '', message1: '', message2: '', message3: ''},    
+    modalInfomationText: {title: '', message1: '', message2: '', message3: '', transactionId: ''},    
     visibleModalTransactionHistory: false,
     modalTransactionHistoryInfomation: {
         blockNumber: '',
