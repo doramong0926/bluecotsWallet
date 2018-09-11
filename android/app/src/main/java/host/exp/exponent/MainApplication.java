@@ -10,6 +10,7 @@ import expolib_v1.okhttp3.OkHttpClient;
 
 // Needed for `react-native link`
 // import com.facebook.react.ReactApplication;
+import com.peel.react.rnos.RNOSModule;
 import org.reactnative.camera.RNCameraPackage;
 import com.rnfs.RNFSPackage;
 import com.horcrux.svg.SvgPackage;
@@ -33,6 +34,7 @@ public class MainApplication extends ExpoApplication {
 
         // Needed for `react-native link`
         // new MainReactPackage(),
+            new RNOSModule(),
             new RNCameraPackage(),
             new RNFSPackage(),
             new SvgPackage(),

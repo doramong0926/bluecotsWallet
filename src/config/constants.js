@@ -29,19 +29,7 @@ const defaultTransactionData = [
     isError: '',
     txreceipt_status: '',
   }
-]
-
-const defaultModalTransactionInfomation = {
-  blockNumber: "",
-  timeStamp: "",
-  hash : "",
-  from: "",
-  value: "",
-  to: "",
-  gasUsed: "",
-  symbol: "",
-  status: ""
-}
+];
 
 const erc20Abi = [
     {

@@ -22,7 +22,6 @@ import {
     DEFAULT_TOKEN_DECIMALS,
     WALLET_VERSION,
     defaultTransactionData,
-    defaultModalTransactionInfomation,
   } from './../../config/constants';
 
 //import RNFS from "react-native-fs"
@@ -61,10 +60,8 @@ class BlcHistoryScreen extends Component{
     componentDidMount() {
         this.fetchTransaction();
         setInterval(() => {
-            if (this.state.isLoadingTxData == false) {
                 this.fetchTransaction();
-            }
-        }, 5000)
+        }, 10000)
     }
 
     componentWillReceiveProps() {
@@ -194,6 +191,7 @@ class BlcHistoryScreen extends Component{
                 DEFAULT_TOKEN_DECIMALS,
                 DEFAULT_TOKEN_SYMBOL,
             )
+            // WalletUtils.getUnconfimrdTransaction();
             
             if (txData.message === 'OK') {
                 this.setState({transactionHistoryData: this.parsingTxData(txData.result)});
@@ -212,18 +210,31 @@ class BlcHistoryScreen extends Component{
         }
     }
 
+    fetchingTxReceiptStatus = (hash) => {
+        return '1';
+        
+        const txStatus = WalletUtils.getTxReceiptStatus(hash);    
+        if (txStatus.message !== 'OK') {
+            return '0';
+        } else if (txStatus.result.status === 1) {
+            return '1';
+        } else {
+            return '0';
+        }       
+    }
+
     parsingTxData = (data) => {
         return data.filter(t=> (t.from === this.props.walletForHistory.walletAddress || t.to === this.props.walletForHistory.walletAddress))
         .map(t => ({
             from: t.from,
             to: t.to,
-            timestamp: t.timeStamp,  
+            timeStamp: t.timeStamp,  
             hash: t.hash,  
             value: t.value,
             blockNumber: t.blockNumber,
             gasUsed: t.gasUsed,
             isError: '0',
-            txreceipt_status : '1',//WalletUtils.getTxReceiptStatus(t.hash),//
+            txreceipt_status : this.fetchingTxReceiptStatus(t.hash),
         }))
     }
 }

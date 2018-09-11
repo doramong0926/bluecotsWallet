@@ -25,11 +25,19 @@ import { erc20Abi } from './../config/constants';
 export default class WalletUtils {
   
   static fromWei(value, tokenName) {
+      if (value == '' || value == undefined)
+      {
+          return 0;
+      }
       const web3 = new Web3(this.getWeb3HTTPProvider());
       return web3.fromWei(value, tokenName);
   }
 
   static toWei(value, tokenName) {
+      if (value == '' || value == undefined)
+      {
+          return 0;
+      }
       const web3 = new Web3(this.getWeb3HTTPProvider());
       return web3.toWei(value, tokenName);
 }
@@ -39,7 +47,7 @@ export default class WalletUtils {
       return EthereumJsWallet.generate();
   }
 
-  static addressIsValid = (addr) => {
+  static addressIsValid(addr) {
     return /^0x([A-Fa-f0-9]{40})$/.test(addr);
   }
 
@@ -97,13 +105,50 @@ export default class WalletUtils {
     return web3;
   }
 
-  static getTxReceiptStatus(txid) {
-    const fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=transaction&action=gettxreceiptstatus&txhash=' + txid + '&apikey=' + ETHERSCAN_API_KEY;
-    return fetch(fetchString)
-      .then(response => response.json())
-      .then(data => {
-          return data; 
+  static async getUnconfimrdTransaction() {
+    const web3 = new Web3(this.getWeb3HTTPProvider());
+
+    var options = {
+      String: 'pending',
+      address: DEFAULT_TOKEN_CONTRACT_ADDRESS};
+
+    return new Promise((resolve, reject) => {
+
+      var subscription = web3.eth.subscribe('pendingTransactions', function(error, result){
+      if (!error) {
+      } else {
+      }
+      })
+      .on("data", function(transaction){
+          console.log(transaction);
       });
+      
+      // //unsubscribes the subscription
+      // subscription.unsubscribe(function(error, success){
+      //     if(success)
+      //         console.log('Successfully unsubscribed!');
+      // });
+  })
+}
+
+  static async getTxReceiptStatus(txid) {
+    const fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=transaction&action=gettxreceiptstatus&txhash=' + txid + '&apikey=' + ETHERSCAN_API_KEY;
+    console.log(fetchString);
+    return fetch(fetchString)
+      .then( response => {
+        if (!response.ok) { 
+          throw response 
+        } else {
+          response.json()
+        }
+      })
+      .then(data => {
+          console.log(data.message)
+          return data; 
+      })
+      .catch(e => {
+        console.log(e);
+      })
   }
 
   /**
@@ -122,7 +167,7 @@ export default class WalletUtils {
   /**
    * Fetch a list of ETH transactions for the user's wallet
    */
-  static getEthTransactions(walletAddress) {
+  static async getEthTransactions(walletAddress) {
     const fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=account&action=txlist&address=' + walletAddress + '&sort=desc&apikey=' + ETHERSCAN_API_KEY;
     return fetch(fetchString)
       .then(response => response.json())
@@ -163,6 +208,8 @@ export default class WalletUtils {
    */
   static getEthBalance(walletAddress) {
     const web3 = new Web3(this.getWeb3HTTPProvider());
+    // const web3 = new Web3HttpProvider(`https://ropsten.infura.io/${INFURA_API_KEY}`,);
+    // const web3 = new Web3(new Web3.providers.HttpProvider(`https://ropsten.infura.io/${INFURA_API_KEY}`));
     return new Promise((resolve, reject) => {
         web3.eth.getBalance(walletAddress, (error, weiBalance) => {
           if (error) {

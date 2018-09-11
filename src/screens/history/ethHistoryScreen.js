@@ -10,20 +10,7 @@ import PropTypes from 'prop-types';
 import WalletUtils from './../../utils/wallet';
 import Moment from 'react-moment';
 import Spinner from 'react-native-loading-spinner-overlay';
-
-import { 
-    ETHERSCAN_API_KEY,
-    INFURA_API_KEY ,
-    SEGMENT_API_KEY,
-    NETWORK,
-    DEFAULT_TOKEN_NAME,
-    DEFAULT_TOKEN_SYMBOL,
-    DEFAULT_TOKEN_CONTRACT_ADDRESS,
-    DEFAULT_TOKEN_DECIMALS,
-    WALLET_VERSION,
-    defaultTransactionData,
-    defaultModalTransactionInfomation,
-  } from './../../config/constants';
+import { defaultTransactionData } from './../../config/constants';
 
 //import RNFS from "react-native-fs"
 
@@ -59,12 +46,27 @@ class EthHistoryScreen extends Component{
     }
 
     componentDidMount() {
+        console.log("ccccccccccccccccccccccccccccccccc");
+        console.log("ccccccccccccccccccccccccccccccccc");
+        console.log("ccccccccccccccccccccccccccccccccc");
+        console.log("ccccccccccccccccccccccccccccccccc");
+        
         this.fetchTransaction();
         setInterval(() => {
-            if (this.state.isLoadingTxData == false) {
-                this.fetchTransaction();
-            }
-        }, 5000)
+            this.fetchTransaction();
+        }, 50000)
+    }
+
+    componentWillUnmount() {
+        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+
+        clearInterval();
     }
 
     componentWillReceiveProps() {
@@ -178,10 +180,7 @@ class EthHistoryScreen extends Component{
             to: txData.to,
             gasUsed: txData.gasUsed,
             symbol: "ETH",            
-            status: (txData.isError != 0) ? 
-                        ("Failure") : (txData.txreceipt_status == 1) ?
-                                            ("Success") : 
-                                            ("Pending")
+            status: (txData.txreceipt_status == 1) ? ("Success") : ("Pending")
         }
 
         this.props.setModalTransactionHistoryInfomation(infomation);
@@ -217,10 +216,11 @@ class EthHistoryScreen extends Component{
 
     parsingTxData = (data) => {
         return data.filter(t=> (t.from === this.props.walletForHistory.walletAddress || t.to === this.props.walletForHistory.walletAddress))
-        .map(t => ({
+        .map(t => (        
+        {
             from: t.from,
             to: t.to,
-            timestamp: t.timeStamp,  
+            timeStamp: t.timeStamp,  
             hash: t.hash,  
             value: t.value,
             blockNumber: t.blockNumber,

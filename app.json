@@ -1,8 +1,8 @@
 {
   "expo": {
     "sdkVersion": "27.0.0",
-    "name": "bluecotsWallet",
-    "slug": "bluecotswallet",
+    "name": "bluecots",
+    "slug": "This is the crypto wallet for bluecots.",
     "icon": "./assets/images/icon.png",
     "version": "0.0.1",
     "privacy": "public",
@@ -17,7 +17,7 @@
       "backgroundColor": "#347B98"
     },  
     "android": {
-      "package": "com.coinfactory.bluecotswallet"
+      "package": "com.bluecots.wallet"
     }
   }
 }
