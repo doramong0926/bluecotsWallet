@@ -2,7 +2,7 @@
   "expo": {
     "sdkVersion": "27.0.0",
     "name": "bluecots",
-    "slug": "This is the crypto wallet for bluecots.",
+    "slug": "bluecots",
     "icon": "./assets/images/icon.png",
     "version": "0.0.1",
     "privacy": "public",

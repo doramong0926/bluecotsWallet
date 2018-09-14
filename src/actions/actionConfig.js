@@ -6,3 +6,10 @@ export function setNetwork(networkType) {
         payload: networkType,
     };
 }
+
+export function setPincode(pincode) {
+    return {
+        type: actionTypes.SET_PINCODE,
+        payload: pincode,
+    };
+}

@@ -1,11 +1,15 @@
 import './shim';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator, StackNavigator } from 'react-navigation';
 
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './src/config/store';
+import getSlideFromRightTransition from 'react-navigation-slide-from-right-transition';
+
+import VerificationPincodeScreen from './src/screens/verification/verificationPincodeScreen';
 import mainScreen from './src/screens/main/mainScreen';
+
 import ModalAddWallet from './src/modals/modalAddWallet';
 import ModalSelectAnotherWalletForSend from './src/modals/modalSelectAnotherWalletForSend';
 import ModalSelectAnotherWalletForReceive from './src/modals/modalSelectAnotherWalletForReceive';
@@ -20,6 +24,7 @@ import ModalQrCodeScaner from './src/modals/modalQrCodeScaner';
 import ModalTransactionHistory from './src/modals/modalTransactionHistory';
 import ModalInfomation from './src/modals/modalInfomation';
 import ModalSpinner from './src/modals/modalSpinner'
+
 
 export default class App extends React.Component {
     render() {        
@@ -48,7 +53,14 @@ export default class App extends React.Component {
 }
 
 const AppStackNavigator = createStackNavigator({
-    Main:{
-        screen: mainScreen
+        VerificationPincode:{
+            screen: VerificationPincodeScreen
+        },
+        Main:{
+            screen: mainScreen
+        },
+    },
+    {
+        transitionConfig: getSlideFromRightTransition
     }
-});
+);

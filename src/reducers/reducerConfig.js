@@ -13,6 +13,7 @@ import {
 
 const initialState = {  
     network: NETWORK,
+    pincode: '',
 };  
 
 export default (state = initialState, action) => {
@@ -20,6 +21,11 @@ export default (state = initialState, action) => {
         case actionTypes.SET_NETWORK:
             return Object.assign({}, state, {
                 network: action.payload,
+            });
+
+        case actionTypes.SET_PINCODE:
+            return Object.assign({}, state, {
+                pincode: action.payload,
             });
 
         default:

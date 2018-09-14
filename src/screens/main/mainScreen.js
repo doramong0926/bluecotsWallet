@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Platform, View, Text, Animated, Image, Easing} from 'react-native';
+import { TouchableHighlight, StyleSheet, Platform, View, Text, Animated, Image, Easing} from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';    
 
 import WalletScreen from './../wallet/walletScreen'
@@ -7,7 +7,7 @@ import itemsScreen from './../items/itemsScreen'
 import sendScreen from './../send/sendScreen'
 import receiveScreen from './../receive/receiveScreen'
 import historyScreen from './../history/historyScreen'
-import settingsScreen from './../settings/settingsScreen'
+import SettingsScreen from './../settings/settingsScreen'
 
 class mainScreen extends Component{
 
@@ -41,7 +41,7 @@ const MainScreenTabNavigator = createBottomTabNavigator({
             screen:historyScreen
         },   
         settingsTab:{
-            screen:settingsScreen
+            screen:SettingsScreen
         },
     }, 
     {

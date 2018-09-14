@@ -10,6 +10,8 @@ import expolib_v1.okhttp3.OkHttpClient;
 
 // Needed for `react-native link`
 // import com.facebook.react.ReactApplication;
+import com.rnfingerprint.FingerprintAuthPackage;
+import com.oblador.keychain.KeychainPackage;
 import com.peel.react.rnos.RNOSModule;
 import org.reactnative.camera.RNCameraPackage;
 import com.rnfs.RNFSPackage;
@@ -34,6 +36,8 @@ public class MainApplication extends ExpoApplication {
 
         // Needed for `react-native link`
         // new MainReactPackage(),
+            new FingerprintAuthPackage(),
+            new KeychainPackage(),
             new RNOSModule(),
             new RNCameraPackage(),
             new RNFSPackage(),

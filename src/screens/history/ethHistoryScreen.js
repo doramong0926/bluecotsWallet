@@ -46,27 +46,10 @@ class EthHistoryScreen extends Component{
     }
 
     componentDidMount() {
-        console.log("ccccccccccccccccccccccccccccccccc");
-        console.log("ccccccccccccccccccccccccccccccccc");
-        console.log("ccccccccccccccccccccccccccccccccc");
-        console.log("ccccccccccccccccccccccccccccccccc");
-        
         this.fetchTransaction();
         setInterval(() => {
             this.fetchTransaction();
         }, 50000)
-    }
-
-    componentWillUnmount() {
-        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-
-        clearInterval();
     }
 
     componentWillReceiveProps() {

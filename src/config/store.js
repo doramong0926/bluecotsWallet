@@ -40,7 +40,7 @@ const store = createStore(
     persistCombineReducers(persistConfig, reducers),
     process.env.NODE_ENV === 'production'
         ? applyMiddleware(ReduxThunk)
-        //: applyMiddleware(ReduxThunk),
+        // : applyMiddleware(ReduxThunk),
         : applyMiddleware(ReduxThunk, createLogger()),
 );
 
