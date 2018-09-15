@@ -3,10 +3,9 @@ import React, { Component } from 'react';
 import { TouchableHighlight, Text, View, StyleSheet } from 'react-native';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { StackNavigator, StackActions, NavigationActions } from 'react-navigation';
-import PINCode, { PinResultStatus, finishProcess } from '@haskkor/react-native-pincode'
+import PINCode from '@haskkor/react-native-pincode'
 import { connect } from 'react-redux';
 import ActionCreator from './../../actions';
-
 
 
 // export declare enum PinResultStatus {
@@ -23,14 +22,10 @@ const resetAction = StackActions.reset({
 
 class VerificationPincodeScreen extends Component{
     static navigationOptions = {
-        header: null,
+        header: null,        
     };
 
-    state = {
-        pinStatus: "initial",
-    }
-
-    componentDidMount() {        
+    componentDidMount() {     
     }
 
     componentDidUpdate() {
@@ -49,8 +44,9 @@ class VerificationPincodeScreen extends Component{
                             storePin={this.props.setPincode} 
                             storedPin={this.props.pincode} 
                             touchIDDisabled={true}
-                            handleResultEnterPin={this.handleResultEnterPin}
-                            pinStatus = {this.state.pinStatus}
+                            finishProcess={this.handelFinishProcess}
+                            onFail={this.handelOnfail}
+                            // handleResultEnterPin={this.handleResultEnterPin}
                         />
                     ) :
                     (
@@ -65,39 +61,17 @@ class VerificationPincodeScreen extends Component{
         );
     }
 
-    handleResultEnterPin = (inputPincode) => {
-        console.log("handleResultEnterPin called : " + inputPincode)
-        if (inputPincode == this.props.pincode) {
-            this.setState({pinStatus: PinResultStatus.success});
+    handelFinishProcess = () => {
+        console.log("handelFinishProcess called")
+        
+        setTimeout(() => {
             this.props.navigation.dispatch(resetAction);
-            const infomation = {
-                title: 'INFOMATION', 
-                message1: 'Correct pincode.', 
-                message1: 'Welcome back.', 
-            };
-            this.props.setModalInfomation(infomation);
-            this.props.showModalInfomation();
-            setTimeout(() => {
-              this.props.hideModalInfomation();
-              this.props.navigation.navigate('Main');
-            }, 1000)
-            
-        } else {
-            const infomation = {
-                title: 'INFOMATION', 
-                message1: 'Incorrect pincode.', 
-                message1: 'Please try again.', 
-            };
-            this.props.setModalInfomation(infomation);
-            this.props.showModalInfomation();
-            setTimeout(() => {
-                this.props.hideModalInfomation();
-              }, 1000)
-        }
+            this.props.navigation.navigate('Main');
+        }, )
     }
 
-    finishProcess = () => {
-        console.log("finishProcess called")
+    handelOnfail = (pinAttempts) => {
+        console.log("handelOnfail called : " + pinAttempts)
     }
 
     getPincodeStatus = () => {

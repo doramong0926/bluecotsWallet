@@ -11,7 +11,7 @@ class WalletScreen extends Component{
         tabBarLabel: 'wallet',
         tabBarIcon: ({ tintColor }) => (
             <Ionicons name="ios-card" size={30} color={tintColor} />
-        )
+        ),        
     };
 
     render() {
