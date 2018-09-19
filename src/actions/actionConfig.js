@@ -13,3 +13,11 @@ export function setPincode(pincode) {
         payload: pincode,
     };
 }
+
+export function setUseFingerPrint(useFingerPrint) {
+    return {
+        type: actionTypes.SET_USE_FINGER_PRINT,
+        payload: useFingerPrint,
+    };
+}
+

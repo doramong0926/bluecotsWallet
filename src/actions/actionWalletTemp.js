@@ -70,5 +70,19 @@ export function setIsLoadingTxData(value) {
     };
 }
 
+export function setModalConfirmToSendBlcFinishProcess(finishProcess) {
+    return {
+        type: actionTypes.SET_MODAL_CONFIRM_TO_SEND_BLC_FINISH_PROCESS,
+        payload: finishProcess
+    };
+}
+
+export function setModalConfirmToSendEthFinishProcess(finishProcess) {
+    return {
+        type: actionTypes.SET_MODAL_CONFIRM_TO_SEND_ETH_FINISH_PROCESS,
+        payload: finishProcess
+    };
+}
+
 
 

@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
-import { TouchableHighlight, StyleSheet, Platform, View, Text, Animated, Image, Easing} from 'react-native';
+import { Platform } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';    
 
-import WalletScreen from './../wallet/walletScreen'
-import itemsScreen from './../items/itemsScreen'
-import sendScreen from './../send/sendScreen'
-import receiveScreen from './../receive/receiveScreen'
-import historyScreen from './../history/historyScreen'
-import SettingsScreen from './../settings/settingsScreen'
+import WalletScreen from '../wallet/walletScreen'
+import itemsScreen from '../items/itemsScreen'
+import sendScreen from '../send/sendScreen'
+import receiveScreen from '../receive/receiveScreen'
+import historyScreen from '../history/historyScreen'
+import SettingsScreen from '../settings/settingsScreen'
 
-class mainScreen extends Component{
-
+class MainScreen extends Component{
     static navigationOptions = {
         // title: 'Wallet & GiftCon',
         header: null,
@@ -22,7 +21,7 @@ class mainScreen extends Component{
         );
     }
 }
-export default mainScreen;
+export default MainScreen;
 
 const MainScreenTabNavigator = createBottomTabNavigator({
         walletTab:{

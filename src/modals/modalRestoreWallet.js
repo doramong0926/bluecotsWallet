@@ -198,6 +198,9 @@ class ModalRestoreWallet extends Component {
             };
             this.props.setModalInfomation(infomation);
             this.props.showModalInfomation();
+            if (this.props.modalFinishProcess) {
+                this.props.modalFinishProcess();
+            }
         },);    
         
         this.setState({

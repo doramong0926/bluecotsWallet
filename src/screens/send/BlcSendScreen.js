@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Clipboard, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Text, Clipboard, Platform } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'
 import WalletUtils from './../../utils/wallet';
 import { connect } from 'react-redux';
@@ -8,6 +8,7 @@ import ActionCreator from './../../actions';
 import WalletAddressWithNickNameForSend from './../../components/walletAddressWithNickNameForSend';
 import PropTypes from 'prop-types';
 import { Permissions } from 'expo';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 import { 
 	ETHERSCAN_API_KEY,
@@ -22,12 +23,8 @@ import {
  } from './../../config/constants';
 
 class BlcSendScreen extends Component{
-    constructor(props, context) {
-        super(props, context);
-    }
-
     static navigationOptions = {
-        tabBarLabel: 'BLC'
+        tabBarLabel: 'BLC',
     };
 
     static propTypes = {
@@ -193,6 +190,7 @@ class BlcSendScreen extends Component{
     }
 
     handelPressSend = () => {
+        this.props.setModalConfirmToSendBlcFinishProcess(this.confirmToSendBlcFinishProcess.bind(this))
         this.props.showModalConfirmToSendBlc();
     }
 
@@ -205,6 +203,55 @@ class BlcSendScreen extends Component{
         const address = await Clipboard.getString();   
         this.props.setAddressToSendBlc(address);
     };
+
+    scanFingerPrint = () => {
+        this.props.setModalFingerPrintScanerFinishProcess(this.modalFingerPrintScanerFinishProcess.bind(this));
+            if (Platform.OS === 'android') {
+                this.props.showModalFingerPrintScaner();
+            } else {
+                //ios는 우찌하나?
+                this.props.showModalFingerPrintScaner();
+        }
+    }
+
+    modalFingerPrintScanerFinishProcess(result) {
+        if (result.status == true) {
+            this.sendTransaction();
+            setTimeout(() => {        
+                this.props.setAddressToSendBlc('');
+                this.props.setAmountToSendBlc('');
+            },);
+            this.props.showModalSpinner('sending');
+        } else {
+            if (result.message === 'usePinCode') {
+                this.usePinCode();
+            } else {
+            }
+        }
+    }
+
+    usePinCode = () => {
+        this.props.setModalPincodeFinishProcess(this.modalPincodeFinishProcess.bind(this));
+        this.props.showModalPincode();
+    }
+
+    confirmToSendBlcFinishProcess = () => {
+        if (this.props.useFingerPrint === true){
+            this.scanFingerPrint();
+        }else {
+            this.props.setModalPincodeFinishProcess(this.modalPincodeFinishProcess.bind(this));
+            this.props.showModalPincode();
+        }
+    }
+
+    modalPincodeFinishProcess() {
+        this.sendTransaction();
+        setTimeout(() => {        
+            this.props.setAddressToSendBlc('');
+            this.props.setAmountToSendBlc('');
+        },);
+        this.props.showModalSpinner('sending');
+    }
 
     updateWalletBalance = async (walletAddress) => {
         if (walletAddress) {
@@ -221,7 +268,40 @@ class BlcSendScreen extends Component{
                 }
             }    
         }
-    }   
+    }
+    
+    sendTransaction = async () => {
+        try {  
+            const txid = await WalletUtils.sendTransaction(
+                { 
+                    contractAddress: DEFAULT_TOKEN_CONTRACT_ADDRESS,
+                    symbol: DEFAULT_TOKEN_SYMBOL, 
+                    decimals: DEFAULT_TOKEN_DECIMALS
+                },
+                this.props.walletForSend,
+                this.props.addressToSendBlc,
+                this.props.amountToSendBlc,
+            );
+            this.props.hideModalSpinner();
+            const infomation = {
+                title: 'SUCCESS', 
+                message1: 'Success to send BLC', 
+                transactionId: txid,
+            };
+            this.props.setModalInfomation(infomation);
+            this.props.showModalInfomation();
+        } catch (error) {
+            console.log('sendTransaction error : ' + error);
+            this.props.hideModalSpinner();
+            const infomation = {
+                title: 'FAIL', 
+                message1: 'Fail to send BLC', 
+                message2: 'Please check your transaction'
+            };
+            this.props.setModalInfomation(infomation);
+            this.props.showModalInfomation();
+        }
+    };
 
     isSameAddressWithTxAddress = (walletAddress) => {
         if (walletAddress === this.props.addressToSendBlc) {        
@@ -255,6 +335,7 @@ function mapStateToProps(state) {
         addressToSendBlc: state.walletTemp.addressToSendBlc,
         amountToSendBlc: state.walletTemp.amountToSendBlc,
         defaultWallet: state.wallet.defaultWallet,
+        useFingerPrint: state.config.useFingerPrint,
     };
 }
 
@@ -281,6 +362,36 @@ function mapDispatchToProps(dispatch) {
         setTokenNameForQrCode: (name) => {
             dispatch(ActionCreator.setTokenNameForQrCode(name));
         },
+        setModalFingerPrintScanerFinishProcess: (finishProcess) => {
+            dispatch(ActionCreator.setModalFingerPrintScanerFinishProcess(finishProcess));
+        },
+        setModalConfirmToSendBlcFinishProcess: (finishProcess) => {
+            dispatch(ActionCreator.setModalConfirmToSendBlcFinishProcess(finishProcess));
+        },
+        showModalSpinner: (message) => {
+            dispatch(ActionCreator.showModalSpinner(message));
+        },
+        hideModalSpinner: () => {
+            dispatch(ActionCreator.hideModalSpinner());
+        },
+        showModalFingerPrintScaner: () => {
+            dispatch(ActionCreator.showModalFingerPrintScaner());
+        },
+        showModalInfomation: () => {
+            dispatch(ActionCreator.showModalInfomation());
+        },
+        setModalInfomation: (infomation) => {
+            dispatch(ActionCreator.setModalInfomation(infomation));
+        },
+        setModalPincodeFinishProcess: (finishProcess) => {
+            dispatch(ActionCreator.setModalPincodeFinishProcess(finishProcess));
+        },   
+        showModalPincode: () => {
+            dispatch(ActionCreator.showModalPincode());
+        },   
+        hideModalPincode: () => {
+            dispatch(ActionCreator.hideModalPincode());
+        },  
     };
 }
   

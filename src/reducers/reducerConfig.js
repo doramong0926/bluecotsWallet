@@ -14,6 +14,7 @@ import {
 const initialState = {  
     network: NETWORK,
     pincode: '',
+    useFingerPrint: undefined,
 };  
 
 export default (state = initialState, action) => {
@@ -27,6 +28,13 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 pincode: action.payload,
             });
+
+        case actionTypes.SET_USE_FINGER_PRINT:
+            return Object.assign({}, state, {
+                useFingerPrint: action.payload,
+            });
+
+
 
         default:
             return state;

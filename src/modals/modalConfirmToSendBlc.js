@@ -111,13 +111,10 @@ class ModalConfirmToSendBlc extends Component {
     }
 
     handelPressOk = () => {
-        this.sendTransaction();
-        setTimeout(() => {
-            this.props.hideModalConfirmToSendBlc();            
-            this.props.setAddressToSendBlc('');
-            this.props.setAmountToSendBlc('');
-        },);
-        this.props.showModalSpinner('sending');
+        this.props.hideModalConfirmToSendBlc();
+        if (this.props.modalFinishProcess) {
+            this.props.modalFinishProcess();
+        }
     }
 
     modalClose = () => {
@@ -146,11 +143,6 @@ class ModalConfirmToSendBlc extends Component {
             } else {
                 const txFee = gasLimit.wei * gasPriceData;
                 this.setState({gasForSend: txFee});
-                console.log(this.props.ethBalanceForSend)
-                console.log(this.props.ethBalanceForSend)
-                console.log(this.props.ethBalanceForSend)
-                console.log(this.props.ethBalanceForSend)
-                console.log(this.props.ethBalanceForSend)
                 
                 if ((txFee) <= this.props.ethBalanceForSend) {
                     this.setState({isEnoughEth: true});
@@ -165,39 +157,6 @@ class ModalConfirmToSendBlc extends Component {
             return false;
         }
     }
-
-    sendTransaction = async () => {
-        try {  
-            const txid = await WalletUtils.sendTransaction(
-                { 
-                    contractAddress: DEFAULT_TOKEN_CONTRACT_ADDRESS,
-                    symbol: DEFAULT_TOKEN_SYMBOL, 
-                    decimals: DEFAULT_TOKEN_DECIMALS
-                },
-                this.props.walletForSend,
-                this.props.addressToSendBlc,
-                this.props.amountToSendBlc,
-            );
-            this.props.hideModalSpinner();
-            const infomation = {
-                title: 'SUCCESS', 
-                message1: 'Success to send BLC', 
-                transactionId: txid,
-            };
-            this.props.setModalInfomation(infomation);
-            this.props.showModalInfomation();
-        } catch (error) {
-            console.log('sendTransaction error : ' + error);
-            this.props.hideModalSpinner();
-            const infomation = {
-                title: 'FAIL', 
-                message1: 'Fail to send BLC', 
-                message2: 'Please check your transaction'
-            };
-            this.props.setModalInfomation(infomation);
-            this.props.showModalInfomation();
-        }
-    };
 }
 
 function mapStateToProps(state) {
@@ -212,29 +171,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        showModalConfirmToSendBlc: () => {
-            dispatch(ActionCreator.showModalConfirmToSendBlc());
-        },
         hideModalConfirmToSendBlc: () => {
             dispatch(ActionCreator.hideModalConfirmToSendBlc());
-        },
-        setAddressToSendBlc: (address) => {
-            dispatch(ActionCreator.setAddressToSendBlc(address));
-        },
-        setAmountToSendBlc: (balance) => {
-            dispatch(ActionCreator.setAmountToSendBlc(balance));
-        },
-        showModalInfomation: () => {
-            dispatch(ActionCreator.showModalInfomation());
-        },
-        setModalInfomation: (infomation) => {
-            dispatch(ActionCreator.setModalInfomation(infomation));
-        },
-        showModalSpinner: (message) => {
-            dispatch(ActionCreator.showModalSpinner(message));
-        },
-        hideModalSpinner: () => {
-            dispatch(ActionCreator.hideModalSpinner());
         },
     };
 }

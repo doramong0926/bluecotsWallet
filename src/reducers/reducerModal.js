@@ -3,6 +3,8 @@
 import actionTypes from './../actions/actionTypes';
 
 const initialState = {  
+    visibleModalFingerPrintScaner: false,
+    visibleModalPincode: false,
     visibleModalAddWallet: false,
     visibleModalDefaultWalletSettings: false,
     visibleModalRestoreWallet: false,
@@ -16,6 +18,7 @@ const initialState = {
     visibleModalQrCodeScaner: false,
     visibleModalSpinner: false,
     visibleModalInfomation: false,
+    visibleModalAsk: false,
     modalInfomationText: {title: '', message1: '', message2: '', message3: '', transactionId: ''},    
     visibleModalTransactionHistory: false,
     modalTransactionHistoryInfomation: {
@@ -31,6 +34,18 @@ const initialState = {
     },
     tokenNameForQrCode: '',
     spinnerText: '',  
+    modalAskHeader: {
+        text: null,
+    },
+    modalAskBody: [
+        {
+            text: null,
+        }
+    ],
+    modalFingerPrintScanerFinishProcess: undefined,
+    skipFingerPrintScan: false,
+    modalAddWalletFinishProcess: undefined,
+    modalPincodeFinishProcess: undefined,
 };  
  
 export default (state = initialState, action) => {
@@ -191,6 +206,72 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 modalTransactionHistoryInfomation: action.payload,
             });
+
+        case actionTypes.SHOW_MODAL_FINGER_PRINT_SCANER:
+            return Object.assign({}, state, {
+                visibleModalFingerPrintScaner: true
+            });
+
+        case actionTypes.HIDE_MODAL_FINGER_PRINT_SCANER:
+            return Object.assign({}, state, {
+                visibleModalFingerPrintScaner: false
+            });   
+            
+        case actionTypes.SET_MODAL_ASK_FINISH_PROCESS:
+            return Object.assign({}, state, {
+                modalAskFinishProcess: action.payload,
+            });     
+
+        case actionTypes.SET_MODAL_ASK_HEADER:
+            return Object.assign({}, state, {
+                modalAskHeader: action.payload,
+            });     
+
+        case actionTypes.SET_MODAL_ASK_BODY:
+            return Object.assign({}, state, {
+                modalAskBody: action.payload,
+            });    
+             
+        case actionTypes.SHOW_MODAL_ASK:
+            return Object.assign({}, state, {
+                visibleModalAsk: true
+            });
+
+        case actionTypes.HIDE_MODAL_ASK:
+            return Object.assign({}, state, {
+                visibleModalAsk: false
+            });
+
+        case actionTypes.SET_MODAL_FINGER_PRINT_SCANER_FINISH_PROCESS:
+            return Object.assign({}, state, {
+                modalFingerPrintScanerFinishProcess: action.payload,
+            }); 
+
+        case actionTypes.SET_SKIP_FINGER_PRINT_SCAN:
+            return Object.assign({}, state, {
+                skipFingerPrintScan: action.payload,
+            }); 
+
+        case actionTypes.SET_MODAL_ADD_WALLET_FINISH_PROCESS:
+            return Object.assign({}, state, {
+                modalAddWalletFinishProcess: action.payload,
+            });   
+        
+        case actionTypes.SHOW_MODAL_PINCODE:
+            return Object.assign({}, state, {
+                visibleModalPincode: true,
+            });       
+
+        case actionTypes.HIDE_MODAL_PINCODE:
+            return Object.assign({}, state, {
+                visibleModalPincode: false,
+            });
+
+        case actionTypes.SET_MODAL_PINCODE_FINISH_PROCESS:
+            return Object.assign({}, state, {
+                modalPincodeFinishProcess: action.payload,
+            });                
+            
             
         default:
             return state;

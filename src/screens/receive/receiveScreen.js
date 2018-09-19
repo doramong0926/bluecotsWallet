@@ -15,7 +15,8 @@ class receiveScreen extends Component{
         tabBarLabel: 'receive',
         tabBarIcon: ({ tintColor }) => (
             <Ionicons name="md-filing" size={30} color={tintColor} />
-        )
+        ),
+        header: null,  
     };  
 
     static propTypes = {

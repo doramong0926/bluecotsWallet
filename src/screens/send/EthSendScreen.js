@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Clipboard, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Clipboard, Platform } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'
 import WalletUtils from './../../utils/wallet';
 import { connect } from 'react-redux';
@@ -11,10 +11,6 @@ import { Permissions } from 'expo';
 
 
 class EthSendScreen extends Component{
-    constructor(props, context) {
-        super(props, context);
-    }
-
     static navigationOptions = {
         tabBarLabel: 'ETH',
     };
@@ -195,6 +191,7 @@ class EthSendScreen extends Component{
     }
 
     handelPressSend = () => {
+        this.props.setModalConfirmToSendEthFinishProcess(this.confirmToSendEthFinishProcess.bind(this))
         this.props.showModalConfirmToSendEth();
     }
 
@@ -207,6 +204,98 @@ class EthSendScreen extends Component{
         const address = await Clipboard.getString();   
         this.props.setAddressToSendEth(address);
     };
+
+    confirmToSendEthFinishProcess = () => {
+        if (this.props.useFingerPrint === true){
+            this.scanFingerPrint();
+        }else {
+            this.props.setModalPincodeFinishProcess(this.modalPincodeFinishProcess.bind(this));
+            this.props.showModalPincode();
+        }
+    }
+
+    scanFingerPrint = () => {
+        this.props.setModalFingerPrintScanerFinishProcess(this.modalFingerPrintScanerFinishProcess.bind(this));
+            if (Platform.OS === 'android') {
+                this.props.showModalFingerPrintScaner();
+            } else {
+                //ios는 우찌하나?
+                this.props.showModalFingerPrintScaner();
+        }
+    }
+
+    modalFingerPrintScanerFinishProcess(result) {
+        if (result.status == true) {
+            this.sendTransaction();
+            setTimeout(() => {        
+                this.props.setAddressToSendEth('');
+                this.props.setAmountToSendEth('');
+            },);
+            this.props.showModalSpinner('sending');
+        } else {
+            if (result.message === 'usePinCode') {
+                this.usePinCode();
+            } else {
+            }
+        }
+    }
+
+    usePinCode = () => {
+        this.props.setModalPincodeFinishProcess(this.modalPincodeFinishProcess.bind(this));
+        this.props.showModalPincode();
+    }
+
+    confirmToSendEthFinishProcess = () => {
+        if (this.props.useFingerPrint === true){
+            this.scanFingerPrint();
+        }else {
+            this.props.setModalPincodeFinishProcess(this.modalPincodeFinishProcess.bind(this));
+            this.props.showModalPincode();
+        }
+    }
+
+    modalPincodeFinishProcess() {
+        this.sendTransaction();
+        setTimeout(() => {        
+            this.props.setAddressToSendEth('');
+            this.props.setAmountToSendEth('');
+        },);
+        this.props.showModalSpinner('sending');
+    }
+
+    sendTransaction = async () => {
+        try {  
+            const txid = await WalletUtils.sendTransaction(
+                { 
+                    contractAddress:'', 
+                    symbol:'ETH', 
+                    decimals:0
+                },
+                this.props.walletForSend,
+                this.props.addressToSendEth,
+                this.props.amountToSendEth,
+            );
+
+            this.props.hideModalSpinner();
+            const infomation = {
+                title: 'SUCCESS', 
+                message1: 'Success to send ETH',
+                transactionId: txid,
+            };
+            this.props.setModalInfomation(infomation);
+            this.props.showModalInfomation();
+        } catch (error) {
+            console.log('sendTransaction error : ' + error);
+            this.props.hideModalSpinner();
+            const infomation = {
+                title: 'FAIL', 
+                message1: 'Fail to send ETH', 
+                message2: 'Please check your transaction'
+            };
+            this.props.setModalInfomation(infomation);
+            this.props.showModalInfomation();
+        }
+    };    
 
     updateWalletBalance = async (walletAddress) => {
         if (walletAddress) {
@@ -270,6 +359,7 @@ function mapStateToProps(state) {
         addressToSendEth: state.walletTemp.addressToSendEth,
         amountToSendEth: state.walletTemp.amountToSendEth,
         defaultWallet: state.wallet.defaultWallet,
+        useFingerPrint: state.config.useFingerPrint,
     };
 }
 
@@ -296,6 +386,39 @@ function mapDispatchToProps(dispatch) {
         setTokenNameForQrCode: (name) => {
             dispatch(ActionCreator.setTokenNameForQrCode(name));
         },
+        setModalFingerPrintScanerFinishProcess: (finishProcess) => {
+            dispatch(ActionCreator.setModalFingerPrintScanerFinishProcess(finishProcess));
+        },
+        setModalConfirmToSendEthFinishProcess: (finishProcess) => {
+            dispatch(ActionCreator.setModalConfirmToSendEthFinishProcess(finishProcess));
+        },
+        showModalSpinner: (message) => {
+            dispatch(ActionCreator.showModalSpinner(message));
+        },
+        hideModalSpinner: () => {
+            dispatch(ActionCreator.hideModalSpinner());
+        },
+        showModalFingerPrintScaner: () => {
+            dispatch(ActionCreator.showModalFingerPrintScaner());
+        },
+        showModalInfomation: () => {
+            dispatch(ActionCreator.showModalInfomation());
+        },
+        setModalInfomation: (infomation) => {
+            dispatch(ActionCreator.setModalInfomation(infomation));
+        },
+        setSkipFingerPrintScan: (skip) => {
+            dispatch(ActionCreator.setSkipFingerPrintScan(skip));
+        },
+        setModalPincodeFinishProcess: (finishProcess) => {
+            dispatch(ActionCreator.setModalPincodeFinishProcess(finishProcess));
+        },   
+        showModalPincode: () => {
+            dispatch(ActionCreator.showModalPincode());
+        },   
+        hideModalPincode: () => {
+            dispatch(ActionCreator.hideModalPincode());
+        },  
     };
 }
   

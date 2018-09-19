@@ -99,13 +99,10 @@ class ModalConfirmToSendEth extends Component {
     }
 
     handelPressOk = () => {
-        this.sendTransaction();
-        setTimeout(() => {
-            this.props.hideModalConfirmToSendEth();            
-            this.props.setAddressToSendEth('');
-            this.props.setAmountToSendEth('');
-        },);
-        this.props.showModalSpinner('sending');
+        this.props.hideModalConfirmToSendEth();
+        if (this.props.modalFinishProcess) {
+            this.props.modalFinishProcess();
+        }
     }
 
     modalClose = () => {
@@ -144,41 +141,7 @@ class ModalConfirmToSendEth extends Component {
             this.setState({isEnoughEth: false});
             return false;
         }
-    }
-
-    sendTransaction = async () => {
-        try {  
-            const txid = await WalletUtils.sendTransaction(
-                { 
-                    contractAddress:'', 
-                    symbol:'ETH', 
-                    decimals:0
-                },
-                this.props.walletForSend,
-                this.props.addressToSendEth,
-                this.props.amountToSendEth,
-            );
-
-            this.props.hideModalSpinner();
-            const infomation = {
-                title: 'SUCCESS', 
-                message1: 'Success to send ETH',
-                transactionId: txid,
-            };
-            this.props.setModalInfomation(infomation);
-            this.props.showModalInfomation();
-        } catch (error) {
-            console.log('sendTransaction error : ' + error);
-            this.props.hideModalSpinner();
-            const infomation = {
-                title: 'FAIL', 
-                message1: 'Fail to send ETH', 
-                message2: 'Please check your transaction'
-            };
-            this.props.setModalInfomation(infomation);
-            this.props.showModalInfomation();
-        }
-    };    
+    } 
 }
 
 function mapStateToProps(state) {
@@ -193,29 +156,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        showModalConfirmToSendEth: () => {
-            dispatch(ActionCreator.showModalConfirmToSendEth());
-        },
         hideModalConfirmToSendEth: () => {
             dispatch(ActionCreator.hideModalConfirmToSendEth());
-        },
-        setAddressToSendEth: (address) => {
-            dispatch(ActionCreator.setAddressToSendEth(address));
-        },
-        setAmountToSendEth: (balance) => {
-            dispatch(ActionCreator.setAmountToSendEth(balance));
-        },
-        showModalInfomation: () => {
-            dispatch(ActionCreator.showModalInfomation());
-        },
-        setModalInfomation: (infomation) => {
-            dispatch(ActionCreator.setModalInfomation(infomation));
-        },
-        showModalSpinner: (message) => {
-            dispatch(ActionCreator.showModalSpinner(message));
-        },
-        hideModalSpinner: () => {
-            dispatch(ActionCreator.hideModalSpinner());
         },
     };
 }

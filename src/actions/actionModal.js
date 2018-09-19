@@ -190,5 +190,90 @@ export function setModalTransactionHistoryInfomation(infomation) {
   };
 }
 
+export function showModalFingerPrintScaner() {
+  return {
+      type: actionTypes.SHOW_MODAL_FINGER_PRINT_SCANER,
+  };
+}
+
+export function hideModalFingerPrintScaner() {
+  return {
+      type: actionTypes.HIDE_MODAL_FINGER_PRINT_SCANER,
+  };
+}
+
+export function setModalAskFinishProcess(finishProcess) {
+  return {
+      type: actionTypes.SET_MODAL_ASK_FINISH_PROCESS,
+      payload: finishProcess
+  };
+}
+
+export function setModalAskHeader(header) {
+  return {
+      type: actionTypes.SET_MODAL_ASK_HEADER,
+      payload: header
+  };
+}
+
+export function setModalAskBody(body) {
+  return {
+      type: actionTypes.SET_MODAL_ASK_BODY,
+      payload: body
+  };
+}
+
+export function showModalAsk() {
+  return {
+      type: actionTypes.SHOW_MODAL_ASK,
+  };
+}
+
+export function hideModalAsk() {
+  return {
+      type: actionTypes.HIDE_MODAL_ASK,
+  };
+}
+
+export function setModalFingerPrintScanerFinishProcess(finishProcess) {
+  return {
+      type: actionTypes.SET_MODAL_FINGER_PRINT_SCANER_FINISH_PROCESS,
+      payload: finishProcess
+  };
+}
+
+export function setSkipFingerPrintScan(skip) {
+  return {
+      type: actionTypes.SET_SKIP_FINGER_PRINT_SCAN,
+      payload: skip
+  };
+}
+
+export function setModalAddWalletFinishProcess(finishProcess) {
+  return {
+      type: actionTypes.SET_MODAL_ADD_WALLET_FINISH_PROCESS,
+      payload: finishProcess
+  };
+}
+
+export function showModalPincode() {
+  return {
+      type: actionTypes.SHOW_MODAL_PINCODE,
+  };
+}
+
+export function hideModalPincode() {
+  return {
+      type: actionTypes.HIDE_MODAL_PINCODE,
+  };
+}
+
+export function setModalPincodeFinishProcess(finishProcess) {
+  return {
+      type: actionTypes.SET_MODAL_PINCODE_FINISH_PROCESS,
+      payload: finishProcess
+  };
+}
+
 
 

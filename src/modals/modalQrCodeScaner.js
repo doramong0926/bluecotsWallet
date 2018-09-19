@@ -9,6 +9,7 @@ import {
   StatusBar,
   StyleSheet,
   TouchableOpacity,
+  BackHandler,
 } from 'react-native';
 
 import { BarCodeScanner, Permissions } from 'expo';
@@ -22,7 +23,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class ModalQrCodeScaner extends Component {
-
     constructor(props, context) {
         super(props, context);
     };

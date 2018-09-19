@@ -5,13 +5,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { Header } from 'react-native-elements'
 import WalletBalanceErc20 from './../../components/walletBalanceErc20';
 
-class WalletScreen extends Component{
+class WalletScreen extends Component{    
     static navigationOptions = {
         // title: 'Wallet & GiftCon',
         tabBarLabel: 'wallet',
         tabBarIcon: ({ tintColor }) => (
             <Ionicons name="ios-card" size={30} color={tintColor} />
-        ),        
+        ),      
+        header: null,  
     };
 
     render() {

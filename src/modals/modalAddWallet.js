@@ -82,9 +82,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        showModalAddeWallet: () => {
-            dispatch(ActionCreator.showModalAddeWallet());
-        },
         hideModalAddWallet: () => {
             dispatch(ActionCreator.hideModalAddWallet());
         },

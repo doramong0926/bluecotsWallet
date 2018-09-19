@@ -139,6 +139,9 @@ class ModalGenerateWallet extends Component {
         this.setState({
             nickName: '',
         })
+        if (this.props.modalFinishProcess) {
+            this.props.modalFinishProcess();
+        }
         this.props.hideModalGenerateWallet();
     };
 

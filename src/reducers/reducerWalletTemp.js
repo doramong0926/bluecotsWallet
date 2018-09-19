@@ -13,6 +13,8 @@ const initialState = {
     amountToSendEth: '',
     copyAddressToClipboard: '',
     isLoadingTxData: true,
+    modalConfirmToSendBlcFinishProcess: undefined,
+    modalConfirmToSendEthFinishProcess: undefined,
 };  
 
 export default (state = initialState, action) => {
@@ -71,6 +73,16 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 copyAddressToClipboard: action.payload,
             });
+
+        case actionTypes.SET_MODAL_CONFIRM_TO_SEND_BLC_FINISH_PROCESS:
+            return Object.assign({}, state, {
+                modalConfirmToSendBlcFinishProcess: action.payload,
+            });   
+        
+        case actionTypes.SET_MODAL_CONFIRM_TO_SEND_ETH_FINISH_PROCESS:
+            return Object.assign({}, state, {
+                modalConfirmToSendEthFinishProcess: action.payload,
+            });   
 
 
         default:

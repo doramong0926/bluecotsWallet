@@ -12,7 +12,8 @@ class sendScreen extends Component{
         tabBarLabel: 'send',
         tabBarIcon: ({ tintColor }) => (
             <Ionicons name="ios-send" size={30} color={tintColor} />
-        )
+        ),
+        header: null,
     };
 
     render(){
@@ -55,13 +56,10 @@ const SendScreenTabNavigator = createMaterialTopTabNavigator({
             fontSize: 12,
         },
         tabStyle: {
-            //width: 100,
         },
         style: {
             justifyContent: 'center',
-            //width: 200,
             backgroundColor: "#347B98",
-            //borderRadius: 50,
         },
       }
 })
