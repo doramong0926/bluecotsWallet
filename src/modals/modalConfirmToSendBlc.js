@@ -46,8 +46,7 @@ class ModalConfirmToSendBlc extends Component {
                 }}
                 modalStyle={{
                     borderRadius: 10,
-                    margin: 20,
-                    padding: 10,
+                    marginHorizontal: 20,
                     backgroundColor: "white"
                 }}
                 overlayStyle={{
@@ -58,9 +57,9 @@ class ModalConfirmToSendBlc extends Component {
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>Confirmation</Text>
                 </View>
-                <View style={styles.messageContainer}>                
+                <View style={styles.bodyContainer}>                
                     {this.renderMessage()}            
-                    <Text style={styles.messageText}>txFee : {this.state.gasForSend.toFixed(14)} ETH</Text>
+                    <Text style={styles.bodyText}>txFee : {this.state.gasForSend.toFixed(14)} ETH</Text>
                     
                 </View>
                 <View style={styles.buttonContainer}>
@@ -182,8 +181,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#67AFCB',
         alignItems: 'center',
         justifyContent: 'center',
+        borderTopStartRadius : 10,
+        borderTopEndRadius: 10,
         padding: 10,
-        borderRadius: 10,
+    }, 
+    bodyContainer: {
+        margin: 20,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        marginBottom: 10,
     },
     headerText: {
         fontSize: 15,
@@ -191,16 +198,8 @@ const styles = StyleSheet.create({
         color: 'black',
         textAlign: 'center'
     },
-    messageContainer: {
-        marginVertical : 10,
-        paddingHorizontal: 10,
-    },
-    messageText: {
+    bodyText: {
         textAlign: 'left'
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        marginVertical: 5,
     },
 })
   

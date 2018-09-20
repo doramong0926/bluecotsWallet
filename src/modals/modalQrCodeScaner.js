@@ -90,11 +90,9 @@ class ModalQrCodeScaner extends Component {
                 }}
                 modalStyle={{
                     borderRadius: 10,
-                    margin: 20,
-                    padding: 10,
+                    marginHorizontal: 20,
                     backgroundColor: "white",
                     height: 400,
-
                 }}
                 overlayStyle={{
                     backgroundColor: "rgba(0, 0, 0, 0.75)",
@@ -121,10 +119,10 @@ class ModalQrCodeScaner extends Component {
                                 />
                     }
                 </View>
-                <View style={{marginVertical: 5}}>
+                <View style={styles.bodyContainer}>
                     <Text style={{textAlign: 'center'}}> Please focus on qr-code.</Text>
                 </View>
-                <View style={styles.bottomContainer}>                    
+                <View style={styles.buttonContainer}>                    
                     <Button
                         onPress={this.closeModal}
                         title="Close"
@@ -156,25 +154,27 @@ const styles = StyleSheet.create({
         backgroundColor: '#67AFCB',
         alignItems: 'center',
         justifyContent: 'center',
+        borderTopStartRadius : 10,
+        borderTopEndRadius: 10,
         padding: 10,
-        borderRadius: 10,
+    }, 
+    qrCodeContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#000',
+    },
+    bodyContainer: {
+        margin: 20,
+    },
+    buttonContainer: {
+        marginBottom: 10,
     },
     headerText: {
         fontSize: 15,
         fontWeight: 'bold',
         color: 'black',
         textAlign: 'center'
-    },
-    qrCodeContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#000',
-        marginTop: 10,
-        marginBottom: 5,
-    },
-    bottomContainer: {
-        marginVertical: 5,
     },
 });
 

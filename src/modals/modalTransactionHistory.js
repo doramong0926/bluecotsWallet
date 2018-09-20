@@ -38,6 +38,7 @@ class ModalTransactionHistory extends Component {
                 }}
                 modalStyle={{
                     borderRadius: 10,
+                    marginHorizontal: 20,
                     backgroundColor: "white"
                 }}
                 overlayStyle={{
@@ -49,15 +50,15 @@ class ModalTransactionHistory extends Component {
                     <Text style={styles.headerText}>Transaction History</Text>
                 </View>
                 <TouchableHighlight onPress={() => this.handlePress()} underlayColor="gray">
-                    <View style={styles.messageContainer}>
+                    <View style={styles.bodyContainer}>
                         <View>
-                            <Moment style={{textAlign:'center', marginBottom: 5}} unix element={Text} >{this.props.modalTransactionHistoryInfomation.timeStamp}</Moment>                    
+                            <Moment unix element={Text} >{this.props.modalTransactionHistoryInfomation.timeStamp}</Moment>                    
                             <Text>Block : {this.props.modalTransactionHistoryInfomation.blockNumber}</Text>
                             <Text>Status : {this.props.modalTransactionHistoryInfomation.status}</Text>
                             <Text>Value : {WalletUtils.fromWei(this.props.modalTransactionHistoryInfomation.value, 'ether')} {this.props.modalTransactionHistoryInfomation.symbol}</Text>
                             <Text>Fee : {WalletUtils.fromWei(WalletUtils.toWei(this.props.modalTransactionHistoryInfomation.gasUsed, 'gwei'),'ether')} ETH</Text>
-                            <View>
-                                <View style={{flexDirection: 'row'}}>
+                            
+                                <View style={styles.BodyContainer2}>
                                     <View>
                                         <Text>From : </Text>
                                     </View>
@@ -65,7 +66,7 @@ class ModalTransactionHistory extends Component {
                                         <Text>{this.props.modalTransactionHistoryInfomation.from}</Text>
                                     </View>
                                 </View>
-                                <View style={{flexDirection: 'row'}}>
+                                <View style={styles.BodyContainer2}>
                                     <View>
                                         <Text>To : </Text>
                                     </View>
@@ -73,7 +74,7 @@ class ModalTransactionHistory extends Component {
                                         <Text>{this.props.modalTransactionHistoryInfomation.to}</Text>
                                     </View>
                                 </View>
-                                <View style={{flexDirection: 'row'}}>
+                                <View style={styles.BodyContainer2}>
                                     <View>
                                         <Text>TxID : </Text>
                                     </View>
@@ -81,14 +82,13 @@ class ModalTransactionHistory extends Component {
                                         <Text>{this.props.modalTransactionHistoryInfomation.hash}</Text>
                                     </View>
                                 </View>
-                            </View>
                         </View>
                         <View style={{margin:10, alignItems:'center'}}>
                             <Text>Click to more infomation</Text>
                         </View>
                     </View>
                 </TouchableHighlight>
-                <View style={styles.bottomContainer}>                    
+                <View style={styles.buttonContainer}>                    
                     <Button
                         onPress={this.closeModal}
                         title="Close"
@@ -142,21 +142,25 @@ const styles = StyleSheet.create({
         backgroundColor: '#67AFCB',
         alignItems: 'center',
         justifyContent: 'center',
+        borderTopStartRadius : 10,
+        borderTopEndRadius: 10,
         padding: 10,
-        borderRadius: 10,
+    }, 
+    bodyContainer: {
+        margin: 20,
+    },
+    BodyContainer2: {
+        flexDirection: 'row',
+        paddingRight: 40, 
+    },
+    buttonContainer: {
+        marginBottom: 10,
     },
     headerText: {
         fontSize: 15,
         fontWeight: 'bold',
         color: 'black',
         textAlign: 'center'
-    },
-    messageContainer: {
-        marginVertical : 10,
-        paddingHorizontal: 10,
-    },
-    bottomContainer: {
-        marginVertical: 5,
     },
 })
 

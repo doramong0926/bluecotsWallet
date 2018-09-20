@@ -29,8 +29,7 @@ class ModalAsk extends Component {
                 }}
                 modalStyle={{
                     borderRadius: 10,
-                    margin: 20,
-                    padding: 10,
+                    marginHorizontal: 20,
                     backgroundColor: "white"
                 }}
                 overlayStyle={{
@@ -41,7 +40,7 @@ class ModalAsk extends Component {
                 <View style={styles.headerContainer}>
                     {this.renderHeader()}
                 </View>
-                <View style={styles.messageContainer}>  
+                <View style={styles.bodyContainer}>  
                     {this.renderBody()}
                 </View>
                 <View style={styles.buttonContainer}>
@@ -142,8 +141,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#67AFCB',
         alignItems: 'center',
         justifyContent: 'center',
+        borderTopStartRadius : 10,
+        borderTopEndRadius: 10,
         padding: 10,
-        borderRadius: 10,
+    },
+    bodyContainer: {
+        margin: 20,
+    }, 
+    buttonContainer: {
+        flexDirection: 'row',
+        marginBottom: 10,
     },
     headerText: {
         fontSize: 15,
@@ -151,16 +158,8 @@ const styles = StyleSheet.create({
         color: 'black',
         textAlign: 'center'
     },
-    messageContainer: {
-        marginVertical : 10,
-        paddingHorizontal: 10,
-    },
     bodyText: {
         textAlign: 'left'
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        marginVertical: 5,
     },
 })
   

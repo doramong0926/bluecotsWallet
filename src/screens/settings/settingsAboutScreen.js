@@ -4,12 +4,6 @@ import { Button, Header } from 'react-native-elements'
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { persistor } from './../../config/store';
 import { WALLET_VERSION } from './../../config/constants';
-import { StackNavigator } from 'react-navigation';
-
-import SettingsMainScreen from './settingsMainScreen';
-import SettingsAcountScreen from './settingsAcountScreen';
-import SettingsWalletScreen from './settingsWalletScreen';
-import SettingsSecurityScreen from './settingsSecurityScreen';
 
 class SettingsAboutScreen extends Component{
     static navigationOptions = {

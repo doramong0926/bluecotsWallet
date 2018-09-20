@@ -55,8 +55,7 @@ class ModalGenerateWallet extends Component {
                 }}
                 modalStyle={{
                     borderRadius: 10,
-                    margin: 20,
-                    padding: 10,
+                    marginHorizontal: 20,
                     backgroundColor: "white"
                 }}
                 overlayStyle={{
@@ -67,12 +66,12 @@ class ModalGenerateWallet extends Component {
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>Add wallet - NEW</Text>
                 </View>
-                <View>
+                <View style={styles.bodyContainer}>
                     <FormLabel>Nickname</FormLabel>
-                    <FormInput containerStyle={styles.inputContainer} value={this.state.nickName} onChangeText={(value) => this.setState({nickName: value})}/>
+                    <FormInput value={this.state.nickName} onChangeText={(value) => this.setState({nickName: value})}/>
                     {this.nickNameValidationMsg()}
                 </View>
-                <View style={styles.generateButton}>
+                <View style={styles.buttonContainer}>
                     <Button
                         disabled={!this.isValidGenerateButton()}
                         onPress={this.generateWallet}
@@ -254,26 +253,22 @@ const styles = StyleSheet.create({
         backgroundColor: '#67AFCB',
         alignItems: 'center',
         justifyContent: 'center',
+        borderTopStartRadius : 10,
+        borderTopEndRadius: 10,
         padding: 10,
-        borderRadius: 10,
+    }, 
+    bodyContainer: {
+        marginTop: 10,
+        marginBottom: 20,
+    },
+    buttonContainer: {
+        marginBottom: 10,
     },
     headerText: {
         fontSize: 15,
         fontWeight: 'bold',
         color: 'black',
         textAlign: 'center'
-    },
-    menuText: {
-        marginTop: 5, 
-        textAlign: 'center'
-    },
-    inputContainer: {
-        // borderColor: '#67AFCB',
-        // borderWidth: 1,
-        // paddingHorizontal: 10,
-    },
-    generateButton: {
-        marginTop: 5, 
     },
 })
   

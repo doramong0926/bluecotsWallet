@@ -44,10 +44,8 @@ class ModalFingerPrintScaner extends Component {
                 }}
                 modalStyle={{
                     borderRadius: 10,
-                    margin: 20,
-                    padding: 10,
-                    backgroundColor: "white",
-
+                    marginHorizontal: 20,
+                    backgroundColor: "white"
                 }}
                 overlayStyle={{
                     backgroundColor: "rgba(0, 0, 0, 0.75)",
@@ -57,7 +55,7 @@ class ModalFingerPrintScaner extends Component {
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>FingerPrint Scanner</Text>
                 </View>
-                <View style={styles.Container}>   
+                <View style={styles.bodyContainer}>   
                     <Ionicons name="ios-finger-print" size={120} />
                     <View>
                         {this.renderFingerPrintMessage()}                    
@@ -134,7 +132,7 @@ class ModalFingerPrintScaner extends Component {
     renderButton = () => {
         if (this.props.useFingerPrint) {
             return(
-                <View style={styles.bottomContainer}>
+                <View style={styles.buttonContainer}>
                     <Button
                         onPress={this.handelUsePincode}
                         title="Use PinCode"
@@ -152,7 +150,7 @@ class ModalFingerPrintScaner extends Component {
             )
         } else {
             return (
-                <View style={styles.bottomContainer}>
+                <View style={styles.buttonContainer}>
                     <Button
                         onPress={this.handelCancel}
                         title="Cancel"
@@ -222,23 +220,23 @@ const styles = StyleSheet.create({
         backgroundColor: '#67AFCB',
         alignItems: 'center',
         justifyContent: 'center',
+        borderTopStartRadius : 10,
+        borderTopEndRadius: 10,
         padding: 10,
-        borderRadius: 10,
+    }, 
+    bodyContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: 20,
+    }, 
+    buttonContainer: {
+        marginBottom: 10,
     },
     headerText: {
         fontSize: 15,
         fontWeight: 'bold',
         color: 'black',
         textAlign: 'center'
-    },
-    Container: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 10,
-        marginBottom: 5,
-    },
-    bottomContainer: {
-        marginVertical: 5,
     },
 });
 

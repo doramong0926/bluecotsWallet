@@ -59,8 +59,7 @@ class ModalRestoreWallet extends Component {
                 }}
                 modalStyle={{
                     borderRadius: 10,
-                    margin: 20,
-                    padding: 10,
+                    marginHorizontal: 20,
                     backgroundColor: "white"
                 }}
                 overlayStyle={{
@@ -81,7 +80,7 @@ class ModalRestoreWallet extends Component {
                     <FormInput containerStyle={styles.inputContainer} editable={false} value={this.state.privateKey} onChangeText={(value) => this.setState({privateKey: value})}/>
                     {this.privateKeyValidationMsg()}
                 </View>
-                <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                <View style={styles.buttonContainer1}>
                     <View style={{flex:1}}>
                         <Button
                             onPress={this.readPrivateKeyFromClipboard}
@@ -115,7 +114,7 @@ class ModalRestoreWallet extends Component {
                         />
                     </View>
                 </View>
-                <View style={styles.restoreButton}>
+                <View style={styles.buttonContainer}>
                     <Button
                         disabled={!this.isValidRestoreButton()}
                         onPress={this.restoreWallet}
@@ -366,26 +365,29 @@ const styles = StyleSheet.create({
         backgroundColor: '#67AFCB',
         alignItems: 'center',
         justifyContent: 'center',
+        borderTopStartRadius : 10,
+        borderTopEndRadius: 10,
         padding: 10,
-        borderRadius: 10,
+    }, 
+    bodyContainer: {
+        marginTop: 10,
+        marginBottom: 20,
+    },
+
+    buttonContainer1: {
+        flexDirection: 'row', 
+        justifyContent: 'center', 
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    buttonContainer: {
+        marginBottom: 10,
     },
     headerText: {
         fontSize: 15,
         fontWeight: 'bold',
         color: 'black',
         textAlign: 'center'
-    },
-    menuText: {
-        marginTop: 5, 
-        textAlign: 'center'
-    },
-    inputContainer: {
-        // borderColor: '#67AFCB',
-        // borderWidth: 1,
-        // paddingHorizontal: 10,
-    },
-    restoreButton: {
-        marginTop: 15, 
     },
 })
 

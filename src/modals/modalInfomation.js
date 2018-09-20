@@ -29,8 +29,7 @@ class ModalInfomation extends Component {
                 }}
                 modalStyle={{
                     borderRadius: 10,
-                    margin: 20,
-                    padding: 10,
+                    marginHorizontal: 20,
                     backgroundColor: "white"
                 }}
                 overlayStyle={{
@@ -41,16 +40,16 @@ class ModalInfomation extends Component {
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerText}> {this.props.modalInfomationText.title}</Text>
                 </View>
-                <View style={styles.messageContainer}>  
-                    <Text style={styles.messageText}>{this.props.modalInfomationText.message1}</Text>                      
-                    <Text style={styles.messageText}>{this.props.modalInfomationText.message2}</Text>                      
-                    <Text style={styles.messageText}>{this.props.modalInfomationText.message3}</Text>
+                <View style={styles.bodyContainer}>  
+                    <Text style={styles.bodyText}>{this.props.modalInfomationText.message1}</Text>                      
+                    <Text style={styles.bodyText}>{this.props.modalInfomationText.message2}</Text>                      
+                    <Text style={styles.bodyText}>{this.props.modalInfomationText.message3}</Text>
                     {
                         (this.props.modalInfomationText.transactionId !== '' && this.props.modalInfomationText.transactionId !== undefined) ?
                         (
                             <TouchableHighlight onPress={() => this.handlePressTxid(this.props.modalInfomationText.transactionId)} underlayColor="gray">
                                 <View>
-                                    <Text style={styles.messageText}>{this.props.modalInfomationText.transactionId}</Text>
+                                    <Text style={styles.bodyText}>{this.props.modalInfomationText.transactionId}</Text>
                                     <View style={{marginTop: 5}}>
                                         <Text style={{textAlign: 'center', color: 'gray'}}>Click to check txid</Text> 
                                     </View>
@@ -123,8 +122,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#67AFCB',
         alignItems: 'center',
         justifyContent: 'center',
+        borderTopStartRadius : 10,
+        borderTopEndRadius: 10,
         padding: 10,
-        borderRadius: 10,
+    }, 
+    bodyContainer: {
+        margin: 20,
+    },
+    buttonContainer: {
+        marginBottom: 10,
     },
     headerText: {
         fontSize: 15,
@@ -132,15 +138,8 @@ const styles = StyleSheet.create({
         color: 'black',
         textAlign: 'center'
     },   
-    messageContainer: {
-        marginVertical : 10,
-        paddingHorizontal: 10,
-    },
-    messageText: {
+    bodyText: {
         textAlign: 'left'
-    },
-    buttonContainer: {
-        marginVertical: 5,
     },
 })
   

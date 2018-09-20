@@ -3,13 +3,8 @@ import { View, } from 'react-native';
 import ActionCreator from './src/actions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { createStackNavigator, StackNavigator } from 'react-navigation';
-import getSlideFromRightTransition from 'react-navigation-slide-from-right-transition';
 
-import VerificationPincodeScreen from './src/screens/verification/verificationPincodeScreen';
-import VerificationFingerPrintScreen from './src/screens/verification/verificationFingerPrintScreen';
-import AddWalletScreen from './src/screens/addWallet/addWalletScreen';
-import MainScreen from './src/screens/main/mainScreen';
+import {AppStackNavigator} from './src/navigator/navigators'
 
 import ModalAsk from './src/modals/modalAsk';
 import ModalAddWallet from './src/modals/modalAddWallet';
@@ -81,25 +76,6 @@ class MainEntry extends Component {
         );
     }
 }
-
-const AppStackNavigator = createStackNavigator({
-    VerificationPincode:{
-        screen: VerificationPincodeScreen
-    },
-    VerificationFingerPrint: {
-        screen: VerificationFingerPrintScreen
-    },
-    AddWallet: {
-        screen: AddWalletScreen
-    },
-    Main:{
-        screen: MainScreen
-    },
-},
-{
-    transitionConfig: getSlideFromRightTransition
-}
-);
 
 function mapStateToProps(state) {
     return {

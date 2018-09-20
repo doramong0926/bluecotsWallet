@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import { Button, Header } from 'react-native-elements'
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import { StackNavigator } from 'react-navigation';
 import { 
 	ETHERSCAN_API_KEY,
 	INFURA_API_KEY ,

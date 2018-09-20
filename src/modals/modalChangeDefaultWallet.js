@@ -61,8 +61,7 @@ class ModalChangeDefaultWallet extends Component {
                 }}
                 modalStyle={{
                     borderRadius: 10,
-                    margin: 20,
-                    padding: 10,
+                    marginHorizontal: 20,
                     backgroundColor: "white"
                 }}
                 overlayStyle={{
@@ -73,13 +72,11 @@ class ModalChangeDefaultWallet extends Component {
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>Wallet List</Text>
                 </View>
-                <View>
-                    <ListView
-                        dataSource={this.state.dataSourceForWalletList}
-                        renderRow={this.renderWalletList}
-                        style={styles.listViewContainer}
-                    />
-                </View>  
+                <ListView
+                    dataSource={this.state.dataSourceForWalletList}
+                    renderRow={this.renderWalletList}
+                    style={styles.bodyContainer}
+                />
             </Modal>
         );
     }
@@ -98,11 +95,11 @@ class ModalChangeDefaultWallet extends Component {
                 <View>
                     <TouchableHighlight onPress={() => this.handlePress(wallet)} underlayColor="gray">
                         <View style={{flexDirection: 'row', margin: 10}}>
-                            <View style={{flex:4}}>
+                            <View style={{flex:3}}>
                                 <Text> {wallet.nickName} </Text>
                             </View>
-                            <View style={{flex:6}}>
-                                <Text> {wallet.walletAddress.substring(0,18)}... </Text>
+                            <View style={{flex:7}}>
+                                <Text> {wallet.walletAddress.substring(0,22)}... </Text>
                             </View>
                         </View>                                        
                     </TouchableHighlight>
@@ -163,16 +160,18 @@ class ModalChangeDefaultWallet extends Component {
 }
 
 const styles = StyleSheet.create({
-    listViewContainer: {
-        paddingTop: 20,
-    }, 
     headerContainer: {
         backgroundColor: '#67AFCB',
         alignItems: 'center',
         justifyContent: 'center',
+        borderTopStartRadius : 10,
+        borderTopEndRadius: 10,
         padding: 10,
-        borderRadius: 10,
-    },
+    }, 
+    bodyContainer: {
+        // justifyContent: 'center',
+        paddingHorizontal: 10,
+    },   
     headerText: {
         fontSize: 15,
         fontWeight: 'bold',

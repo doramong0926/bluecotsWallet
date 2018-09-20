@@ -29,8 +29,7 @@ class ModalDefaultWalletSettings extends Component {
                 }}
                 modalStyle={{
                     borderRadius: 10,
-                    margin: 20,
-                    padding: 10,
+                    marginHorizontal: 20,
                     backgroundColor: "white"
                 }}
                 overlayStyle={{
@@ -41,7 +40,7 @@ class ModalDefaultWalletSettings extends Component {
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>Default Wallet settings</Text>
                 </View>
-                <View style={{justifyContent: 'center'}}>
+                <View style={styles.bodyContainer}>
                     <TouchableHighlight onPress={() => this.handleModifyNickNamePress()} underlayColor="gray">
                         <View style={{flexDirection: 'row', margin: 10}}>   
                             <Text style={styles.menuText}>Modify nickname</Text>
@@ -112,9 +111,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#67AFCB',
         alignItems: 'center',
         justifyContent: 'center',
+        borderTopStartRadius : 10,
+        borderTopEndRadius: 10,
         padding: 10,
-        borderRadius: 10,
-    },
+    }, 
+    bodyContainer: {
+        justifyContent: 'center',
+        paddingHorizontal: 10,
+    }, 
     headerText: {
         fontSize: 15,
         fontWeight: 'bold',

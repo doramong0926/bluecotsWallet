@@ -8,7 +8,6 @@ import ActionCreator from './../../actions';
 import WalletAddressWithNickNameForSend from './../../components/walletAddressWithNickNameForSend';
 import PropTypes from 'prop-types';
 import { Permissions } from 'expo';
-import { StackActions, NavigationActions } from 'react-navigation';
 
 import { 
 	ETHERSCAN_API_KEY,
@@ -49,7 +48,7 @@ class BlcSendScreen extends Component{
     }
 
     render(){
-        return (
+        return (            
             <View style={{flex:1}}>
                 <WalletAddressWithNickNameForSend tokenName='BLC'/>
                 <View>
