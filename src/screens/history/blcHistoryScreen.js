@@ -30,7 +30,7 @@ import {
 class BlcHistoryScreen extends Component{  
     static navigationOptions = {
         //tabBarVisible: false,
-        tabBarLabel: 'BLC',
+        tabBarLabel: 'BLC',        
     };  
 
     static propTypes = {

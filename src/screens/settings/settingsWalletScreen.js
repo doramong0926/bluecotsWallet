@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
-import { Button, Header, Icon } from 'react-native-elements'
+import { Button, Icon } from 'react-native-elements'
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { persistor } from './../../config/store';
 import { 
@@ -17,21 +17,21 @@ import {
 
 class SettingsWalletScreen extends Component{
     static navigationOptions = {
-        // title: 'Wallet',
-        header: null,
+        title: 'Wallet',
+        headerTitleStyle: {
+            textAlign: 'center',
+            fontSize: 14,
+            color: 'white',
+        },
+        headerStyle: {
+            backgroundColor: '#092834',
+            height: 40,
+        },
+        headerTintColor: 'white',
     }
     render(){
         return (
-
             <View style={{flex:1}}>
-                <Header
-                    backgroundColor={'#092834'}
-                    //leftComponent={<Ionicons name="arrow-back" color={'#fff'} onPress = {this.props.navigation.goBack()}/>}
-                    leftComponent={{ icon: 'arrow-back', color: '#fff', onPress: () => this.props.navigation.goBack()}}
-                    centerComponent={{ text: 'Wallet', style: { fontWeight: 'bold', color: '#fff' } }}
-                    IconProps={{type: 'font-awesome'}}
-                    //rightComponent={{ icon: 'home', color: '#fff' }}
-                />
                 <View style={style.container}>
                     <Text>DEFAULT_TOKEN_NAME : {DEFAULT_TOKEN_NAME}</Text>
                     <Text>DEFAULT_TOKEN_SYMBOL : {DEFAULT_TOKEN_SYMBOL}</Text>

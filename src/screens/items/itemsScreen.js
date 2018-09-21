@@ -4,10 +4,6 @@ import { Ionicons, FontAwesome } from '@expo/vector-icons';
  
 class itemsScreen extends Component{
     static navigationOptions = {
-        tabBarLabel: 'items',
-        tabBarIcon: ({ tintColor }) => (
-            <Ionicons name="ios-cart" size={30} color={tintColor} />
-        )
     };
     render(){
         return (

@@ -21,7 +21,7 @@ import EthSendScreen from '../screens/send/EthSendScreen'
 import BlcHistoryScreen from '../screens/history/blcHistoryScreen'
 import EthHistoryScreen from '../screens/history/ethHistoryScreen'
 import SettingsMainScreen from '../screens/settings/settingsMainScreen';
-import SettingsAcountScreen from '../screens/settings/settingsAcountScreen';
+import SettingsAccountScreen from '../screens/settings/settingsAccountScreen';
 import SettingsWalletScreen from '../screens/settings/settingsWalletScreen';
 import SettingsSecurityScreen from '../screens/settings/settingsSecurityScreen';
 import SettingsAboutScreen from '../screens/settings/settingsAboutScreen';
@@ -31,8 +31,8 @@ export const SettingsStackNavigator = createStackNavigator (
         SettingsMain:{
             screen: SettingsMainScreen
         },
-        Acount:{
-            screen: SettingsAcountScreen
+        Account:{
+            screen: SettingsAccountScreen
         },
         Wallet:{
             screen: SettingsWalletScreen
@@ -45,7 +45,21 @@ export const SettingsStackNavigator = createStackNavigator (
         }
     },
     {
-        transitionConfig: getSlideFromRightTransition
+        transitionConfig: getSlideFromRightTransition,
+        navigationOptions: {
+            title: 'Settings',
+            headerTitleStyle: {
+                textAlign: 'center',
+                fontSize: 14,
+                color: 'white',
+            },
+            headerStyle: {
+                backgroundColor: '#092834',
+                height: 40,
+            },
+            headerTintColor: 'white',
+        },
+        headerLayoutPreset: 'center'
     }
 );
 
@@ -75,10 +89,6 @@ export const HistoryScreenTabNavigator = createMaterialTopTabNavigator (
                 //borderRadius: 50,
             },
         },
-        navigationOptions: {
-            header: null,
-            headerLeft: null,
-        },
     }
 )
 
@@ -105,37 +115,147 @@ export const SendScreenTabNavigator = createMaterialTopTabNavigator (
                 backgroundColor: "#347B98",
             },     
         },
+    }
+)
+
+export const WalletStackNavigator = createStackNavigator (
+    {
+        WalletStack: {
+            screen: WalletScreen,
+        }
+    },
+    {
         navigationOptions: {
-            header: null,
-            headerLeft: null,
+            title: 'Bluecots wallet',
+            headerTitleStyle: {
+                textAlign: 'center',
+                fontSize: 14,
+                color: 'white',
+            },
+            headerStyle: {
+                backgroundColor: '#092834',
+                height: 40,
+            },
         },
+        headerLayoutPreset: 'center'
+    }
+)
+
+export const ItemsStackNavigator = createStackNavigator (
+    {
+        ItemsStack: {
+            screen: itemsScreen,
+        }
+    },
+    {
+        navigationOptions: {
+            title: 'Items',
+            headerTitleStyle: {
+                textAlign: 'center',
+                fontSize: 14,
+                color: 'white',
+            },
+            headerStyle: {
+                backgroundColor: '#092834',
+                height: 40,
+            },
+        },
+        headerLayoutPreset: 'center'
+    }
+)
+
+export const SendStackNavigator = createStackNavigator (
+    {
+        SendStack: {
+            screen: SendScreenTabNavigator,
+        }
+    },
+    {
+        navigationOptions: {
+            title: 'Send',
+            headerTitleStyle: {
+                textAlign: 'center',
+                fontSize: 14,
+                color: 'white',
+            },
+            headerStyle: {
+                backgroundColor: '#092834',
+                height: 40,
+            },
+        },
+        headerLayoutPreset: 'center'
+    }
+)
+
+export const ReceiveStackNavigator = createStackNavigator (
+    {
+        ReceiveStack: {
+            screen: receiveScreen,
+        }
+    },
+    {
+        navigationOptions: {
+            title: 'Receive',
+            headerTitleStyle: {
+                textAlign: 'center',
+                fontSize: 14,
+                color: 'white',
+            },
+            headerStyle: {
+                backgroundColor: '#092834',
+                height: 40,
+            },
+        },
+        headerLayoutPreset: 'center'
+    }
+)
+
+export const HistoryStackNavigator = createStackNavigator (
+    {
+        HistoryStack: {
+            screen: HistoryScreenTabNavigator,
+        }
+    },
+    {
+        navigationOptions: {
+            title: 'History',
+            headerTitleStyle: {
+                textAlign: 'center',
+                fontSize: 14,
+                color: 'white',
+            },
+            headerStyle: {
+                backgroundColor: '#092834',
+                height: 40,
+            },
+        },
+        headerLayoutPreset: 'center'
     }
 )
 
 export const MainScreenTabNavigator = createBottomTabNavigator (
     {
-        walletTab:{
-            screen: WalletScreen,   
+        wallet:{
+            screen: WalletStackNavigator,            
+        },        
+        items:{
+            screen: ItemsStackNavigator,
         },
-        itemsTab:{
-            screen: itemsScreen,
+        send:{
+            screen: SendStackNavigator,            
         },
-        sendTab:{
-            screen: SendScreenTabNavigator,            
+        receive:{
+            screen: ReceiveStackNavigator,
         },
-        receiveTab:{
-            screen: receiveScreen,
-        },
-        historyTab:{
-            screen: HistoryScreenTabNavigator,
+        history:{
+            screen: HistoryStackNavigator,
         },   
-        settingsTab:{
+        settings:{
             screen: SettingsStackNavigator,
         },
     }, 
-    {
-        
-        initialRouteName: 'walletTab',
+    {   
+        initialRouteName: 'wallet',
         animationEnabled: true,
         swipeEnabled: false,
         tabBarOptions: {
@@ -153,29 +273,29 @@ export const MainScreenTabNavigator = createBottomTabNavigator (
         },
         navigationOptions: ({ navigation }) => {
             const { routeName } = navigation.state;
-            let tabBarLabel;
-            if (routeName === 'sendTab') {
-                tabBarLabel = 'send';
-            } else if (routeName === 'historyTab') {
-                tabBarLabel = 'history';
-            } else if (routeName === 'settingsTab') {
-                tabBarLabel = 'settings';
-            }
             return {
-                header: null,
-                headerLeft: null,
-                tabBarLabel,
                 tabBarIcon: ({ focused, tintColor }) => {
-                    const { routeName } = navigation.state;
-                    if (routeName === 'sendTab')
-                    {
-                        return <Ionicons name="ios-send" size={30} color={tintColor} />  
-                    } else if (routeName === 'historyTab') {
-                        return <Ionicons name="ios-stats" size={30} color={tintColor} />
-                    } else if (routeName === 'settingsTab') {
-                        return <Ionicons name="ios-settings" size={30} color={tintColor} />
+                    switch(routeName) {
+                        case 'wallet':
+                            return <Ionicons name="ios-card" size={30} color={tintColor} />
+                            break;
+                        case 'items':
+                            return <Ionicons name="ios-cart" size={30} color={tintColor} />
+                            break;
+                        case 'send':
+                            return <Ionicons name="ios-send" size={30} color={tintColor} />
+                            break;
+                        case 'receive':
+                            return <Ionicons name="md-filing" size={30} color={tintColor} />
+                            break;
+                        case 'history':
+                            return <Ionicons name="ios-stats" size={30} color={tintColor} />
+                            break;
+                        case 'settings':
+                            return <Ionicons name="ios-settings" size={30} color={tintColor} />
+                            break;
                     }
-                }
+                },
             }
         },
         transitionConfig: getSlideFromRightTransition,
@@ -201,6 +321,6 @@ export const AppStackNavigator = createStackNavigator (
         transitionConfig: getSlideFromRightTransition,
         navigationOptions: {
             header: null,
-        },
+        }
     }
 );

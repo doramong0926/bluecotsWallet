@@ -19,6 +19,10 @@ class EthHistoryScreen extends Component{
     static navigationOptions = {
         //tabBarVisible: false,
         tabBarLabel: 'ETH',
+        title: 'Send',
+        headerStyle: {
+            backgroundColor: '#092834',
+        },
     };  
 
     static propTypes = {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
-import { Button, Header } from 'react-native-elements'
+import { Button } from 'react-native-elements'
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { 
 	ETHERSCAN_API_KEY,
@@ -16,20 +16,21 @@ import {
  
 class SettingsSecurityScreen extends Component{
     static navigationOptions = {
-        // title: 'Security',
-        header: null,
+        title: 'Security',
+        headerTitleStyle: {
+            textAlign: 'center',
+            fontSize: 14,
+            color: 'white',
+        },
+        headerStyle: {
+            backgroundColor: '#092834',
+            height: 40,
+        },
+        headerTintColor: 'white',
     }
     render(){
         return (
             <View style={{flex: 1}}>
-                <Header
-                    backgroundColor={'#092834'}
-                    //leftComponent={<Ionicons name="arrow-back" color={'#fff'} onPress = {this.props.navigation.goBack()}/>}
-                    leftComponent={{ icon: 'arrow-back', color: '#fff', onPress: () => this.props.navigation.goBack()}}
-                    centerComponent={{ text: 'Security', style: { fontWeight: 'bold', color: '#fff' } }}
-                    IconProps={{type: 'font-awesome'}}
-                    //rightComponent={{ icon: 'home', color: '#fff' }}
-                />  
                 <View style={style.container}>
                     <Text> Security setting page</Text>
                 </View>

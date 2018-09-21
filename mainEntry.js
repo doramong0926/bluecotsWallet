@@ -26,6 +26,11 @@ import ModalPincode from './src/modals/modalPincode';
 
 
 class MainEntry extends Component {
+
+    constructor(props) {
+        super(props)
+    }
+    
     static propTypes = {
         modalAskFinishProcess: PropTypes.func,
         modalFingerPrintScanerFinishProcess: PropTypes.func,

@@ -1,28 +1,29 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
-import { Button, Header, Icon } from 'react-native-elements'
+import { Button, Icon } from 'react-native-elements'
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 class SettingsMainScreen extends Component{
     static navigationOptions = {
-        // title: 'Settings',
-        header: null,
+        title: 'Settings',
+        headerTitleStyle: {
+            textAlign: 'center',
+            fontSize: 14,
+            color: 'white',
+        },
+        headerStyle: {
+            backgroundColor: '#092834',
+            height: 40,
+        },
+        headerTintColor: 'white',
     }
 
     render(){
         return (
             <View style={{flex:1}}>
-                <Header
-                    backgroundColor={'#092834'}
-                    //leftComponent={<Ionicons name="arrow-back" color={'#fff'} onPress = {this.props.navigation.goBack()}/>}
-                    centerComponent={{ text: 'Settings', style: { fontWeight: 'bold', color: '#fff' } }}
-                    IconProps={{type: 'font-awesome'}}
-                    //rightComponent={{ icon: 'home', color: '#fff' }}
-                />
-                {/* <View style={{marginVertical: 5, borderColor: 'gray', borderWidth: 0.5}}></View> */}
-                <TouchableHighlight onPress={() => this.handlePressAcount()} underlayColor="gray">
+                <TouchableHighlight onPress={() => this.handlePressAccount()} underlayColor="gray">
                     <View style={{flexDirection: 'row', margin: 5, padding: 10}}>   
-                        <Text style={styles.menuText}>Acount</Text>
+                        <Text style={styles.menuText}>Account</Text>
                         <View style={{flex: 1, alignItems:'flex-end', justifyContent:'center'}} >
                             <Ionicons name="ios-arrow-dropdown" size={20} />
                         </View>
@@ -71,8 +72,8 @@ class SettingsMainScreen extends Component{
         this.props.navigation.navigate('SettingsMain');
     }
 
-    handlePressAcount = () => {
-        this.props.navigation.navigate('Acount');
+    handlePressAccount = () => {
+        this.props.navigation.navigate('Account');
     }
 
     handlePressWallet = () => {

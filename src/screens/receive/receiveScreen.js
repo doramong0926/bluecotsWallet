@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Clipboard, CameraRoll , ToastAndroid } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import QRCode from 'react-native-qrcode-svg';
-import { Button, Header } from 'react-native-elements'
+import { Button } from 'react-native-elements'
 import { connect } from 'react-redux';
 import WalletAddressWithNickNameForReceive from './../../components/walletAddressWithNickNameForReceive';
 import ActionCreator from './../../actions';
@@ -12,11 +12,6 @@ import PropTypes from 'prop-types';
 
 class receiveScreen extends Component{  
     static navigationOptions = {
-        tabBarLabel: 'receive',
-        tabBarIcon: ({ tintColor }) => (
-            <Ionicons name="md-filing" size={30} color={tintColor} />
-        ),
-        header: null,  
     };  
 
     static propTypes = {
@@ -34,13 +29,7 @@ class receiveScreen extends Component{
 
     render(){
         return (
-            <View style={styles.container}>
-                <Header
-                    backgroundColor={'#092834'}
-                    //leftComponent={{ icon: 'menu', color: '#fff' }}
-                    centerComponent={{ text: 'Receive', style: { fontWeight: 'bold', color: '#fff' } }}
-                    //rightComponent={{ icon: 'home', color: '#fff' }}
-                />                
+            <View style={styles.container}>           
                 <View>
                     <WalletAddressWithNickNameForReceive />
                 </View>

@@ -2,28 +2,15 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Header } from 'react-native-elements'
 import WalletBalanceErc20 from './../../components/walletBalanceErc20';
 
-class WalletScreen extends Component{    
-    static navigationOptions = {
-        // title: 'Wallet & GiftCon',
-        tabBarLabel: 'wallet',
-        tabBarIcon: ({ tintColor }) => (
-            <Ionicons name="ios-card" size={30} color={tintColor} />
-        ),      
-        header: null,  
+class WalletScreen extends Component{
+    static navigationOptions = {    
     };
 
     render() {
         return (            
-            <View style={styles.container}>  
-                <Header
-                    backgroundColor={'#092834'}
-                    //leftComponent={{ icon: 'menu', color: '#fff' }}
-                    centerComponent={{ text: 'BlueCots Wallet', style: { fontWeight: 'bold', color: '#fff' } }}
-                    //rightComponent={{ icon: 'home', color: '#fff' }}
-                />
+            <View style={styles.container}>
                 <View style={styles.balanceContainer}>
                     <WalletBalanceErc20 />
                 </View>
