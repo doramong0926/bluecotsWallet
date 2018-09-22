@@ -4,25 +4,33 @@ import { StyleSheet, Text, View, ListView, TouchableHighlight, Clipboard } from 
 import { Ionicons } from '@expo/vector-icons';
 import { Button, Header } from 'react-native-elements'
 import { connect } from 'react-redux';
-import WalletAddressWithNickNameForHistory from './../../components/walletAddressWithNickNameForHistory';
-import ActionCreator from './../../actions';
+import ActionCreator from './../actions';
 import PropTypes from 'prop-types';
-import WalletUtils from './../../utils/wallet';
+import WalletUtils from './../utils/wallet';
 import Moment from 'react-moment';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { defaultTransactionData } from './../../config/constants';
+import { Divider } from 'react-native-material-design';
+
+import { 
+    ETHERSCAN_API_KEY,
+    INFURA_API_KEY ,
+    SEGMENT_API_KEY,
+    NETWORK,
+    DEFAULT_TOKEN_NAME,
+    DEFAULT_TOKEN_SYMBOL,
+    DEFAULT_TOKEN_CONTRACT_ADDRESS,
+    DEFAULT_TOKEN_DECIMALS,
+    WALLET_VERSION,
+    defaultTransactionData,
+  } from './../config/constants';
 
 //import RNFS from "react-native-fs"
 
 
-class EthHistoryScreen extends Component{  
+class RecentHistory extends Component{  
     static navigationOptions = {
         //tabBarVisible: false,
-        tabBarLabel: 'ETH',
-        title: 'Send',
-        headerStyle: {
-            backgroundColor: '#092834',
-        },
+        tabBarLabel: 'BLC',        
     };  
 
     static propTypes = {
@@ -53,7 +61,7 @@ class EthHistoryScreen extends Component{
         this.fetchTransaction();
         setInterval(() => {
             this.fetchTransaction();
-        }, 50000)
+        }, 10000)
     }
 
     componentWillReceiveProps() {
@@ -62,10 +70,7 @@ class EthHistoryScreen extends Component{
 
     render(){
         return (
-            <View style={styles.container}>            
-                <View>
-                    <WalletAddressWithNickNameForHistory />
-                </View>
+            <View style={styles.container}>
                 {this.renderListView()}
             </View>  
         );        
@@ -75,7 +80,7 @@ class EthHistoryScreen extends Component{
         if (this.props.isLoadingTxData === true) {
             return (
                 <View>                
-                    <Spinner visible={this.props.isLoadingTxData} cancelable={true} textContent="fetching" textStyle={{fontSize:20, fontWeight:'normal', color: '#FFF'}}/>
+                    {/* <Spinner visible={this.props.isLoadingTxData} cancelable={true} textContent="fetching" textStyle={{fontSize:20, fontWeight:'normal', color: '#FFF'}}/> */}
                 </View>
             )
         } else {
@@ -107,12 +112,13 @@ class EthHistoryScreen extends Component{
                                         <Text style={styles.statusGuideFont}> Failure</Text>
                                     </View>
                                 </View>
-                                <View style={{marginHorizontal: 20, marginTop: 10, borderColor: 'gray', borderWidth: 0.5}}></View>            
-                                <ListView
-                                    dataSource={this.state.dataSourceForTransaction}
-                                    renderRow={this.renderTransaction}
-                                    style={styles.listViewContainer}
-                                />
+                                <View style={styles.listViewContainer}>
+                                    <ListView
+                                        dataSource={this.state.dataSourceForTransaction}
+                                        renderRow={this.renderTransaction}
+                                        style={styles.listViewInnerContainer}
+                                    />
+                                </View>
                             </View>
                         )
                     }     
@@ -125,8 +131,9 @@ class EthHistoryScreen extends Component{
         if (txData.from !== undefined && txData.from !== '' && txData.value !== '0') {
             return (
                 <View>
+                    <Divider />
                     <TouchableHighlight onPress={() => this.handlePress(txData)} underlayColor="gray">
-                    <View style={styles.listViewContainer}>
+                    <View style={styles.listViewInnerContainer}>
                         <View style={{flexDirection:'row'}}>
                             <View style={{width: 60, borderRadius:50, backgroundColor:'#92B558'}}>
                                 {
@@ -135,7 +142,7 @@ class EthHistoryScreen extends Component{
                                         ( <Text style={{fontSize:12, textAlign:'center'}}>Receive</Text> )
                                 }
                             </View>
-                            <Text> {WalletUtils.fromWei(txData.value, 'ether')} ETH (</Text>
+                            <Text> {WalletUtils.fromWei(txData.value, 'ether')} BLC (</Text>
                             <Moment unix fromNow element={Text} >{txData.timeStamp}</Moment>
                             <Text>)</Text>           
                         </View>      
@@ -146,7 +153,6 @@ class EthHistoryScreen extends Component{
                             }
                     </View>
                     </TouchableHighlight>
-                    <View style={{marginHorizontal: 10, marginVertical: 5, borderColor: 'gray', borderWidth: 0.5}}></View>
                 </View>
              ) 
         }
@@ -166,8 +172,8 @@ class EthHistoryScreen extends Component{
             value: txData.value,
             to: txData.to,
             gasUsed: txData.gasUsed,
-            symbol: "ETH",            
-            status: (txData.txreceipt_status == 1) ? ("Success") : ("Pending")
+            symbol: "BLC",
+            status: "Success"
         }
 
         this.props.setModalTransactionHistoryInfomation(infomation);
@@ -178,13 +184,14 @@ class EthHistoryScreen extends Component{
         if (this.props.walletForHistory.walletAddress !== undefined && this.props.walletForHistory.walletAddress !== '')
         {
             const txData = await WalletUtils.getTransactions(
-                null,
+                DEFAULT_TOKEN_CONTRACT_ADDRESS,
                 this.props.walletForHistory.walletAddress,
-                null,
-                "ETH",
-                null,
-                null,
+                DEFAULT_TOKEN_DECIMALS,
+                DEFAULT_TOKEN_SYMBOL,
+                1,
+                5,
             )
+            // WalletUtils.getUnconfimrdTransaction();
             
             if (txData.message === 'OK') {
                 this.setState({transactionHistoryData: this.parsingTxData(txData.result)});
@@ -203,10 +210,22 @@ class EthHistoryScreen extends Component{
         }
     }
 
+    fetchingTxReceiptStatus = (hash) => {
+        return '1';
+        
+        const txStatus = WalletUtils.getTxReceiptStatus(hash);    
+        if (txStatus.message !== 'OK') {
+            return '0';
+        } else if (txStatus.result.status === 1) {
+            return '1';
+        } else {
+            return '0';
+        }       
+    }
+
     parsingTxData = (data) => {
         return data.filter(t=> (t.from === this.props.walletForHistory.walletAddress || t.to === this.props.walletForHistory.walletAddress))
-        .map(t => (        
-        {
+        .map(t => ({
             from: t.from,
             to: t.to,
             timeStamp: t.timeStamp,  
@@ -214,8 +233,8 @@ class EthHistoryScreen extends Component{
             value: t.value,
             blockNumber: t.blockNumber,
             gasUsed: t.gasUsed,
-            isError: t.isError,
-            txreceipt_status : t.txreceipt_status,
+            isError: '0',
+            txreceipt_status : this.fetchingTxReceiptStatus(t.hash),
         }))
     }
 }
@@ -245,23 +264,23 @@ function mapDispatchToProps(dispatch) {
     };
 }
   
-export default connect(mapStateToProps, mapDispatchToProps)(EthHistoryScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(RecentHistory);
  
 
 const styles = StyleSheet.create({
     container: {        
-        flex: 1,
-        backgroundColor: '#E4F1F6',   
-    },
-    container2: {
-        flex: 1,               
-        alignItems: 'center',   
-        justifyContent: 'center',
+        flex: 1, 
     },
     listViewContainer: {
         flex: 1,
-        margin : 5,
-        padding: 5,
+        alignItems: 'flex-start'
+    },
+    listViewInnerContainer: {
+        flex: 1,
+        marginHorizontal: 0,
+        marginVertical : 5,
+        paddingHorizontal: 0,
+        paddingVertical: 5,
     },
     statusContainer: {
         marginHorizontal: 20, 

@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, Image } from 'react-native';
 import { connect } from 'react-redux';
 import ActionCreator from '../actions';
 import WalletUtils from '../utils/wallet';
+import RecentHistory from '../components/recentHistory'
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 import ETH_ICON_IMAGE from './images/ethereum_40x40.png';
@@ -53,29 +54,18 @@ class WalletBalanceCard extends Component {
                                 <Ionicons name="ios-information-circle-outline" size={20} />
                             </View>
                             <View style={{marginLeft:5}}>
-                                <Text style={styles.textNotice}>Notice : Bluecots wallet launched.</Text>
+                                <Text style={styles.textNotice}>Notice : Bluecots beta wallet has been launched.</Text>
                             </View>
                             </View>
                         </Card.Body>
                     </Card>
-                </View>
-                <View>
-                    <Card style={styles.containerCard}>
-                        <Card.Body>
-                            {/* <View style={styles.containerTitle}>
-                                <Text style={styles.textTitle}>Wallet</Text>
-                            </View> */}
-                            <View>
-                                <WalletAddressWithNickName />
-                            </View>
-                        </Card.Body>
-                    </Card>
-                </View>                
+                </View>             
                 <View>
                     <Card style={styles.containerCard}>
                         <Card.Body>
                             <View style={styles.containerTitle}>
-                                <Text style={styles.textTitle}>Balance</Text>
+                                <Text style={styles.textTitle}>Balance ({this.props.defaultWallet.nickName})</Text>
+                                <Text style={styles.descriptionText}>{this.props.defaultWallet.walletAddress}</Text>
                             </View>
                             <View style={styles.containerBalanceTop}>
                                 <View style={{flex: 2, flexDirection: 'row'}}>
@@ -103,6 +93,21 @@ class WalletBalanceCard extends Component {
                             <Divider />                            
                             <View style={styles.containerMenuIcon}>
                                 <MainWalletMenu navigation={this.props.navigation}/>
+                            </View>
+                        </Card.Body>
+                    </Card>
+                </View>
+                <View>
+                    <Card style={styles.containerCard}>
+                        <Card.Body>
+                            <View style={styles.containerTransaction}>
+                                <View style={styles.containerTitle}>
+                                    <Text style={styles.textTitle}>Recent Transaction</Text>
+                                    <Text style={styles.descriptionText}>It is shown only 5 recent transaction.</Text>
+                                </View>
+                                <View>
+                                    <RecentHistory />
+                                </View>
                             </View>
                         </Card.Body>
                     </Card>
@@ -176,10 +181,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start'
     },
+    containerTransaction: {      
+        // marginBottom: 20,
+    },
     containerTitle: {
         // flex: 1,
         // backgroundColor: 'gray',         
-        marginBottom: 10,
+        marginBottom: 20,
     },
     containerBalanceTop: {
         marginBottom: 15,
@@ -209,7 +217,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold', 
         textAlign:'center',
         color: '#BD3D3A',
-    }
+    },
+    descriptionText: {
+        fontSize: 12,        
+        color: '#B4B7BA',
+        textAlign: 'center',
+    },
 })
   
 export default connect(mapStateToProps, mapDispatchToProps)(WalletBalanceCard);

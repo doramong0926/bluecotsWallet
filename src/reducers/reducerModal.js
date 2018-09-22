@@ -19,6 +19,7 @@ const initialState = {
     visibleModalSpinner: false,
     visibleModalInfomation: false,
     visibleModalAsk: false,
+    visibleModalWalletInfomation: false,
     modalInfomationText: {title: '', message1: '', message2: '', message3: '', transactionId: ''},    
     visibleModalTransactionHistory: false,
     modalTransactionHistoryInfomation: {
@@ -270,8 +271,17 @@ export default (state = initialState, action) => {
         case actionTypes.SET_MODAL_PINCODE_FINISH_PROCESS:
             return Object.assign({}, state, {
                 modalPincodeFinishProcess: action.payload,
-            });                
-            
+            }); 
+
+        case actionTypes.SHOW_MODAL_WALLET_INFOMATION:
+            return Object.assign({}, state, {
+                visibleModalWalletInfomation: true,
+            });       
+
+        case actionTypes.HIDE_MODAL_WALLET_INFOMATION:
+            return Object.assign({}, state, {
+                visibleModalWalletInfomation: false,
+            });   
             
         default:
             return state;

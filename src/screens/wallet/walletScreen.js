@@ -33,8 +33,8 @@ class WalletScreen extends Component{
                     // }
                     renderForeground={() => 
                         <View style={styles.containerImageSlider}>
-                                <ImageSlider images={sliderImage}/>
-                            </View>
+                            <ImageSlider images={sliderImage}/>
+                        </View>
                     }>
                         <View style={styles.cardContainer}>
                             <WalletBalanceCard navigation={this.props.navigation}/>
@@ -56,6 +56,6 @@ const styles = StyleSheet.create({
         height: 140,
     },
     cardContainer: {
-        marginBottom: 2,
+        marginBottom: 4,
     },
 })

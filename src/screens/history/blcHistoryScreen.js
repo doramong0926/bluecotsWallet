@@ -190,6 +190,8 @@ class BlcHistoryScreen extends Component{
                 this.props.walletForHistory.walletAddress,
                 DEFAULT_TOKEN_DECIMALS,
                 DEFAULT_TOKEN_SYMBOL,
+                null,
+                null,
             )
             // WalletUtils.getUnconfimrdTransaction();
             

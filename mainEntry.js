@@ -23,6 +23,7 @@ import ModalInfomation from './src/modals/modalInfomation';
 import ModalSpinner from './src/modals/modalSpinner'
 import ModalFingerPrintScaner from './src/modals/modalFingerPrintScaner';
 import ModalPincode from './src/modals/modalPincode';
+import ModalWalletInfomation from './src/modals/modalWalletInfomation';
 
 
 class MainEntry extends Component {
@@ -49,6 +50,7 @@ class MainEntry extends Component {
                     body={this.props.modalAskBody} 
                     modalFinishProcess={this.props.modalAskFinishProcess} 
                 />
+                <ModalWalletInfomation />
                 <ModalAddWallet />
                 <ModalDefaultWalletSettings />
                 <ModalGenerateWallet 

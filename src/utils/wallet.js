@@ -156,19 +156,23 @@ export default class WalletUtils {
    *
    * @param {Object} token
    */
-  static getTransactions(contractAddress, walletAddress, decimals, symbol) {
+  static getTransactions(contractAddress, walletAddress, decimals, symbol, page, offset) {
     if (symbol === 'ETH') {
-      return this.getEthTransactions(walletAddress);
+      return this.getEthTransactions(walletAddress, page, offset);
     }
 
-    return this.getERC20Transactions(contractAddress, walletAddress, decimals);
+    return this.getERC20Transactions(contractAddress, walletAddress, decimals, page, offset);
   }
 
   /**
    * Fetch a list of ETH transactions for the user's wallet
    */
-  static async getEthTransactions(walletAddress) {
-    const fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=account&action=txlist&address=' + walletAddress + '&sort=desc&apikey=' + ETHERSCAN_API_KEY;
+  static async getEthTransactions(walletAddress, page, offset) {
+    if (offset === 0 || offset === null || page === 0 || page === null) {
+      var fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=account&action=txlist&address=' + walletAddress + '&sort=desc&apikey=' + ETHERSCAN_API_KEY;
+    } else {
+      var fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=account&action=txlist&address=' + walletAddress + '&page=' + page + '&offset=' + offset + '&sort=desc&apikey=' + ETHERSCAN_API_KEY;
+    }
     return fetch(fetchString)
       .then(response => response.json())
       .then(data => {
@@ -181,15 +185,19 @@ export default class WalletUtils {
    *
    * @param {String} contractAddress
    */
-  static async getERC20Transactions(contractAddress, walletAddress, decimals) {
-    const fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=account&action=tokentx&contractaddress=' + contractAddress + '&address=' + walletAddress + '&sort=desc&apikey=' + ETHERSCAN_API_KEY;
+  static async getERC20Transactions(contractAddress, walletAddress, decimals, page, offset) {
+    if (offset === 0 || offset === null || page === 0 || page === null) {
+        var fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=account&action=tokentx&contractaddress=' + contractAddress + '&address=' + walletAddress + '&sort=desc&apikey=' + ETHERSCAN_API_KEY;
+    } else {
+        var fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=account&action=tokentx&contractaddress=' + contractAddress + '&address=' + walletAddress + '&page=' + page +'&offset=' + offset + '&sort=desc&apikey=' + ETHERSCAN_API_KEY;
+    }    
     return fetch(fetchString)    
         .then(response => response.json())
         .then(data => {
           return data; 
       });
   }
-
+  
   /**
    * Get the user's wallet balance of a given token
    *

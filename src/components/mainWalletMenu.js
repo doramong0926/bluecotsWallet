@@ -15,7 +15,11 @@ class MainWalletMenu extends Component {
                 <View style={styles.container}>
                     <View style={styles.iconView}>
                         <Ionicons name="ios-add-circle-outline" onPress={this.handlePressAdd} size={30} color="black" />
-                        <Text style={styles.iconText}>Add</Text>
+                        <Text style={styles.iconText}>Add wallet</Text>
+                    </View>
+                    <View style={styles.iconView}>
+                        <Ionicons name="ios-repeat-outline" onPress={this.handlePressChangeWallet} size={30} color="black" />
+                        <Text style={styles.iconText}>Change wallet</Text>
                     </View>
                     <View style={styles.iconView}>
                         <Ionicons name="ios-send-outline" onPress={this.handlePressSend} size={30} color="black" />
@@ -38,12 +42,16 @@ class MainWalletMenu extends Component {
         this.props.showModalAddWallet();
     }
 
+    handlePressChangeWallet = () => {
+        this.props.showModalChangeDefaultWallet(); 
+    }  
+
     handlePressSend = () => {
         this.props.navigation.navigate('send');
     }
 
     handlePressReceive = () => {
-        this.props.navigation.navigate('send');
+        this.props.showModalWalletInfomation();
     }
 
     handlePressSettings = () => {
@@ -68,6 +76,9 @@ function mapDispatchToProps(dispatch) {
         showModalDefaultWalletSettings: () => {
             dispatch(ActionCreator.showModalDefaultWalletSettings());
         },
+        showModalWalletInfomation: () => {
+            dispatch(ActionCreator.showModalWalletInfomation());
+        },
     };
 }
 
@@ -80,7 +91,7 @@ const styles = StyleSheet.create({
     iconView: {
         alignItems: 'center', 
         justifyContent: 'center', 
-        width:60, 
+        width:70, 
     },
     iconText: {
         textAlign: 'center', 

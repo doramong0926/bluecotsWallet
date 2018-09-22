@@ -275,5 +275,19 @@ export function setModalPincodeFinishProcess(finishProcess) {
   };
 }
 
+export function showModalWalletInfomation() {
+  return {
+      type: actionTypes.SHOW_MODAL_WALLET_INFOMATION,
+  };
+}
+
+export function hideModalWalletInfomation() {
+  return {
+      type: actionTypes.HIDE_MODAL_WALLET_INFOMATION,
+  };
+}
+
+
+
 
 
