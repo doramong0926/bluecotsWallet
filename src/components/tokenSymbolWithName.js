@@ -9,7 +9,7 @@ class TokenSymbolWithName extends Component {
                     <Image style={{width:40, height:40}} source={this.props.icon} />
                 </View>
                 <View style={{paddingLeft: 5}}>
-                    <Text style={{fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}>{this.props.tokenString}</Text>
+                    <Text style={{fontSize: 18, fontWeight: 'bold', textAlign: 'center'}}>{this.props.tokenString}</Text>
                     <Text style={{fontSize: 10, textAlign: 'center'}}>{this.props.tokenName}</Text>
                 </View>
             </View>

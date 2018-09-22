@@ -22,11 +22,11 @@ class walletAddressWithNickName extends Component {
             return (
                 <TouchableHighlight onPress={() => this.chageWallet()} underlayColor="gray">
                     <View style={styles.container}>
-                        <Text style={styles.nickName}>{this.props.defaultWallet.nickName}</Text>
+                        <Text style={styles.nickName}>Nickname : {this.props.defaultWallet.nickName}</Text>
                         <Text style={styles.address}>{this.props.defaultWallet.walletAddress}</Text>
-                        <View style={{paddingTop:5}}>
+                        {/* <View style={{paddingTop:5}}>
                             <Text style={{textAlign: 'center', color:'#BCBCBE'}}>Click to change wallet</Text>
-                        </View>   
+                        </View>    */}
                     </View>
                 </TouchableHighlight>     
             );
@@ -46,24 +46,17 @@ class walletAddressWithNickName extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 10,
-        padding: 5,
-        marginVertical: 10,
-        marginHorizontal: 15,
-        backgroundColor: "#347B98",
     },
     nickName: {
-        fontSize: 14,
+        fontSize: 13,
         color: 'black',
-        textAlign: 'center',
+        textAlign: 'left',
     },
     address: {
-        fontSize: 14,
-        fontWeight: 'bold',
+        fontSize: 13,        
         color: 'black',
-        textAlign: 'center',
+        textAlign: 'left',
     },
 })
 

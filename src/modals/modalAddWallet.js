@@ -43,7 +43,7 @@ class ModalAddWallet extends Component {
                 <View style={styles.bodyContainer}>
                     <TouchableHighlight onPress={() => this.handleNewPress()} underlayColor="gray">
                         <View style={{flexDirection: 'row', margin: 10}}>   
-                            <Text style={styles.menuText}>New</Text>
+                            <Text style={styles.menuText}>Generate new wallet</Text>
                             <View style={{flex: 1, alignItems:'flex-end', justifyContent:'center'}} >
                                 <Ionicons name="ios-arrow-dropdown" size={20} />
                             </View>
@@ -52,7 +52,7 @@ class ModalAddWallet extends Component {
                     <View style={{borderColor: 'gray', borderWidth: 0.5}}></View>
                     <TouchableHighlight onPress={() => this.handleResotrePress()} underlayColor="gray">
                         <View style={{flexDirection: 'row', margin: 10}}>   
-                            <Text style={styles.menuText}>Restore</Text>
+                            <Text style={styles.menuText}>Restore wallet with private key</Text>
                             <View style={{flex: 1, alignItems:'flex-end', justifyContent:'center'}} >
                                 <Ionicons name="ios-arrow-dropdown" size={20} />
                             </View>

@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
         marginVertical: 10
     },
     balanceText: {
-        fontSize : 30, 
+        fontSize : 28, 
         fontWeight: 'bold', 
         textAlign:'center',
         color: '#BD3D3A',

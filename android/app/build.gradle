@@ -95,6 +95,7 @@ apply from: 'expo.gradle'
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 dependencies {
+    compile project(':react-native-vector-icons')
     compile project(':react-native-touch-id')
     compile project(':react-native-keychain')
     compile project(':react-native-os')

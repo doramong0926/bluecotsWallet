@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import ActionCreator from './../actions';
 import { connect } from 'react-redux';
 
@@ -11,21 +11,39 @@ class MainWalletMenu extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <View style={styles.iconView}>
-                    <Ionicons name="ios-add-circle-outline" onPress={this.handlePressAdd} size={30} color="black" />
-                    <Text style={styles.iconText}>  Add </Text>
+            <View>
+                <View style={styles.container}>
+                    <View style={styles.iconView}>
+                        <Ionicons name="ios-add-circle-outline" onPress={this.handlePressAdd} size={30} color="black" />
+                        <Text style={styles.iconText}>Add</Text>
+                    </View>
+                    <View style={styles.iconView}>
+                        <Ionicons name="ios-send-outline" onPress={this.handlePressSend} size={30} color="black" />
+                        <Text style={styles.iconText}>Send</Text>
+                    </View>
+                    <View style={styles.iconView}>
+                        <Ionicons name="ios-qr-scanner-outline" onPress={this.handlePressReceive} size={30} color="black" />
+                        <Text style={styles.iconText}>Receive</Text>
+                    </View>
+                    <View style={styles.iconView}>
+                        <Ionicons name="ios-settings-outline" onPress={this.handlePressSettings} size={30} color="black" />
+                        <Text style={styles.iconText}>Settings</Text>
+                    </View> 
                 </View>
-                <View style={styles.iconView}>
-                    <Ionicons name="ios-settings-outline" onPress={this.handlePressSettings} size={30} color="black" />
-                    <Text style={styles.iconText}> Settings </Text>
-                </View> 
             </View>
         );
     }
 
     handlePressAdd = () => {
         this.props.showModalAddWallet();
+    }
+
+    handlePressSend = () => {
+        this.props.navigation.navigate('send');
+    }
+
+    handlePressReceive = () => {
+        this.props.navigation.navigate('send');
     }
 
     handlePressSettings = () => {
@@ -57,8 +75,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',        
         justifyContent: 'center', 
-        alignItems: 'center', 
-        margin: 10,
+        alignItems: 'center',
     },
     iconView: {
         alignItems: 'center', 
