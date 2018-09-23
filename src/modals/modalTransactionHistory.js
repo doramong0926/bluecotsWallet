@@ -13,12 +13,6 @@ class ModalTransactionHistory extends Component {
     constructor(props, context) {
         super(props, context);
     }
-
-    static propTypes = {
-        walletForHistory: PropTypes.shape({
-            walletAddress: PropTypes.string.isRequired,
-        }).isRequired,        
-    };
     
     render() {
         return (
@@ -125,7 +119,6 @@ function mapStateToProps(state) {
     return {
         visibleModalTransactionHistory: state.modal.visibleModalTransactionHistory,
         modalTransactionHistoryInfomation: state.modal.modalTransactionHistoryInfomation,
-        walletForHistory: state.walletTemp.walletForHistory,
     };
 }
 

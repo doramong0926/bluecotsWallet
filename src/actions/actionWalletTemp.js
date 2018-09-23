@@ -7,24 +7,10 @@ export function setWalletForSend(wallet) {
     };
 }
 
-export function setWalletForReceive(wallet) {
-    return {
-        type: actionTypes.SET_WALLET_FOR_RECEIVE,
-        payload: wallet
-    };
-}
-
 export function setEthBalanceForSend(balance) {
     return {
         type: actionTypes.SET_ETH_BALANCE_FOR_SEND,
         payload: balance
-    };
-}
-
-export function setWalletForHistory(wallet) {
-    return {
-        type: actionTypes.SET_WALLET_FOR_HISTORY,
-        payload: wallet
     };
 }
 

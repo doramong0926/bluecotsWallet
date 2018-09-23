@@ -131,7 +131,7 @@ class ModalWalletInfomation extends Component {
     handlePressToSave = () => {        
         /*
         this.svg.toDataURL((data) => {
-            filePath = RNFS.CachesDirectoryPath + "/" + this.props.walletForReceive.walletAddress + ".png";
+            filePath = RNFS.CachesDirectoryPath + "/" + this.props.defaultWallet.walletAddress + ".png";
             RNFS.writeFile(filePath, data, 'base64')
               .then((success) => {
                   return CameraRoll.saveToCameraRoll(filePath, 'photo')

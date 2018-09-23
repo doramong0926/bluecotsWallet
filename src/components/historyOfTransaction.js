@@ -4,9 +4,9 @@ import { StyleSheet, Text, View, ListView, TouchableHighlight, Clipboard } from 
 import { Ionicons } from '@expo/vector-icons';
 import { Button, Header } from 'react-native-elements'
 import { connect } from 'react-redux';
-import ActionCreator from './../actions';
+import ActionCreator from '../actions';
 import PropTypes from 'prop-types';
-import WalletUtils from './../utils/wallet';
+import WalletUtils from '../utils/wallet';
 import Moment from 'react-moment';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Divider } from 'react-native-material-design';
@@ -22,21 +22,13 @@ import {
     DEFAULT_TOKEN_DECIMALS,
     WALLET_VERSION,
     defaultTransactionData,
-  } from './../config/constants';
+  } from '../config/constants';
 
 //import RNFS from "react-native-fs"
 
 
-class RecentHistory extends Component{  
-    static navigationOptions = {
-        //tabBarVisible: false,
-        tabBarLabel: 'BLC',        
-    };  
-
-    static propTypes = {
-        walletForHistory: PropTypes.shape({
-            walletAddress: PropTypes.string.isRequired,
-        }).isRequired,        
+class HistoryOfTransaction extends Component{  
+    static propTypes = {      
         defaultWallet: PropTypes.shape({
             walletAddress: PropTypes.string.isRequired,
         }).isRequired,
@@ -51,14 +43,10 @@ class RecentHistory extends Component{
     };
 
     componentWillMount() {
-        this.props.setWalletForHistory(this.props.defaultWallet);
-        setTimeout(() => {
-            this.fetchTransaction();    
-        },);
+        this.fetchTransaction();  
     }
 
     componentDidMount() {
-        this.fetchTransaction();
         setInterval(() => {
             this.fetchTransaction();
         }, 10000)
@@ -80,7 +68,7 @@ class RecentHistory extends Component{
         if (this.props.isLoadingTxData === true) {
             return (
                 <View>                
-                    {/* <Spinner visible={this.props.isLoadingTxData} cancelable={true} textContent="fetching" textStyle={{fontSize:20, fontWeight:'normal', color: '#FFF'}}/> */}
+                    <Spinner visible={this.props.isLoadingTxData} cancelable={true} textContent="fetching" textStyle={{fontSize:20, fontWeight:'normal', color: '#FFF'}}/>
                 </View>
             )
         } else {
@@ -89,36 +77,20 @@ class RecentHistory extends Component{
                     {
                         (this.state.isNoTransactionData == true) ? 
                         (
-                            <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
-                                <Text>There is no transactions.</Text>
+                            <View>
+                                <View style={{flex:1, height: 120, alignItems: 'center', justifyContent: 'center'}}>
+                                    <Text>There is no transactions.</Text>
+                                </View>
                             </View>
                         ) :
                         (
-                            <View>
-                                <View style={styles.statusContainer}>
-                                    <View style={styles.statusIconContainer}>
-                                        <View style={styles.statusIcon1}>
-                                        </View>
-                                        <Text style={styles.statusGuideFont}> Success</Text>
-                                    </View>
-                                    <View style={styles.statusIconContainer}>
-                                        <View style={styles.statusIcon2}>
-                                        </View>
-                                        <Text style={styles.statusGuideFont}> Pending</Text>
-                                    </View>
-                                    <View style={styles.statusIconContainer}>
-                                        <View style={styles.statusIcon3}>
-                                        </View>
-                                        <Text style={styles.statusGuideFont}> Failure</Text>
-                                    </View>
-                                </View>
-                                <View style={styles.listViewContainer}>
-                                    <ListView
-                                        dataSource={this.state.dataSourceForTransaction}
-                                        renderRow={this.renderTransaction}
-                                        style={styles.listViewInnerContainer}
-                                    />
-                                </View>
+                            <View style={styles.listViewContainer}>
+                                <ListView
+                                    enableEmptySections={true}
+                                    dataSource={this.state.dataSourceForTransaction}
+                                    renderRow={this.renderTransaction}
+                                    style={styles.listViewInnerContainer}
+                                />
                             </View>
                         )
                     }     
@@ -128,7 +100,7 @@ class RecentHistory extends Component{
     }
 
     renderTransaction = (txData) => {
-        if (txData.from !== undefined && txData.from !== '' && txData.value !== '0') {
+        if (txData.from !== undefined && txData.from !== '') {
             return (
                 <View>
                     <Divider />
@@ -137,17 +109,17 @@ class RecentHistory extends Component{
                         <View style={{flexDirection:'row'}}>
                             <View style={{width: 60, borderRadius:50, backgroundColor:'#92B558'}}>
                                 {
-                                    (txData.from == this.props.walletForHistory.walletAddress) ? 
+                                    (txData.from == this.props.defaultWallet.walletAddress) ? 
                                         ( <Text style={{fontSize:12, textAlign:'center'}}>Send</Text> ) : 
                                         ( <Text style={{fontSize:12, textAlign:'center'}}>Receive</Text> )
                                 }
                             </View>
-                            <Text> {WalletUtils.fromWei(txData.value, 'ether')} BLC (</Text>
+                            <Text> {WalletUtils.fromWei(txData.value, 'ether')} {this.props.tokenName} (</Text>
                             <Moment unix fromNow element={Text} >{txData.timeStamp}</Moment>
                             <Text>)</Text>           
                         </View>      
                             {                  
-                                (txData.from == this.props.walletForHistory.walletAddress) ? 
+                                (txData.from == this.props.defaultWallet.walletAddress) ? 
                                 (<Text style={{fontSize: 12}}>to : {txData.to}</Text>) :
                                 (<Text style={{fontSize: 12}}>from : {txData.from}</Text>)
                             }
@@ -158,7 +130,7 @@ class RecentHistory extends Component{
         }
         else {
             return (
-                <View></View>
+                <Text></Text>
             )
         }
     }
@@ -172,7 +144,7 @@ class RecentHistory extends Component{
             value: txData.value,
             to: txData.to,
             gasUsed: txData.gasUsed,
-            symbol: "BLC",
+            symbol: this.props.tokenName,
             status: "Success"
         }
 
@@ -181,27 +153,35 @@ class RecentHistory extends Component{
     } 
 
     fetchTransaction = async() => {
-        if (this.props.walletForHistory.walletAddress !== undefined && this.props.walletForHistory.walletAddress !== '')
+        if (this.props.defaultWallet.walletAddress !== undefined && this.props.defaultWallet.walletAddress !== '')
         {
-            const txData = await WalletUtils.getTransactions(
-                DEFAULT_TOKEN_CONTRACT_ADDRESS,
-                this.props.walletForHistory.walletAddress,
-                DEFAULT_TOKEN_DECIMALS,
-                DEFAULT_TOKEN_SYMBOL,
-                1,
-                5,
-            )
-            // WalletUtils.getUnconfimrdTransaction();
+            if (this.props.tokenName == 'BLC') {
+                var txData = await WalletUtils.getTransactions(
+                    DEFAULT_TOKEN_CONTRACT_ADDRESS,
+                    this.props.defaultWallet.walletAddress,
+                    DEFAULT_TOKEN_DECIMALS,
+                    DEFAULT_TOKEN_SYMBOL,
+                    this.props.offset,
+                )
+            } else {
+                var txData = await WalletUtils.getTransactions(
+                    null,
+                    this.props.defaultWallet.walletAddress,
+                    null,
+                    "ETH",
+                    this.props.offset,
+                )
+            }
             
+            // WalletUtils.getUnconfimrdTransaction();
             if (txData.message === 'OK') {
                 this.setState({transactionHistoryData: this.parsingTxData(txData.result)});
                 this.state.dataSourceForTransaction = this.state.dataSourceForTransaction.cloneWithRows(this.state.transactionHistoryData)
                 this.setState({isNoTransactionData: false});
-                this.props.setIsLoadingTxData(false);
-                
-            } else if (txData.message === 'No transactions found') {
+                this.props.setIsLoadingTxData(false);                
+            } else if (txData.message === 'NO_TRANSACTIONS_FOUND') {
                 this.setState({transactionHistoryData: defaultTransactionData});
-                this.state.dataSourceForTransaction = this.state.dataSourceForTransaction.cloneWithRows(this.state.transactionHistoryData)
+                this.state.dataSourceForTransaction = this.state.dataSourceForTransaction.cloneWithRows(this.state.transactionHistoryData) 
                 this.setState({isNoTransactionData: true});
                 this.props.setIsLoadingTxData(false);
             } else {
@@ -224,7 +204,7 @@ class RecentHistory extends Component{
     }
 
     parsingTxData = (data) => {
-        return data.filter(t=> (t.from === this.props.walletForHistory.walletAddress || t.to === this.props.walletForHistory.walletAddress))
+        return data.filter(t=> (t.from === this.props.defaultWallet.walletAddress || t.to === this.props.defaultWallet.walletAddress))
         .map(t => ({
             from: t.from,
             to: t.to,
@@ -241,7 +221,6 @@ class RecentHistory extends Component{
 
 function mapStateToProps(state) {
     return {
-        walletForHistory: state.walletTemp.walletForHistory,
         defaultWallet: state.wallet.defaultWallet,
         isLoadingTxData: state.walletTemp.isLoadingTxData,
     };
@@ -249,9 +228,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        setWalletForHistory: (wallet) => {
-            dispatch(ActionCreator.setWalletForHistory(wallet));
-        },
         setIsLoadingTxData: (value) => {
             dispatch(ActionCreator.setIsLoadingTxData(value));
         },        
@@ -264,8 +240,7 @@ function mapDispatchToProps(dispatch) {
     };
 }
   
-export default connect(mapStateToProps, mapDispatchToProps)(RecentHistory);
- 
+export default connect(mapStateToProps, mapDispatchToProps)(HistoryOfTransaction); 
 
 const styles = StyleSheet.create({
     container: {        

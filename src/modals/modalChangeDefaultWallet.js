@@ -117,8 +117,7 @@ class ModalChangeDefaultWallet extends Component {
     handlePress = (wallet) => {
         this.props.setDefaultWallet(wallet);
         this.props.setWalletForSend(wallet);
-        this.props.setWalletForReceive(wallet);
-        // this.props.setIsLoadingTxData(true);
+        this.props.setIsLoadingTxData(true);
         setTimeout(() => {
             this.updateWalletBalance(this.props.defaultWallet.walletAddress);
             this.props.hideModalChangeDefaultWallet();
@@ -195,9 +194,6 @@ function mapDispatchToProps(dispatch) {
         },
         setWalletForSend: (wallet) => {
             dispatch(ActionCreator.setWalletForSend(wallet));
-        },
-        setWalletForReceive: (wallet) => {
-            dispatch(ActionCreator.setWalletForReceive(wallet));
         },
         setEthBalance: (balance) => {
             dispatch(ActionCreator.setEthBalance(balance));

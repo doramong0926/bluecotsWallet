@@ -3,8 +3,6 @@ import { defaultWallet } from './../config/constants';
 
 const initialState = {
     walletForSend: defaultWallet,
-    walletForReceive: defaultWallet,
-    walletForHistory: defaultWallet,
     ethBalanceForSend: 0,
     blcBalanceForSend: 0,
     addressToSendBlc: '',
@@ -27,16 +25,6 @@ export default (state = initialState, action) => {
         case actionTypes.SET_WALLET_FOR_SEND:
             return Object.assign({}, state, {
                 walletForSend: action.payload,
-            });
-
-        case actionTypes.SET_WALLET_FOR_RECEIVE:
-            return Object.assign({}, state, {
-                walletForReceive: action.payload,
-            });
-
-        case actionTypes.SET_WALLET_FOR_HISTORY:
-            return Object.assign({}, state, {
-                walletForHistory: action.payload,
             });
 
         case actionTypes.SET_ETH_BALANCE_FOR_SEND:
@@ -83,7 +71,6 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 modalConfirmToSendEthFinishProcess: action.payload,
             });   
-
 
         default:
             return state;

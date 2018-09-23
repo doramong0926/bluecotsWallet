@@ -1,7 +1,9 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import WalletBalanceCard from './../../components/walletBalanceCard';
+import NotificationCard from './../../cards/notificationCard';
+import WalletBalanceCard from './../../cards/walletBalanceCard';
+import HistoryOfTransactionCard from './../../cards/historyOfTransactionCard';
 import ImageSlider from 'react-native-image-slider';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 
@@ -36,8 +38,10 @@ class WalletScreen extends Component{
                             <ImageSlider images={sliderImage}/>
                         </View>
                     }>
-                        <View style={styles.cardContainer}>
+                        <View style={styles.container}>
+                            <NotificationCard />
                             <WalletBalanceCard navigation={this.props.navigation}/>
+                            <HistoryOfTransactionCard />
                         </View>
                     </ParallaxScrollView>
             </View>
@@ -49,13 +53,9 @@ export default WalletScreen;
  
 const styles = StyleSheet.create({
     container: {
-        // flex: 1,
-        backgroundColor: '#E4F1F6',
+        marginBottom: 4,
     },
     containerImageSlider: {
         height: 140,
-    },
-    cardContainer: {
-        marginBottom: 4,
     },
 })

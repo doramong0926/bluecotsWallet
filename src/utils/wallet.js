@@ -15,11 +15,12 @@ import {
   DEFAULT_TOKEN_SYMBOL,
   DEFAULT_TOKEN_CONTRACT_ADDRESS,
   DEFAULT_TOKEN_DECIMALS,
-  WALLET_VERSION
+  WALLET_VERSION,
+  erc20Abi,
+  defaultTransactionData
 } from './../config/constants';
 
 //import AnalyticsUtils from './analytics';
-import { erc20Abi } from './../config/constants';
 
 
 export default class WalletUtils {
@@ -156,26 +157,39 @@ export default class WalletUtils {
    *
    * @param {Object} token
    */
-  static getTransactions(contractAddress, walletAddress, decimals, symbol, page, offset) {
+  static getTransactions(contractAddress, walletAddress, decimals, symbol, offset) {
     if (symbol === 'ETH') {
-      return this.getEthTransactions(walletAddress, page, offset);
+      return this.getEthTransactions(walletAddress, offset);
     }
 
-    return this.getERC20Transactions(contractAddress, walletAddress, decimals, page, offset);
+    return this.getERC20Transactions(contractAddress, walletAddress, decimals, offset);
   }
 
   /**
    * Fetch a list of ETH transactions for the user's wallet
    */
-  static async getEthTransactions(walletAddress, page, offset) {
-    if (offset === 0 || offset === null || page === 0 || page === null) {
-      var fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=account&action=txlist&address=' + walletAddress + '&sort=desc&apikey=' + ETHERSCAN_API_KEY;
-    } else {
-      var fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=account&action=txlist&address=' + walletAddress + '&page=' + page + '&offset=' + offset + '&sort=desc&apikey=' + ETHERSCAN_API_KEY;
-    }
+  static async getEthTransactions(walletAddress, offset) {
+    const fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=account&action=txlist&address=' + walletAddress + '&sort=desc&apikey=' + ETHERSCAN_API_KEY;    
     return fetch(fetchString)
       .then(response => response.json())
       .then(data => {
+          if (data.message === "OK") {              
+              data.result = data.result.filter(function(item) {
+                  return (item.value !== '0' && item.from !== item.to)
+              });
+              if (data.result.length > 0) {
+                  data.message = "OK";
+                  if (offset !== 0 && offset !== null) {
+                    data.result = data.result.slice(0,offset)
+                  }
+              } else {
+                  data.message = "NO_TRANSACTIONS_FOUND";                
+              }
+          } else if (data.message === "No transactions found") {
+              data.message = "NO_TRANSACTIONS_FOUND";                
+          } else {
+              data.message = "ERROR";                
+          }
           return data; 
       });
   }
@@ -185,16 +199,29 @@ export default class WalletUtils {
    *
    * @param {String} contractAddress
    */
-  static async getERC20Transactions(contractAddress, walletAddress, decimals, page, offset) {
-    if (offset === 0 || offset === null || page === 0 || page === null) {
-        var fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=account&action=tokentx&contractaddress=' + contractAddress + '&address=' + walletAddress + '&sort=desc&apikey=' + ETHERSCAN_API_KEY;
-    } else {
-        var fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=account&action=tokentx&contractaddress=' + contractAddress + '&address=' + walletAddress + '&page=' + page +'&offset=' + offset + '&sort=desc&apikey=' + ETHERSCAN_API_KEY;
-    }    
+  static async getERC20Transactions(contractAddress, walletAddress, decimals, offset) {
+    const fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=account&action=tokentx&contractaddress=' + contractAddress + '&address=' + walletAddress + '&sort=desc&apikey=' + ETHERSCAN_API_KEY;
     return fetch(fetchString)    
         .then(response => response.json())
         .then(data => {
-          return data; 
+            if (data.message === "OK") {              
+                data.result = data.result.filter(function(item) {
+                    return (item.value !== 0 && item.from !== item.to)
+                });
+                if (data.result.length > 0) {
+                    data.message = "OK";
+                    if (offset !== 0 && offset !== null) {
+                      data.result = data.result.slice(0,offset)
+                    }
+                } else {
+                    data.message = "NO_TRANSACTIONS_FOUND";                
+                }
+            } else if (data.message === "No transactions found") {
+                data.message = "NO_TRANSACTIONS_FOUND";                
+            } else {
+                data.message = "ERROR";                
+            }
+            return data; 
       });
   }
   

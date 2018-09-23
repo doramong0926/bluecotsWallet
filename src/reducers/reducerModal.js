@@ -10,8 +10,6 @@ const initialState = {
     visibleModalRestoreWallet: false,
     visibleModalGenerateWallet: false,
     visibleModalSelectAnotherWalletForSend: false,
-    visibleModalSelectAnotherWalletForReceive: false,
-    visibleModalSelectAnotherWalletForHistory: false,
     visibleModalChangeDefaultWallet: false,
     visibleModalConfirmToSendBlc: false,
     visibleModalConfirmToSendEth: false,
@@ -99,26 +97,6 @@ export default (state = initialState, action) => {
         case actionTypes.HIDE_MODAL_SELECT_ANOTHER_WALLET_FOR_SEND:
             return Object.assign({}, state, {
                 visibleModalSelectAnotherWalletForSend: false
-            });
-
-        case actionTypes.SHOW_MODAL_SELECT_ANOTHER_WALLET_FOR_RECEIVE:
-            return Object.assign({}, state, {
-                visibleModalSelectAnotherWalletForReceive: true
-            });
-
-        case actionTypes.HIDE_MODAL_SELECT_ANOTHER_WALLET_FOR_RECEIVE:
-            return Object.assign({}, state, {
-                visibleModalSelectAnotherWalletForReceive: false
-            });
-
-        case actionTypes.SHOW_MODAL_SELECT_ANOTHER_WALLET_FOR_HISTORY:
-            return Object.assign({}, state, {
-                visibleModalSelectAnotherWalletForHistory: true
-            });
-
-        case actionTypes.HIDE_MODAL_SELECT_ANOTHER_WALLET_FOR_HISTORY:
-            return Object.assign({}, state, {
-                visibleModalSelectAnotherWalletForHistory: false
             });
 
         case actionTypes.SHOW_MODAL_CHANGE_DEFAULT_WALLET:

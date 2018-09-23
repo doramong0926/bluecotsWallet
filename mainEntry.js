@@ -9,8 +9,6 @@ import {AppStackNavigator} from './src/navigator/navigators'
 import ModalAsk from './src/modals/modalAsk';
 import ModalAddWallet from './src/modals/modalAddWallet';
 import ModalSelectAnotherWalletForSend from './src/modals/modalSelectAnotherWalletForSend';
-import ModalSelectAnotherWalletForReceive from './src/modals/modalSelectAnotherWalletForReceive';
-import ModalSelectAnotherWalletForHistory from './src/modals/modalSelectAnotherWalletForHistory';
 import ModalDefaultWalletSettings from './src/modals/modalDefaultWalletSettings';
 import ModalGenerateWallet from './src/modals/modalGenerateWallet';
 import ModalRestoreWallet from './src/modals/modalRestoreWallet';
@@ -60,8 +58,6 @@ class MainEntry extends Component {
                     modalFinishProcess={this.props.modalAddWalletFinishProcess}
                 /> 
                 <ModalSelectAnotherWalletForSend />
-                <ModalSelectAnotherWalletForReceive />
-                <ModalSelectAnotherWalletForHistory />
                 <ModalChangeDefaultWallet />
                 <ModalConfirmToSendBlc 
                     modalFinishProcess={this.props.modalConfirmToSendBlcFinishProcess}

@@ -15,7 +15,6 @@ import VerificationFingerPrintScreen from '../screens/verification/verificationF
 import AddWalletScreen from '../screens/addWallet/addWalletScreen';
 import WalletScreen from '../screens/wallet/walletScreen'
 import itemsScreen from '../screens/items/itemsScreen'
-import receiveScreen from '../screens/receive/receiveScreen'
 import BlcSendScreen from '../screens/send/BlcSendScreen'
 import EthSendScreen from '../screens/send/EthSendScreen'
 import BlcHistoryScreen from '../screens/history/blcHistoryScreen'
@@ -187,29 +186,6 @@ export const SendStackNavigator = createStackNavigator (
     }
 )
 
-export const ReceiveStackNavigator = createStackNavigator (
-    {
-        ReceiveStack: {
-            screen: receiveScreen,
-        }
-    },
-    {
-        navigationOptions: {
-            title: 'Receive',
-            headerTitleStyle: {
-                textAlign: 'center',
-                fontSize: 14,
-                color: 'white',
-            },
-            headerStyle: {
-                backgroundColor: '#092834',
-                height: 40,
-            },
-        },
-        headerLayoutPreset: 'center'
-    }
-)
-
 export const HistoryStackNavigator = createStackNavigator (
     {
         HistoryStack: {
@@ -243,9 +219,6 @@ export const MainScreenTabNavigator = createBottomTabNavigator (
         },
         send:{
             screen: SendStackNavigator,            
-        },
-        receive:{
-            screen: ReceiveStackNavigator,
         },
         history:{
             screen: HistoryStackNavigator,
@@ -284,9 +257,6 @@ export const MainScreenTabNavigator = createBottomTabNavigator (
                             break;
                         case 'send':
                             return <Ionicons name="ios-send" size={30} color={tintColor} />
-                            break;
-                        case 'receive':
-                            return <Ionicons name="md-filing" size={30} color={tintColor} />
                             break;
                         case 'history':
                             return <Ionicons name="ios-stats" size={30} color={tintColor} />
