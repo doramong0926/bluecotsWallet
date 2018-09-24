@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import NotificationCard from './../../cards/notificationCard';
 import WalletBalanceCard from './../../cards/walletBalanceCard';
-import HistoryOfTransactionCard from './../../cards/historyOfTransactionCard';
+import HistoryCard from './../../cards/historyCard';
 import ImageSlider from 'react-native-image-slider';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 
@@ -41,7 +41,7 @@ class WalletScreen extends Component{
                         <View style={styles.container}>
                             <NotificationCard />
                             <WalletBalanceCard navigation={this.props.navigation}/>
-                            <HistoryOfTransactionCard />
+                            <HistoryCard offset={3}/>
                         </View>
                     </ParallaxScrollView>
             </View>

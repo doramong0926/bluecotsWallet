@@ -15,10 +15,9 @@ import VerificationFingerPrintScreen from '../screens/verification/verificationF
 import AddWalletScreen from '../screens/addWallet/addWalletScreen';
 import WalletScreen from '../screens/wallet/walletScreen'
 import itemsScreen from '../screens/items/itemsScreen'
-import BlcSendScreen from '../screens/send/BlcSendScreen'
-import EthSendScreen from '../screens/send/EthSendScreen'
-import BlcHistoryScreen from '../screens/history/blcHistoryScreen'
-import EthHistoryScreen from '../screens/history/ethHistoryScreen'
+import BlcSendScreen from '../screens/send/blcSendScreen'
+import EthSendScreen from '../screens/send/ethSendScreen'
+import HistoryScreen from '../screens/history/historyScreen'
 import SettingsMainScreen from '../screens/settings/settingsMainScreen';
 import SettingsAccountScreen from '../screens/settings/settingsAccountScreen';
 import SettingsWalletScreen from '../screens/settings/settingsWalletScreen';
@@ -61,35 +60,6 @@ export const SettingsStackNavigator = createStackNavigator (
         headerLayoutPreset: 'center'
     }
 );
-
-export const HistoryScreenTabNavigator = createMaterialTopTabNavigator (
-    {
-        BlcHistoryTap:{
-            screen: BlcHistoryScreen
-        },
-        EthHistoryTap:{
-            screen: EthHistoryScreen
-        },
-    }, 
-    {
-        animationEnabled: true,
-        swipeEnabled: true,
-        tabBarOptions: {
-            labelStyle: {
-                fontSize: 12,
-            },
-            tabStyle: {
-                //width: 100,
-            },
-            style: {
-                justifyContent: 'center',
-                //width: 200,
-                backgroundColor: "#347B98",
-                //borderRadius: 50,
-            },
-        },
-    }
-)
 
 export const SendScreenTabNavigator = createMaterialTopTabNavigator (
     {
@@ -189,7 +159,7 @@ export const SendStackNavigator = createStackNavigator (
 export const HistoryStackNavigator = createStackNavigator (
     {
         HistoryStack: {
-            screen: HistoryScreenTabNavigator,
+            screen: HistoryScreen,
         }
     },
     {

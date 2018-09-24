@@ -73,7 +73,7 @@ class HistoryOfTransaction extends Component{
             )
         } else {
             return ( 
-                <View style={{ flex: 1, alignItems: 'center'}}>
+                <View style={{ flex: 1}}>
                     {
                         (this.state.isNoTransactionData == true) ? 
                         (
@@ -248,7 +248,8 @@ const styles = StyleSheet.create({
     },
     listViewContainer: {
         flex: 1,
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start'
     },
     listViewInnerContainer: {
         flex: 1,

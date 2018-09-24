@@ -2,10 +2,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Clipboard, Platform } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'
-import WalletUtils from './../../utils/wallet';
+import WalletUtils from '../../utils/wallet';
 import { connect } from 'react-redux';
-import ActionCreator from './../../actions';
-import WalletAddressWithNickNameForSend from './../../components/walletAddressWithNickNameForSend';
+import ActionCreator from '../../actions';
+import WalletAddressWithNickNameForSend from '../../components/walletAddressWithNickNameForSend';
 import PropTypes from 'prop-types';
 import { Permissions } from 'expo';
 
