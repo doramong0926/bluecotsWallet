@@ -3,6 +3,9 @@
 # expo
 .expo/
 
+# apk
+/apk
+
 package-lock.json
 
 # dependencies

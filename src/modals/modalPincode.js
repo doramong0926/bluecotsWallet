@@ -5,6 +5,11 @@ import ActionCreator from '../actions';
 import PINCode from '@haskkor/react-native-pincode'
 import { connect } from 'react-redux';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import ImageSlider from 'react-native-image-slider';
+
+import SLIDER_IMAGE1 from './../components/images/sampleSlider1.jpg';
+import SLIDER_IMAGE2 from './../components/images/sampleSlider2.jpg';
+import SLIDER_IMAGE3 from './../components/images/sampleSlider3.jpg';
 
 class ModalPincode extends Component {    
     constructor(props, context) {
@@ -20,6 +25,11 @@ class ModalPincode extends Component {
     }
 
     render() {
+        const sliderImage = [
+            SLIDER_IMAGE1,
+            SLIDER_IMAGE2,
+            SLIDER_IMAGE3,
+        ];
         return (
             <Modal 
                 offset={0}
@@ -55,7 +65,7 @@ class ModalPincode extends Component {
                     touchIDDisabled={true}
                     finishProcess={this.handelFinishProcess}
                     onFail={this.handelOnfail}
-                />  
+                /> 
             </Modal>
         );
     }  
