@@ -1,10 +1,11 @@
 
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableHighlight, Linking } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import Modal from 'react-native-simple-modal';
 import ActionCreator from '../actions';
 import { connect } from 'react-redux';
 import { Button } from 'react-native-elements';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 class ModalInfomation extends Component {
     constructor(props, context) {
@@ -39,6 +40,11 @@ class ModalInfomation extends Component {
             >
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerText}> {this.props.modalInfomationText.title}</Text>
+                    <View style={{alignSelf:"flex-end", paddingRight:20, position:"absolute"}}>
+                        <TouchableOpacity onPress={() => this.handlePressClose()} value={'0.5'}>
+                            <Ionicons name="ios-close-circle-outline" size={20}/>
+                        </TouchableOpacity>
+                    </View>                      
                 </View>
                 <View style={styles.bodyContainer}>  
                     <Text style={styles.bodyText}>{this.props.modalInfomationText.message1}</Text>                      
@@ -47,34 +53,19 @@ class ModalInfomation extends Component {
                     {
                         (this.props.modalInfomationText.transactionId !== '' && this.props.modalInfomationText.transactionId !== undefined) ?
                         (
-                            <TouchableHighlight onPress={() => this.handlePressTxid(this.props.modalInfomationText.transactionId)} underlayColor="gray">
+                            <TouchableOpacity onPress={() => this.handlePressTxid(this.props.modalInfomationText.transactionId)} value={'0.5'}>
                                 <View>
                                     <Text style={styles.bodyText}>{this.props.modalInfomationText.transactionId}</Text>
                                     <View style={{marginTop: 5}}>
                                         <Text style={{textAlign: 'center', color: 'gray'}}>Click to check txid</Text> 
                                     </View>
                                 </View>
-                            </TouchableHighlight>
+                            </TouchableOpacity>
                         ) : 
                         (
                             <View></View>
                         )
                     }
-                </View>
-                <View style={styles.buttonContainer}>
-                    <Button
-                        onPress={this.handlePressClose}
-                        title="Close"
-                        buttonStyle={{
-                            backgroundColor: "#BD3D3A",
-                            borderColor: "transparent", 
-                            borderRadius: 5
-                        }}
-                        containerViewStyle={{
-                            // alignSelf: 'flex-end',
-                            // margin: 20,
-                        }}
-                    />
                 </View>
             </Modal>
         );

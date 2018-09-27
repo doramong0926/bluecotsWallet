@@ -33,7 +33,7 @@ class ModalFingerPrintScaner extends Component {
                 open={this.props.visibleModalFingerPrintScaner}
                 animationDuration={200}
                 animationTension={40}
-                closeOnTouchOutside={true}
+                closeOnTouchOutside={false}
                 disableOnBackPress={false}
                 modalDidClose={() => {this.closeModal()}}
                 modalDidOpen={() => {this.scanFingerprint()}}
@@ -54,6 +54,11 @@ class ModalFingerPrintScaner extends Component {
             >
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>FingerPrint Scanner</Text>
+                    <View style={{alignSelf:"flex-end", paddingRight:20, position:"absolute"}}>
+                        <TouchableOpacity onPress={() => this.handelCancel()} value={'0.5'}>
+                            <Ionicons name="ios-close-circle-outline" size={20}/>
+                        </TouchableOpacity>
+                    </View>                      
                 </View>
                 <View style={styles.bodyContainer}>   
                     <Ionicons name="ios-finger-print" size={120} />
@@ -75,7 +80,7 @@ class ModalFingerPrintScaner extends Component {
         const errorMessage = null;
         this.setState({errorMessage: errorMessage})
         setTimeout(() => {
-           this.closeModal(); 
+           this.props.hideModalFingerPrintScaner(); 
         }, );
     }
 
@@ -88,7 +93,7 @@ class ModalFingerPrintScaner extends Component {
         const errorMessage = null;
         this.setState({errorMessage: errorMessage})
         setTimeout(() => {
-            this.closeModal(); 
+            this.props.hideModalFingerPrintScaner(); 
          }, );
     }
 
@@ -150,20 +155,7 @@ class ModalFingerPrintScaner extends Component {
             )
         } else {
             return (
-                <View style={styles.buttonContainer}>
-                    <Button
-                        onPress={this.handelCancel}
-                        title="Cancel"
-                        buttonStyle={{
-                            backgroundColor: "#BD3D3A",
-                            borderColor: "transparent", 
-                            borderRadius: 5
-                        }}
-                        containerViewStyle={{
-                            // alignSelf: 'flex-end',
-                            // margin: 20,
-                        }}
-                    />
+                <View style={styles.buttonContainer}>                    
                 </View>
             )         
         }

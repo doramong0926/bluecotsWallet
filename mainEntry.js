@@ -18,7 +18,7 @@ import ModalInfomation from './src/modals/modalInfomation';
 import ModalSpinner from './src/modals/modalSpinner'
 import ModalFingerPrintScaner from './src/modals/modalFingerPrintScaner';
 import ModalPincode from './src/modals/modalPincode';
-import ModalWalletInfomation from './src/modals/modalWalletInfomation';
+import ModalReceive from './src/modals/modalReceive';
 import ModalSend from './src/modals/modalSend';
 
 
@@ -39,7 +39,7 @@ class MainEntry extends Component {
         return (
             <View style={{flex:1}}>
                 <AppStackNavigator />                
-                <ModalWalletInfomation />
+                <ModalReceive />
                 <ModalAddWallet />
                 <ModalDefaultWalletSettings />
                 <ModalGenerateWallet 

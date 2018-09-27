@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Text, View, TouchableHighlight, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import ActionCreator from './../actions';
 import Modal from 'react-native-simple-modal';
@@ -39,34 +39,39 @@ class ModalDefaultWalletSettings extends Component {
             >
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>Default Wallet settings</Text>
+                    <View style={{alignSelf:"flex-end", paddingRight:20, position:"absolute"}}>
+                        <TouchableOpacity onPress={() => this.props.hideModalDefaultWalletSettings()} value={'0.5'}>
+                            <Ionicons name="ios-close-circle-outline" size={20}/>
+                        </TouchableOpacity>
+                    </View>                      
                 </View>
                 <View style={styles.bodyContainer}>
-                    <TouchableHighlight onPress={() => this.handleModifyNickNamePress()} underlayColor="gray">
+                    <TouchableOpacity onPress={() => this.handleModifyNickNamePress()} value={'0.5'}>
                         <View style={{flexDirection: 'row', margin: 10}}>   
                             <Text style={styles.menuText}>Modify nickname</Text>
                             <View style={{flex: 1, alignItems:'flex-end', justifyContent:'center'}} >
                                 <Ionicons name="ios-arrow-dropdown" size={20} />
                             </View>
                         </View>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                     <View style={{borderColor: 'gray', borderWidth: 0.5}}></View>
-                    <TouchableHighlight onPress={() => this.handleBackupPress()} underlayColor="gray">
+                    <TouchableOpacity onPress={() => this.handleBackupPress()} value={'0.5'}>
                         <View style={{flexDirection: 'row', margin: 10}}>
                             <Text style={styles.menuText}>Backup wallet</Text>
                             <View style={{flex: 1, alignItems:'flex-end', justifyContent:'center'}} >
                                 <Ionicons name="ios-arrow-dropdown" size={20} />
                             </View>
                         </View>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                     <View style={{borderColor: 'gray', borderWidth: 0.5}}></View>
-                    <TouchableHighlight onPress={() => this.handleBackupPress()} underlayColor="gray">
+                    <TouchableOpacity onPress={() => this.handleBackupPress()} value={'0.5'}>
                         <View style={{flexDirection: 'row', margin: 10}}>
                             <Text style={styles.menuText}>Delete wallet</Text>
                             <View style={{flex: 1, alignItems:'flex-end', justifyContent:'center'}} >
                                 <Ionicons name="ios-arrow-dropdown" size={20} />
                             </View>
                         </View>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                 </View>
             </Modal>
         );

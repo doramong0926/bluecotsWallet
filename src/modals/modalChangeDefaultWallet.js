@@ -1,21 +1,16 @@
 
 import React, { Component } from 'react';
-import { Text, View, ListView, TouchableHighlight, StyleSheet } from 'react-native';
+import { Text, View, ListView, TouchableOpacity, StyleSheet } from 'react-native';
 import Modal from 'react-native-simple-modal';
 import ActionCreator from './../actions';
 import { connect } from 'react-redux';
 import WalletUtils from './../utils/wallet';
 import PropTypes from 'prop-types';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { 
-	ETHERSCAN_API_KEY,
-	INFURA_API_KEY ,
-	SEGMENT_API_KEY,
-	NETWORK,
-	DEFAULT_TOKEN_NAME,
 	DEFAULT_TOKEN_SYMBOL,
 	DEFAULT_TOKEN_CONTRACT_ADDRESS,
 	DEFAULT_TOKEN_DECIMALS,
-    WALLET_VERSION,
  } from './../config/constants';
 
 class ModalChangeDefaultWallet extends Component {
@@ -71,6 +66,11 @@ class ModalChangeDefaultWallet extends Component {
             >
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>Wallet List</Text>
+                    <View style={{alignSelf:"flex-end", paddingRight:20, position:"absolute"}}>
+                        <TouchableOpacity onPress={() => this.closeModal()} value={'0.5'}>
+                            <Ionicons name="ios-close-circle-outline" size={20}/>
+                        </TouchableOpacity>
+                    </View>                      
                 </View>
                 <ListView
                     dataSource={this.state.dataSourceForWalletList}
@@ -93,7 +93,7 @@ class ModalChangeDefaultWallet extends Component {
         if (wallet.walletAddress !== undefined && wallet.walletAddress !== '') {
             return (
                 <View>
-                    <TouchableHighlight onPress={() => this.handlePress(wallet)} underlayColor="gray">
+                    <TouchableOpacity onPress={() => this.handlePress(wallet)} value={'0.5'}>
                         <View style={{flexDirection: 'row', margin: 10}}>
                             <View style={{flex:3}}>
                                 <Text> {wallet.nickName} </Text>
@@ -102,7 +102,7 @@ class ModalChangeDefaultWallet extends Component {
                                 <Text> {wallet.walletAddress.substring(0,22)}... </Text>
                             </View>
                         </View>                                        
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                     <View style={{borderColor: 'gray', borderWidth: 0.5}}></View>
                 </View>
             );

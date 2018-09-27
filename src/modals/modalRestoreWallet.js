@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { View, Text, Clipboard, StyleSheet } from 'react-native';
+import { View, Text, Clipboard, StyleSheet, TouchableOpacity } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements';
 import Modal from 'react-native-simple-modal';
 import EthUtil from 'ethereumjs-util';
@@ -9,16 +9,11 @@ import WalletUtils from './../utils/wallet';
 import ActionCreator from './../actions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { 
-	ETHERSCAN_API_KEY,
-	INFURA_API_KEY ,
-	SEGMENT_API_KEY,
-	NETWORK,
-	DEFAULT_TOKEN_NAME,
 	DEFAULT_TOKEN_SYMBOL,
 	DEFAULT_TOKEN_CONTRACT_ADDRESS,
 	DEFAULT_TOKEN_DECIMALS,
-	WALLET_VERSION
  } from './../config/constants';
 
  
@@ -68,57 +63,49 @@ class ModalRestoreWallet extends Component {
                 }}
             >
                 <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}>Add wallet - RESTORE</Text>
+                    <Text style={styles.headerText}>Restore wallet</Text>
+                    <View style={{alignSelf:"flex-end", paddingRight:20, position:"absolute"}}>
+                        <TouchableOpacity onPress={() => this.closeModal()} value={'0.5'}>
+                            <Ionicons name="ios-close-circle-outline" size={20}/>
+                        </TouchableOpacity>
+                    </View>                      
                 </View>
-                <View>
-                    <FormLabel>Nickname</FormLabel>
-                    <FormInput containerStyle={styles.inputContainer} value={this.state.nickName} onChangeText={(value) => this.setState({nickName: value})}/>
-                    {this.nickNameValidationMsg()}
-                </View>
-                <View>
-                    <FormLabel>PrivateKey</FormLabel>
-                    <FormInput containerStyle={styles.inputContainer} editable={false} value={this.state.privateKey} onChangeText={(value) => this.setState({privateKey: value})}/>
-                    {this.privateKeyValidationMsg()}
-                </View>
-                <View style={styles.buttonContainer1}>
-                    <View style={{flex:1}}>
-                        <Button
-                            onPress={this.readPrivateKeyFromClipboard}
-                            icon={{name: 'copy', type: 'font-awesome'}}
-                            title="Paste"
-                            buttonStyle={{
-                                backgroundColor: "#67AFCB",
-                                borderColor: "transparent", 
-                                borderRadius: 5
-                            }}
-                            containerViewStyle={{
-                                // alignSelf: 'stretch',
-                                // margin: 1,
-                            }}
+                <View style={styles.bodyContainer}>
+                    <View>
+                        <FormLabel>Nickname</FormLabel>
+                        <FormInput 
+                            inputStyle = {{paddingLeft:5, paddingRight:5, marginRight:0, fontSize:11}}
+                            value = {this.state.nickName} 
+                            onChangeText = {(value) => this.setState({nickName: value})}
                         />
+                        {this.nickNameValidationMsg()}
                     </View>
-                    <View style={{flex:1}}>
-                        <Button
-                            onPress={this.readPrivateKeyFromFile}
-                            icon={{name: 'file-text-o', type: 'font-awesome'}}
-                            title="Select"
-                            buttonStyle={{
-                                backgroundColor: "#67AFCB",
-                                borderColor: "transparent", 
-                                borderRadius: 5
-                            }}
-                            containerViewStyle={{
-                                // alignSelf: 'stretch',
-                                // margin: 1,
-                            }}
-                        />
+                    <View>
+                        <FormLabel>PrivateKey</FormLabel>
+                        <View style={styles.inputContainer}>
+                            <View style={{width:'88%'}}>
+                                <FormInput 
+                                    containerStyle={{marginRight:0,}} 
+                                    // underlineColorAndroid='transparent' 
+                                    inputStyle = {{paddingLeft:5, paddingRight:5, marginRight:0, fontSize:11}}
+                                    value={this.state.privateKey}
+                                    onChangeText={(value) => this.setState({privateKey: value})}
+                                />
+                            </View>
+                            <View style={{alignItems:'flex-end', justifyContent:'center', marginRight: 20,}}>
+                                <TouchableOpacity onPress={() => this.readPrivateKeyFromFile()} value="0.5">
+                                    <Ionicons name="ios-attach-outline" size={30} />
+                                </TouchableOpacity>
+                            </View>                            
+                        </View>   
+                        {this.privateKeyValidationMsg()}
                     </View>
                 </View>
                 <View style={styles.buttonContainer}>
                     <Button
                         disabled={!this.isValidRestoreButton()}
                         onPress={this.restoreWallet}
-                        title="RESTORE"
+                        title="Restore"
                         buttonStyle={{
                             backgroundColor: "#BD3D3A",
                             borderColor: "transparent", 
@@ -356,15 +343,12 @@ const styles = StyleSheet.create({
         padding: 10,
     }, 
     bodyContainer: {
-        marginTop: 10,
+        // marginTop: 10,
         marginBottom: 20,
     },
-
-    buttonContainer1: {
-        flexDirection: 'row', 
-        justifyContent: 'center', 
-        alignItems: 'center',
-        marginBottom: 10,
+    inputContainer: {
+        flexDirection:'row', 
+        justifyContent:'space-between'
     },
     buttonContainer: {
         marginBottom: 10,

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Linking, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
  import { Card } from 'react-native-material-design';
@@ -10,19 +10,33 @@ class NotificationCard extends Component {
             <View style={styles.container}>
                 <Card style={styles.containerCard}>
                     <Card.Body>
-                        <View style={styles.containerNotice}>
-                        <View>
-                            <Ionicons name="ios-information-circle-outline" size={20} />
-                        </View>
-                        <View style={{marginLeft:5}}>
-                            <Text style={styles.textNotice}>Notice : Bluecots beta wallet has been launched.</Text>
-                        </View>
-                        </View>
+                        <TouchableOpacity onPress={() => this.handlePress()} value={0.5}>
+                            <View style={styles.containerNotice}>
+                                <View>
+                                    <Ionicons name="ios-information-circle-outline" size={20} />
+                                </View>
+                                <View style={{marginLeft:5}}>
+                                    <Text style={styles.textNotice}>Notice : Bluecots beta wallet has been launched.</Text>
+                                </View>
+                                <View style={{flex:1, alignItems:"flex-end" }}>
+                                    <Ionicons name="ios-arrow-down" size={20} />
+                                </View>
+                            </View>
+                        </TouchableOpacity>
                     </Card.Body>
                 </Card>
             </View>
         );
     }    
+
+    handlePress = () => {
+        const address = "http://bluecots.cafe24app.com/";
+        Linking.canOpenURL(address).then(supported => {
+            if (supported) {
+                Linking.openURL(address);
+            } 
+        });
+    }
 }
 
 function mapStateToProps(state) {

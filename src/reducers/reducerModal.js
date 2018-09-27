@@ -15,7 +15,7 @@ const initialState = {
     visibleModalSpinner: false,
     visibleModalInfomation: false,
     visibleModalConfirm: false,
-    visibleModalWalletInfomation: false,
+    visibleModalReceive: false,
     modalInfomationText: {title: '', message1: '', message2: '', message3: '', transactionId: ''},    
     visibleModalTransactionHistory: false,
     modalTransactionHistoryInfomation: {
@@ -222,21 +222,19 @@ export default (state = initialState, action) => {
                 modalPincodeFinishProcess: action.payload,
             }); 
 
-        case actionTypes.SHOW_MODAL_WALLET_INFOMATION:
+        case actionTypes.SHOW_MODAL_RECEIVE:
             return Object.assign({}, state, {
-                visibleModalWalletInfomation: true,
+                visibleModalReceive: true,
             });       
 
-        case actionTypes.HIDE_MODAL_WALLET_INFOMATION:
+        case actionTypes.HIDE_MODAL_RECEIVE:
             return Object.assign({}, state, {
-                visibleModalWalletInfomation: false,
+                visibleModalReceive: false,
             });   
 
         case actionTypes.SHOW_MODAL_SEND:
             return Object.assign({}, state, {
                 visibleModalSend: true,
-                addressToSend: null,
-                amountToSend: null,
             });       
 
         case actionTypes.HIDE_MODAL_SEND:

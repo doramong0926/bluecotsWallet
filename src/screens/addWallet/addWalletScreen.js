@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import ActionCreator from '../../actions';
@@ -23,12 +23,12 @@ class AddWallet extends Component{
     render() {
         return (
             <View style={styles.container}>
-                <TouchableHighlight onPress={() => this.addWallet()} underlayColor="gray">
+                <TouchableOpacity onPress={() => this.addWallet()} value="0.5">
                     <View style={styles.walletIconContainer}>
                         <Ionicons name="ios-wallet" size={200} />                             
                         <Text style={styles.text}>Click to add wallet</Text>
                     </View>
-                </TouchableHighlight>
+                </TouchableOpacity>
             </View>
         )
     }

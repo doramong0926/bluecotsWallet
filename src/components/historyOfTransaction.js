@@ -1,8 +1,6 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ListView, TouchableHighlight, Clipboard } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { Button, Header } from 'react-native-elements'
+import { StyleSheet, Text, View, ListView, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import ActionCreator from '../actions';
 import PropTypes from 'prop-types';
@@ -12,15 +10,9 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { Divider } from 'react-native-material-design';
 
 import { 
-    ETHERSCAN_API_KEY,
-    INFURA_API_KEY ,
-    SEGMENT_API_KEY,
-    NETWORK,
-    DEFAULT_TOKEN_NAME,
     DEFAULT_TOKEN_SYMBOL,
     DEFAULT_TOKEN_CONTRACT_ADDRESS,
     DEFAULT_TOKEN_DECIMALS,
-    WALLET_VERSION,
     defaultTransactionData,
   } from '../config/constants';
 
@@ -65,38 +57,36 @@ class HistoryOfTransaction extends Component{
     }
 
     renderListView = () => {
-        if (this.props.isLoadingTxData === true) {
-            return (
-                <View>                
-                    <Spinner visible={this.props.isLoadingTxData} cancelable={true} textContent="fetching" textStyle={{fontSize:20, fontWeight:'normal', color: '#FFF'}}/>
-                </View>
-            )
-        } else {
-            return ( 
-                <View style={{ flex: 1}}>
-                    {
-                        (this.state.isNoTransactionData == true) ? 
-                        (
-                            <View>
-                                <View style={{flex:1, height: 120, alignItems: 'center', justifyContent: 'center'}}>
-                                    <Text>There is no transactions.</Text>
-                                </View>
+        return ( 
+            <View style={{ flex: 1}}>
+                {
+                    (this.state.isNoTransactionData == true) ? 
+                    (
+                        <View>
+                            <View style={{flex:1, height: 120, alignItems: 'center', justifyContent: 'center'}}>
+                                <Text>There is no transactions.</Text>
                             </View>
-                        ) :
-                        (
-                            <View style={styles.listViewContainer}>
-                                <ListView
-                                    enableEmptySections={true}
-                                    dataSource={this.state.dataSourceForTransaction}
-                                    renderRow={this.renderTransaction}
-                                    style={styles.listViewInnerContainer}
-                                />
-                            </View>
-                        )
-                    }     
-                </View>
-            )
-        }
+                        </View>
+                    ) :
+                    (
+                        <View style={styles.listViewContainer}>
+                            <ListView
+                                enableEmptySections={true}
+                                dataSource={this.state.dataSourceForTransaction}
+                                renderRow={this.renderTransaction}
+                                style={styles.listViewInnerContainer}
+                            />
+                        </View>
+                    )
+                }
+                {(this.props.isLoadingTxData === true) ? 
+                    (<View>                
+                        <Spinner visible={this.props.isLoadingTxData} cancelable={true} textContent="fetching" textStyle={{fontSize:20, fontWeight:'normal', color: '#FFF'}}/>
+                    </View>) :
+                    (<View></View>)
+                }     
+            </View>
+        )
     }
 
     renderTransaction = (txData) => {
@@ -104,27 +94,27 @@ class HistoryOfTransaction extends Component{
             return (
                 <View>
                     <Divider />
-                    <TouchableHighlight onPress={() => this.handlePress(txData)} underlayColor="gray">
-                    <View style={styles.listViewInnerContainer}>
-                        <View style={{flexDirection:'row'}}>
-                            <View style={{width: 60, borderRadius:50, backgroundColor:'#92B558'}}>
-                                {
+                    <TouchableOpacity onPress={() => this.handlePress(txData)} value="0.5">
+                        <View style={styles.listViewInnerContainer}>
+                            <View style={{flexDirection:'row'}}>
+                                <View style={{width: 60, borderRadius:50, backgroundColor:'#92B558'}}>
+                                    {
+                                        (txData.from == this.props.defaultWallet.walletAddress) ? 
+                                            ( <Text style={{fontSize:12, textAlign:'center'}}>Send</Text> ) : 
+                                            ( <Text style={{fontSize:12, textAlign:'center'}}>Receive</Text> )
+                                    }
+                                </View>
+                                <Text> {WalletUtils.fromWei(txData.value, 'ether')} {this.props.tokenName} (</Text>
+                                <Moment unix fromNow element={Text} >{txData.timeStamp}</Moment>
+                                <Text>)</Text>           
+                            </View>      
+                                {                  
                                     (txData.from == this.props.defaultWallet.walletAddress) ? 
-                                        ( <Text style={{fontSize:12, textAlign:'center'}}>Send</Text> ) : 
-                                        ( <Text style={{fontSize:12, textAlign:'center'}}>Receive</Text> )
+                                    (<Text style={{fontSize: 12}}>to : {txData.to}</Text>) :
+                                    (<Text style={{fontSize: 12}}>from : {txData.from}</Text>)
                                 }
-                            </View>
-                            <Text> {WalletUtils.fromWei(txData.value, 'ether')} {this.props.tokenName} (</Text>
-                            <Moment unix fromNow element={Text} >{txData.timeStamp}</Moment>
-                            <Text>)</Text>           
-                        </View>      
-                            {                  
-                                (txData.from == this.props.defaultWallet.walletAddress) ? 
-                                (<Text style={{fontSize: 12}}>to : {txData.to}</Text>) :
-                                (<Text style={{fontSize: 12}}>from : {txData.from}</Text>)
-                            }
-                    </View>
-                    </TouchableHighlight>
+                        </View>
+                    </TouchableOpacity>
                 </View>
              ) 
         }

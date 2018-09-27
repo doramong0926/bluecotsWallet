@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements';
 import Modal from 'react-native-simple-modal';
 import ActionCreator from './../actions';
@@ -8,16 +8,11 @@ import { connect } from 'react-redux';
 import EthereumJsWallet from 'ethereumjs-wallet';
 import WalletUtils from './../utils/wallet';
 import PropTypes from 'prop-types';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { 
-	ETHERSCAN_API_KEY,
-	INFURA_API_KEY ,
-	SEGMENT_API_KEY,
-	NETWORK,
-	DEFAULT_TOKEN_NAME,
 	DEFAULT_TOKEN_SYMBOL,
 	DEFAULT_TOKEN_CONTRACT_ADDRESS,
 	DEFAULT_TOKEN_DECIMALS,
-	WALLET_VERSION
  } from './../config/constants';
  
 const uuid = require('uuid')
@@ -64,11 +59,20 @@ class ModalGenerateWallet extends Component {
                 }}
             >
                 <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}>Add wallet - NEW</Text>
+                    <Text style={styles.headerText}>Generate wallet</Text>
+                    <View style={{alignSelf:"flex-end", paddingRight:20, position:"absolute"}}>
+                        <TouchableOpacity onPress={() => this.closeModal()} value={'0.5'}>
+                            <Ionicons name="ios-close-circle-outline" size={20}/>
+                        </TouchableOpacity>
+                    </View>                      
                 </View>
                 <View style={styles.bodyContainer}>
                     <FormLabel>Nickname</FormLabel>
-                    <FormInput value={this.state.nickName} onChangeText={(value) => this.setState({nickName: value})}/>
+                    <FormInput 
+                        inputStyle = {{paddingLeft:5, paddingRight:5, marginRight:0, fontSize:11}}
+                        value={this.state.nickName} 
+                        onChangeText={(value) => this.setState({nickName: value})}
+                    />
                     {this.nickNameValidationMsg()}
                 </View>
                 <View style={styles.buttonContainer}>

@@ -6,7 +6,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   Clipboard,
-  TouchableHighlight,
 } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 
@@ -16,8 +15,9 @@ import ActionCreator from '../actions';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
-class ModalWalletInfomation extends Component {
+class ModalReceive extends Component {
     constructor(props, context) {
         super(props, context);
     };
@@ -35,7 +35,7 @@ class ModalWalletInfomation extends Component {
         return (
             <Modal 
                 offset={0}
-                open={this.props.visibleModalWalletInfomation}
+                open={this.props.visibleModalReceive}
                 animationDuration={200}
                 animationTension={40}
                 closeOnTouchOutside={true}
@@ -58,60 +58,47 @@ class ModalWalletInfomation extends Component {
                 }}
             >
                 <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}>Wallet infomation</Text>
+                    <Text style={styles.headerText}>Receive</Text>
+                    <View style={{alignSelf:"flex-end", paddingRight:20, position:"absolute"}}>
+                        <TouchableOpacity onPress={() => this.closeModal()} value={'0.5'}>
+                            <Ionicons name="ios-close-circle-outline" size={20}/>
+                        </TouchableOpacity>
+                    </View>                      
                 </View>
                 <View style={styles.bodyContainer}>
-                    <View style={styles.qrcodeContainer}>
-                        <TouchableOpacity onPress={() => this.handlePressToSave()} value="0.5">
-                            <View>
-                                {this.renderQrCode()}                        
-                                <View style={{marginTop: 10}}>
-                                    <Text style={styles.descriptionText}> Click to save Qr-code</Text>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.walletAddressContainer}>
-                        <View style={styles.walletAddressInnerContainer}>
+                        <View style={styles.walletAddressContainer}>
+                            <Text style={styles.subTitleText}>Wallet address</Text>    
                             <TouchableOpacity onPress={() => this.handlePressCopy()} value="0.5">
-                                <View>
-                                    <Text style={styles.nickNameText}>{this.props.defaultWallet.nickName}</Text>
-                                    <Text style={styles.addressText}>{this.props.defaultWallet.walletAddress}</Text>
-                                    <View style={{alignItems:'center', marginTop: 10}}>
-                                        <Text style={styles.descriptionText}> Click to copy address</Text>
-                                    </View>
+                                <View style={{alignItems:"center", justifyContent:"center", flexDirection:"row"}}>
+                                    <Text style={styles.walletAddressText}>{this.props.defaultWallet.walletAddress}</Text> 
+                                    <View style={{alignItems:"center", marginLeft: 3}}>
+                                        <Ionicons name="ios-copy-outline" size={15}/>
+                                    </View>              
                                 </View>
                             </TouchableOpacity>
-                        </View>
+                        </View> 
+                    <View style={styles.qrcodeContainer}>
+                        <TouchableOpacity onPress={() => this.handlePressToSave()} value="0.5">
+                            {this.renderQrCode()}    
+                        </TouchableOpacity>
+                        
                     </View>
-                </View>
-                <View style={styles.buttonContainer}>                    
-                    <Button
-                        onPress={this.closeModal}
-                        title="Close"
-                        buttonStyle={{
-                            backgroundColor: "#BD3D3A",
-                            borderColor: "transparent", 
-                            borderRadius: 5
-                        }}
-                        containerViewStyle={{
-                            // alignSelf: 'flex-end',
-                            // margin: 20,
-                        }}
-                    />
+                    <View style={{marginBottom: 10}}>
+                        <Text style={styles.descriptionText}> Click to save Qr-code</Text>
+                    </View>
                 </View>
             </Modal>
         );
     }  
 
     closeModal = () => {
-        this.props.hideModalWalletInfomation();
+        this.props.hideModalReceive();
     }
 
     handlePressCopy = async () => {
         Clipboard.setString(this.props.defaultWallet.walletAddress);
         const address = await Clipboard.getString();
-        this.props.hideModalWalletInfomation();
+        this.props.hideModalReceive();
         const infomation = {
             title: 'INFOMATION', 
             message1: 'Success to copy address to clipboard.', 
@@ -170,7 +157,7 @@ const styles = StyleSheet.create({
     }, 
     bodyContainer: {
         marginHorizontal: 20,
-        marginTop:10,
+        // marginTop:10,
     },
     buttonContainer: {
         marginBottom: 10,
@@ -197,14 +184,25 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingTop: 15,
         paddingBottom: 10,
+        marginBottom: 10,
         borderColor: 'gray',
         borderWidth: 1,
         borderRadius: 6,
+    },
+    walletAddressText: {
+        fontSize: 11,        
+        color: '#B4B7BA',
+        textAlign: 'center',
     },
     descriptionText: {
         fontSize: 12,        
         color: '#B4B7BA',
         textAlign: 'center',
+    },
+    subTitleText: {
+        fontSize : 12, 
+        textAlign:'center',
+        color: 'black', 
     },
     nickNameText: {
     },
@@ -214,15 +212,15 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        visibleModalWalletInfomation: state.modal.visibleModalWalletInfomation,
+        visibleModalReceive: state.modal.visibleModalReceive,
         defaultWallet: state.wallet.defaultWallet,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        hideModalWalletInfomation: () => {
-            dispatch(ActionCreator.hideModalWalletInfomation());
+        hideModalReceive: () => {
+            dispatch(ActionCreator.hideModalReceive());
         },
         showModalInfomation: () => {
             dispatch(ActionCreator.showModalInfomation());
@@ -233,4 +231,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModalWalletInfomation);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalReceive);

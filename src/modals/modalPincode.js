@@ -1,14 +1,24 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-simple-modal';
 import ActionCreator from '../actions';
 import PINCode from '@haskkor/react-native-pincode'
 import { connect } from 'react-redux';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 class ModalPincode extends Component {    
     constructor(props, context) {
         super(props, context);
     };
+
+    state = {
+        errorMessage: null,
+        scanResult: {
+            status: false,
+            message: "init"
+        }
+    }
+
     render() {
         return (
             <Modal 
@@ -19,7 +29,7 @@ class ModalPincode extends Component {
                 closeOnTouchOutside={true}
                 disableOnBackPress={false}
                 modalDidClose={() => {this.closeModal()}}
-                modalDidOpen={undefined}
+                modalDidOpen={() => {this.openModal()}}
                 modalProps={undefined}
                 containerProps={undefined}
                 containerStyle={{
@@ -51,11 +61,13 @@ class ModalPincode extends Component {
     }  
 
     handelFinishProcess = () => {
-        if (this.props.modalFinishProcess) {
-            this.props.modalFinishProcess();
+        const scanResult = {
+            message: "success",
+            status: true,
         }
+        this.setState({scanResult: scanResult})
         setTimeout(() => {
-            this.closeModal();
+            this.props.hideModalPincode();
         },);
     }
 
@@ -64,7 +76,18 @@ class ModalPincode extends Component {
     }
 
     closeModal = () => {
+        if (this.props.modalFinishProcess) {
+            this.props.modalFinishProcess(this.state.scanResult);
+        }
         this.props.hideModalPincode();
+    }
+
+    openModal = () => {
+        const scanResult = {
+            status: false,
+            message: "init"
+        }
+        this.setState({scanResult: scanResult})
     }
 }
 

@@ -1,14 +1,6 @@
 import React, { Component } from 'react';
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'
-import {
-  Text,
-  View,
-  StyleSheet,
-  Clipboard,
-  TouchableOpacity,
-  TouchableHighlight,
-  Platform,
-} from 'react-native';
+import { Text, View, StyleSheet, Clipboard, TouchableOpacity, Platform } from 'react-native';
 import Modal from 'react-native-simple-modal';
 import ActionCreator from '../actions';
 import { connect } from 'react-redux';
@@ -18,15 +10,9 @@ import { Permissions } from 'expo';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 import { 
-	ETHERSCAN_API_KEY,
-	INFURA_API_KEY ,
-	SEGMENT_API_KEY,
-	NETWORK,
-	DEFAULT_TOKEN_NAME,
 	DEFAULT_TOKEN_SYMBOL,
 	DEFAULT_TOKEN_CONTRACT_ADDRESS,
 	DEFAULT_TOKEN_DECIMALS,
-	WALLET_VERSION
  } from '../config/constants';
 
 class ModalSend extends Component {
@@ -76,6 +62,11 @@ class ModalSend extends Component {
             >
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>Send {this.props.modalSendTokenName} </Text>
+                    <View style={{alignSelf:"flex-end", paddingRight:20, position:"absolute"}}>
+                        <TouchableOpacity onPress={() => this.closeModal()} value={'0.5'}>
+                            <Ionicons name="ios-close-circle-outline" size={20}/>
+                        </TouchableOpacity>
+                    </View>                      
                 </View>
                 
                 <View style={styles.bodyContainer}>
@@ -96,8 +87,7 @@ class ModalSend extends Component {
                     <View style={styles.containerBalance}>
                         <Text style={styles.subTitleText}>Available balance</Text>
                         <Text style={styles.descriptionText}>{this.props.defaultWallet.walletAddress}</Text>
-                        {this.renderBalance()}
-                        
+                        {this.renderBalance()}                        
                     </View> 
                     <View>
                         <FormLabel>Address to send {this.props.modalSendTokenName}</FormLabel>
@@ -115,8 +105,7 @@ class ModalSend extends Component {
                                 <TouchableOpacity onPress={() => this.handelPressQrcord()} value="0.5">
                                     <FontAwesome name="qrcode" size={25} />
                                 </TouchableOpacity>
-                            </View>
-                            
+                            </View>                            
                         </View>                        
                         {this.addressValidationMsg()}
                     </View> 
@@ -239,6 +228,7 @@ class ModalSend extends Component {
     }
 
     handelPressQrcord = async () => {      
+        this.props.hideModalSend();
         const { status } = await Permissions.askAsync(Permissions.CAMERA);
         if (status === 'granted') {
             this.props.setTokenNameForQrCode(this.props.modalSendTokenName);
@@ -251,7 +241,12 @@ class ModalSend extends Component {
         if (this.props.modalSendTokenName === 'BLC') {
             this.props.setModalAmountToSend(this.props.blcBalance);
         } else if (this.props.modalSendTokenName === 'ETH') {
-            this.props.setModalAmountToSend(this.props.ethBalance - this.state.maxGasForSend);
+            const balance = this.props.ethBalance - this.state.maxGasForSend;
+            if (balance < 0) {
+                this.props.setModalAmountToSend(0);    
+            } else {
+                this.props.setModalAmountToSend(balance);
+            }
         }
         this.calculateGasPrice("nomal");
     }
@@ -276,10 +271,12 @@ class ModalSend extends Component {
             if (this.props.useFingerPrint === true){
                 this.scanFingerPrint();
             } else {
+                this.props.hideModalSend();
                 this.props.setModalPincodeFinishProcess(this.modalPincodeFinishProcess.bind(this));
                 this.props.showModalPincode();
             }
         } else {
+            this.props.showModalSend();
         }        
     }
 
@@ -288,16 +285,22 @@ class ModalSend extends Component {
             this.sendTransaction();
             this.props.showModalSpinner('sending');
         } else {
-            if (result.message === 'usePinCode') {
+            if (result.message === 'usePinCode') {                
+                this.props.hideModalSend();
                 this.usePinCode();
             } else {
+                this.props.showModalSend();
             }
         }
     }
 
-    modalPincodeFinishProcess() {
-        this.sendTransaction();
-        this.props.showModalSpinner('sending');
+    modalPincodeFinishProcess(result) {
+        if (result.status === true) {
+            this.sendTransaction();
+            this.props.showModalSpinner('sending');
+        } else {
+            this.props.showModalSend();
+        }
     }
 
     calculateGasPrice = async (calculateType) => {
@@ -585,6 +588,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        showModalSend: () => {
+            dispatch(ActionCreator.showModalSend());
+        },
         hideModalSend: () => {
             dispatch(ActionCreator.hideModalSend());
         },
@@ -639,6 +645,12 @@ function mapDispatchToProps(dispatch) {
         setModalSendTokenName: (tokenName) => {
             dispatch(ActionCreator.setModalSendTokenName(tokenName));
         },
+        setEthBalance: (balance) => {
+            dispatch(ActionCreator.setEthBalance(balance));
+        },
+        setBlcBalance: (balance) => {
+            dispatch(ActionCreator.setBlcBalance(balance));
+        },        
     };
 }
 

@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import {
-  Alert,
-  Linking,
   Dimensions,
   LayoutAnimation,
   Text,
   View,
-  StatusBar,
   StyleSheet,
   TouchableOpacity,
-  BackHandler,
 } from 'react-native';
 
 import { BarCodeScanner, Permissions } from 'expo';
@@ -17,10 +13,8 @@ import Modal from 'react-native-simple-modal';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import ActionCreator from './../actions';
 
-import EthereumJsWallet from 'ethereumjs-wallet';
-import WalletUtils from './../utils/wallet';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 class ModalQrCodeScaner extends Component {
     constructor(props, context) {
@@ -56,19 +50,12 @@ class ModalQrCodeScaner extends Component {
                 lastScannedData: result.data,
             });
             if (this.props.tokenNameForQrCode === 'BLC') {
-                this.props.setAddressToSend(result.data);
+                this.props.setModalAddressToSend(result.data);
             }
             else if (this.props.tokenNameForQrCode === 'ETH') {
-                this.props.setAddressToSend(result.data);
+                this.props.setModalAddressToSend(result.data);
             }            
             this.props.hideModalQrCodeScaner();
-            const infomation = {
-                title:'INFOMATION',
-                message1: 'address from QR-Code scaner', 
-                message2: result.data
-            };
-            this.props.setModalInfomation(infomation);
-            this.props.showModalInfomation();
         }
     };
 
@@ -101,6 +88,11 @@ class ModalQrCodeScaner extends Component {
             >
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>QR-Code Scanner</Text>
+                    <View style={{alignSelf:"flex-end", paddingRight:20, position:"absolute"}}>
+                        <TouchableOpacity onPress={() => this.closeModal()} value={'0.5'}>
+                            <Ionicons name="ios-close-circle-outline" size={20}/>
+                        </TouchableOpacity>
+                    </View>                      
                 </View>
                 <View style={styles.qrCodeContainer}>   
                     {this.state.hasCameraPermission === null
@@ -120,22 +112,7 @@ class ModalQrCodeScaner extends Component {
                     }
                 </View>
                 <View style={styles.bodyContainer}>
-                    <Text style={{textAlign: 'center'}}> Please focus on qr-code.</Text>
-                </View>
-                <View style={styles.buttonContainer}>                    
-                    <Button
-                        onPress={this.closeModal}
-                        title="Close"
-                        buttonStyle={{
-                            backgroundColor: "#BD3D3A",
-                            borderColor: "transparent", 
-                            borderRadius: 5
-                        }}
-                        containerViewStyle={{
-                            // alignSelf: 'flex-end',
-                            // margin: 20,
-                        }}
-                    />
+                    <Text style={{textAlign: 'center'}}>Focus on qr-code</Text>
                 </View>
             </Modal>
         );
@@ -146,6 +123,7 @@ class ModalQrCodeScaner extends Component {
             lastScannedData: null
         })
         this.props.hideModalQrCodeScaner();
+        this.props.showModalSend();
     }
 }
     
@@ -165,7 +143,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#000',
     },
     bodyContainer: {
-        margin: 20,
+        margin: 10,
     },
     buttonContainer: {
         marginBottom: 10,
@@ -188,20 +166,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        showModalSend: () => {
+            dispatch(ActionCreator.showModalSend());
+        },
         showModalQrCodeScaner: () => {
             dispatch(ActionCreator.showModalQrCodeScaner());
         },
         hideModalQrCodeScaner: () => {
             dispatch(ActionCreator.hideModalQrCodeScaner());
         },
-        setAddressToSend: (address) => {
-            dispatch(ActionCreator.setAddressToSend(address));
-        },
-        showModalInfomation: () => {
-            dispatch(ActionCreator.showModalInfomation());
-        },
-        setModalInfomation: (infomation) => {
-            dispatch(ActionCreator.setModalInfomation(infomation));
+        setModalAddressToSend: (address) => {
+            dispatch(ActionCreator.setModalAddressToSend(address));
         },
     };
 }

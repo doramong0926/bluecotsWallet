@@ -9,15 +9,8 @@ import { store } from '../config/store';
 import { 
   ETHERSCAN_API_KEY,
   INFURA_API_KEY ,
-  SEGMENT_API_KEY,
-  NETWORK,
-  DEFAULT_TOKEN_NAME,
-  DEFAULT_TOKEN_SYMBOL,
   DEFAULT_TOKEN_CONTRACT_ADDRESS,
-  DEFAULT_TOKEN_DECIMALS,
-  WALLET_VERSION,
   erc20Abi,
-  defaultTransactionData
 } from './../config/constants';
 
 //import AnalyticsUtils from './analytics';

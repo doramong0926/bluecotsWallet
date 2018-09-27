@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Platform } from 'react-native';
 import NotificationCard from './../../cards/notificationCard';
 import WalletBalanceCard from './../../cards/walletBalanceCard';
 import HistoryCard from './../../cards/historyCard';
@@ -35,7 +35,10 @@ class WalletScreen extends Component{
                     // }
                     renderForeground={() => 
                         <View style={styles.containerImageSlider}>
-                            <ImageSlider images={sliderImage}/>
+                            <ImageSlider 
+                                images={sliderImage} 
+                                autoPlayWithInterval={5000}
+                            />
                         </View>
                     }>
                         <View style={styles.container}>

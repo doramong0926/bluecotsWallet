@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import ActionCreator from './../actions';
 import { connect } from 'react-redux';
@@ -13,26 +13,36 @@ class MainWalletMenu extends Component {
         return (
             <View>
                 <View style={styles.container}>
-                    <View style={styles.iconView}>
-                        <Ionicons name="ios-add-circle-outline" onPress={this.handlePressAdd} size={30} color="black" />
-                        <Text style={styles.iconText}>Add wallet</Text>
-                    </View>
-                    <View style={styles.iconView}>
-                        <Ionicons name="ios-repeat-outline" onPress={this.handlePressChangeWallet} size={30} color="black" />
-                        <Text style={styles.iconText}>Change wallet</Text>
-                    </View>
-                    <View style={styles.iconView}>
-                        <Ionicons name="ios-send-outline" onPress={this.handlePressSend} size={30} color="black" />
-                        <Text style={styles.iconText}>Send</Text>
-                    </View>
-                    <View style={styles.iconView}>
-                        <Ionicons name="ios-qr-scanner-outline" onPress={this.handlePressReceive} size={30} color="black" />
-                        <Text style={styles.iconText}>Receive</Text>
-                    </View>
-                    <View style={styles.iconView}>
-                        <Ionicons name="ios-settings-outline" onPress={this.handlePressSettings} size={30} color="black" />
-                        <Text style={styles.iconText}>Settings</Text>
-                    </View> 
+                    <TouchableOpacity onPress={() => this.handlePressAdd()} value="0.5">
+                        <View style={styles.iconView}>
+                            <Ionicons name="ios-add-circle-outline" size={30} color="black" />
+                            <Text style={styles.iconText}>Add wallet</Text>
+                        </View>
+                        </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.handlePressChangeWallet()} value="0.5">
+                        <View style={styles.iconView}>
+                            <Ionicons name="ios-repeat-outline" size={30} color="black" />
+                            <Text style={styles.iconText}>Change wallet</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.handlePressSend()} value="0.5">
+                        <View style={styles.iconView}>
+                            <Ionicons name="ios-send-outline" size={30} color="black" />
+                            <Text style={styles.iconText}>Send</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.handlePressReceive()} value="0.5">
+                        <View style={styles.iconView}>
+                            <Ionicons name="ios-qr-scanner-outline" size={30} color="black" />
+                            <Text style={styles.iconText}>Receive</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.handlePressSettings()} value="0.5">
+                        <View style={styles.iconView}>
+                            <Ionicons name="ios-settings-outline" onPress={this.handlePressSettings} size={30} color="black" />
+                            <Text style={styles.iconText}>Settings</Text>
+                        </View> 
+                    </TouchableOpacity>
                 </View>
             </View>
         );
@@ -47,13 +57,16 @@ class MainWalletMenu extends Component {
     }  
 
     handlePressSend = () => {
-        // this.props.navigation.navigate('send');
         this.props.setModalSendTokenName('BLC');
-        this.props.showModalSend();
+        this.props.setModalAddressToSend(null);
+        this.props.setModalAmountToSend(null);
+        setTimeout(() => {
+            this.props.showModalSend();    
+        }, );
     }
 
     handlePressReceive = () => {
-        this.props.showModalWalletInfomation();
+        this.props.showModalReceive();
     }
 
     handlePressSettings = () => {
@@ -78,14 +91,20 @@ function mapDispatchToProps(dispatch) {
         showModalDefaultWalletSettings: () => {
             dispatch(ActionCreator.showModalDefaultWalletSettings());
         },
-        showModalWalletInfomation: () => {
-            dispatch(ActionCreator.showModalWalletInfomation());
+        showModalReceive: () => {
+            dispatch(ActionCreator.showModalReceive());
         },
         showModalSend: () => {
             dispatch(ActionCreator.showModalSend());
         },
         setModalSendTokenName: (tokenName) => {
             dispatch(ActionCreator.setModalSendTokenName(tokenName));
+        },
+        setModalAddressToSend: (address) => {
+            dispatch(ActionCreator.setModalAddressToSend(address));
+        },
+        setModalAmountToSend: (amount) => {
+            dispatch(ActionCreator.setModalAmountToSend(amount));
         },
     };
 }

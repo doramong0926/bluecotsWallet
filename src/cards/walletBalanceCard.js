@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Clipboard, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import ActionCreator from '../actions';
 import WalletUtils from '../utils/wallet';
@@ -10,17 +10,12 @@ import TokenSymbolWithName from './../components/tokenSymbolWithName';
 import MainWalletMenu from './../components/mainWalletMenu';
 import PropTypes from 'prop-types';
 import { 
-	ETHERSCAN_API_KEY,
-	INFURA_API_KEY ,
-	SEGMENT_API_KEY,
-	NETWORK,
-	DEFAULT_TOKEN_NAME,
 	DEFAULT_TOKEN_SYMBOL,
 	DEFAULT_TOKEN_CONTRACT_ADDRESS,
 	DEFAULT_TOKEN_DECIMALS,
-	WALLET_VERSION
  } from '../config/constants';
  import { Card, Divider } from 'react-native-material-design';
+ import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 class WalletBalanceCard extends Component {
     constructor(props, context) {
@@ -47,8 +42,15 @@ class WalletBalanceCard extends Component {
                     <Card.Body>
                         <View style={styles.containerTitle}>
                             <Text style={styles.textTitle}>Balance ({this.props.defaultWallet.nickName})</Text>
-                            <Text style={styles.descriptionText}>{this.props.defaultWallet.walletAddress}</Text>
-                        </View>
+                            <TouchableOpacity onPress={() => this.handlePressCopy()} value="0.5">
+                                <View style={{alignItems:"center", justifyContent:"center", flexDirection:"row"}}>
+                                    <Text style={styles.descriptionText}>{this.props.defaultWallet.walletAddress}</Text> 
+                                    <View style={{alignItems:"center", marginLeft: 3}}>
+                                        <Ionicons name="ios-copy-outline" size={15}/>
+                                    </View>              
+                                </View>
+                            </TouchableOpacity>
+                        </View>                        
                         <View style={styles.containerBalanceTop}>
                             <View style={{flex: 2, flexDirection: 'row'}}>
                                 <TokenSymbolWithName icon={BLC_ICON_IMAGE} tokenString={'BLC'} tokenName={'bluecots'} />
@@ -81,6 +83,21 @@ class WalletBalanceCard extends Component {
             </View>
         );
     }    
+
+    handlePressCopy = async () => {
+        Clipboard.setString(this.props.defaultWallet.walletAddress);
+        const address = await Clipboard.getString();
+        const infomation = {
+            title: 'INFOMATION', 
+            message1: 'Success to copy address to clipboard.', 
+            message2: 'Please check the address one more time.',
+            message3: address,
+        };
+        this.props.setModalInfomation(infomation);
+        setTimeout(() => {
+            this.props.showModalInfomation();    
+        }, 300);
+    };
     
     updateWalletBalance = async () => {
         if (this.props.defaultWallet.walletAddress) {
@@ -127,6 +144,12 @@ function mapDispatchToProps(dispatch) {
         },
         setBlcBalance: (balance) => {
             dispatch(ActionCreator.setBlcBalance(balance));
+        },
+        showModalInfomation: () => {
+            dispatch(ActionCreator.showModalInfomation());
+        },
+        setModalInfomation: (infomation) => {
+            dispatch(ActionCreator.setModalInfomation(infomation));
         },
     };
 }

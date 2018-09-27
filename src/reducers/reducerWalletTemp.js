@@ -1,5 +1,4 @@
 import actionTypes from './../actions/actionTypes';
-import { defaultWallet } from './../config/constants';
 
 const initialState = {
     isLoadingTxData: true,

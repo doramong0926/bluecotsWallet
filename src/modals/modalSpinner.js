@@ -1,26 +1,19 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import Modal from 'react-native-simple-modal';
+import { View } from 'react-native';
 import ActionCreator from './../actions';
 import { connect } from 'react-redux';
 
 import Spinner from 'react-native-loading-spinner-overlay';
 
 class ModalSpinner extends Component {
-
-    /* eslint react/no-did-mount-set-state: 0 */
-    componentDidMount() {
-        // setInterval(() => {
-        //     this.setState({
-        //         visible: !this.state.visible
-        //     });
-        // }, 3000);
-    }
-
     render() {
         return (
             <View>                
-                <Spinner visible={this.props.visibleModalSpinner} textContent={this.props.spinnerText} textStyle={{fontSize:20, fontWeight:'normal', color: '#FFF'}} />
+                <Spinner 
+                    visible={this.props.visibleModalSpinner} 
+                    textContent={this.props.spinnerText} 
+                    textStyle={{fontSize:20}} 
+                />
             </View>
         );
     }

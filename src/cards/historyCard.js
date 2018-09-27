@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import HistoryOfTransaction from '../components/historyOfTransaction'
 import StatusOfTranscation from '../components/statusOfTranscation'
@@ -37,16 +37,16 @@ class HistoryCard extends Component {
                                 <View>
                                     <View style={styles.containerTokenSelect}>
                                         <View style={styles.containerButton}>
-                                            <TouchableHighlight onPress={() => this.handlePress("BLC")} underlayColor="gray">
+                                            <TouchableOpacity onPress={() => this.handlePress("BLC")} value="0.5">
                                                 <View style={(this.state.tokenName === 'BLC') ? (styles.containerSelectedLeftButton) : (styles.containerUnselectedLeftButton)}>
                                                     <Text> BLC </Text>
                                                 </View>
-                                            </TouchableHighlight>
-                                            <TouchableHighlight onPress={() => this.handlePress("ETH")} underlayColor="gray">
+                                            </TouchableOpacity>
+                                            <TouchableOpacity onPress={() => this.handlePress("ETH")} value="0.5">
                                                 <View style={(this.state.tokenName === 'BLC') ? (styles.containerUnselectedRightButton) : (styles.containerSelectedRightButton)}>
                                                     <Text> ETH </Text>
                                                 </View>
-                                            </TouchableHighlight>
+                                            </TouchableOpacity>
                                         </View>
                                     </View>
                                     <StatusOfTranscation />

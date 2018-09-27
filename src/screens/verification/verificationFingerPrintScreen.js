@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Platform, TouchableHighlight } from 'react-native';
+import { Text, View, StyleSheet, Platform, TouchableOpacity } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import ActionCreator from '../../actions';
@@ -66,33 +66,33 @@ class VerificationFingerPrintScreen extends Component{
                 (   
                     <View style={styles.container}>
                         <View style={{flex: 9, alignItems:'center', justifyContent: 'space-around',}}>
-                            <TouchableHighlight onPress={() => this.scanFingerPrint()} underlayColor="gray">
+                            <TouchableOpacity onPress={() => this.scanFingerPrint()} value="0.5">
                                 <View style={styles.fingerPrintIconContainer}>
                                     <Ionicons name="ios-finger-print" size={200} />                                    
                                     <Text style={styles.text}>Click to scan finger print</Text>
                                 </View>
-                            </TouchableHighlight>
+                            </TouchableOpacity>
                         </View>
                         {
                             (this.props.useFingerPrint) ?
                             (
                                 <View style={styles.skipIconContainer}>
-                                    <TouchableHighlight onPress={() => this.usePinCode()} underlayColor="gray">
+                                    <TouchableOpacity onPress={() => this.usePinCode()} value="0.5">
                                         <View style={{flexDirection: 'row', alignItems:'center'}}>
                                             <Text style={{textAlign: 'center', fontSize: 20, marginRight:5}}>Use Pincode</Text>
                                             <FontAwesome name="arrow-right" size={20}/>
                                         </View>
-                                    </TouchableHighlight>
+                                    </TouchableOpacity>
                                 </View>
                             ) :
                             (
                                 <View style={styles.skipIconContainer}>
-                                    <TouchableHighlight onPress={() => this.skipFingerPrint()} underlayColor="gray">
+                                    <TouchableOpacity onPress={() => this.skipFingerPrint()} value="0.5">
                                         <View style={{flexDirection: 'row', alignItems:'center'}}>
                                             <Text style={{textAlign: 'center', fontSize: 20, marginRight:5}}>Skip</Text>
                                             <FontAwesome name="arrow-right" size={20}/>
                                         </View>
-                                    </TouchableHighlight>
+                                    </TouchableOpacity>
                                 </View>
                             )
                         }

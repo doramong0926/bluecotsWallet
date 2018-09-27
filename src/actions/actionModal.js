@@ -215,15 +215,15 @@ export function setModalPincodeFinishProcess(finishProcess) {
   };
 }
 
-export function showModalWalletInfomation() {
+export function showModalReceive() {
   return {
-      type: actionTypes.SHOW_MODAL_WALLET_INFOMATION,
+      type: actionTypes.SHOW_MODAL_RECEIVE,
   };
 }
 
-export function hideModalWalletInfomation() {
+export function hideModalReceive() {
   return {
-      type: actionTypes.HIDE_MODAL_WALLET_INFOMATION,
+      type: actionTypes.HIDE_MODAL_RECEIVE,
   };
 }
 

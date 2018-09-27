@@ -1,14 +1,22 @@
 
 import React, { Component } from 'react';
-import { Text, View, TouchableHighlight, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements'
 import Modal from 'react-native-simple-modal';
 import ActionCreator from '../actions';
 import { connect } from 'react-redux';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 class ModalConfirm extends Component {
     constructor(props, context) {
         super(props, context);
+    }
+
+    state = {
+        scanResult: {
+            status: false,
+            message: "init"
+        }
     }
 
     render() {
@@ -20,8 +28,8 @@ class ModalConfirm extends Component {
                 animationTension={40}
                 closeOnTouchOutside={true}
                 disableOnBackPress={false}
-                modalDidClose={() => {this.handleCloseModal}}
-                modalDidOpen={() => undefined}
+                modalDidClose={() => {this.closeModal()}}
+                modalDidOpen={() => {this.openModal()}}
                 modalProps={undefined}
                 containerProps={undefined}
                 containerStyle={{
@@ -39,6 +47,11 @@ class ModalConfirm extends Component {
             >
                 <View style={styles.headerContainer}>
                     {this.renderHeader()}
+                    <View style={{alignSelf:"flex-end", paddingRight:20, position:"absolute"}}>
+                        <TouchableOpacity onPress={() => this.handleCloseModal()} value={'0.5'}>
+                            <Ionicons name="ios-close-circle-outline" size={20}/>
+                        </TouchableOpacity>
+                    </View>                      
                 </View>
                 <View style={styles.bodyContainer}>  
                     {this.renderBody()}
@@ -59,50 +72,47 @@ class ModalConfirm extends Component {
                             }}
                         />
                     </View>
-                    <View style={{flex:1}}>
-                        <Button
-                            onPress={this.handelPressCancel}
-                            title="Cancel"
-                            buttonStyle={{
-                                backgroundColor: "#BCBCBE",
-                                borderColor: "transparent", 
-                                borderRadius: 5
-                            }}
-                            containerViewStyle={{
-                                // alignSelf: 'flex-end',
-                                // margin: 20,
-                            }}
-                        />
-                    </View>
                 </View>
             </Modal>
         );
     }
 
     handelPressOk = () => {
-        if (this.props.modalFinishProcess) {
-            const result = {
-                status : true,
-                message : "Ok"
-            }
-            this.props.modalFinishProcess(result)
+        const scanResult = {
+            status : true,
+            message : "Ok"
         }
-        this.props.hideModalConfirm();
-    }
-
-    handelPressCancel = () => {
-        if (this.props.modalFinishProcess) {
-            const result = {
-                status : false,
-                message : "Cancle"
-            }
-            this.props.modalFinishProcess(result)
-        }
+        this.setState({scanResult: scanResult})        
         this.props.hideModalConfirm();
     }
 
     handleCloseModal = () => {
+        const scanResult = {
+            status : false,
+            message : "cancle"
+        }
+        this.setState({scanResult: scanResult});   
         this.props.hideModalConfirm();
+    }
+
+    closeModal = () => {
+        if (this.props.modalFinishProcess) {
+            this.props.modalFinishProcess(this.state.scanResult)
+        }
+        this.props.hideModalConfirm();
+        const scanResult = {
+            status : false,
+            message : "init"
+        }
+        this.setState({scanResult: scanResult});
+    }
+
+    openModal = () => {
+        const scanResult = {
+            status: false,
+            message: "init"
+        }
+        this.setState({scanResult: scanResult})
     }
 
     renderHeader = () => {
