@@ -6,6 +6,7 @@ import {
     createBottomTabNavigator, 
     createMaterialTopTabNavigator,
 } from 'react-navigation';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
 import getSlideFromRightTransition from 'react-navigation-slide-from-right-transition';
 import { Ionicons } from '@expo/vector-icons';
@@ -15,8 +16,6 @@ import VerificationFingerPrintScreen from '../screens/verification/verificationF
 import AddWalletScreen from '../screens/addWallet/addWalletScreen';
 import WalletScreen from '../screens/wallet/walletScreen'
 import itemsScreen from '../screens/items/itemsScreen'
-import BlcSendScreen from '../screens/send/blcSendScreen'
-import EthSendScreen from '../screens/send/ethSendScreen'
 import HistoryScreen from '../screens/history/historyScreen'
 import SettingsMainScreen from '../screens/settings/settingsMainScreen';
 import SettingsAccountScreen from '../screens/settings/settingsAccountScreen';
@@ -60,32 +59,6 @@ export const SettingsStackNavigator = createStackNavigator (
         headerLayoutPreset: 'center'
     }
 );
-
-export const SendScreenTabNavigator = createMaterialTopTabNavigator (
-    {
-        BlcSendTap:{
-            screen: BlcSendScreen
-        },
-        EthSendTab:{
-            screen: EthSendScreen
-        },
-    }, 
-    {
-        animationEnabled: true,
-        swipeEnabled: true,
-        tabBarOptions: {
-            labelStyle: {
-                fontSize: 12,
-            },
-            tabStyle: {
-            },
-            style: {
-                justifyContent: 'center',
-                backgroundColor: "#347B98",
-            },     
-        },
-    }
-)
 
 export const WalletStackNavigator = createStackNavigator (
     {
@@ -133,29 +106,6 @@ export const ItemsStackNavigator = createStackNavigator (
     }
 )
 
-export const SendStackNavigator = createStackNavigator (
-    {
-        SendStack: {
-            screen: SendScreenTabNavigator,
-        }
-    },
-    {
-        navigationOptions: {
-            title: 'Send',
-            headerTitleStyle: {
-                textAlign: 'center',
-                fontSize: 14,
-                color: 'white',
-            },
-            headerStyle: {
-                backgroundColor: '#092834',
-                height: 40,
-            },
-        },
-        headerLayoutPreset: 'center'
-    }
-)
-
 export const HistoryStackNavigator = createStackNavigator (
     {
         HistoryStack: {
@@ -179,16 +129,13 @@ export const HistoryStackNavigator = createStackNavigator (
     }
 )
 
-export const MainScreenTabNavigator = createBottomTabNavigator (
+export const MainScreenTabNavigator = createMaterialBottomTabNavigator (
     {
         wallet:{
             screen: WalletStackNavigator,            
         },        
         items:{
             screen: ItemsStackNavigator,
-        },
-        send:{
-            screen: SendStackNavigator,            
         },
         history:{
             screen: HistoryStackNavigator,
@@ -197,42 +144,27 @@ export const MainScreenTabNavigator = createBottomTabNavigator (
             screen: SettingsStackNavigator,
         },
     }, 
-    {   
+    {
         initialRouteName: 'wallet',
-        animationEnabled: true,
-        swipeEnabled: false,
-        tabBarOptions: {
-            style: {
-                ...Platform.select({
-                    android:{
-                        backgroundColor:'white'
-                    }
-                })
-            },
-            activeTintColor: '#000',
-            inactiveTintColor: '#d1cece',
-            showLabel: true,
-            showIcon: true,
-        },
+        activeColor: '#FCCB1A',
+        inactiveColor: '#B4B7BA',
+        barStyle: { backgroundColor: '#092834' },
         navigationOptions: ({ navigation }) => {
             const { routeName } = navigation.state;
             return {
                 tabBarIcon: ({ focused, tintColor }) => {
                     switch(routeName) {
                         case 'wallet':
-                            return <Ionicons name="ios-card" size={30} color={tintColor} />
+                            return <Ionicons name="ios-card" size={27} color={tintColor} />
                             break;
                         case 'items':
-                            return <Ionicons name="ios-cart" size={30} color={tintColor} />
-                            break;
-                        case 'send':
-                            return <Ionicons name="ios-send" size={30} color={tintColor} />
+                            return <Ionicons name="ios-cart" size={27} color={tintColor} />
                             break;
                         case 'history':
-                            return <Ionicons name="ios-stats" size={30} color={tintColor} />
+                            return <Ionicons name="ios-stats" size={27} color={tintColor} />
                             break;
                         case 'settings':
-                            return <Ionicons name="ios-settings" size={30} color={tintColor} />
+                            return <Ionicons name="ios-settings" size={27} color={tintColor} />
                             break;
                     }
                 },
@@ -240,7 +172,7 @@ export const MainScreenTabNavigator = createBottomTabNavigator (
         },
         transitionConfig: getSlideFromRightTransition,
     }
-)
+);
 
 export const AppStackNavigator = createStackNavigator (
     {

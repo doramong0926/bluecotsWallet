@@ -56,10 +56,10 @@ class ModalQrCodeScaner extends Component {
                 lastScannedData: result.data,
             });
             if (this.props.tokenNameForQrCode === 'BLC') {
-                this.props.setAddressToSendBlc(result.data);
+                this.props.setAddressToSend(result.data);
             }
             else if (this.props.tokenNameForQrCode === 'ETH') {
-                this.props.setAddressToSendEth(result.data);
+                this.props.setAddressToSend(result.data);
             }            
             this.props.hideModalQrCodeScaner();
             const infomation = {
@@ -194,11 +194,8 @@ function mapDispatchToProps(dispatch) {
         hideModalQrCodeScaner: () => {
             dispatch(ActionCreator.hideModalQrCodeScaner());
         },
-        setAddressToSendBlc: (address) => {
-            dispatch(ActionCreator.setAddressToSendBlc(address));
-        },
-        setAddressToSendEth: (address) => {
-            dispatch(ActionCreator.setAddressToSendEth(address));
+        setAddressToSend: (address) => {
+            dispatch(ActionCreator.setAddressToSend(address));
         },
         showModalInfomation: () => {
             dispatch(ActionCreator.showModalInfomation());

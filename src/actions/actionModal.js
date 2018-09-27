@@ -48,18 +48,6 @@ export function hideModalGenerateWallet() {
     };
 }
 
-export function showModalSelectAnotherWalletForSend() {
-  return {
-    type: actionTypes.SHOW_MODAL_SELECT_ANOTHER_WALLET_FOR_SEND
-  };
-}
-
-export function hideModalSelectAnotherWalletForSend() {
-    return {
-      type: actionTypes.HIDE_MODAL_SELECT_ANOTHER_WALLET_FOR_SEND
-    };
-}
-
 export function showModalChangeDefaultWallet() {
   return {
     type: actionTypes.SHOW_MODAL_CHANGE_DEFAULT_WALLET
@@ -69,30 +57,6 @@ export function showModalChangeDefaultWallet() {
 export function hideModalChangeDefaultWallet() {
     return {
       type: actionTypes.HIDE_MODAL_CHANGE_DEFAULT_WALLET
-    };
-}
-
-export function showModalConfirmToSendBlc() {
-  return {
-    type: actionTypes.SHOW_MODAL_CONFIRM_TO_SEND_BLC
-  };
-}
-
-export function hideModalConfirmToSendBlc() {
-    return {
-      type: actionTypes.HIDE_MODAL_CONFIRM_TO_SEND_BLC
-    };
-}
-
-export function showModalConfirmToSendEth() {
-  return {
-    type: actionTypes.SHOW_MODAL_CONFIRM_TO_SEND_ETH
-  };
-}
-
-export function hideModalConfirmToSendEth() {
-    return {
-      type: actionTypes.HIDE_MODAL_CONFIRM_TO_SEND_ETH
     };
 }
 
@@ -178,36 +142,36 @@ export function hideModalFingerPrintScaner() {
   };
 }
 
-export function setModalAskFinishProcess(finishProcess) {
+export function setModalConfirmFinishProcess(finishProcess) {
   return {
-      type: actionTypes.SET_MODAL_ASK_FINISH_PROCESS,
+      type: actionTypes.SET_MODAL_CONFIRM_FINISH_PROCESS,
       payload: finishProcess
   };
 }
 
-export function setModalAskHeader(header) {
+export function setModalConfirmHeader(header) {
   return {
-      type: actionTypes.SET_MODAL_ASK_HEADER,
+      type: actionTypes.SET_MODAL_CONFIRM_HEADER,
       payload: header
   };
 }
 
-export function setModalAskBody(body) {
+export function setModalConfirmBody(body) {
   return {
-      type: actionTypes.SET_MODAL_ASK_BODY,
+      type: actionTypes.SET_MODAL_CONFIRM_BODY,
       payload: body
   };
 }
 
-export function showModalAsk() {
+export function showModalConfirm() {
   return {
-      type: actionTypes.SHOW_MODAL_ASK,
+      type: actionTypes.SHOW_MODAL_CONFIRM,
   };
 }
 
-export function hideModalAsk() {
+export function hideModalConfirm() {
   return {
-      type: actionTypes.HIDE_MODAL_ASK,
+      type: actionTypes.HIDE_MODAL_CONFIRM,
   };
 }
 
@@ -260,6 +224,39 @@ export function showModalWalletInfomation() {
 export function hideModalWalletInfomation() {
   return {
       type: actionTypes.HIDE_MODAL_WALLET_INFOMATION,
+  };
+}
+
+export function showModalSend() {
+  return {
+      type: actionTypes.SHOW_MODAL_SEND,
+  };
+}
+
+export function setModalSendTokenName(tokenName) {
+  return {
+      type: actionTypes.SET_MODAL_SEND_TOKEN_NAME,
+      payload: tokenName
+  };
+}
+
+export function hideModalSend() {
+  return {
+      type: actionTypes.HIDE_MODAL_SEND,
+  };
+}
+
+export function setModalAddressToSend(address) {
+  return {
+      type: actionTypes.SET_MODAL_ADDRESS_TO_SEND,
+      payload: address
+  };
+}
+
+export function setModalAmountToSend(amount) {
+  return {
+      type: actionTypes.SET_MODAL_AMOUNT_TO_SEND,
+      payload: amount
   };
 }
 

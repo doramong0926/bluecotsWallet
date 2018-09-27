@@ -301,6 +301,49 @@ export default class WalletUtils {
     });
   }
 
+  static getEstimateGas(tokenSymbol, contractAddress, decimals, fromAddress, toAddress, value){
+    const web3 = new Web3(this.getWeb3HTTPProvider());
+    return new Promise((resolve, reject) => {
+      if (tokenSymbol === 'BLC') {
+        web3.eth
+        .contract(erc20Abi)
+        .at(contractAddress)
+        .transfer.estimateGas(
+            toAddress,
+            value * Math.pow(10, decimals),
+            {from: fromAddress}, (error, data) => {
+            if (error) {
+              console.log("error : " + error );
+              reject(error);
+            }
+            const weiPrice = web3.toWei(data, 'gwei');
+            const gasLimit = {
+                wei: data,
+                eth: web3.fromWei(weiPrice, 'ether')
+            };
+            resolve(gasLimit);
+          });
+      } else {
+        web3.eth
+        .estimateGas({ to: toAddress, 
+            from: fromAddress, 
+            value: web3.toWei(value, 'ether')
+          }, (error, data) => {
+            if (error) {
+              console.log("error : " + error );
+              reject(error);
+            }
+            const weiPrice = web3.toWei(data, 'gwei');
+            const gasLimit = {
+                wei: data,
+                eth: web3.fromWei(weiPrice, 'ether')
+            };
+            resolve(gasLimit);
+        });
+      }
+    });
+  }
+
   static getEstimateGasForErc20(contractAddress, decimals, fromAddress, toAddress, value){
     const web3 = new Web3(this.getWeb3HTTPProvider());
     return new Promise((resolve, reject) => {

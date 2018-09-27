@@ -47,7 +47,9 @@ class MainWalletMenu extends Component {
     }  
 
     handlePressSend = () => {
-        this.props.navigation.navigate('send');
+        // this.props.navigation.navigate('send');
+        this.props.setModalSendTokenName('BLC');
+        this.props.showModalSend();
     }
 
     handlePressReceive = () => {
@@ -78,6 +80,12 @@ function mapDispatchToProps(dispatch) {
         },
         showModalWalletInfomation: () => {
             dispatch(ActionCreator.showModalWalletInfomation());
+        },
+        showModalSend: () => {
+            dispatch(ActionCreator.showModalSend());
+        },
+        setModalSendTokenName: (tokenName) => {
+            dispatch(ActionCreator.setModalSendTokenName(tokenName));
         },
     };
 }

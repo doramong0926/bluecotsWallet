@@ -1,33 +1,27 @@
 
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, TouchableHighlight, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements'
 import Modal from 'react-native-simple-modal';
-import ActionCreator from './../actions';
+import ActionCreator from '../actions';
 import { connect } from 'react-redux';
-import WalletUtils from './../utils/wallet';
 
-class ModalConfirmToSendEth extends Component {
+class ModalConfirm extends Component {
     constructor(props, context) {
         super(props, context);
     }
-
-    state = {
-        gasForSend: 0,
-        isEnoughEth: false,
-    };
 
     render() {
         return (
             <Modal 
                 offset={0}
-                open={this.props.visibleModalConfirmToSendEth}
+                open={this.props.visibleModalConfirm}
                 animationDuration={200}
                 animationTension={40}
                 closeOnTouchOutside={true}
                 disableOnBackPress={false}
-                modalDidClose={() => {this.modalClose()}}
-                modalDidOpen={() => {this.modalOpen()}}
+                modalDidClose={() => {this.handleCloseModal}}
+                modalDidOpen={() => undefined}
                 modalProps={undefined}
                 containerProps={undefined}
                 containerStyle={{
@@ -44,20 +38,16 @@ class ModalConfirmToSendEth extends Component {
                 }}
             >
                 <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}>Confirmation</Text>
+                    {this.renderHeader()}
                 </View>
                 <View style={styles.bodyContainer}>  
-                    {this.renderMessage()}            
-                    <Text style={styles.bodyText}>txFee : {this.state.gasForSend.toFixed(14)} ETH</Text>                    
+                    {this.renderBody()}
                 </View>
                 <View style={styles.buttonContainer}>
                     <View style={{flex:1}}>
                         <Button
-                            disabled={
-                                !this.state.isEnoughEth
-                            }
                             onPress={this.handelPressOk}
-                            title="SEND"
+                            title="Confirm"
                             buttonStyle={{
                                 backgroundColor: "#BD3D3A",
                                 borderColor: "transparent", 
@@ -71,8 +61,8 @@ class ModalConfirmToSendEth extends Component {
                     </View>
                     <View style={{flex:1}}>
                         <Button
-                            onPress={this.modalClose}
-                            title="CANCEL"
+                            onPress={this.handelPressCancel}
+                            title="Cancel"
                             buttonStyle={{
                                 backgroundColor: "#BCBCBE",
                                 borderColor: "transparent", 
@@ -89,74 +79,59 @@ class ModalConfirmToSendEth extends Component {
         );
     }
 
-    renderMessage = () => {
-        if (this.state.isEnoughEth) {                        
-            return <Text style={styles.messageText}>Are you sure to send {this.props.amountToSendEth} ETH to {this.props.addressToSendEth}</Text>
-        } else {
-            return <Text style={styles.messageText}>You don't have enough gas.</Text>
-        }
-    }
-
     handelPressOk = () => {
-        this.props.hideModalConfirmToSendEth();
         if (this.props.modalFinishProcess) {
-            this.props.modalFinishProcess();
+            const result = {
+                status : true,
+                message : "Ok"
+            }
+            this.props.modalFinishProcess(result)
+        }
+        this.props.hideModalConfirm();
+    }
+
+    handelPressCancel = () => {
+        if (this.props.modalFinishProcess) {
+            const result = {
+                status : false,
+                message : "Cancle"
+            }
+            this.props.modalFinishProcess(result)
+        }
+        this.props.hideModalConfirm();
+    }
+
+    handleCloseModal = () => {
+        this.props.hideModalConfirm();
+    }
+
+    renderHeader = () => {
+        if (this.props.header.text === "" || this.props.header.text === null || this.props.header.text === undefined) {
+            return <Text style={styles.headerText}>Infomation</Text>
+        } else {
+            return <Text style={styles.headerText}>{this.props.header.text}</Text>
         }
     }
 
-    modalClose = () => {
-        this.props.hideModalConfirmToSendEth();
-        this.setState({gasForSend: 0});
-        this.setState({isEnoughEth: false});
-    }
-
-    modalOpen = () => {
-        this.isEnoughGas();
-    }
-
-    isEnoughGas = async () => {
-        try {
-            const gasLimit = await WalletUtils.getEstimateGasForEth(
-                    this.props.walletForSend.walletAddress,
-                    this.props.addressToSendEth,
-                    this.props.amountToSendEth
+    renderBody = () => {
+        return (
+            this.props.body.map((item, index) => 
+                <Text key={index} style={styles.bodyText}>{item.text}</Text>
             )
-            const gasPriceData = await WalletUtils.getGasPrice();
-            if (gasLimit === undefined || gasPriceData === undefined) {
-                this.setState({isEnoughEth: false});
-                return false;
-            } else {
-                const txFee = gasLimit.wei * gasPriceData;
-                this.setState({gasForSend: txFee});
-                if (this.props.amountToSendEth <= this.props.ethBalanceForSend - txFee) {
-                    this.setState({isEnoughEth: true});
-                    return true;
-                } else {
-                    this.setState({isEnoughEth: false});
-                    return false;
-                }     
-            }  
-        } catch (error) {
-            this.setState({isEnoughEth: false});
-            return false;
-        }
-    } 
+        )    
+    }
 }
 
 function mapStateToProps(state) {
     return {
-        visibleModalConfirmToSendEth: state.modal.visibleModalConfirmToSendEth,
-        addressToSendEth: state.walletTemp.addressToSendEth,
-        amountToSendEth: state.walletTemp.amountToSendEth,
-        walletForSend: state.walletTemp.walletForSend,
-        ethBalanceForSend: state.walletTemp.ethBalanceForSend,
+        visibleModalConfirm: state.modal.visibleModalConfirm,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        hideModalConfirmToSendEth: () => {
-            dispatch(ActionCreator.hideModalConfirmToSendEth());
+        hideModalConfirm: () => {
+            dispatch(ActionCreator.hideModalConfirm());
         },
     };
 }
@@ -169,7 +144,7 @@ const styles = StyleSheet.create({
         borderTopStartRadius : 10,
         borderTopEndRadius: 10,
         padding: 10,
-    }, 
+    },
     bodyContainer: {
         margin: 20,
     }, 
@@ -188,5 +163,5 @@ const styles = StyleSheet.create({
     },
 })
   
-export default connect(mapStateToProps, mapDispatchToProps)(ModalConfirmToSendEth);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalConfirm);
 

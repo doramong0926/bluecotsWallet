@@ -6,15 +6,12 @@ import PropTypes from 'prop-types';
 
 import {AppStackNavigator} from './src/navigator/navigators'
 
-import ModalAsk from './src/modals/modalAsk';
+import ModalConfirm from './src/modals/modalConfirm';
 import ModalAddWallet from './src/modals/modalAddWallet';
-import ModalSelectAnotherWalletForSend from './src/modals/modalSelectAnotherWalletForSend';
 import ModalDefaultWalletSettings from './src/modals/modalDefaultWalletSettings';
 import ModalGenerateWallet from './src/modals/modalGenerateWallet';
 import ModalRestoreWallet from './src/modals/modalRestoreWallet';
 import ModalChangeDefaultWallet from './src/modals/modalChangeDefaultWallet';
-import ModalConfirmToSendBlc from './src/modals/modalConfirmToSendBlc';
-import ModalConfirmToSendEth from './src/modals/modalConfirmToSendEth';
 import ModalQrCodeScaner from './src/modals/modalQrCodeScaner';
 import ModalTransactionHistory from './src/modals/modalTransactionHistory';
 import ModalInfomation from './src/modals/modalInfomation';
@@ -22,6 +19,7 @@ import ModalSpinner from './src/modals/modalSpinner'
 import ModalFingerPrintScaner from './src/modals/modalFingerPrintScaner';
 import ModalPincode from './src/modals/modalPincode';
 import ModalWalletInfomation from './src/modals/modalWalletInfomation';
+import ModalSend from './src/modals/modalSend';
 
 
 class MainEntry extends Component {
@@ -31,23 +29,16 @@ class MainEntry extends Component {
     }
     
     static propTypes = {
-        modalAskFinishProcess: PropTypes.func,
+        modalConfirmFinishProcess: PropTypes.func,
         modalFingerPrintScanerFinishProcess: PropTypes.func,
         modalAddWalletFinishProcess: PropTypes.func,
-        modalConfirmToSendBlcFinishProcess: PropTypes.func,
-        modalConfirmToSendEthFinishProcess: PropTypes.func,
         modalPincodeFinishProcess: PropTypes.func,
     };
 
     render() {
         return (
             <View style={{flex:1}}>
-                <AppStackNavigator />    
-                <ModalAsk 
-                    header={this.props.modalAskHeader} 
-                    body={this.props.modalAskBody} 
-                    modalFinishProcess={this.props.modalAskFinishProcess} 
-                />
+                <AppStackNavigator />                
                 <ModalWalletInfomation />
                 <ModalAddWallet />
                 <ModalDefaultWalletSettings />
@@ -57,22 +48,21 @@ class MainEntry extends Component {
                 <ModalRestoreWallet 
                     modalFinishProcess={this.props.modalAddWalletFinishProcess}
                 /> 
-                <ModalSelectAnotherWalletForSend />
                 <ModalChangeDefaultWallet />
-                <ModalConfirmToSendBlc 
-                    modalFinishProcess={this.props.modalConfirmToSendBlcFinishProcess}
-                />
-                <ModalConfirmToSendEth 
-                    modalFinishProcess={this.props.modalConfirmToSendEthFinishProcess}    
-                />
+                <ModalTransactionHistory />
+                <ModalSend />                
                 <ModalQrCodeScaner />
+                <ModalConfirm
+                    header={this.props.modalConfirmHeader} 
+                    body={this.props.modalConfirmBody} 
+                    modalFinishProcess={this.props.modalConfirmFinishProcess} 
+                />
                 <ModalFingerPrintScaner 
                     modalFinishProcess={this.props.modalFingerPrintScanerFinishProcess}
                 />
                 <ModalPincode
                     modalFinishProcess={this.props.modalPincodeFinishProcess}
                 />
-                <ModalTransactionHistory />
                 <ModalInfomation />                    
                 <ModalSpinner />
             </View>   
@@ -82,13 +72,11 @@ class MainEntry extends Component {
 
 function mapStateToProps(state) {
     return {
-        modalAskHeader: state.modal.modalAskHeader,
-        modalAskBody: state.modal.modalAskBody,
-        modalAskFinishProcess: state.modal.modalAskFinishProcess,
+        modalConfirmHeader: state.modal.modalConfirmHeader,
+        modalConfirmBody: state.modal.modalConfirmBody,
+        modalConfirmFinishProcess: state.modal.modalConfirmFinishProcess,
         modalFingerPrintScanerFinishProcess: state.modal.modalFingerPrintScanerFinishProcess,
         modalAddWalletFinishProcess: state.modal.modalAddWalletFinishProcess,
-        modalConfirmToSendBlcFinishProcess: state.walletTemp.modalConfirmToSendBlcFinishProcess,
-        modalConfirmToSendEthFinishProcess: state.walletTemp.modalConfirmToSendEthFinishProcess,
         modalPincodeFinishProcess: state.modal.modalPincodeFinishProcess,
     };
 }

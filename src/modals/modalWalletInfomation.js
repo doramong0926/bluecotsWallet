@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import {
-  Alert,
-  Linking,
-  Dimensions,
-  LayoutAnimation,
   Text,
   View,
-  StatusBar,
   StyleSheet,
   TouchableOpacity,
-  BackHandler,
   Clipboard,
   TouchableHighlight,
 } from 'react-native';
@@ -67,27 +61,29 @@ class ModalWalletInfomation extends Component {
                     <Text style={styles.headerText}>Wallet infomation</Text>
                 </View>
                 <View style={styles.bodyContainer}>
-                    <TouchableHighlight onPress={() => this.handlePressCopy()} underlayColor="gray">
-                        <View style={styles.walletAddressContainer}>
-                            <View style={styles.walletAddressInnerContainer}>
-                                <Text style={styles.nickNameText}>{this.props.defaultWallet.nickName}</Text>
-                                <Text style={styles.addressText}>{this.props.defaultWallet.walletAddress}</Text>
-                            </View>
-                            <View style={{margin: 5}}>
-                                <Text style={styles.descriptionText}> Click address to copy</Text>
-                            </View>
-                        </View>
-                    </TouchableHighlight>
-                    <TouchableHighlight onPress={() => this.handlePressToSave()} underlayColor="gray">
-                        <View style={styles.qrcodeContainer}>
-                            <View style={styles.qrCode}>
+                    <View style={styles.qrcodeContainer}>
+                        <TouchableOpacity onPress={() => this.handlePressToSave()} value="0.5">
+                            <View>
                                 {this.renderQrCode()}                        
+                                <View style={{marginTop: 10}}>
+                                    <Text style={styles.descriptionText}> Click to save Qr-code</Text>
+                                </View>
                             </View>
-                            <View style={{margin: 5}}>
-                                <Text style={styles.descriptionText}> Click Qr-code to save</Text>
-                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.walletAddressContainer}>
+                        <View style={styles.walletAddressInnerContainer}>
+                            <TouchableOpacity onPress={() => this.handlePressCopy()} value="0.5">
+                                <View>
+                                    <Text style={styles.nickNameText}>{this.props.defaultWallet.nickName}</Text>
+                                    <Text style={styles.addressText}>{this.props.defaultWallet.walletAddress}</Text>
+                                    <View style={{alignItems:'center', marginTop: 10}}>
+                                        <Text style={styles.descriptionText}> Click to copy address</Text>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
                         </View>
-                    </TouchableHighlight>
+                    </View>
                 </View>
                 <View style={styles.buttonContainer}>                    
                     <Button
@@ -173,7 +169,8 @@ const styles = StyleSheet.create({
         padding: 10,
     }, 
     bodyContainer: {
-        margin: 20,
+        marginHorizontal: 20,
+        marginTop:10,
     },
     buttonContainer: {
         marginBottom: 10,
@@ -191,20 +188,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderColor: 'gray',
         borderWidth: 1,
-        borderRadius: 10,
+        borderRadius: 6,
         padding: 10,
     },
     qrcodeContainer: {
-        
-    },
-    qrCode: {
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: 15,
+        paddingTop: 15,
+        paddingBottom: 10,
         borderColor: 'gray',
         borderWidth: 1,
-        borderRadius: 10,
+        borderRadius: 6,
     },
     descriptionText: {
         fontSize: 12,        
@@ -214,7 +209,6 @@ const styles = StyleSheet.create({
     nickNameText: {
     },
     addressText: {
-
     },
 });
 

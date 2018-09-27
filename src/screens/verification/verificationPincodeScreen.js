@@ -7,15 +7,12 @@ import { connect } from 'react-redux';
 import ActionCreator from './../../actions';
 import Expo from 'expo';
 
-
 // export declare enum PinResultStatus {
 //     initial = "initial",
 //     success = "success",
 //     failure = "failure",
 //     locked = "locked",
 // }
-
-
 
 class VerificationPincodeScreen extends Component{
     static navigationOptions = {
@@ -26,15 +23,24 @@ class VerificationPincodeScreen extends Component{
         fingerPrintCompatible: false,
         fingerprintsExisit: false,
     }
-
-    componentDidMount() {
+    
+    componentWillMount() {
         if (this.props.useFingerPrint === true && this.props.skipFingerPrintScan !== true) {
             // this.props.navigation.dispatch(resetActionToVerificationFingerPrint);
             this.props.navigation.navigate('VerificationFingerPrint');
         } else {
             this.props.setSkipFingerPrintScan(false);
-        }
+        }        
     }
+
+    // componentDidMount() {
+    //     if (this.props.useFingerPrint === true && this.props.skipFingerPrintScan !== true) {
+    //         // this.props.navigation.dispatch(resetActionToVerificationFingerPrint);
+    //         this.props.navigation.navigate('VerificationFingerPrint');
+    //     } else {
+    //         this.props.setSkipFingerPrintScan(false);
+    //     }
+    // }
 
     render() {        
         return (

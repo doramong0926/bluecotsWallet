@@ -3,20 +3,18 @@
 import actionTypes from './../actions/actionTypes';
 
 const initialState = {  
+    visibleModalSend: false,
     visibleModalFingerPrintScaner: false,
     visibleModalPincode: false,
     visibleModalAddWallet: false,
     visibleModalDefaultWalletSettings: false,
     visibleModalRestoreWallet: false,
     visibleModalGenerateWallet: false,
-    visibleModalSelectAnotherWalletForSend: false,
     visibleModalChangeDefaultWallet: false,
-    visibleModalConfirmToSendBlc: false,
-    visibleModalConfirmToSendEth: false,
     visibleModalQrCodeScaner: false,
     visibleModalSpinner: false,
     visibleModalInfomation: false,
-    visibleModalAsk: false,
+    visibleModalConfirm: false,
     visibleModalWalletInfomation: false,
     modalInfomationText: {title: '', message1: '', message2: '', message3: '', transactionId: ''},    
     visibleModalTransactionHistory: false,
@@ -33,10 +31,10 @@ const initialState = {
     },
     tokenNameForQrCode: '',
     spinnerText: '',  
-    modalAskHeader: {
+    modalConfirmHeader: {
         text: null,
     },
-    modalAskBody: [
+    modalConfirmBody: [
         {
             text: null,
         }
@@ -45,6 +43,9 @@ const initialState = {
     skipFingerPrintScan: false,
     modalAddWalletFinishProcess: undefined,
     modalPincodeFinishProcess: undefined,
+    modalSendTokenName: undefined,
+    addressToSend: null,
+    amountToSend: null,
 };  
  
 export default (state = initialState, action) => {
@@ -89,16 +90,6 @@ export default (state = initialState, action) => {
                 visibleModalGenerateWallet: false
             });
 
-        case actionTypes.SHOW_MODAL_SELECT_ANOTHER_WALLET_FOR_SEND:
-            return Object.assign({}, state, {
-                visibleModalSelectAnotherWalletForSend: true
-            });
-
-        case actionTypes.HIDE_MODAL_SELECT_ANOTHER_WALLET_FOR_SEND:
-            return Object.assign({}, state, {
-                visibleModalSelectAnotherWalletForSend: false
-            });
-
         case actionTypes.SHOW_MODAL_CHANGE_DEFAULT_WALLET:
             return Object.assign({}, state, {
                 visibleModalChangeDefaultWallet: true
@@ -108,26 +99,6 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 visibleModalChangeDefaultWallet: false
             });      
-
-        case actionTypes.SHOW_MODAL_CONFIRM_TO_SEND_BLC:
-            return Object.assign({}, state, {
-                visibleModalConfirmToSendBlc: true
-            });
-
-        case actionTypes.HIDE_MODAL_CONFIRM_TO_SEND_BLC:
-            return Object.assign({}, state, {
-                visibleModalConfirmToSendBlc: false
-            });
-
-        case actionTypes.SHOW_MODAL_CONFIRM_TO_SEND_ETH:
-            return Object.assign({}, state, {
-                visibleModalConfirmToSendEth: true
-            });
-
-        case actionTypes.HIDE_MODAL_CONFIRM_TO_SEND_ETH:
-            return Object.assign({}, state, {
-                visibleModalConfirmToSendEth: false
-            });
 
         case actionTypes.SHOW_MODAL_QR_CODE_SCANER:
             return Object.assign({}, state, {
@@ -196,29 +167,29 @@ export default (state = initialState, action) => {
                 visibleModalFingerPrintScaner: false
             });   
             
-        case actionTypes.SET_MODAL_ASK_FINISH_PROCESS:
+        case actionTypes.SET_MODAL_CONFIRM_FINISH_PROCESS:
             return Object.assign({}, state, {
-                modalAskFinishProcess: action.payload,
+                modalConfirmFinishProcess: action.payload,
             });     
 
-        case actionTypes.SET_MODAL_ASK_HEADER:
+        case actionTypes.SET_MODAL_CONFIRM_HEADER:
             return Object.assign({}, state, {
-                modalAskHeader: action.payload,
+                modalConfirmHeader: action.payload,
             });     
 
-        case actionTypes.SET_MODAL_ASK_BODY:
+        case actionTypes.SET_MODAL_CONFIRM_BODY:
             return Object.assign({}, state, {
-                modalAskBody: action.payload,
+                modalConfirmBody: action.payload,
             });    
              
-        case actionTypes.SHOW_MODAL_ASK:
+        case actionTypes.SHOW_MODAL_CONFIRM:
             return Object.assign({}, state, {
-                visibleModalAsk: true
+                visibleModalConfirm: true
             });
 
-        case actionTypes.HIDE_MODAL_ASK:
+        case actionTypes.HIDE_MODAL_CONFIRM:
             return Object.assign({}, state, {
-                visibleModalAsk: false
+                visibleModalConfirm: false
             });
 
         case actionTypes.SET_MODAL_FINGER_PRINT_SCANER_FINISH_PROCESS:
@@ -259,6 +230,33 @@ export default (state = initialState, action) => {
         case actionTypes.HIDE_MODAL_WALLET_INFOMATION:
             return Object.assign({}, state, {
                 visibleModalWalletInfomation: false,
+            });   
+
+        case actionTypes.SHOW_MODAL_SEND:
+            return Object.assign({}, state, {
+                visibleModalSend: true,
+                addressToSend: null,
+                amountToSend: null,
+            });       
+
+        case actionTypes.HIDE_MODAL_SEND:
+            return Object.assign({}, state, {
+                visibleModalSend: false,
+            });   
+
+        case actionTypes.SET_MODAL_SEND_TOKEN_NAME:
+            return Object.assign({}, state, {
+                modalSendTokenName: action.payload,
+            });
+            
+        case actionTypes.SET_MODAL_ADDRESS_TO_SEND:
+            return Object.assign({}, state, {
+                addressToSend: action.payload,
+            });   
+
+        case actionTypes.SET_MODAL_AMOUNT_TO_SEND:
+            return Object.assign({}, state, {
+                amountToSend: action.payload,
             });   
             
         default:

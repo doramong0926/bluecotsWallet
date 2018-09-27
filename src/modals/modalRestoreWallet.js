@@ -185,7 +185,6 @@ class ModalRestoreWallet extends Component {
         
         this.props.addWallet(wallet);
         this.props.setDefaultWallet(wallet);   
-        this.props.setWalletForSend(wallet);
 
         setTimeout(() => {
             this.updateWalletBalance(this.props.defaultWallet.walletAddress);
@@ -326,9 +325,6 @@ function mapDispatchToProps(dispatch) {
         setDefaultWallet: (defaultWallet) => {
             dispatch(ActionCreator.setDefaultWallet(defaultWallet));
         },    
-        setWalletForSend: (wallet) => {
-            dispatch(ActionCreator.setWalletForSend(wallet));
-        },
         setEthBalance: (balance) => {
             dispatch(ActionCreator.setEthBalance(balance));
         },
@@ -340,12 +336,6 @@ function mapDispatchToProps(dispatch) {
         },
         hideModalRestoreWallet: () => {
             dispatch(ActionCreator.hideModalRestoreWallet());
-        },
-        setEthBalanceForSend: (balance) => {
-            dispatch(ActionCreator.setEthBalanceForSend(balance));
-        },
-        setBlcBalanceForSend: (balance) => {
-            dispatch(ActionCreator.setBlcBalanceForSend(balance));
         },
         showModalInfomation: () => {
             dispatch(ActionCreator.showModalInfomation());
