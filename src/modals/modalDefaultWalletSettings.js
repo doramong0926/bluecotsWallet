@@ -86,6 +86,7 @@ class ModalDefaultWalletSettings extends Component {
     }
     handleBackupPress = () => {
         this.props.hideModalDefaultWalletSettings(); 
+        this.props.showModalWalletListForBackup();
     }
     handleDeletePress = () => {
         this.props.hideModalDefaultWalletSettings();
@@ -134,6 +135,10 @@ function mapDispatchToProps(dispatch) {
         showModalWalletListForChangeNickName: () => {
             dispatch(ActionCreator.showModalWalletListForChangeNickName());
         },
+        showModalWalletListForBackup: () => {
+            dispatch(ActionCreator.showModalWalletListForBackup());
+        },
+        
     };
 }
 

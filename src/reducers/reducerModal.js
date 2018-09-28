@@ -3,6 +3,8 @@
 import actionTypes from './../actions/actionTypes';
 
 const initialState = {  
+    visibleModalWalletListForBackup: false,
+    visibleModalBackupWallet: false,
     visibleModalChangeNickName: false,
     visibleModalWalletListForChangeNickName: false,
     visibleModalRemoveWallet: false,
@@ -289,8 +291,28 @@ export default (state = initialState, action) => {
         case actionTypes.HIDE_MODAL_CHANGE_NICKNAME:
             return Object.assign({}, state, {
                 visibleModalChangeNickName: false,
-            });               
+            }); 
             
+        case actionTypes.SHOW_MODAL_BACKUP_WALLET:
+            return Object.assign({}, state, {
+                visibleModalBackupWallet: true,
+            });       
+
+        case actionTypes.HIDE_MODAL_BACKUP_WALLET:
+            return Object.assign({}, state, {
+                visibleModalBackupWallet: false,
+            }); 
+            
+        case actionTypes.SHOW_MODAL_WALLET_LIST_FOR_BACKUP:
+            return Object.assign({}, state, {
+                visibleModalWalletListForBackup: true,
+            });       
+
+        case actionTypes.HIDE_MODAL_WALLET_LIST_FOR_BACKUP:
+            return Object.assign({}, state, {
+                visibleModalWalletListForBackup: false,
+            });  
+                        
         default:
             return state;
     }

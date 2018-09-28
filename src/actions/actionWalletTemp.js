@@ -7,9 +7,9 @@ export function setIsLoadingTxData(value) {
     };
 }
 
-export function setWalletForChange(wallet) {
+export function setTempWallet(wallet) {
     return {
-        type: actionTypes.SET_WALLET_FOR_CHNAGE,
+        type: actionTypes.SET_TEMP_WALLET,
         payload: wallet
     };
 }

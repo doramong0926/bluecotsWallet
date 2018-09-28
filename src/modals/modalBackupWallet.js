@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform, Clipboard } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements';
 import Modal from 'react-native-simple-modal';
 import ActionCreator from '../actions';
@@ -15,10 +15,11 @@ import {
     DEFAULT_TOKEN_DECIMALS,
     defaultWallet,
  } from '../config/constants';
+ import Expo, { FileSystem } from 'expo';
  
 const uuid = require('uuid')
 
-class ModalChangeNickName extends Component {     
+class ModalBackupWallet extends Component {     
     constructor(props, context) {
         super(props, context);
     };
@@ -30,14 +31,14 @@ class ModalChangeNickName extends Component {
     };
 
     state = {
-        nickName: '',
+        typeOfBackup: '',
     };
-    
+
     render() {
         return (
             <Modal 
                 offset={0}
-                open={this.props.visibleModalChangeNickName}
+                open={this.props.visibleModalBackupWallet}
                 animationDuration={200}
                 animationTension={40}
                 closeOnTouchOutside={true}
@@ -60,55 +61,58 @@ class ModalChangeNickName extends Component {
                 }}
             >
                 <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}>Change nickname</Text>
+                    <Text style={styles.headerText}>Backup wallet</Text>
                     <View style={{alignSelf:"flex-end", paddingRight:20, position:"absolute"}}>
                         <TouchableOpacity onPress={() => this.closeModal()} value={'0.5'}>
                             <Ionicons name="ios-close-circle-outline" size={20}/>
                         </TouchableOpacity>
                     </View>                      
                 </View>
-                <View style={styles.bodyContainer}>
-                    <FormLabel>Nickname</FormLabel>
-                    <FormInput 
-                        inputStyle = {{paddingLeft:5, paddingRight:5, marginRight:0, fontSize:11}}
-                        value={this.state.nickName} 
-                        onChangeText={(value) => this.setState({nickName: value})}
-                    />
-                    {this.nickNameValidationMsg()}
+                <View style={styles.bodyContainer}>  
+                    <Text>wallet address : </Text>
+                    <Text>{this.props.tempWallet.walletAddress}</Text>
+                    <Text>Select type of backup privatekey.</Text>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <Button
-                        disabled={!this.isValidChangeButton()}
-                        onPress={this.handelPressChange}
-                        title="Change"
-                        buttonStyle={{
-                            backgroundColor: "#BD3D3A",
-                            borderColor: "transparent", 
-                            borderRadius: 5
-                        }}
-                        containerViewStyle={{
-                            // alignSelf: 'stretch',
-                            // margin: 20,
-                        }}
-                    />
+                    <View style={{flexDirection: 'row' ,alignItems:'center', justifyContent:'space-around'}}>
+                        <View style={{flex:1}}>
+                            <Button
+                                onPress={this.handelPressCopy}
+                                title="Copy"
+                                buttonStyle={{
+                                    backgroundColor: "#BD3D3A",
+                                    borderColor: "transparent", 
+                                    borderRadius: 5
+                                }}
+                                containerViewStyle={{
+                                    // alignSelf: 'stretch',
+                                    // margin: 20,
+                                }}
+                            />
+                        </View>
+                        <View style={{flex:1}}>
+                            <Button
+                                onPress={this.handelPressSave}
+                                title="Save"
+                                buttonStyle={{
+                                    backgroundColor: "#BD3D3A",
+                                    borderColor: "transparent", 
+                                    borderRadius: 5
+                                }}
+                                containerViewStyle={{
+                                    // alignSelf: 'stretch',
+                                    // margin: 20,
+                                }}
+                            />
+                        </View>
+                    </View>
                 </View>
             </Modal>
         );
     }
 
-    nickNameValidationMsg = () =>
-    {
-        if (this.isEmptString(this.state.nickName)) {
-            return <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
-        } else if (this.isUsedNickName(this.state.nickName)){
-            return <FormValidationMessage>{'Nickname(' + this.state.nickName + ') already be used.'}</FormValidationMessage>
-        } else {
-            return <FormValidationMessage labelStyle={{color:'#79C753'}}>{'Nickname is valid.'}</FormValidationMessage>
-        }
-    }
-
     closeModal = () => {        
-        this.props.hideModalChangeNickName();
+        this.props.hideModalBackupWallet();
     }
 
     scanFingerPrint = () => {
@@ -126,27 +130,45 @@ class ModalChangeNickName extends Component {
         this.props.showModalPincode();
     }
 
-    changeNickName() {
-        var wallet = this.props.tempWallet;
-        wallet.nickName = this.state.nickName;
-        this.props.changeNickName(wallet);
-        if (this.props.tempWallet.walletAddress === this.props.defaultWallet.walletAddress) {
-            setTimeout(() => {
-                this.props.setDefaultWallet(wallet);    
-            }, );
+    copyPrivateKey = async () => {
+        Clipboard.setString(this.props.tempWallet.privateKey);
+        const privateKey = await Clipboard.getString();
+        const infomation = {
+            title: 'Backup private key', 
+            message1: 'Success to copy private key to clipboard.', 
+            message2: 'Please be careful to keep private key.',
+            message3: privateKey,
+        };
+        this.props.setModalInfomation(infomation);
+        setTimeout(() => {
+            this.props.showModalInfomation();    
+        }, 300);
+    };
+
+    backupWallet = () => {
+        if (this.state.typeOfBackup === 'copy') {
+            this.copyPrivateKey();
+        } else {
+            console.log(Expo.FileSystem.documentDirectory+'/bluecots/priTest.txt');
+            console.log(Expo.FileSystem.documentDirectory+'/bluecots/priTest.txt');
+            console.log(Expo.FileSystem.documentDirectory+'/bluecots/priTest.txt');
+            console.log(Expo.FileSystem.documentDirectory+'/bluecots/priTest.txt');
+            console.log(Expo.FileSystem.documentDirectory+'/bluecots/priTest.txt');
+            
+            Expo.FileSystem.writeAsStringAsync(Expo.FileSystem.documentDirectory+'/bluecots/priTest.txt', this.props.tempWallet.privateKey)
         }
+        this.setState({typeOfBackup: ''});
+        this.props.setTempWallet('')
     }
 
     modalFingerPrintScanerFinishProcess(result) {
         if (result.status == true) {
-            this.changeNickName();
-            this.setState({nickName: ''})
-            this.props.setTempWallet('')
+            this.backupWallet();
         } else {
             if (result.message === 'usePinCode') { 
                 this.usePinCode();
             } else {
-                this.setState({nickName: ''})
+                this.setState({typeOfBackup: ''});
                 this.props.setTempWallet('')
             }
         }
@@ -154,16 +176,14 @@ class ModalChangeNickName extends Component {
 
     modalPincodeFinishProcess(result) {
         if (result.status === true) {
-            this.changeNickName();
-            this.setState({nickName: ''})
-            this.props.setTempWallet('')
+            this.backupWallet();
         } else {
-            this.setState({nickName: ''})
+            this.setState({typeOfBackup: ''});
             this.props.setTempWallet('')
         }
     }
 
-    confirmToChangeWalletFinishProcess = (result) => {
+    confirmToBackupWalletFinishProcess = (result) => {
         if (result.status === true) {
             if (this.props.useFingerPrint === true){
                 this.scanFingerPrint();
@@ -171,47 +191,31 @@ class ModalChangeNickName extends Component {
                 this.usePinCode();
             }
         } else {
-            this.setState({nickName: ''})
+            this.setState({typeOfBackup: ''});
             this.props.setTempWallet('')
         }        
     }
 
-    handelPressChange = () => {
-        this.props.hideModalChangeNickName();
-        this.props.setModalConfirmFinishProcess(this.confirmToChangeWalletFinishProcess.bind(this));
+    handelPressCopy = () => {
+        this.setState({typeOfBackup: 'copy'});
+        this.props.hideModalBackupWallet();
+        this.props.setModalConfirmFinishProcess(this.confirmToBackupWalletFinishProcess.bind(this));
         this.props.setModalConfirmHeader("Confirmation");
         this.props.setModalConfirmBody([
-            {text: "Are you sure to change nickname to " + this.state.nickName + "?"},
+            {text: "Are you sure to backup wallet?"},
         ]);
         this.props.showModalConfirm();
     }
 
-    isUsedNickName = (nickName) => {
-        const registedWalletList = this.props.walletList
-            .filter(wallet => wallet.symbol === 'BLC')
-            .map(wallet => wallet.nickName);
-        if (registedWalletList.includes(nickName)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    isValidChangeButton = () => {
-        if (!this.isEmptString(this.state.nickName) && !this.isUsedNickName(this.state.nickName))
-        {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    isEmptString = (s) => {
-        if (s) {
-            return false;
-        } else {
-            return true;
-        }
+    handelPressSave = () => {
+        this.setState({typeOfBackup: 'save'});
+        this.props.hideModalBackupWallet();
+        this.props.setModalConfirmFinishProcess(this.confirmToBackupWalletFinishProcess.bind(this));
+        this.props.setModalConfirmHeader("Confirmation");
+        this.props.setModalConfirmBody([
+            {text: "Are you sure to backup wallet?"},
+        ]);
+        this.props.showModalConfirm();
     }
 }
 
@@ -219,7 +223,7 @@ function mapStateToProps(state) {
     return {
         defaultWallet: state.wallet.defaultWallet,
         walletList: state.wallet.walletList,
-        visibleModalChangeNickName: state.modal.visibleModalChangeNickName,
+        visibleModalBackupWallet: state.modal.visibleModalBackupWallet,
         tempWallet: state.walletTemp.tempWallet,
         useFingerPrint: state.config.useFingerPrint,
     };
@@ -227,11 +231,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        setDefaultWallet: (defaultWallet) => {
-            dispatch(ActionCreator.setDefaultWallet(defaultWallet));
-        },
-        hideModalChangeNickName: () => {
-            dispatch(ActionCreator.hideModalChangeNickName());
+        hideModalBackupWallet: () => {
+            dispatch(ActionCreator.hideModalBackupWallet());
         },
         showModalInfomation: () => {
             dispatch(ActionCreator.showModalInfomation());
@@ -250,9 +251,6 @@ function mapDispatchToProps(dispatch) {
         },
         setModalConfirmBody: (body) => {
             dispatch(ActionCreator.setModalConfirmBody(body));
-        },
-        changeNickName: (wallet) => {
-            dispatch(ActionCreator.changeNickName(wallet));
         },
         setTempWallet: (wallet) => {
             dispatch(ActionCreator.setTempWallet(wallet));
@@ -282,8 +280,7 @@ const styles = StyleSheet.create({
         padding: 10,
     }, 
     bodyContainer: {
-        marginTop: 10,
-        marginBottom: 20,
+        margin: 20,
     },
     buttonContainer: {
         marginBottom: 10,
@@ -296,4 +293,4 @@ const styles = StyleSheet.create({
     },
 })
   
-export default connect(mapStateToProps, mapDispatchToProps)(ModalChangeNickName);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalBackupWallet);

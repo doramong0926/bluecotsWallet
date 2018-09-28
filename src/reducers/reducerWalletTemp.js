@@ -3,7 +3,7 @@ import { defaultWallet } from './../config/constants';
 
 const initialState = {
     isLoadingTxData: true,
-    walletForChange: defaultWallet,
+    tempWallet: defaultWallet,
 };  
 
 export default (state = initialState, action) => {
@@ -13,9 +13,9 @@ export default (state = initialState, action) => {
                 isLoadingTxData: action.payload,
         });
 
-        case actionTypes.SET_WALLET_FOR_CHNAGE:
+        case actionTypes.SET_TEMP_WALLET:
             return Object.assign({}, state, {
-                walletForChange: action.payload,
+                tempWallet: action.payload,
         });
 
         default:

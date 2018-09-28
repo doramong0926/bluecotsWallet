@@ -295,6 +295,35 @@ export function hideModalChangeNickName() {
   };
 }
 
+export function showModalBackupWallet() {
+  return {
+      type: actionTypes.SHOW_MODAL_BACKUP_WALLET,
+  };
+}
+
+export function hideModalBackupWallet() {
+  return {
+      type: actionTypes.HIDE_MODAL_BACKUP_WALLET,
+  };
+}
+
+export function showModalWalletListForBackup() {
+  return {
+      type: actionTypes.SHOW_MODAL_WALLET_LIST_FOR_BACKUP,
+  };
+}
+
+export function hideModalWalletListForBackup() {
+  return {
+      type: actionTypes.HIDE_MODAL_WALLET_LIST_FOR_BACKUP,
+  };
+}
+
+
+
+
+
+
 
 
 

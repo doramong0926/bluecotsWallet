@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Text, View, ListView, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, ListView, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import Modal from 'react-native-simple-modal';
 import ActionCreator from '../actions';
 import { connect } from 'react-redux';
@@ -14,11 +14,10 @@ import {
     defaultWallet,
  } from '../config/constants';
 
-class ModalWalletListForChangeNickName extends Component {
+class ModalWalletListForBackup extends Component {
     constructor(props, context) {
         super(props, context);
     }
-
 
     static propTypes = {
         defaultWallet: PropTypes.shape({
@@ -44,7 +43,7 @@ class ModalWalletListForChangeNickName extends Component {
         return (            
             <Modal 
                 offset={0}
-                open={this.props.visibleModalWalletListForChangeNickName}
+                open={this.props.visibleModalWalletListForBackup}
                 animationDuration={200}
                 animationTension={40}
                 closeOnTouchOutside={true}
@@ -67,7 +66,7 @@ class ModalWalletListForChangeNickName extends Component {
                 }}
             >
                 <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}>Wallet List</Text>
+                    <Text style={styles.headerText}>Backup wallet</Text>
                     <View style={{alignSelf:"flex-end", paddingRight:20, position:"absolute"}}>
                         <TouchableOpacity onPress={() => this.closeModal()} value={'0.5'}>
                             <Ionicons name="ios-close-circle-outline" size={20}/>
@@ -84,7 +83,7 @@ class ModalWalletListForChangeNickName extends Component {
     }
 
     closeModal = () => {
-        this.props.hideModalWalletListForChangeNickName()
+        this.props.hideModalWalletListForBackup()
     }
 
     openModal = () => {
@@ -117,11 +116,9 @@ class ModalWalletListForChangeNickName extends Component {
     }
 
     handlePress = (wallet) => {
-        this.props.hideModalWalletListForChangeNickName();
+        this.props.hideModalWalletListForBackup();
         this.props.setTempWallet(wallet);
-        setTimeout(() => {
-            this.props.showModalChangeNickName();    
-        }, );
+        this.props.showModalBackupWallet();        
     }
 
     fetchWalletList = () => {
@@ -154,22 +151,23 @@ function mapStateToProps(state) {
     return {
         walletList: state.wallet.walletList,
         defaultWallet: state.wallet.defaultWallet,
-        visibleModalWalletListForChangeNickName: state.modal.visibleModalWalletListForChangeNickName,
+        visibleModalWalletListForBackup: state.modal.visibleModalWalletListForBackup,
+        useFingerPrint: state.config.useFingerPrint,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        hideModalWalletListForChangeNickName: () => {
-            dispatch(ActionCreator.hideModalWalletListForChangeNickName());
+        hideModalWalletListForBackup: () => {
+            dispatch(ActionCreator.hideModalWalletListForBackup());
         },
-        showModalChangeNickName: () => {
-            dispatch(ActionCreator.showModalChangeNickName());
+        showModalBackupWallet: () => {
+            dispatch(ActionCreator.showModalBackupWallet());
         },
         setTempWallet: (wallet) => {
             dispatch(ActionCreator.setTempWallet(wallet));
-        },    
+        },   
     };
 }
   
-export default connect(mapStateToProps, mapDispatchToProps)(ModalWalletListForChangeNickName);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalWalletListForBackup);

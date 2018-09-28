@@ -57,7 +57,7 @@ class VerificationFingerPrintScreen extends Component{
         return (
             (this.state.fingerPrintCompatible !== true || this.state.fingerprintsExisit !== true) ? 
                 (
-                    <View>
+                    <View style={{flex:1, alignItems:'center', justifyContent: 'center',}}>
                         <Text style={styles.text}>    
                             your device does not support finger print
                         </Text>
