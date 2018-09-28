@@ -259,6 +259,44 @@ export function setModalAmountToSend(amount) {
       payload: amount
   };
 }
+export function showModalRemoveWallet() {
+  return {
+      type: actionTypes.SHOW_MODAL_REMOVE_WALLET,
+  };
+}
+
+export function hideModalRemoveWallet() {
+  return {
+      type: actionTypes.HIDE_MODAL_REMOVE_WALLET,
+  };
+}
+
+export function showModalWalletListForChangeNickName() {
+  return {
+      type: actionTypes.SHOW_MODAL_WALLET_LIST_FOR_CHANGE_NICKNAME,
+  };
+}
+
+export function hideModalWalletListForChangeNickName() {
+  return {
+      type: actionTypes.HIDE_MODAL_WALLET_LIST_FOR_CHANGE_NICKNAME,
+  };
+}
+
+export function showModalChangeNickName() {
+  return {
+      type: actionTypes.SHOW_MODAL_CHANGE_NICKNAME,
+  };
+}
+
+export function hideModalChangeNickName() {
+  return {
+      type: actionTypes.HIDE_MODAL_CHANGE_NICKNAME,
+  };
+}
+
+
+
 
 
 

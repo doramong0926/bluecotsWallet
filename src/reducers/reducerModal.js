@@ -3,6 +3,9 @@
 import actionTypes from './../actions/actionTypes';
 
 const initialState = {  
+    visibleModalChangeNickName: false,
+    visibleModalWalletListForChangeNickName: false,
+    visibleModalRemoveWallet: false,
     visibleModalSend: false,
     visibleModalFingerPrintScaner: false,
     visibleModalPincode: false,
@@ -46,6 +49,7 @@ const initialState = {
     modalSendTokenName: undefined,
     addressToSend: null,
     amountToSend: null,
+
 };  
  
 export default (state = initialState, action) => {
@@ -256,6 +260,36 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 amountToSend: action.payload,
             });   
+
+        case actionTypes.SHOW_MODAL_REMOVE_WALLET:
+            return Object.assign({}, state, {
+                visibleModalRemoveWallet: true,
+            });       
+
+        case actionTypes.HIDE_MODAL_REMOVE_WALLET:
+            return Object.assign({}, state, {
+                visibleModalRemoveWallet: false,
+            });   
+
+        case actionTypes.SHOW_MODAL_WALLET_LIST_FOR_CHANGE_NICKNAME:
+            return Object.assign({}, state, {
+                visibleModalWalletListForChangeNickName: true,
+            });       
+
+        case actionTypes.HIDE_MODAL_WALLET_LIST_FOR_CHANGE_NICKNAME:
+            return Object.assign({}, state, {
+                visibleModalWalletListForChangeNickName: false,
+            });   
+
+        case actionTypes.SHOW_MODAL_CHANGE_NICKNAME:
+            return Object.assign({}, state, {
+                visibleModalChangeNickName: true,
+            });       
+
+        case actionTypes.HIDE_MODAL_CHANGE_NICKNAME:
+            return Object.assign({}, state, {
+                visibleModalChangeNickName: false,
+            });               
             
         default:
             return state;

@@ -272,8 +272,7 @@ class ModalSend extends Component {
                 this.scanFingerPrint();
             } else {
                 this.props.hideModalSend();
-                this.props.setModalPincodeFinishProcess(this.modalPincodeFinishProcess.bind(this));
-                this.props.showModalPincode();
+                this.usePinCode();
             }
         } else {
             this.props.showModalSend();
@@ -353,7 +352,7 @@ class ModalSend extends Component {
 
     sendTransaction = async () => {
         try {  
-            const txid = await WalletUtils.sendTransaction(
+            const txid = await WalletUtils.sendTransaction (
                 { 
                     contractAddress: (this.props.modalSendTokenName === 'BLC') ? (DEFAULT_TOKEN_CONTRACT_ADDRESS) : (''),
                     symbol: this.props.modalSendTokenName, 
@@ -363,21 +362,24 @@ class ModalSend extends Component {
                 this.props.addressToSend,
                 this.props.amountToSend,
             );
-            this.props.hideModalSpinner();
-            const infomation = {
-                title: 'SUCCESS', 
-                message1: 'Success to send ' + this.props.modalSendTokenName, 
-                transactionId: txid,
-            };
-            this.props.setModalInfomation(infomation);
-            this.props.showModalInfomation();
+            setTimeout(() => {
+                this.props.hideModalSpinner();
+                const infomation = {
+                    title: 'SUCCESS', 
+                    message1: 'Success to send ' + this.props.modalSendTokenName, 
+                    transactionId: txid,
+                };
+                this.props.setModalInfomation(infomation);
+                this.props.showModalInfomation();
+            }, );            
         } catch (error) {
             console.log('sendTransaction error : ' + error);
             this.props.hideModalSpinner();
             const infomation = {
                 title: 'FAIL', 
                 message1: 'Fail to send BLC', 
-                message2: 'Please check your transaction'
+                message2: 'Please check your transaction',
+                transactionId: txid,
             };
             this.props.setModalInfomation(infomation);
             this.props.showModalInfomation();
@@ -650,7 +652,7 @@ function mapDispatchToProps(dispatch) {
         },
         setBlcBalance: (balance) => {
             dispatch(ActionCreator.setBlcBalance(balance));
-        },        
+        },                
     };
 }
 

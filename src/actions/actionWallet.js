@@ -21,12 +21,6 @@ export function setDefaultWallet(wallet) {
     };
 }
 
-export function removeDefaultWallet(wallet) {
-    return {
-        type: actionTypes.SET_DEFAULT_WALLET
-    };
-}
-
 export function setEthBalance(balance) {
     return {
         type: actionTypes.SET_ETH_BALANCE,
@@ -38,5 +32,12 @@ export function setBlcBalance(balance) {
     return {
         type: actionTypes.SET_BLC_BALANCE,
         payload: balance
+    };
+}
+
+export function changeNickName(wallet) {
+    return {
+        type: actionTypes.CHANGE_NICKNAME,
+        payload: wallet
     };
 }

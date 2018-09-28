@@ -64,7 +64,7 @@ class ModalDefaultWalletSettings extends Component {
                         </View>
                     </TouchableOpacity>
                     <View style={{borderColor: 'gray', borderWidth: 0.5}}></View>
-                    <TouchableOpacity onPress={() => this.handleBackupPress()} value={'0.5'}>
+                    <TouchableOpacity onPress={() => this.handleDeletePress()} value={'0.5'}>
                         <View style={{flexDirection: 'row', margin: 10}}>
                             <Text style={styles.menuText}>Delete wallet</Text>
                             <View style={{flex: 1, alignItems:'flex-end', justifyContent:'center'}} >
@@ -82,18 +82,32 @@ class ModalDefaultWalletSettings extends Component {
     }
     handleModifyNickNamePress = () => {
         this.props.hideModalDefaultWalletSettings(); 
+        this.props.showModalWalletListForChangeNickName();
     }
     handleBackupPress = () => {
         this.props.hideModalDefaultWalletSettings(); 
     }
     handleDeletePress = () => {
-        this.props.this.props.hideModalDefaultWalletSettings(); 
+        this.props.hideModalDefaultWalletSettings();
+        if (this.props.walletList.length <= 2)
+        {
+            const infomation = {
+                title: 'Infomation', 
+                message1: 'You can not remove wallet.', 
+                message2: 'There is only 1 wallet.', 
+            };
+            this.props.setModalInfomation(infomation);
+            this.props.showModalInfomation();
+        } else {
+            this.props.showModalRemoveWallet();
+        }
     }
 }
 
 function mapStateToProps(state) {
     return {
-        visibleModalDefaultWalletSettings: state.modal.visibleModalDefaultWalletSettings
+        visibleModalDefaultWalletSettings: state.modal.visibleModalDefaultWalletSettings,
+        walletList: state.wallet.walletList,
     };
 }
 
@@ -107,6 +121,18 @@ function mapDispatchToProps(dispatch) {
         },
         showModalChangeDefaultWallet: () => {
             dispatch(ActionCreator.showModalChangeDefaultWallet());
+        },
+        showModalRemoveWallet: () => {
+            dispatch(ActionCreator.showModalRemoveWallet());
+        },
+        setModalInfomation: (infomation) => {
+            dispatch(ActionCreator.setModalInfomation(infomation));
+        },
+        showModalInfomation: () => {
+            dispatch(ActionCreator.showModalInfomation());
+        },
+        showModalWalletListForChangeNickName: () => {
+            dispatch(ActionCreator.showModalWalletListForChangeNickName());
         },
     };
 }

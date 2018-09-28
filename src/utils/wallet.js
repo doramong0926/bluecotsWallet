@@ -99,32 +99,6 @@ export default class WalletUtils {
     return web3;
   }
 
-  static async getUnconfimrdTransaction() {
-    const web3 = new Web3(this.getWeb3HTTPProvider());
-
-    var options = {
-      String: 'pending',
-      address: DEFAULT_TOKEN_CONTRACT_ADDRESS};
-
-    return new Promise((resolve, reject) => {
-
-      var subscription = web3.eth.subscribe('pendingTransactions', function(error, result){
-      if (!error) {
-      } else {
-      }
-      })
-      .on("data", function(transaction){
-          console.log(transaction);
-      });
-      
-      // //unsubscribes the subscription
-      // subscription.unsubscribe(function(error, success){
-      //     if(success)
-      //         console.log('Successfully unsubscribed!');
-      // });
-  })
-}
-
   static async getTxReceiptStatus(txid) {
     const fetchString = 'https://' + this.getEtherscanApiSubdomain() + '.etherscan.io/api?module=transaction&action=gettxreceiptstatus&txhash=' + txid + '&apikey=' + ETHERSCAN_API_KEY;
     console.log(fetchString);

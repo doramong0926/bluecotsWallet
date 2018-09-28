@@ -7,6 +7,9 @@ import PropTypes from 'prop-types';
 import {AppStackNavigator} from './src/navigator/navigators'
 
 import ModalConfirm from './src/modals/modalConfirm';
+import ModalChangeNickName from './src/modals/modalChangeNickName';
+import ModalWalletListForChangeNickName from './src/modals/modalWalletListForChangeNickName';
+import ModalRemoveWallet from './src/modals/modalRemoveWallet';
 import ModalAddWallet from './src/modals/modalAddWallet';
 import ModalDefaultWalletSettings from './src/modals/modalDefaultWalletSettings';
 import ModalGenerateWallet from './src/modals/modalGenerateWallet';
@@ -38,7 +41,10 @@ class MainEntry extends Component {
     render() {
         return (
             <View style={{flex:1}}>
-                <AppStackNavigator />                
+                <AppStackNavigator />   
+                <ModalChangeNickName />
+                <ModalWalletListForChangeNickName />             
+                <ModalRemoveWallet />
                 <ModalReceive />
                 <ModalAddWallet />
                 <ModalDefaultWalletSettings />

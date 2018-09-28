@@ -23,11 +23,10 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 walletList: state.walletList.concat(action.payload),
             });
-            
+
         case actionTypes.REMOVE_WALLET:
-            // need to implement
             return Object.assign({}, state, {
-                walletList: state.walletList.concat(action.payload),
+                walletList: state.walletList.filter(t=>{return (t.walletAddress !== action.payload.walletAddress)}),
             });
 
         case actionTypes.SET_DEFAULT_WALLET:
@@ -48,6 +47,11 @@ export default (state = initialState, action) => {
         case actionTypes.SET_BLC_BALANCE:
             return Object.assign({}, state, {
                 blcBalance: action.payload,
+            });
+
+        case actionTypes.CHANGE_NICKNAME:
+            return Object.assign({}, state, {
+                walletList: state.walletList.filter(t=>{return (t.walletAddress !== action.payload.walletAddress)}).concat(action.payload),
             });
 
         default:

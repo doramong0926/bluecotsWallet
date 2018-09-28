@@ -18,6 +18,10 @@ class SettingsMainScreen extends Component{
         headerTintColor: 'white',
     }
 
+    state = {
+        accountDropDownVisible : false,
+    }
+
     render(){
         return (
             <View style={{flex:1}}>
@@ -29,6 +33,9 @@ class SettingsMainScreen extends Component{
                         </View>
                     </View>
                 </TouchableHighlight>
+                <View>
+                    {this.renderAccountDropDown()}
+                </View>
 
                 <View style={{marginVertical: 5, borderColor: 'gray', borderWidth: 0.5}}></View>
 
@@ -68,12 +75,36 @@ class SettingsMainScreen extends Component{
         );
     }
 
+    renderAccountDropDown = () => {
+        if (this.state.accountDropDownVisible === true) {
+            return (
+                <View>
+                    <TouchableHighlight onPress={() => this.handlePressAccount1()} underlayColor="gray">
+                        <Text>item1</Text>
+                    </TouchableHighlight>
+                    <Text>item2</Text>
+                    <Text>item3</Text>
+                </View>
+            )
+        }
+    }
+
     handlePressSettingsMain = () => {
         this.props.navigation.navigate('SettingsMain');
     }
 
     handlePressAccount = () => {
-        this.props.navigation.navigate('Account');
+        // this.props.navigation.navigate('Account');
+        if (this.state.accountDropDownVisible === false) {
+            this.setState({accountDropDownVisible: true});
+        } else {
+            this.setState({accountDropDownVisible: false});
+        }
+        
+    }
+
+    handlePressAccount1 = () => {
+        this.props.navigation.navigate('Account');        
     }
 
     handlePressWallet = () => {

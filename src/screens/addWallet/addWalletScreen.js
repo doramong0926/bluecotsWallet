@@ -25,7 +25,7 @@ class AddWallet extends Component{
             <View style={styles.container}>
                 <TouchableOpacity onPress={() => this.addWallet()} value="0.5">
                     <View style={styles.walletIconContainer}>
-                        <Ionicons name="ios-wallet" size={200} />                             
+                        <FontAwesome name="credit-card" size={200} />                             
                         <Text style={styles.text}>Click to add wallet</Text>
                     </View>
                 </TouchableOpacity>
@@ -41,6 +41,7 @@ class AddWallet extends Component{
     finishAddWallet = () => {
         this.props.navigation.dispatch(resetActionToMain);
         this.props.navigation.navigate('Main');
+        this.props.setModalAddWalletFinishProcess(undefined);
     }
 }
 

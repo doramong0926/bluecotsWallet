@@ -162,8 +162,7 @@ class HistoryOfTransaction extends Component{
                     this.props.offset,
                 )
             }
-            
-            // WalletUtils.getUnconfimrdTransaction();
+
             if (txData.message === 'OK') {
                 this.setState({transactionHistoryData: this.parsingTxData(txData.result)});
                 this.state.dataSourceForTransaction = this.state.dataSourceForTransaction.cloneWithRows(this.state.transactionHistoryData)
@@ -193,19 +192,19 @@ class HistoryOfTransaction extends Component{
         }       
     }
 
-    parsingTxData = (data) => {
-        return data.filter(t=> (t.from === this.props.defaultWallet.walletAddress || t.to === this.props.defaultWallet.walletAddress))
-        .map(t => ({
-            from: t.from,
-            to: t.to,
-            timeStamp: t.timeStamp,  
-            hash: t.hash,  
-            value: t.value,
-            blockNumber: t.blockNumber,
-            gasUsed: t.gasUsed,
-            isError: '0',
-            txreceipt_status : this.fetchingTxReceiptStatus(t.hash),
-        }))
+    parsingTxData = (txData) => {
+        return txData.filter(t=> (t.from === this.props.defaultWallet.walletAddress || t.to === this.props.defaultWallet.walletAddress))
+            .map(t => ({
+                from: t.from,
+                to: t.to,
+                timeStamp: t.timeStamp,  
+                hash: t.hash,  
+                value: t.value,
+                blockNumber: t.blockNumber,
+                gasUsed: t.gasUsed,
+                isError: '0',
+                txreceipt_status : this.fetchingTxReceiptStatus(t.hash),
+            }))
     }
 }
 

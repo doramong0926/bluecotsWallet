@@ -7,4 +7,9 @@ export function setIsLoadingTxData(value) {
     };
 }
 
-
+export function setWalletForChange(wallet) {
+    return {
+        type: actionTypes.SET_WALLET_FOR_CHNAGE,
+        payload: wallet
+    };
+}

@@ -27,7 +27,6 @@ class WalletBalanceCard extends Component {
             walletAddress: PropTypes.string.isRequired,
         }).isRequired,
     };
-
     componentDidMount(){
         this.updateWalletBalance();
         setInterval(() => {
