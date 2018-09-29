@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform, } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements';
 import Modal from 'react-native-simple-modal';
 import ActionCreator from '../actions';
@@ -135,6 +135,14 @@ class ModalChangeNickName extends Component {
                 this.props.setDefaultWallet(wallet);    
             }, );
         }
+        const infomation = {
+            title: 'Change nickname', 
+            message1: 'Success to change nickname to ' + wallet.nickName + '.',
+        };
+        this.props.setModalInfomation(infomation);
+        setTimeout(() => {
+            this.props.showModalInfomation();    
+        }, ); 
     }
 
     modalFingerPrintScanerFinishProcess(result) {

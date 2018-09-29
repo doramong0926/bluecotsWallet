@@ -10,12 +10,12 @@ import expolib_v1.okhttp3.OkHttpClient;
 
 // Needed for `react-native link`
 // import com.facebook.react.ReactApplication;
+import com.rnfs.RNFSPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.rnfingerprint.FingerprintAuthPackage;
 import com.oblador.keychain.KeychainPackage;
 import com.peel.react.rnos.RNOSModule;
 import org.reactnative.camera.RNCameraPackage;
-import com.rnfs.RNFSPackage;
 import com.horcrux.svg.SvgPackage;
 import br.com.classapp.RNSensitiveInfo.RNSensitiveInfoPackage;
 import com.bitgo.randombytes.RandomBytesPackage;
@@ -37,12 +37,12 @@ public class MainApplication extends ExpoApplication {
 
         // Needed for `react-native link`
         // new MainReactPackage(),
+            new RNFSPackage(),
             new VectorIconsPackage(),
             new FingerprintAuthPackage(),
             new KeychainPackage(),
             new RNOSModule(),
             new RNCameraPackage(),
-            new RNFSPackage(),
             new SvgPackage(),
             new RNSensitiveInfoPackage(),
             new RandomBytesPackage(),

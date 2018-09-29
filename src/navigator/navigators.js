@@ -9,13 +9,13 @@ import {
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
 import getSlideFromRightTransition from 'react-navigation-slide-from-right-transition';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import VerificationPincodeScreen from '../screens/verification/verificationPincodeScreen';
 import VerificationFingerPrintScreen from '../screens/verification/verificationFingerPrintScreen';
 import AddWalletScreen from '../screens/addWallet/addWalletScreen';
 import WalletScreen from '../screens/wallet/walletScreen'
-import itemsScreen from '../screens/items/itemsScreen'
+import HotelScreen from '../screens/hotel/hotelScreen'
 import HistoryScreen from '../screens/history/historyScreen'
 import SettingsMainScreen from '../screens/settings/settingsMainScreen';
 import SettingsAccountScreen from '../screens/settings/settingsAccountScreen';
@@ -83,15 +83,15 @@ export const WalletStackNavigator = createStackNavigator (
     }
 )
 
-export const ItemsStackNavigator = createStackNavigator (
+export const HotelStackNavigator = createStackNavigator (
     {
-        ItemsStack: {
-            screen: itemsScreen,
+        HotelStack: {
+            screen: HotelScreen,
         }
     },
     {
         navigationOptions: {
-            title: 'Items',
+            title: 'Hotel',
             headerTitleStyle: {
                 textAlign: 'center',
                 fontSize: 14,
@@ -134,8 +134,8 @@ export const MainScreenTabNavigator = createMaterialBottomTabNavigator (
         wallet:{
             screen: WalletStackNavigator,            
         },        
-        items:{
-            screen: ItemsStackNavigator,
+        hotel:{
+            screen: HotelStackNavigator,
         },
         history:{
             screen: HistoryStackNavigator,
@@ -157,8 +157,8 @@ export const MainScreenTabNavigator = createMaterialBottomTabNavigator (
                         case 'wallet':
                             return <Ionicons name="ios-card" size={27} color={tintColor} />
                             break;
-                        case 'items':
-                            return <Ionicons name="ios-cart" size={27} color={tintColor} />
+                        case 'hotel':
+                            return <FontAwesome name="building" size={27} color={tintColor} />
                             break;
                         case 'history':
                             return <Ionicons name="ios-stats" size={27} color={tintColor} />

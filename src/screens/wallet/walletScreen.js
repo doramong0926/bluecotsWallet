@@ -41,12 +41,12 @@ class WalletScreen extends Component{
                             />
                         </View>
                     }>
-                        <View style={styles.container}>
-                            <NotificationCard />
-                            <WalletBalanceCard navigation={this.props.navigation}/>
-                            <HistoryCard offset={3}/>
-                        </View>
-                    </ParallaxScrollView>
+                    <View style={styles.container}>
+                        <NotificationCard />
+                        <WalletBalanceCard navigation={this.props.navigation}/>
+                        <HistoryCard offset={3}/>
+                    </View>
+                </ParallaxScrollView>
             </View>
         );
     }

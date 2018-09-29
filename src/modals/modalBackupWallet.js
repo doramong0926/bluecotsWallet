@@ -15,7 +15,9 @@ import {
     DEFAULT_TOKEN_DECIMALS,
     defaultWallet,
  } from '../config/constants';
- import Expo, { FileSystem } from 'expo';
+ import { FileSystem } from 'expo';
+//  import RNFS from 'react-native-fs';
+// var RNFS = require('react-native-fs');
  
 const uuid = require('uuid')
 
@@ -136,26 +138,93 @@ class ModalBackupWallet extends Component {
         const infomation = {
             title: 'Backup private key', 
             message1: 'Success to copy private key to clipboard.', 
-            message2: 'Please be careful to keep private key.',
+            message2: 'Please be careful to keep your private key.',
             message3: privateKey,
         };
         this.props.setModalInfomation(infomation);
         setTimeout(() => {
             this.props.showModalInfomation();    
-        }, 300);
+        }, );
+    };
+
+    ensureFolderExists () {
+        const path = `${FileSystem.documentDirectory}MyFolder`
+        return FileSystem.getInfoAsync(path).then(({exists}) => {
+            if (!exists) {
+                return FileSystem.makeDirectoryAsync(path)
+            } else {
+                return Promise.resolve(true)
+            }
+        })
+    }
+
+    savePrivateKey = async (privateKey) => {
+        console.log(`${FileSystem.documentDirectory}MyFolder/my_file.txt`)
+        console.log(`${FileSystem.documentDirectory}MyFolder/my_file.txt`)
+        console.log(`${FileSystem.documentDirectory}MyFolder/my_file.txt`)
+        console.log(`${FileSystem.documentDirectory}MyFolder/my_file.txt`)
+        console.log(`${FileSystem.documentDirectory}MyFolder/my_file.txt`)
+        console.log(`${FileSystem.documentDirectory}MyFolder/my_file.txt`)
+        console.log(`${FileSystem.documentDirectory}MyFolder/my_file.txt`)
+        this.ensureFolderExists().then(() => {
+            FileSystem.writeAsStringAsync(`${FileSystem.documentDirectory}MyFolder/my_file.txt`, "ddddddddddddddd")
+        })
+        FileSystem.writeAsStringAsync(`${FileSystem.documentDirectory}MyFolder/my_file.txt`, "ddddddddddddddd")
+
+        // const path = FileSystem.documentDirectory;
+        // const fullPath = path + this.props.tempWallet.walletAddress + '_privateKey.txt';
+        // console.log('path = ' + path)
+        // console.log('fullPath = ' + fullPath)
+
+        // await FileSystem.makeDirectoryAsync(path, {intermediates: true}).then(
+        //     console.log('dddddddddddddddddddd Created base dir ', path)
+        // ).catch(
+        //     console.log('eeeeeeeeeeeeeeee Created base dir ', path)
+        // )
+        // await FileSystem.writeAsStringAsync(fullPath, this.props.tempWallet.privateKey).then(
+        //     console.log("ddddddddddddddddd writeAsStringAsync")
+        // ).catch(
+        //     console.log("eeeeeeeeeeeeeeeeeeee writeAsStringAsync")
+        // )
+        
+        // const allFiles = await FileSystem.readDirectoryAsync(path).then(
+        //     console.log('dddddddddddddddddd readDirectoryAsync ' + allFiles)
+        // ).catch(
+        //     console.log('eeeeeeeeeeeeeeee readDirectoryAsync ' + allFiles)
+        // )
+
+        // write the file
+        // RNFS.writeFile(path, this.props.tempWallet.privateKey, 'utf8')
+        // .then((success) => {
+        //     const infomation = {
+        //         title: 'Backup private key', 
+        //         message1: 'Success to save private key to to ' + path,
+        //         message2: 'Please be careful to keep your private key.',
+        //     };
+        //     this.props.setModalInfomation(infomation);
+        //     setTimeout(() => {
+        //         this.props.showModalInfomation();    
+        //     }, );
+        // })
+        // .catch((err) => {
+        //     console.log(err.message);
+        //     const infomation = {
+        //         title: 'Backup private key', 
+        //         message1: 'Failure to save private key to to ' + path,
+        //         message2: err.message,
+        //     };
+        //     this.props.setModalInfomation(infomation);
+        //     setTimeout(() => {
+        //         this.props.showModalInfomation();    
+        //     }, );
+        // });
     };
 
     backupWallet = () => {
         if (this.state.typeOfBackup === 'copy') {
             this.copyPrivateKey();
         } else {
-            console.log(Expo.FileSystem.documentDirectory+'/bluecots/priTest.txt');
-            console.log(Expo.FileSystem.documentDirectory+'/bluecots/priTest.txt');
-            console.log(Expo.FileSystem.documentDirectory+'/bluecots/priTest.txt');
-            console.log(Expo.FileSystem.documentDirectory+'/bluecots/priTest.txt');
-            console.log(Expo.FileSystem.documentDirectory+'/bluecots/priTest.txt');
-            
-            Expo.FileSystem.writeAsStringAsync(Expo.FileSystem.documentDirectory+'/bluecots/priTest.txt', this.props.tempWallet.privateKey)
+            this.savePrivateKey(this.props.tempWallet.privateKey);            
         }
         this.setState({typeOfBackup: ''});
         this.props.setTempWallet('')

@@ -137,7 +137,16 @@ class ModalRemoveWallet extends Component {
             this.props.walletList.forEach(item => {
                 if (item.walletAddress !== this.state.walletForRemove.walletAddress) {
                     this.props.removeWallet(this.state.walletForRemove);
-                    this.props.setDefaultWallet(item);        
+                    this.props.setDefaultWallet(item);
+                    const infomation = {
+                        title: 'Remove wallet', 
+                        message1: 'Success to remove wallet.',
+                        message2: this.state.walletForRemove.walletAddress,
+                    };
+                    this.props.setModalInfomation(infomation);
+                    setTimeout(() => {
+                        this.props.showModalInfomation();    
+                    }, );        
                     this.props.setIsLoadingTxData(true);
                     setTimeout(() => {
                         this.updateWalletBalance(this.props.defaultWallet.walletAddress);
@@ -305,6 +314,12 @@ function mapDispatchToProps(dispatch) {
         },
         setModalFingerPrintScanerFinishProcess: (finishProcess) => {
             dispatch(ActionCreator.setModalFingerPrintScanerFinishProcess(finishProcess));
+        },
+        showModalInfomation: () => {
+            dispatch(ActionCreator.showModalInfomation());
+        },
+        setModalInfomation: (infomation) => {
+            dispatch(ActionCreator.setModalInfomation(infomation));
         },
     };
 }

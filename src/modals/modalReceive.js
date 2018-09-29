@@ -16,6 +16,7 @@ import ActionCreator from '../actions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
+// import RNFS from "react-native-fs"
 
 class ModalReceive extends Component {
     constructor(props, context) {
@@ -111,21 +112,22 @@ class ModalReceive extends Component {
         }, 300);
     };
 
-    handlePressToSave = () => {        
-        /*
-        this.svg.toDataURL((data) => {
-            filePath = RNFS.CachesDirectoryPath + "/" + this.props.defaultWallet.walletAddress + ".png";
-            RNFS.writeFile(filePath, data, 'base64')
-              .then((success) => {
-                  return CameraRoll.saveToCameraRoll(filePath, 'photo')
-              })
-              .then(() => {
-                  this.setState({ busy: false, imageSaved: true  })
-                  ToastAndroid.show('Saved to gallery !!', ToastAndroid.SHORT)
-              })
-        })
-        */ 
-    };
+    handlePressToSave() {
+        // this.svg.toDataURL((data) => {
+        //     RNFS.writeFile(RNFS.CachesDirectoryPath+"/"+ this.props.defaultWallet.nickName +"qrcode.png", data, 'base64')
+        //       .then((success) => {
+        //             return CameraRoll.saveToCameraRoll(RNFS.CachesDirectoryPath+"/"+ this.props.defaultWallet.nickName +"qrcode.png", 'photo')
+        //       })
+        //       .then(() => {
+        //             this.setState({ busy: false, imageSaved: true  })
+        //             const infomation = {
+        //                 title: 'INFOMATION', 
+        //                 message1: 'Success to save qr-code to cameraroll.', 
+        //             };
+        //             this.props.setModalInfomation(infomation);
+        //       })
+        // })
+    }
 
     renderQrCode = () => {
         if (this.props.defaultWallet.walletAddress)
