@@ -19,7 +19,10 @@ class ModalPayment extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            price: null,
+            tokenSymbol: null,
+            addressToSend: null,
+            amountToSend: null,
+            totalPrice: null,
             gasForSend: null,
             isEnoughGas: null,
         }
@@ -31,18 +34,8 @@ class ModalPayment extends Component {
         }).isRequired,
     };
 
-    componentWillMount() {
-        this.updateWalletBalance(this.props.defaultWallet.walletAddress);
-        this.props.setModalSendTokenName(this.props.paymentInfomation.tokenSymbol);
-        this.props.setModalAmountToSend(this.props.paymentInfomation.price);
-        this.props.setModalAddressToSend(this.props.paymentInfomation.walletAddress);
-        setTimeout(() => {
-            this.calculateGasPrice(
-                this.props.paymentInfomation.tokenSymbol, 
-                this.props.paymentInfomation.walletAddress, 
-                this.props.paymentInfomation.price
-            );
-        }, );
+    componentDidMount() {
+        this.setPaymentInfomation();
     }
 
     render() {
@@ -69,7 +62,7 @@ class ModalPayment extends Component {
                 }}
             >
                 <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}>Payment {this.props.modalSendTokenName} </Text>
+                    <Text style={styles.headerText}>Payment {this.state.tokenSymbol} </Text>
                     <View style={{alignSelf:"flex-end", paddingRight:20, position:"absolute"}}>
                         <TouchableOpacity onPress={() => this.closeModal()} value={'0.5'}>
                             <Ionicons name="ios-close-circle-outline" size={20}/>
@@ -77,67 +70,29 @@ class ModalPayment extends Component {
                     </View>                      
                 </View>
                 
-                <View style={styles.bodyContainer}>
-                    <View style={styles.tokenSelectContainer}>
-                        <View style={styles.tokenSelectButtonContainer}>
-                            <TouchableOpacity onPress={() => this.handleSelectToken('BLC')} value="0.5">
-                                <View style={(this.props.modalSendTokenName === 'BLC') ? (styles.selectedLeftButtonContainer) : (styles.unselectedLeftButtonContainer)}>
-                                    <Text> BLC </Text>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.handleSelectToken('ETH')} value="0.5">
-                                <View style={(this.props.modalSendTokenName === 'BLC') ? (styles.unselectedRightButtonContainer) : (styles.selectedRightButtonContainer)}>
-                                    <Text> ETH </Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                <View style={styles.bodyContainer}>                   
                     <View style={styles.containerBalance}>
                         <Text style={styles.subTitleText}>Available balance</Text>
                         <Text style={styles.descriptionText}>{this.props.defaultWallet.walletAddress}</Text>
                         {this.renderBalance()}                        
-                    </View> 
-                    <View>
-                        <FormLabel>Address to send {this.props.modalSendTokenName}</FormLabel>
-                        <View style={styles.inputContainer}>
-                            <FormInput 
-                                textInputEditable = {false}
-                                containerStyle={{marginRight:0,}} 
-                                // underlineColorAndroid='transparent' 
-                                inputStyle = {{paddingLeft:5, paddingRight:5, marginRight:0, fontSize:11}}
-                                value = {(this.props.addressToSend === null) ? (null) : (this.props.addressToSend)}
-                                onChangeText={(value) => this.props.setModalAddressToSend(value)}
-                            />                      
-                        </View>                        
-                        {this.addressValidationMsg()}
-                    </View> 
-                    <View>
-                        <FormLabel>Amount to send {this.props.modalSendTokenName}</FormLabel>
-                        <View style={styles.inputContainer}>
-                            <Text>{this.props.amountToSend}</Text>
-                            <FormInput 
-                                textInputEditable = {false}
-                                containerStyle={{marginRight:0,}} 
-                                // underlineColorAndroid='transparent' 
-                                inputStyle = {{paddingLeft:5, paddingRight:5, marginRight:0, fontSize:12}}
-                                keyboardType = 'numeric'
-                                value = {(this.props.amountToSend === null) ? ('0') : (this.props.amountToSend.toString())}
-                                onChangeText={(value) => {
-                                    this.setState({isEnoughGas: null})     
-                                    this.props.setModalAmountToSend(value);
-                                }
-                            }/>
-                        </View>
-                        {this.amountValidationMsg()}
+                    </View>
+                    <View style={styles.containerPaymentInfomation}>
+                        <Text style={styles.subTitleText}>Reserve infomation</Text>
+                        <Text style={styles.descriptionText}>{this.props.paymentInfomation.hotelInfo.name}</Text>
+                        {/* <Text style={styles.descriptionText}>Room type : {this.props.paymentInfomation.roomType.string()}</Text> */}
+                        <Text style={styles.descriptionText}>Adult : {this.props.paymentInfomation.numOfPeople.adult} / Kid : {this.props.paymentInfomation.numOfPeople.kid} / Baby : {this.props.paymentInfomation.numOfPeople.baby}</Text>
+                        <Text style={styles.descriptionText}>Total price : {this.state.amountToSend} BLC ({this.state.totalPrice} $)</Text>
+                        <Text style={styles.descriptionText}>Hotel name{this.props.defaultWallet.walletAddress}</Text>
+                        {this.renderBalance()}                        
                     </View>
                 </View> 
                 <View style={styles.buttonContainer}>  
                     <Button
                         disabled={
-                            !this.addressIsValid(this.props.addressToSend) || 
-                            !this.amountIsValid(this.props.amountToSend) || 
-                            !this.amountIsEnough(this.props.amountToSend) ||
-                            this.isSameAddressWithTxAddress(this.props.addressToSend) ||
+                            !this.addressIsValid(this.state.addressToSend) || 
+                            !this.amountIsValid(this.state.amountToSend) || 
+                            !this.amountIsEnough(this.state.amountToSend) ||
+                            this.isSameAddressWithTxAddress(this.state.addressToSend) ||
                             (this.state.isEnoughGas === null ||  this.state.isEnoughGas === false)
                         }
                         onPress={this.handelPressSend}
@@ -158,83 +113,50 @@ class ModalPayment extends Component {
     }  
 
     renderBalance = () => {
-        if (this.props.modalSendTokenName === 'BLC') {
+        if (this.state.tokenSymbol === 'BLC') {
             return <Text style={styles.balanceText}> {this.props.blcBalance} BLC</Text>
-        } else if (this.props.modalSendTokenName === 'ETH') {
+        } else if (this.state.tokenSymbol === 'ETH') {
             return <Text style={styles.balanceText}> {this.props.ethBalance} ETH</Text>
         }
     }
 
     openModal = () => {
-        this.updateWalletBalance(this.props.defaultWallet.walletAddress);
-        this.props.setModalSendTokenName(this.props.paymentInfomation.tokenSymbol);
-        this.props.setModalAmountToSend(this.props.paymentInfomation.price);
-        this.props.setModalAddressToSend(this.props.paymentInfomation.walletAddress);
-        setTimeout(() => {
-            this.calculateGasPrice(
-                this.props.paymentInfomation.tokenSymbol, 
-                this.props.paymentInfomation.walletAddress, 
-                this.props.paymentInfomation.price
-            );
-        }, );
+        this.setPaymentInfomation();
     }
 
     closeModal = () => {
         this.props.hideModalPayment();
     }
 
-    handleSelectToken = (modalSendTokenName) => {
-        if (this.props.modalSendTokenName !== modalSendTokenName) {
-            this.props.setModalSendTokenName(this.props.paymentInfomation.tokenSymbol);
-            this.props.setModalAmountToSend(this.props.paymentInfomation.price);
-            this.props.setModalAddressToSend(this.props.paymentInfomation.walletAddress);
-            setTimeout(() => {
-                this.calculateGasPrice(
-                    this.props.paymentInfomation.tokenSymbol, 
-                    this.props.paymentInfomation.walletAddress, 
-                    this.props.paymentInfomation.price
-                );
-            }, );
-        }
+    setPaymentInfomation = () => {
+        const totalPrice = (
+            this.props.paymentInfomation.numOfPeople.adult * this.props.paymentInfomation.roomType.price.adult +
+            this.props.paymentInfomation.numOfPeople.kid * this.props.paymentInfomation.roomType.price.kid +
+            this.props.paymentInfomation.numOfPeople.baby * this.props.paymentInfomation.roomType.price.baby
+        );
+        this.updateWalletBalance(this.props.defaultWallet.walletAddress);
+        this.setState({
+            addressToSend: this.props.paymentInfomation.hotelInfo.addressToSend,
+            tokenSymbol: this.props.paymentInfomation.tokenSymbolForPayment,
+            totalPrice: totalPrice,
+            amountToSend: (totalPrice / this.props.paymentInfomation.tokenPrice),
+        })
+        setTimeout(() => {
+            this.calculateGasPrice(
+                this.state.tokenSymbol,
+                this.state.addressToSend,
+                this.state.amountToSend,
+            );
+        }, );
     }
 
     handelPressSend = async () => {      
         this.closeModal();  
-        if (this.state.isEnoughGas === true) {
-            this.props.setModalConfirmFinishProcess(this.confirmToSendFinishProcess.bind(this));
-            this.props.setModalConfirmHeader("Confirmation");
-            this.props.setModalConfirmBody([
-                {text: "Infomation for payment"},
-                {text: `Hotel name : ${this.props.paymentInfomation.hotelInfo.name}`},
-                {text: `Order Id : ${this.props.paymentInfomation.itemCode}`},
-                {text: `Adult : ${this.props.paymentInfomation.adult} / Kid : ${this.props.paymentInfomation.adult}`},
-                {text: `Price : ${this.props.paymentInfomation.price}`},
-                {text: "Are you sure to send " + this.props.modalSendTokenName},
-                {text: "Amount : " + this.props.amountToSend + this.props.modalSendTokenName},
-                {text: "To : " + this.props.addressToSend},
-                {text: "Estimated tx-fee : " + this.state.gasForSend.toFixed(14) + " ETH"},
-            ]);
-            this.props.showModalConfirm();
+        if (this.props.useFingerPrint === true){
+            this.scanFingerPrint();
         } else {
-            const infomation = {
-                title: 'Failure', 
-                message1: 'Fail to send BLC', 
-                message2: 'You do not have enough gas',
-                message3: 'Estimated tx-fee : ' + this.state.gasForSend.toFixed(14) + " ETH",
-            };
-            this.props.setModalInfomation(infomation);
-            this.props.showModalInfomation();
-        }  
-    }
-
-    handelPressPaste = async () => {
-        const address = await Clipboard.getString(); 
-        this.props.setModalAddressToSend(address);
-    };
-
-    handelPressClear = () => {
-        this.props.setModalAddressToSend(null);
-        this.props.setModalAmountToSend(null);
+            this.usePinCode();
+        }
     }
 
     usePinCode = () => {
@@ -250,19 +172,6 @@ class ModalPayment extends Component {
                 //ios는 우찌하나?
                 this.props.showModalFingerPrintScaner();
         }
-    }
-
-    confirmToSendFinishProcess = (result) => {
-        if (result.status === true) {
-            if (this.props.useFingerPrint === true){
-                this.scanFingerPrint();
-            } else {
-                this.props.hideModalPayment();
-                this.usePinCode();
-            }
-        } else {
-            this.props.showModalPayment();
-        }        
     }
 
     modalFingerPrintScanerFinishProcess(result) {
@@ -322,19 +231,19 @@ class ModalPayment extends Component {
         try {  
             const txid = await WalletUtils.sendTransaction (
                 { 
-                    contractAddress: (this.props.modalSendTokenName === 'BLC') ? (DEFAULT_TOKEN_CONTRACT_ADDRESS) : (''),
-                    symbol: this.props.modalSendTokenName, 
-                    decimals: (this.props.modalSendTokenName === 'BLC') ? (DEFAULT_TOKEN_DECIMALS) : (0),
+                    contractAddress: (this.state.tokenSymbol === 'BLC') ? (DEFAULT_TOKEN_CONTRACT_ADDRESS) : (''),
+                    symbol: this.state.tokenSymbol, 
+                    decimals: (this.state.tokenSymbol === 'BLC') ? (DEFAULT_TOKEN_DECIMALS) : (0),
                 },
                 this.props.defaultWallet,
-                this.props.addressToSend,
-                this.props.amountToSend,
+                this.state.addressToSend,
+                this.state.amountToSend,
             );
             setTimeout(() => {
                 this.props.hideModalSpinner();
                 const infomation = {
                     title: 'SUCCESS', 
-                    message1: 'Success to send ' + this.props.modalSendTokenName, 
+                    message1: 'Success to send ' + this.state.tokenSymbol, 
                     transactionId: txid,
                 };
                 this.props.setModalInfomation(infomation);
@@ -384,23 +293,23 @@ class ModalPayment extends Component {
     }
 
     addressValidationMsg = () => {
-        if (this.props.addressToSend === '' || this.props.addressToSend === null) {
+        if (this.state.addressToSend === '' || this.state.addressToSend === null) {
             return <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
-        } else if (!this.addressIsValid(this.props.addressToSend)) {
+        } else if (!this.addressIsValid(this.state.addressToSend)) {
             return <FormValidationMessage>{'Address is wrong.'}</FormValidationMessage>
-        } else if (this.isSameAddressWithTxAddress(this.props.addressToSend)) {
-            return <FormValidationMessage>{'You can not send ' + this.props.modalSendTokenName + ' to same address.'}</FormValidationMessage>
+        } else if (this.isSameAddressWithTxAddress(this.state.addressToSend)) {
+            return <FormValidationMessage>{'You can not send ' + this.state.tokenSymbol + ' to same address.'}</FormValidationMessage>
         } else {
             return  <FormValidationMessage labelStyle={{color:'#79C753'}}> {'Address is valid.'} </FormValidationMessage>
         }
     }
 
     amountValidationMsg = () => {
-        if (this.props.amountToSend === '' || this.props.amountToSend === null) {
+        if (this.state.amountToSend === '' || this.state.amountToSend === null) {
             return <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
-        } else if (!this.amountIsValid(this.props.amountToSend)) {
+        } else if (!this.amountIsValid(this.state.amountToSend)) {
             return <FormValidationMessage>{'Amount is wrong.'}</FormValidationMessage>
-        } else if (!this.amountIsEnough(this.props.amountToSend)) {
+        } else if (!this.amountIsEnough(this.state.amountToSend)) {
             return <FormValidationMessage>{'Balance is not enough.'}</FormValidationMessage>
         } else if (this.state.isEnoughGas === null) {
             return <FormValidationMessage>{'Calculating gas'}</FormValidationMessage>
@@ -428,13 +337,13 @@ class ModalPayment extends Component {
     }
 
     amountIsEnough = (amount) => {
-        if (this.props.modalSendTokenName === 'BLC') {
+        if (this.state.tokenSymbol === 'BLC') {
             if (this.props.blcBalance < amount) {
                 return false;
             } else {
                 return true;
             }
-        } else if (this.props.modalSendTokenName === 'ETH') {
+        } else if (this.state.tokenSymbol === 'ETH') {
             if (this.props.ethBalance < amount) {
                 return false;
             } else {
@@ -468,50 +377,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginBottom: 10,
     },
-    tokenSelectButtonContainer : {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderColor: '#92B558',
-        borderWidth: 1,
-        borderRadius:5,
-    },
-    unselectedLeftButtonContainer : {
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: 20,
-        borderTopLeftRadius: 4,
-        borderBottomLeftRadius: 4,
-    },
-    selectedLeftButtonContainer : {
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: 20,
-        backgroundColor: '#92B558',
-        borderTopLeftRadius: 4,
-        borderBottomLeftRadius: 4,
-    },
-    unselectedRightButtonContainer : {
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: 20,
-        borderTopRightRadius: 4,
-        borderBottomRightRadius: 4,
-    },
-    selectedRightButtonContainer : {
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: 20,
-        backgroundColor: '#92B558',
-        borderTopRightRadius: 4,
-        borderBottomRightRadius: 4,
-    },
-
     inputContainer: {
         flexDirection:'row', 
         justifyContent:'space-between'
     },
     containerBalance: {      
+        marginBottom: 5,
+    },
+    containerPaymentInfomation: {      
         marginBottom: 5,
     },
     headerText: {
@@ -547,13 +420,10 @@ function mapStateToProps(state) {
     return {
         visibleModalPayment: state.modal.visibleModalPayment,
         paymentInfomation: state.walletTemp.paymentInfomation,
-        modalSendTokenName: state.modal.modalSendTokenName,
         defaultWallet: state.wallet.defaultWallet,
         ethBalance: state.wallet.ethBalance,
         blcBalance: state.wallet.blcBalance,
         useFingerPrint: state.config.useFingerPrint,
-        addressToSend: state.modal.addressToSend,
-        amountToSend: state.modal.amountToSend,
     };
 }
 
@@ -588,33 +458,6 @@ function mapDispatchToProps(dispatch) {
         },   
         showModalPincode: () => {
             dispatch(ActionCreator.showModalPincode());
-        },
-        setTokenNameForQrCode: (name) => {
-            dispatch(ActionCreator.setTokenNameForQrCode(name));
-        },
-        showModalQrCodeScaner: () => {
-            dispatch(ActionCreator.showModalQrCodeScaner());
-        },
-        showModalConfirm: () => {
-            dispatch(ActionCreator.showModalConfirm());
-        },
-        setModalConfirmFinishProcess: (finishProcess) => {
-            dispatch(ActionCreator.setModalConfirmFinishProcess(finishProcess));
-        },
-        setModalConfirmHeader: (header) => {
-            dispatch(ActionCreator.setModalConfirmHeader(header));
-        },
-        setModalConfirmBody: (body) => {
-            dispatch(ActionCreator.setModalConfirmBody(body));
-        },
-        setModalAddressToSend: (address) => {
-            dispatch(ActionCreator.setModalAddressToSend(address));
-        },
-        setModalAmountToSend: (amount) => {
-            dispatch(ActionCreator.setModalAmountToSend(amount));
-        },
-        setModalSendTokenName: (tokenName) => {
-            dispatch(ActionCreator.setModalSendTokenName(tokenName));
         },
         setEthBalance: (balance) => {
             dispatch(ActionCreator.setEthBalance(balance));

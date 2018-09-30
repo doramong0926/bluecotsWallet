@@ -1,3 +1,5 @@
+import { defaultHotelInfo } from './hotelList'
+
 export const ETHERSCAN_API_KEY = 'ZGZW3C6175M2MNQTS14HDDIGBYFDHEMXBR';
 export const INFURA_API_KEY = '23663b17c0d34893bfc81542034aac9e';
 export const SEGMENT_API_KEY = 'secret';
@@ -16,6 +18,36 @@ export const defaultWallet = {
     walletAddress: '',
     privateKey: '',
 };
+
+export const defaultPaymentInfomation = {
+    orderNumber: null,
+    roomType: {
+        avaliableRoom: null,
+        price: {
+            adult: null,
+            kid: null,
+            baby: null,
+        },
+        avaliableService: {
+            dryer: null,
+            parking: null,
+            internet: null,
+        },
+        bedType: null,
+    },
+    numOfPeople: {
+        adult: null,
+        kid: null,
+        baby: null,
+    },
+    tokenSymbolForPayment: null,
+    date: {
+        begin: null,
+        end: null,
+    },
+    tokenPrice: null,
+    hotelInfo: defaultHotelInfo,
+}
 
 export const defaultTransactionData = [
   {

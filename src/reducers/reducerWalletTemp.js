@@ -1,20 +1,10 @@
 import actionTypes from './../actions/actionTypes';
-import { defaultWallet } from './../config/constants';
+import { defaultWallet, defaultPaymentInfomation } from './../config/constants';
 
 const initialState = {
     isLoadingTxData: true,
     tempWallet: defaultWallet,
-    paymentInfomation: {
-        itemCode: null,
-        tokenSymbolForPayment: null,
-        price: null,
-        walletAddress: null,
-        adult: null,
-        kid: null,
-        beginDate: null,
-        endDate: null,
-        hotelInfo: null,
-    },
+    paymentInfomation: defaultPaymentInfomation,
 };  
 
 export default (state = initialState, action) => {

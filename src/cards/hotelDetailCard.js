@@ -73,19 +73,21 @@ class HotelDetailCard extends Component {
 
     handelPressReserve = () => {
         const paymentInfomation = {
-            itemCode: this.props.hotelInfo.id,
+            orderNumber: '12346789',
+            roomType: this.props.hotelInfo.roomType.deluxRoom,
+            numOfPeople: {
+                adult: 1,
+                kid: 1,
+                baby: 1,
+            },
             tokenSymbolForPayment: 'BLC',
-            price: this.props.hotelInfo.price,
-            walletAddress: this.props.hotelInfo.walletAddress,
-            adult: 1,
-            kid: 1,
-            beginDate: 1,
-            endDate: 10,
+            date: {
+                begin: '18.09.26',
+                end: '18.09.29',
+            },
+            tokenPrice: 0.01,
             hotelInfo: this.props.hotelInfo,
         };
-        this.props.setModalSendTokenName(paymentInfomation.tokenSymbol);
-        this.props.setModalAmountToSend(paymentInfomation.price);
-        this.props.setModalAddressToSend(paymentInfomation.walletAddress);
         this.props.setPaymentInfomation(paymentInfomation);
         setTimeout(() => {
             this.props.showModalPayment();    
@@ -221,15 +223,6 @@ function mapDispatchToProps(dispatch) {
         },
         setPaymentInfomation: (paymentInfomation) => {
             dispatch(ActionCreator.setPaymentInfomation(paymentInfomation));
-        },
-        setModalAddressToSend: (address) => {
-            dispatch(ActionCreator.setModalAddressToSend(address));
-        },
-        setModalAmountToSend: (amount) => {
-            dispatch(ActionCreator.setModalAmountToSend(amount));
-        },
-        setModalSendTokenName: (tokenName) => {
-            dispatch(ActionCreator.setModalSendTokenName(tokenName));
         },
     };
 }

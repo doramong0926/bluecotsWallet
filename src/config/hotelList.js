@@ -18,11 +18,89 @@ import HOTEL6_MAIN from './../cards/images/hotel6_main.jpg';
 import HOTEL6_SUB1 from './../cards/images/hotel6_sub1.jpg';
 import HOTEL6_SUB2 from './../cards/images/hotel6_sub2.jpg';
 
+export const defaultHotelInfo = {
+    id: null,
+    roomType: {
+        deluxRoom : {
+            avaliableRoom: null,
+            price: {
+                adult: null,
+                kid: null,
+                baby: null,
+            },
+            avaliableService: {
+                dryer: null,
+                parking: null,
+                internet: null,
+            },
+            bedType: null,
+        },
+        familyRoom : {
+            avaliableRoom: null,
+            price: {
+                adult: null,
+                kid: null,
+                baby: null,
+            },
+            avaliableService: {
+                dryer: null,
+                parking: null,
+                internet: null,
+            },
+            bedType: null,
+        },
+    },        
+    addressToSend: null,
+    name: null,
+    description: null,
+    address: null,
+    homepage: null,
+    country: null,
+    city: null,
+    mainImage: null,
+    detailMainImage: [
+        null,
+    ],
+    detailSubImage : [
+        null,
+    ],
+    starCount: null,
+}
+
 export const defaultHotelInfoList = [
     {
         id: 1,
-        price: 11,
-        walletAddress: DEFAULT_TOKEN_CONTRACT_ADDRESS,
+        roomType: {
+            deluxRoom : {
+                avaliableRoom: 1,
+                price: {
+                    adult: 11,
+                    kid: 6,
+                    baby: 3,
+                },
+                avaliableService: {
+                    dryer: 1,
+                    parking: 1,
+                    internet: 1,
+                },
+                bedType: 'double'
+            },
+            familyRoom : {
+                avaliableRoom: 3,
+                price: {
+                    adult: 20,
+                    kid: 10,
+                    baby: 5,
+                },
+                avaliableService: {
+                    dryer: 1,
+                    parking: 1,
+                    internet: 1,
+                },
+                bedType: 'double'
+            },
+        },        
+        addressToSend: DEFAULT_TOKEN_CONTRACT_ADDRESS,
         name: 'Marriott hotel Seoul',
         description: null,
         address: '176 Sinbanpo-ro, Seocho-gu, Gangnam, Seoul, South Korea',
@@ -43,8 +121,37 @@ export const defaultHotelInfoList = [
     },
     {
         id: 2,
-        price: 12,
-        walletAddress: DEFAULT_TOKEN_CONTRACT_ADDRESS,
+        roomType: {
+            deluxRoom : {
+                avaliableRoom: 1,
+                price: {
+                    adult: 11,
+                    kid: 6,
+                    baby: 3,
+                },
+                avaliableService: {
+                    dryer: 1,
+                    parking: 1,
+                    internet: 1,
+                },
+                bedType: 'double'
+            },
+            familyRoom : {
+                avaliableRoom: 3,
+                price: {
+                    adult: 20,
+                    kid: 10,
+                    baby: 5,
+                },
+                avaliableService: {
+                    dryer: 1,
+                    parking: 1,
+                    internet: 1,
+                },
+                bedType: 'double'
+            },
+        },
+        addressToSend: DEFAULT_TOKEN_CONTRACT_ADDRESS,
         name: 'The Shilla Jeju',
         description: null,
         address: '75, Jungmungwangwang-ro 72beon-gil, Seogwipo, South Korea',
@@ -65,8 +172,37 @@ export const defaultHotelInfoList = [
     },
     {
         id: 3,
-        price: 13,
-        walletAddress: DEFAULT_TOKEN_CONTRACT_ADDRESS,
+        roomType: {
+            deluxRoom : {
+                avaliableRoom: 1,
+                price: {
+                    adult: 11,
+                    kid: 6,
+                    baby: 3,
+                },
+                avaliableService: {
+                    dryer: 1,
+                    parking: 1,
+                    internet: 1,
+                },
+                bedType: 'double'
+            },
+            familyRoom : {
+                avaliableRoom: 3,
+                price: {
+                    adult: 20,
+                    kid: 10,
+                    baby: 5,
+                },
+                avaliableService: {
+                    dryer: 1,
+                    parking: 1,
+                    internet: 1,
+                },
+                bedType: 'double'
+            },
+        },
+        addressToSend: DEFAULT_TOKEN_CONTRACT_ADDRESS,
         name: 'Paradise Hotel Busan ',
         description: null,
         address: '296, Haeundaehaebyeon-ro, Haeundae-gu, Busan, South Korea  ',
@@ -87,8 +223,37 @@ export const defaultHotelInfoList = [
     },
     {
         id: 4,
-        price: 14,
-        walletAddress: DEFAULT_TOKEN_CONTRACT_ADDRESS,
+        roomType: {
+            deluxRoom : {
+                avaliableRoom: 1,
+                price: {
+                    adult: 11,
+                    kid: 6,
+                    baby: 3,
+                },
+                avaliableService: {
+                    dryer: 1,
+                    parking: 1,
+                    internet: 1,
+                },
+                bedType: 'double'
+            },
+            familyRoom : {
+                avaliableRoom: 3,
+                price: {
+                    adult: 20,
+                    kid: 10,
+                    baby: 5,
+                },
+                avaliableService: {
+                    dryer: 1,
+                    parking: 1,
+                    internet: 1,
+                },
+                bedType: 'double'
+            },
+        },
+        addressToSend: DEFAULT_TOKEN_CONTRACT_ADDRESS,
         name: 'Marco Polo Plaza Cebu',
         description: null,
         address: 'Cebu Veterans Drive Nivel Hills Apas, Lahug, Cebu City, Philippines',
@@ -109,8 +274,37 @@ export const defaultHotelInfoList = [
     },
     {
         id: 5,
-        price: 15,
-        walletAddress: DEFAULT_TOKEN_CONTRACT_ADDRESS,
+        roomType: {
+            deluxRoom : {
+                avaliableRoom: 1,
+                price: {
+                    adult: 11,
+                    kid: 6,
+                    baby: 3,
+                },
+                avaliableService: {
+                    dryer: 1,
+                    parking: 1,
+                    internet: 1,
+                },
+                bedType: 'double'
+            },
+            familyRoom : {
+                avaliableRoom: 3,
+                price: {
+                    adult: 20,
+                    kid: 10,
+                    baby: 5,
+                },
+                avaliableService: {
+                    dryer: 1,
+                    parking: 1,
+                    internet: 1,
+                },
+                bedType: 'double'
+            },
+        },
+        addressToSend: DEFAULT_TOKEN_CONTRACT_ADDRESS,
         name: 'The Salisbury Hotel YMCA of Hong Kong',
         description: null,
         address: '41 Salisbury Road, Tsim Sha Tsui, Hong Kong',
@@ -131,8 +325,37 @@ export const defaultHotelInfoList = [
     },
     {
         id: 6,
-        price: 16,
-        walletAddress: DEFAULT_TOKEN_CONTRACT_ADDRESS,
+        roomType: {
+            deluxRoom : {
+                avaliableRoom: 1,
+                price: {
+                    adult: 11,
+                    kid: 6,
+                    baby: 3,
+                },
+                avaliableService: {
+                    dryer: 1,
+                    parking: 1,
+                    internet: 1,
+                },
+                bedType: 'double'
+            },
+            familyRoom : {
+                avaliableRoom: 3,
+                price: {
+                    adult: 20,
+                    kid: 10,
+                    baby: 5,
+                },
+                avaliableService: {
+                    dryer: 1,
+                    parking: 1,
+                    internet: 1,
+                },
+                bedType: 'double'
+            },
+        },
+        addressToSend: DEFAULT_TOKEN_CONTRACT_ADDRESS,
         name: 'Regal Airport Hotel',
         description: null,
         address: '9 Cheong Tat Road, Tung Chung New Town, Hong Kong',
