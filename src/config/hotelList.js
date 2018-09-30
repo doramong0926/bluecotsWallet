@@ -1,4 +1,5 @@
-import { DEFAULT_TOKEN_CONTRACT_ADDRESS } from './constants'
+import { DEFAULT_PAYMENT_OWNER_ADDRESS } from './constants'
+
 import HOTEL1_MAIN from './../cards/images/hotel1_main.jpg';
 import HOTEL1_SUB1 from './../cards/images/hotel1_sub1.jpg';
 import HOTEL1_SUB2 from './../cards/images/hotel1_sub2.jpg';
@@ -100,7 +101,7 @@ export const defaultHotelInfoList = [
                 bedType: 'double'
             },
         },        
-        addressToSend: DEFAULT_TOKEN_CONTRACT_ADDRESS,
+        addressToSend: DEFAULT_PAYMENT_OWNER_ADDRESS,
         name: 'Marriott hotel Seoul',
         description: null,
         address: '176 Sinbanpo-ro, Seocho-gu, Gangnam, Seoul, South Korea',
@@ -151,7 +152,7 @@ export const defaultHotelInfoList = [
                 bedType: 'double'
             },
         },
-        addressToSend: DEFAULT_TOKEN_CONTRACT_ADDRESS,
+        addressToSend: DEFAULT_PAYMENT_OWNER_ADDRESS,
         name: 'The Shilla Jeju',
         description: null,
         address: '75, Jungmungwangwang-ro 72beon-gil, Seogwipo, South Korea',
@@ -202,7 +203,7 @@ export const defaultHotelInfoList = [
                 bedType: 'double'
             },
         },
-        addressToSend: DEFAULT_TOKEN_CONTRACT_ADDRESS,
+        addressToSend: DEFAULT_PAYMENT_OWNER_ADDRESS,
         name: 'Paradise Hotel Busan ',
         description: null,
         address: '296, Haeundaehaebyeon-ro, Haeundae-gu, Busan, South Korea  ',
@@ -253,7 +254,7 @@ export const defaultHotelInfoList = [
                 bedType: 'double'
             },
         },
-        addressToSend: DEFAULT_TOKEN_CONTRACT_ADDRESS,
+        addressToSend: DEFAULT_PAYMENT_OWNER_ADDRESS,
         name: 'Marco Polo Plaza Cebu',
         description: null,
         address: 'Cebu Veterans Drive Nivel Hills Apas, Lahug, Cebu City, Philippines',
@@ -304,7 +305,7 @@ export const defaultHotelInfoList = [
                 bedType: 'double'
             },
         },
-        addressToSend: DEFAULT_TOKEN_CONTRACT_ADDRESS,
+        addressToSend: DEFAULT_PAYMENT_OWNER_ADDRESS,
         name: 'The Salisbury Hotel YMCA of Hong Kong',
         description: null,
         address: '41 Salisbury Road, Tsim Sha Tsui, Hong Kong',
@@ -355,7 +356,7 @@ export const defaultHotelInfoList = [
                 bedType: 'double'
             },
         },
-        addressToSend: DEFAULT_TOKEN_CONTRACT_ADDRESS,
+        addressToSend: DEFAULT_PAYMENT_OWNER_ADDRESS,
         name: 'Regal Airport Hotel',
         description: null,
         address: '9 Cheong Tat Road, Tung Chung New Town, Hong Kong',

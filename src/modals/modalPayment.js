@@ -81,9 +81,10 @@ class ModalPayment extends Component {
                         <Text style={styles.descriptionText}>{this.props.paymentInfomation.hotelInfo.name}</Text>
                         {/* <Text style={styles.descriptionText}>Room type : {this.props.paymentInfomation.roomType.string()}</Text> */}
                         <Text style={styles.descriptionText}>Adult : {this.props.paymentInfomation.numOfPeople.adult} / Kid : {this.props.paymentInfomation.numOfPeople.kid} / Baby : {this.props.paymentInfomation.numOfPeople.baby}</Text>
-                        <Text style={styles.descriptionText}>Total price : {this.state.amountToSend} BLC ({this.state.totalPrice} $)</Text>
-                        <Text style={styles.descriptionText}>Hotel name{this.props.defaultWallet.walletAddress}</Text>
-                        {this.renderBalance()}                        
+                    </View>
+                    <View style={styles.containerTotalPrice}>
+                        <Text style={styles.subTitleText}>Total price</Text>
+                        {this.renderTotalPrice()}                        
                     </View>
                 </View> 
                 <View style={styles.buttonContainer}>  
@@ -119,6 +120,14 @@ class ModalPayment extends Component {
             return <Text style={styles.balanceText}> {this.props.ethBalance} ETH</Text>
         }
     }
+
+    renderTotalPrice = () => {
+        return (
+            <Text style={styles.balanceText}>{this.state.amountToSend} BLC ({this.state.totalPrice} $)</Text>
+        )
+    }
+
+    
 
     openModal = () => {
         this.setPaymentInfomation();
@@ -383,6 +392,9 @@ const styles = StyleSheet.create({
     },
     containerBalance: {      
         marginBottom: 5,
+    },
+    containerTotalPrice: {
+
     },
     containerPaymentInfomation: {      
         marginBottom: 5,

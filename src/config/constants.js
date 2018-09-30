@@ -7,6 +7,7 @@ export const NETWORK = 'ropsten';
 export const DEFAULT_TOKEN_NAME = 'Bluecots';
 export const DEFAULT_TOKEN_SYMBOL = 'BLC';
 export const DEFAULT_TOKEN_CONTRACT_ADDRESS = '0x0cd4bf09b96d308dafa18d5d6b62d7eb5d774396';
+export const DEFAULT_PAYMENT_OWNER_ADDRESS = '0x1CCc12807F040250dC7cB2f34E553CB272b410cf';
 export const DEFAULT_TOKEN_DECIMALS = 18;
 export const WALLET_VERSION = '0.0.1.180724';
 
