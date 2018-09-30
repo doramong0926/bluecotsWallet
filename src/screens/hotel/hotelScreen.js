@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ListView, Dimensions } from 'react-native';
-import { SearchBar } from 'react-native-elements'
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import ActionCreator from '../../actions';
 import { connect } from 'react-redux';
 import ImageSlider from 'react-native-image-slider';
@@ -14,12 +12,6 @@ import { defaultHotelInfoList } from './../../config/hotelList'
 import SLIDER_IMAGE1 from './../../components/images/sampleSlider1.jpg';
 import SLIDER_IMAGE2 from './../../components/images/sampleSlider2.jpg';
 import SLIDER_IMAGE3 from './../../components/images/sampleSlider3.jpg';
-import HOTEL1_MAIN from './../../cards/images/hotel1_main.jpg';
-import HOTEL1_SUB1 from './../../cards/images/hotel1_sub1.jpg';
-import HOTEL1_SUB2 from './../../cards/images/hotel1_sub2.jpg';
-import HOTEL2_MAIN from './../../cards/images/hotel2_main.jpg';
-import HOTEL2_SUB1 from './../../cards/images/hotel2_sub1.jpg';
-import HOTEL2_SUB2 from './../../cards/images/hotel2_sub2.jpg';
  
 class HotelScreen extends Component{
     static navigationOptions = {
@@ -63,11 +55,11 @@ class HotelScreen extends Component{
         return (
             <View style={{flex:1, backgroundColor: '#E4F1F6'}}>
                 <View style={styles.containerSearchBar}>
-                            <HotelSearchBarCard 
-                                handelOnChnageText={this.handelOnChnageText.bind(this)} 
-                                handleonClearText={this.handleonClearText.bind(this)}
-                                queryString={this.state.queryString}
-                            />
+                    <HotelSearchBarCard 
+                        handelOnChnageText={this.handelOnChnageText.bind(this)} 
+                        handleonClearText={this.handleonClearText.bind(this)}
+                        queryString={this.state.queryString}
+                    />
                 </View>
                 <ParallaxScrollView
                     backgroundColor="#E4F1F6"
@@ -116,11 +108,11 @@ class HotelScreen extends Component{
     renderHotelCard = (hotelInfo) => {
         if (hotelInfo.length !== 0 && hotelInfo.name !== undefined && hotelInfo.name !== '' && hotelInfo.name !== null) {
             return (
-                <HotelCard hotelInfo={hotelInfo} />
+                <HotelCard hotelInfo={hotelInfo} navigation={this.props.navigation} />
             )
         } else {
             return (
-                <View style={{alignItems: 'center', justifyContent:'center'}}>no data</View>
+                <View style={{alignItems: 'center', justifyContent:'center'}}>There is no hotel list.</View>
             )
         }
     }

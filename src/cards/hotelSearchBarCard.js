@@ -20,7 +20,7 @@ class HotelSearchBarCard extends Component {
                 <Card style={styles.containerCard}>
                     <Card.Body>                        
                         <View style={styles.containerTitle}>
-                            <Text style={styles.textTitle}>Searching hotel</Text>
+                            <Text style={styles.textTitle}>Search hotel</Text>
                             <Text style={styles.descriptionText}>Reserve your hotel with bluecots.</Text>
                         </View>   
                         <View style={styles.containerSearchBar}>

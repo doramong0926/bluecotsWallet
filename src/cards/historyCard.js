@@ -29,7 +29,7 @@ class HistoryCard extends Component {
                                     <Text style={styles.textTitle}>History of transaction</Text>
                                     <Text style={styles.descriptionText}>
                                         { (this.props.offset !== undefined) ? 
-                                            ('It is shown only 3 recent transaction.') : 
+                                            (`It is shown only ${this.props.offset} recent transaction.`) : 
                                             (this.props.defaultWallet.walletAddress)
                                         }
                                     </Text>
@@ -92,8 +92,8 @@ const styles = StyleSheet.create({
         // height: 300,
     },
     containerCard: {
-        marginTop: 4,  
-        marginBottom: 0,
+        marginTop: 0,  
+        marginBottom: 4,
         marginHorizontal: 4,
     },
     containerTransaction: {      

@@ -41,3 +41,4 @@ export function changeNickName(wallet) {
         payload: wallet
     };
 }
+

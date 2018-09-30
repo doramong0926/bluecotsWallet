@@ -52,7 +52,7 @@ export default (state = initialState, action) => {
         case actionTypes.CHANGE_NICKNAME:
             return Object.assign({}, state, {
                 walletList: state.walletList.filter(t=>{return (t.walletAddress !== action.payload.walletAddress)}).concat(action.payload),
-            });
+            });            
 
         default:
             return state;

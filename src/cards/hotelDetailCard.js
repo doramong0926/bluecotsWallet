@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image, Dimensions, Linking } from 'react-native';
+import { Button } from 'react-native-elements'
 import { connect } from 'react-redux';
 import { Card } from 'react-native-material-design';
 import PropTypes from 'prop-types';
 import ActionCreator from '../actions';
 import StarRating from 'react-native-star-rating';
 import HOTEL_MAIN_DEFULT from './images/hotel1_main.jpg'
+import { Divider } from 'react-native-material-design';
 
-class HotelCard extends Component {
+
+
+class HotelDetailCard extends Component {
     static propTypes = {
     };
 
@@ -27,51 +31,36 @@ class HotelCard extends Component {
     render() {
         return (
             <View style={styles.container}>  
-                <TouchableOpacity onPress={() => this.handelPressCard()} value={'0.5'}>
-                    <Card style={styles.containerCard}>
-                        <Card.Media
-                            image={ this.renderHotelMainImage()}
-                            // overlay
-                        >   
+                <Card style={styles.containerCard}>
+                    {/* <Card.Media
+                        image={ this.renderHotelMainImage()}
+                        // overlay
+                    >   
+                    </Card.Media> */}
+                    <Card.Body>
+                        <View style={styles.containerBody}>                            
+                            <View style={styles.containerHotelInfo}>
+                                {this.renderHotelName()}
+                                {this.renderHotelDescription()}                                
+                                {this.renderHotelAddress()}
+                                {this.renderHotelHomepage()}                                
+                            </View>
                             <View style={styles.containerStarRaring}>
-                                <View style={{alignItems:'center', justifyContent:'center'}}>
-                                    <Text style={{fontSize: 12, color: 'white'}}> Rating : {this.getStarCount().toFixed(1)}/5.0</Text>
-                                    <StarRating
-                                        disabled={true}
-                                        maxStars={5}
-                                        rating={this.getStarCount()}
-                                        selectedStar={(rating) => this.onStarRatingPress(rating)}
-                                        fullStarColor={'#BD3D3A'}
-                                        starSize={20}
-                                    />
-                                </View>
+                                {this.renderStarRating()}
                             </View>
-                        </Card.Media>
-                        <Card.Body>
-                            <View style={styles.containerBody}>                            
-                                <View style={styles.containerHotelInfo}>
-                                    {this.renderHotelName()}
-                                    {this.renderHotelDescription()}
-                                    {this.renderHotelAddress()}
-                                    {this.renderHotelHomepage()}
-                                </View>
+                            <Divider />
+                            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                                {this.renderReserveButton()}
                             </View>
-                        </Card.Body>
-                    </Card>
-                </TouchableOpacity>
+                        </View>
+                    </Card.Body>
+                </Card>
             </View>
         );
     }
 
     handlePressAddress = () => {
 
-    }
-
-    handelPressCard = () => {
-        this.props.navigation.navigate(
-            'HotelDetailStack', 
-            {hotelInfo: this.props.hotelInfo},
-        );
     }
 
     handlePressHomepage = (address) => {
@@ -82,12 +71,53 @@ class HotelCard extends Component {
         });
     }
 
+    handelPressReserve = () => {
+        const paymentInfomation = {
+            itemCode: this.props.hotelInfo.id,
+            tokenSymbolForPayment: 'BLC',
+            price: this.props.hotelInfo.price,
+            walletAddress: this.props.hotelInfo.walletAddress,
+            adult: 1,
+            kid: 1,
+            beginDate: 1,
+            endDate: 10,
+            hotelInfo: this.props.hotelInfo,
+        };
+        this.props.setModalSendTokenName(paymentInfomation.tokenSymbol);
+        this.props.setModalAmountToSend(paymentInfomation.price);
+        this.props.setModalAddressToSend(paymentInfomation.walletAddress);
+        this.props.setPaymentInfomation(paymentInfomation);
+        setTimeout(() => {
+            this.props.showModalPayment();    
+        }, );
+    }
+
     getStarCount = () => {
         if (this.props.hotelInfo.starCount !== null && this.props.hotelInfo.starCount !== undefined && this.props.hotelInfo.starCount !== "" ) {
             return this.props.hotelInfo.starCount;
         } else {
             return this.state.starCount;
         }
+    }
+
+    renderReserveButton = () => {
+        return(
+            <View style={styles.buttonContainer}>
+                <Button
+                    onPress={this.handelPressReserve}
+                    title="Reserve"
+                    buttonStyle={{
+                        backgroundColor: "#BD3D3A",
+                        borderColor: "transparent", 
+                        borderRadius: 5
+                    }}
+                    containerViewStyle={{
+                        // alignSelf: 'flex-end',
+                        // margin: 20,
+                    }}
+                />    
+            </View>
+        )
     }
 
     renderHotelName = () => {
@@ -161,6 +191,22 @@ class HotelCard extends Component {
             )
         }
     }
+
+    renderStarRating = () => {
+        return (
+            <View>
+                <StarRating
+                        disabled={true}
+                        maxStars={5}
+                        rating={this.getStarCount()}
+                        selectedStar={(rating) => this.onStarRatingPress(rating)}
+                        fullStarColor={'#BD3D3A'}
+                        starSize={20}
+                />
+                <Text style={styles.starRatingText}>Rating ({this.getStarCount().toFixed(1)} / 5.0)</Text>
+            </View>
+        )
+    }
 }
 
 function mapStateToProps(state) {
@@ -170,6 +216,21 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        showModalPayment: () => {
+            dispatch(ActionCreator.showModalPayment());
+        },
+        setPaymentInfomation: (paymentInfomation) => {
+            dispatch(ActionCreator.setPaymentInfomation(paymentInfomation));
+        },
+        setModalAddressToSend: (address) => {
+            dispatch(ActionCreator.setModalAddressToSend(address));
+        },
+        setModalAmountToSend: (amount) => {
+            dispatch(ActionCreator.setModalAmountToSend(amount));
+        },
+        setModalSendTokenName: (tokenName) => {
+            dispatch(ActionCreator.setModalSendTokenName(tokenName));
+        },
     };
 }
 
@@ -183,23 +244,19 @@ const styles = StyleSheet.create({
         paddingTop:0,
     },
     containerBody: {
+
     },
     containerHotelInfo: {   
-        // paddingVertical: 10,
+        marginBottom: 10,
     },
     containerStarRaring: {
-        alignItems:'flex-end', 
-        justifyContent: 'flex-end', 
-        paddingRight: 5, 
-        paddingBottom: 5
-    },
-    containerButton : {
-        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        borderColor: '#92B558',
-        borderWidth: 1,
-        borderRadius:5,
+        marginBottom: 10,
+    },
+    buttonContainer: {
+        marginTop:20,
+        marginBottom: 10,
     },
     textTitle: {
         fontSize : 16, 
@@ -212,7 +269,12 @@ const styles = StyleSheet.create({
         color: '#B4B7BA',
         textAlign: 'center',
     },
+    starRatingText: {
+        fontSize: 12,        
+        color: '#B4B7BA',
+        textAlign: 'center',
+    },
 })
   
-export default connect(mapStateToProps, mapDispatchToProps)(HotelCard);
+export default connect(mapStateToProps, mapDispatchToProps)(HotelDetailCard);
 

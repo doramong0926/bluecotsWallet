@@ -9,13 +9,14 @@ import {
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
 import getSlideFromRightTransition from 'react-navigation-slide-from-right-transition';
-import { Ionicons, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome, } from '@expo/vector-icons';
 
 import VerificationPincodeScreen from '../screens/verification/verificationPincodeScreen';
 import VerificationFingerPrintScreen from '../screens/verification/verificationFingerPrintScreen';
 import AddWalletScreen from '../screens/addWallet/addWalletScreen';
 import WalletScreen from '../screens/wallet/walletScreen'
 import HotelScreen from '../screens/hotel/hotelScreen'
+import HotelDetailScreen from '../screens/hotel/hotelDetailScreen'
 import HistoryScreen from '../screens/history/historyScreen'
 import SettingsMainScreen from '../screens/settings/settingsMainScreen';
 import SettingsAccountScreen from '../screens/settings/settingsAccountScreen';
@@ -87,6 +88,9 @@ export const HotelStackNavigator = createStackNavigator (
     {
         HotelStack: {
             screen: HotelScreen,
+        },
+        HotelDetailStack: {
+            screen: HotelDetailScreen,
         }
     },
     {

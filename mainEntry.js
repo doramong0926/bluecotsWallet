@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import {AppStackNavigator} from './src/navigator/navigators'
 
 import ModalConfirm from './src/modals/modalConfirm';
-
+import ModalPayment from './src/modals/modalPayment';
 import ModalBackupWallet from './src/modals/modalBackupWallet';
 import ModalWalletListForBackup from './src/modals/modalWalletListForBackup';
 import ModalChangeNickName from './src/modals/modalChangeNickName';
@@ -61,6 +61,7 @@ class MainEntry extends Component {
                 /> 
                 <ModalChangeDefaultWallet />
                 <ModalTransactionHistory />
+                <ModalPayment />
                 <ModalSend />                
                 <ModalQrCodeScaner />
                 <ModalConfirm

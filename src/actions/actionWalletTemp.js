@@ -13,3 +13,10 @@ export function setTempWallet(wallet) {
         payload: wallet
     };
 }
+
+export function setPaymentInfomation(paymentInfomation) {
+    return {        
+        type: actionTypes.SET_PAYMENT_INFOMATION,
+        payload: paymentInfomation
+    };
+}

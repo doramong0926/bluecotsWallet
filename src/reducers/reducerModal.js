@@ -3,6 +3,7 @@
 import actionTypes from './../actions/actionTypes';
 
 const initialState = {  
+    visibleModalPayment: false,
     visibleModalWalletListForBackup: false,
     visibleModalBackupWallet: false,
     visibleModalChangeNickName: false,
@@ -312,6 +313,17 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 visibleModalWalletListForBackup: false,
             });  
+
+        case actionTypes.SHOW_MODAL_PAYMENT:
+            return Object.assign({}, state, {
+                visibleModalPayment: true,
+            });       
+
+        case actionTypes.HIDE_MODAL_PAYMENT:
+            return Object.assign({}, state, {
+                visibleModalPayment: false,
+            });  
+
                         
         default:
             return state;
