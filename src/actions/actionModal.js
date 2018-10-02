@@ -319,6 +319,26 @@ export function hideModalPayment() {
   };
 }
 
+export function showModalCalendarForReservation() {
+  return {
+      type: actionTypes.SHOW_MODAL_CALENDAR_FOR_RESERVATION,
+  };
+}
+
+export function hideModalCalendarForReservation() {
+  return {
+      type: actionTypes.HIDE_MODAL_CALENDAR_FOR_RESERVATION,
+  };
+}
+
+export function setModalCalendarForReservationFinishProcess(finishProcess) {
+  return {
+      type: actionTypes.SET_MODAL_CALENDAR_FOR_RESERVATION_FINISH_PROCESS,
+      payload: finishProcess
+  };
+}
+
+
 
 
 

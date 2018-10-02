@@ -34,21 +34,13 @@ class WalletBalanceCard extends Component {
         }
     }
 
-    componentWillMount(){
+    componentDidMount(){
         this.setState({defaultWallet: this.props.defaultWallet})
         this.updateWalletBalance();
         setInterval(() => {
             this.updateWalletBalance();
         }, 1000)
     }
-
-    // componentDidMount(){
-    //     this.setState({defaultWallet: this.props.defaultWallet})
-    //     this.updateWalletBalance();
-    //     setInterval(() => {
-    //         this.updateWalletBalance();
-    //     }, 1000)
-    // }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.defaultWallet !== nextProps.defaultWallet || 

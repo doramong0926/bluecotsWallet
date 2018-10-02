@@ -10,9 +10,6 @@ import WalletUtils from '../utils/wallet';
 import PropTypes from 'prop-types';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { 
-	DEFAULT_TOKEN_SYMBOL,
-	DEFAULT_TOKEN_CONTRACT_ADDRESS,
-    DEFAULT_TOKEN_DECIMALS,
     defaultWallet,
  } from '../config/constants';
  
@@ -88,7 +85,7 @@ class ModalChangeNickName extends Component {
                         inputStyle = {{paddingLeft:5, paddingRight:5, marginRight:0, fontSize:11}}
                         value={this.state.modifiedNickName} 
                         onChangeText={(value) => this.setState({modifiedNickName: value})}
-                        placeholder={this.state.previousNickName}
+                        placeholder={"Previous nickname : " + this.state.previousNickName}
                     />
                     {this.nickNameValidationMsg()}
                 </View>
@@ -126,10 +123,10 @@ class ModalChangeNickName extends Component {
     initState = () => {
         this.setState({
             previousNickName: this.props.tempWallet.nickName,
-            modifiedNickName: '',
             defaultWallet: this.props.defaultWallet,
             tempWallet: this.props.tempWallet
         });
+        this.props.setTempWallet(defaultWallet)
     }
 
     closeModal = () => {        
@@ -137,7 +134,12 @@ class ModalChangeNickName extends Component {
     }
 
     openModal = () => {
-        this.initState();
+        this.setState({
+            previousNickName: this.props.tempWallet.nickName,
+            defaultWallet: this.props.defaultWallet,
+            modifiedNickName: '',
+            tempWallet: this.props.tempWallet
+        });
     }
 
     scanFingerPrint = () => {

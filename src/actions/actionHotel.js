@@ -13,3 +13,18 @@ export function removeHotelInfoList(hotelInfo) {
         payload: hotelInfo
     };
 }
+
+export function setSelectHotelInfo(hotelInfo) {
+    return {
+        type: actionTypes.SET_SELECT_HOTEL_INFO,
+        payload: hotelInfo
+    };
+}
+
+
+export function setCalendarInfo(calendarInfo) {
+    return {
+        type: actionTypes.SET_CALENDAR_INFO,
+        payload: calendarInfo
+    };
+}

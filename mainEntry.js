@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 import {AppStackNavigator} from './src/navigator/navigators'
 
+import ModalCalendarForReservation from './src/modals/modalCalendarForReservation';
 import ModalConfirm from './src/modals/modalConfirm';
 import ModalPayment from './src/modals/modalPayment';
 import ModalBackupWallet from './src/modals/modalBackupWallet';
@@ -44,6 +45,7 @@ class MainEntry extends Component {
         return (
             <View style={{flex:1}}>
                 <AppStackNavigator />   
+                <ModalCalendarForReservation />
                 <ModalBackupWallet />
                 <ModalChangeNickName />
                 <ModalWalletListForChangeNickName />             

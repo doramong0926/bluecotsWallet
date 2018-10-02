@@ -3,6 +3,7 @@
 import actionTypes from './../actions/actionTypes';
 
 const initialState = {  
+    visibleModalCalendarForReservation: false,
     visibleModalPayment: false,
     visibleModalBackupWallet: false,
     visibleModalChangeNickName: false,
@@ -44,6 +45,7 @@ const initialState = {
             text: null,
         }
     ],
+    modalCalendarForReservationFinishProcess: undefined,
     modalFingerPrintScanerFinishProcess: undefined,
     skipFingerPrintScan: false,
     modalAddWalletFinishProcess: undefined,
@@ -313,7 +315,21 @@ export default (state = initialState, action) => {
                 visibleModalPayment: false,
             });  
 
-                        
+        case actionTypes.SHOW_MODAL_CALENDAR_FOR_RESERVATION:
+            return Object.assign({}, state, {
+                visibleModalCalendarForReservation: true,
+            });       
+
+        case actionTypes.HIDE_MODAL_CALENDAR_FOR_RESERVATION:
+            return Object.assign({}, state, {
+                visibleModalCalendarForReservation: false,
+            });  
+            
+        case actionTypes.SET_MODAL_CALENDAR_FOR_RESERVATION_FINISH_PROCESS:
+            return Object.assign({}, state, {
+                modalCalendarForReservationFinishProcess: action.payload,
+        });    
+
         default:
             return state;
     }

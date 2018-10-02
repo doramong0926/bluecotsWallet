@@ -8,7 +8,10 @@ import ActionCreator from '../actions';
 import StarRating from 'react-native-star-rating';
 import HOTEL_MAIN_DEFULT from './images/hotel1_main.jpg'
 import { Divider } from 'react-native-material-design';
-import { defaultPaymentInfomation, defaultHotelInfo} from '../config/hotelList';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { defaultHotelInfo } from '../config/hotelList';
+import { DEFAULT_MAP_REGION, DEFAULT_MAP_LATLEN } from '../config/constants';
+
 
 class HotelDetailCard extends Component {
     static propTypes = {
@@ -18,26 +21,25 @@ class HotelDetailCard extends Component {
         super(props);
         this.state = {
             hotelInfo: defaultHotelInfo,
-            paymentInfomation: defaultPaymentInfomation,
+            mapRegion: DEFAULT_MAP_REGION,
+            mapMarker: DEFAULT_MAP_LATLEN,
         };
     }
 
     componentDidMount() {
-        let paymentInfomation = this.state.paymentInfomation;
-        paymentInfomation.hotelInfo = this.props.hotelInfo;
         this.setState({
             hotelInfo: this.props.hotelInfo,
-            paymentInfomation: paymentInfomation,
+            mapRegion: this.props.hotelInfo.mapRegion,
+            mapMarker: this.props.hotelInfo.mapMarker,
         });
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.hotelInfo !== nextProps.hotelInfo) {
-            let paymentInfomation = this.state.paymentInfomation;
-            paymentInfomation.hotelInfo = nextProps.hotelInfo;
             this.setState({
                 hotelInfo: nextProps.hotelInfo,
-                paymentInfomation: paymentInfomation,
+                mapRegion: this.props.hotelInfo.mapRegion,
+                mapMarker: this.props.hotelInfo.mapMarker,
             });
         }
     }
@@ -55,17 +57,35 @@ class HotelDetailCard extends Component {
                         <View style={styles.containerBody}>                            
                             <View style={styles.containerHotelInfo}>
                                 {this.renderHotelName()}
-                                {this.renderHotelDescription()}                                
-                                {this.renderHotelAddress()}
+                                {this.renderHotelDescription()}     
+                                {this.renderHotelAddress()}                                                           
                                 {this.renderHotelHomepage()}                                
                             </View>
                             <View style={styles.containerStarRaring}>
                                 {this.renderStarRating()}
                             </View>
                             <Divider />
-                            <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                                {this.renderReserveButton()}
+                            <View style={styles.containerMap}>
+                                <MapView
+                                    provider={PROVIDER_GOOGLE}
+                                    style={styles.containerMapView}
+                                    // region={this.state.mapRegion}
+                                    initialRegion={DEFAULT_MAP_REGION}
+                                    // region={DEFAULT_MAP_REGION}
+                                    onRegionChange={this.handelonMapRegionChange}
+                                >
+                                    {/* <Marker
+                                        // coordinate={this.state.mapMarker.latlng}
+                                        coordinate={DEFAULT_MAP_LATLEN.latlng}
+                                        title={this.state.hotelInfo.name}
+                                        description={this.state.hotelInfo.address}
+                                    /> */}
+                                </MapView>                                
                             </View>
+                            <View style={styles.containerHotelInfo}>
+                                {this.renderHotelAddress()}
+                            </View>
+                            <Divider />
                         </View>
                     </Card.Body>
                 </Card>
@@ -80,19 +100,16 @@ class HotelDetailCard extends Component {
 
     }
 
+    handelonMapRegionChange = () => {
+
+    }
+
     handlePressHomepage = (address) => {
         Linking.canOpenURL(address).then(supported => {
             if (supported) {
                 Linking.openURL(address);
             } 
         });
-    }
-
-    handelPressReserve = () => {
-        this.props.setPaymentInfomation(this.state.paymentInfomation);
-        setTimeout(() => {
-            this.props.showModalPayment();    
-        }, );
     }
 
     getStarCount = () => {
@@ -102,27 +119,6 @@ class HotelDetailCard extends Component {
             return 0;
         }
     }
-
-    renderReserveButton = () => {
-        return(
-            <View style={styles.buttonContainer}>
-                <Button
-                    onPress={this.handelPressReserve}
-                    title="Reserve"
-                    buttonStyle={{
-                        backgroundColor: "#BD3D3A",
-                        borderColor: "transparent", 
-                        borderRadius: 5
-                    }}
-                    containerViewStyle={{
-                        // alignSelf: 'flex-end',
-                        // margin: 20,
-                    }}
-                />    
-            </View>
-        )
-    }
-
     renderHotelName = () => {
         if (this.state.hotelInfo.name !== null && this.state.hotelInfo.name !== undefined && this.state.hotelInfo.name !== "" ) {
             return <Text style={styles.textTitle}>{this.state.hotelInfo.name}</Text>
@@ -219,12 +215,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        showModalPayment: () => {
-            dispatch(ActionCreator.showModalPayment());
-        },
-        setPaymentInfomation: (paymentInfomation) => {
-            dispatch(ActionCreator.setPaymentInfomation(paymentInfomation));
-        },
     };
 }
 
@@ -239,6 +229,14 @@ const styles = StyleSheet.create({
     },
     containerBody: {
 
+    },
+    containerMap: {
+        marginTop: 15,
+        marginBottom: 5,
+        height:160,
+    },
+    containerMapView: {
+        height:160,
     },
     containerHotelInfo: {   
         marginBottom: 10,

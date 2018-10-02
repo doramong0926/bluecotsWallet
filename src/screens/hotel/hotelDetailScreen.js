@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import ImageSlider from 'react-native-image-slider';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import HotelDetailCard from './../../cards/hotelDetailCard';
+import HotelPaymentCard from './../../cards/hotelPaymentCard';
 import PropTypes from 'prop-types';
 
 class HotelDetailScreen extends Component{
@@ -61,6 +62,7 @@ class HotelDetailScreen extends Component{
                             />
                         </View>
                         <HotelDetailCard hotelInfo={this.state.hotelInfo} />
+                        <HotelPaymentCard hotelInfo={this.state.hotelInfo} />
                     </View>
                 </ParallaxScrollView>
             </View>

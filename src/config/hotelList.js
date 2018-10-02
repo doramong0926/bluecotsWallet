@@ -19,6 +19,11 @@ import HOTEL6_MAIN from './../cards/images/hotel6_main.jpg';
 import HOTEL6_SUB1 from './../cards/images/hotel6_sub1.jpg';
 import HOTEL6_SUB2 from './../cards/images/hotel6_sub2.jpg';
 
+export const defaultCalendarInfo = {
+    selectedBeginDate: '',
+    selectedEndDate: '',
+}
+
 export const defaultPaymentInfomation = {
     orderNumber: 0,
     roomType: '',
@@ -86,6 +91,18 @@ export const defaultHotelInfo = {
         null,
     ],
     starCount: 0,
+    mapRegion: {
+        latitude: 37.78825,
+        longitude: -122.4324,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+    },
+    mapMarker: {
+        latlng: {
+            latitude: 37.78825,
+            longitude: -122.4324,
+        }
+    },
 }
 
 export const defaultHotelInfoList = [
@@ -139,6 +156,18 @@ export const defaultHotelInfoList = [
             HOTEL1_SUB2,
         ],
         starCount: 5,
+        mapRegion: {
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+        },
+        mapMarker: {
+            latlng: {
+                latitude: 37.78825,
+                longitude: -122.4324,
+            }
+        },
     },
     {
         id: 2,
@@ -190,6 +219,18 @@ export const defaultHotelInfoList = [
             HOTEL2_SUB2,
         ],
         starCount: 4,
+        mapRegion: {
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+        },
+        mapMarker: {
+            latlng: {
+                latitude: 37.78825,
+                longitude: -122.4324,
+            }
+        },
     },
     {
         id: 3,
@@ -241,6 +282,18 @@ export const defaultHotelInfoList = [
             HOTEL3_SUB2,
         ],
         starCount: 4.5,
+        mapRegion: {
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+        },
+        mapMarker: {
+            latlng: {
+                latitude: 37.78825,
+                longitude: -122.4324,
+            }
+        },
     },
     {
         id: 4,
@@ -292,6 +345,18 @@ export const defaultHotelInfoList = [
             HOTEL4_SUB2,
         ],
         starCount: 3.5,
+        mapRegion: {
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+        },
+        mapMarker: {
+            latlng: {
+                latitude: 37.78825,
+                longitude: -122.4324,
+            }
+        },
     },
     {
         id: 5,
@@ -343,6 +408,18 @@ export const defaultHotelInfoList = [
             HOTEL5_SUB2,
         ],
         starCount: 4.5,
+        mapRegion: {
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+        },
+        mapMarker: {
+            latlng: {
+                latitude: 37.78825,
+                longitude: -122.4324,
+            }
+        },
     },
     {
         id: 6,
@@ -394,5 +471,17 @@ export const defaultHotelInfoList = [
             HOTEL6_SUB2,
         ],
         starCount: 3.5,
+        mapRegion: {
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+        },
+        mapMarker: {
+            latlng: {
+                latitude: 37.78825,
+                longitude: -122.4324,
+            }
+        },
     },
 ];

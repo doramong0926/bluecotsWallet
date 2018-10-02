@@ -11,6 +11,20 @@ export const DEFAULT_PAYMENT_OWNER_ADDRESS = '0x1CCc12807F040250dC7cB2f34E553CB2
 export const DEFAULT_TOKEN_DECIMALS = 18;
 export const WALLET_VERSION = '0.0.1.180724';
 
+export const DEFAULT_MAP_REGION = {
+    latitude: 37.78825,
+    longitude: -122.4324,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+}
+
+export const DEFAULT_MAP_LATLEN = {
+    latlng: {
+        latitude: 37.78825,
+        longitude: -122.4324,
+    }
+}
+
 export const defaultWallet = {
     name: '',
     nickName : '',

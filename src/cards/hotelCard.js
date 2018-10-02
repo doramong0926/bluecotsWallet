@@ -7,9 +7,7 @@ import ActionCreator from '../actions';
 import StarRating from 'react-native-star-rating';
 import HOTEL_MAIN_DEFULT from './images/hotel1_main.jpg'
 
-import { 
-    defaultHotelInfo,
- } from '../config/hotelList';
+import { defaultHotelInfo, defaultCalendarInfo } from '../config/hotelList';
 
 class HotelCard extends Component {
     static propTypes = {
@@ -83,6 +81,7 @@ class HotelCard extends Component {
             'HotelDetailStack', 
             {hotelInfo: this.state.hotelInfo},
         );
+        this.props.setCalendarInfo(defaultCalendarInfo);
     }
 
     handlePressHomepage = (address) => {
@@ -173,6 +172,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        setCalendarInfo: (calendarInfo) => {
+            dispatch(ActionCreator.setCalendarInfo(calendarInfo));
+        },
     };
 }
 
