@@ -2,9 +2,20 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, Linking, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
- import { Card } from 'react-native-material-design';
+import { Card } from 'react-native-material-design';
 
 class NotificationCard extends Component {
+
+    constructor(props, context) {
+        super(props, context);
+    }
+
+    componentDidMount(){
+    }
+
+    componentWillReceiveProps(nextProps) {
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -57,7 +68,7 @@ const styles = StyleSheet.create({
     },
     containerCard: {
         marginTop: 4,  
-        marginBottom: 0,  
+        marginBottom: 4,  
         marginHorizontal: 4,
     },
     containerNotice: {

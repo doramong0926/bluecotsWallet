@@ -6,7 +6,15 @@ import { connect } from 'react-redux';
 
 class MainWalletMenu extends Component {
     constructor(props, context) {
-        super(props, context);
+        super(props);
+        this.state = {
+        };
+    }
+
+    componentDidMount() {   
+    }
+
+    componentWillReceiveProps(nextProps) {
     }
 
     render() {

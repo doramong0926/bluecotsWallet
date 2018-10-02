@@ -12,30 +12,65 @@ import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { 
 	DEFAULT_TOKEN_SYMBOL,
 	DEFAULT_TOKEN_CONTRACT_ADDRESS,
-	DEFAULT_TOKEN_DECIMALS,
+    DEFAULT_TOKEN_DECIMALS,
+    defaultWallet,
  } from '../config/constants';
 
+ import { defaultPaymentInfomation, defaultHotelInfo } from './../config/hotelList'
+
 class ModalPayment extends Component {
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-            tokenSymbol: null,
-            addressToSend: null,
-            amountToSend: null,
-            totalPrice: null,
-            gasForSend: null,
-            isEnoughGas: null,
-        }
-    };
-    
     static propTypes = {
         defaultWallet: PropTypes.shape({
             walletAddress: PropTypes.string.isRequired,
         }).isRequired,
     };
 
-    componentDidMount() {
-        this.setPaymentInfomation();
+    constructor(props, context) {
+        super(props, context);
+        let paymentInfomation = defaultPaymentInfomation;
+        paymentInfomation.hotelInfo = defaultHotelInfo;
+        this.state = {
+            amountToSend: 0,
+            totalPrice: 0,
+            gasForSend: 0,
+            isEnoughGas: false,
+            paymentInfomation: paymentInfomation,
+            defaultWallet: defaultWallet,
+            blcBalance: 0,
+            ethBalance: 0,
+        }
+    };
+    
+    componentDidMount() {   
+        this.setState({
+            paymentInfomation: this.props.paymentInfomation,
+            defaultWallet: this.props.defaultWallet,
+            blcBalance: this.props.blcBalance,
+            ethBalance: this.props.ethBalance,
+        })
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.paymentInfomation !== nextProps.paymentInfomation) {
+            this.setState({
+                paymentInfomation: nextProps.paymentInfomation,
+            })
+        }
+        if (this.props.defaultWallet !== nextProps.defaultWallet) {
+            this.setState({
+                defaultWallet: nextProps.defaultWallet,
+            })
+        }
+        if (this.props.blcBalance !== nextProps.blcBalance) {
+            this.setState({
+                blcBalance: nextProps.blcBalance,
+            })
+        }
+        if (this.props.ethBalance !== nextProps.ethBalance) {
+            this.setState({
+                ethBalance: nextProps.ethBalance,
+            })
+        }
     }
 
     render() {
@@ -62,7 +97,7 @@ class ModalPayment extends Component {
                 }}
             >
                 <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}>Payment {this.state.tokenSymbol} </Text>
+                    <Text style={styles.headerText}>Payment {this.state.paymentInfomation.tokenSymbol} </Text>
                     <View style={{alignSelf:"flex-end", paddingRight:20, position:"absolute"}}>
                         <TouchableOpacity onPress={() => this.closeModal()} value={'0.5'}>
                             <Ionicons name="ios-close-circle-outline" size={20}/>
@@ -73,14 +108,14 @@ class ModalPayment extends Component {
                 <View style={styles.bodyContainer}>                   
                     <View style={styles.containerBalance}>
                         <Text style={styles.subTitleText}>Available balance</Text>
-                        <Text style={styles.descriptionText}>{this.props.defaultWallet.walletAddress}</Text>
+                        <Text style={styles.descriptionText}>{this.state.defaultWallet.walletAddress}</Text>
                         {this.renderBalance()}                        
                     </View>
                     <View style={styles.containerPaymentInfomation}>
                         <Text style={styles.subTitleText}>Reserve infomation</Text>
-                        <Text style={styles.descriptionText}>{this.props.paymentInfomation.hotelInfo.name}</Text>
-                        {/* <Text style={styles.descriptionText}>Room type : {this.props.paymentInfomation.roomType.string()}</Text> */}
-                        <Text style={styles.descriptionText}>Adult : {this.props.paymentInfomation.numOfPeople.adult} / Kid : {this.props.paymentInfomation.numOfPeople.kid} / Baby : {this.props.paymentInfomation.numOfPeople.baby}</Text>
+                        <Text style={styles.descriptionText}>{this.state.paymentInfomation.hotelInfo.name}</Text>
+                        {/* <Text style={styles.descriptionText}>Room type : {this.state.paymentInfomation.roomType.string()}</Text> */}
+                        <Text style={styles.descriptionText}>Adult : {this.state.paymentInfomation.numOfPeople.adult} / Kid : {this.state.paymentInfomation.numOfPeople.kid} / Baby : {this.state.paymentInfomation.numOfPeople.baby}</Text>
                     </View>
                     <View style={styles.containerTotalPrice}>
                         <Text style={styles.subTitleText}>Total price</Text>
@@ -114,10 +149,10 @@ class ModalPayment extends Component {
     }  
 
     renderBalance = () => {
-        if (this.state.tokenSymbol === 'BLC') {
-            return <Text style={styles.balanceText}> {this.props.blcBalance} BLC</Text>
-        } else if (this.state.tokenSymbol === 'ETH') {
-            return <Text style={styles.balanceText}> {this.props.ethBalance} ETH</Text>
+        if (this.state.paymentInfomation.tokenSymbol === 'BLC') {
+            return <Text style={styles.balanceText}> {this.state.blcBalance} BLC</Text>
+        } else if (this.state.paymentInfomation.tokenSymbol === 'ETH') {
+            return <Text style={styles.balanceText}> {this.state.ethBalance} ETH</Text>
         }
     }
 
@@ -138,22 +173,34 @@ class ModalPayment extends Component {
     }
 
     setPaymentInfomation = () => {
+        let adultPrice = 0;
+        let kidPrice = 0;
+        let babyPrice = 0;
+
+        if (this.state.paymentInfomation.roomType === 'delux') {
+            adultPrice = this.state.paymentInfomation.hotelInfo.roomType.deluxRoom.price.adult;
+            kidPrice = this.state.paymentInfomation.hotelInfo.roomType.deluxRoom.price.kid;
+            babyPrice = this.state.paymentInfomation.hotelInfo.roomType.deluxRoom.price.baby;
+        } else {
+
+        }
+
         const totalPrice = (
-            this.props.paymentInfomation.numOfPeople.adult * this.props.paymentInfomation.roomType.price.adult +
-            this.props.paymentInfomation.numOfPeople.kid * this.props.paymentInfomation.roomType.price.kid +
-            this.props.paymentInfomation.numOfPeople.baby * this.props.paymentInfomation.roomType.price.baby
+            this.state.paymentInfomation.numOfPeople.adult * adultPrice +
+            this.state.paymentInfomation.numOfPeople.kid * kidPrice +
+            this.state.paymentInfomation.numOfPeople.baby * babyPrice
         );
-        this.updateWalletBalance(this.props.defaultWallet.walletAddress);
+        this.updateWalletBalance(this.state.defaultWallet.walletAddress);
         this.setState({
-            addressToSend: this.props.paymentInfomation.hotelInfo.addressToSend,
-            tokenSymbol: this.props.paymentInfomation.tokenSymbolForPayment,
+            addressToSend: this.state.paymentInfomation.hotelInfo.addressToSend,
+            tokenSymbol: this.state.paymentInfomation.tokenSymbol,
             totalPrice: totalPrice,
-            amountToSend: (totalPrice / this.props.paymentInfomation.tokenPrice),
+            amountToSend: (totalPrice / this.state.paymentInfomation.tokenPrice),
         })
         setTimeout(() => {
             this.calculateGasPrice(
-                this.state.tokenSymbol,
-                this.state.addressToSend,
+                this.state.paymentInfomation.tokenSymbol,
+                this.state.paymentInfomation.addressToSend,
                 this.state.amountToSend,
             );
         }, );
@@ -206,16 +253,18 @@ class ModalPayment extends Component {
         }
     }
 
-    calculateGasPrice = async (tokenSymbol, addressToSend, amount) => {
+    calculateGasPrice = async (tokenSymbol, addressToSend, amountToSend) => {
         try {
+            
             const gasLimit = await WalletUtils.getEstimateGas(
                     tokenSymbol,
                     DEFAULT_TOKEN_CONTRACT_ADDRESS,
                     DEFAULT_TOKEN_DECIMALS, 
-                    this.props.defaultWallet.walletAddress,
+                    this.state.defaultWallet.walletAddress,
                     addressToSend,
-                    amount,
+                    amountToSend,
             )
+
             const gasPriceData = await WalletUtils.getGasPrice();
             if (gasLimit === undefined || gasPriceData === undefined) {
                 this.setState({isEnoughGas: false});
@@ -223,9 +272,9 @@ class ModalPayment extends Component {
                 const txFee = gasLimit.wei * gasPriceData;
                 this.setState({gasForSend: txFee});
                 
-                if (tokenSymbol === 'BLC' && (txFee) <= this.props.ethBalance) {
+                if (tokenSymbol === 'BLC' && (txFee) <= this.state.ethBalance) {
                     this.setState({isEnoughGas: true});
-                } else if (tokenSymbol === 'ETH' && amount <= this.props.ethBalance - txFee) { 
+                } else if (tokenSymbol === 'ETH' && amount <= this.state.ethBalance - txFee) { 
                     this.setState({isEnoughGas: true});
                 } else {
                     this.setState({isEnoughGas: false});
@@ -240,12 +289,12 @@ class ModalPayment extends Component {
         try {  
             const txid = await WalletUtils.sendTransaction (
                 { 
-                    contractAddress: (this.state.tokenSymbol === 'BLC') ? (DEFAULT_TOKEN_CONTRACT_ADDRESS) : (''),
-                    symbol: this.state.tokenSymbol, 
-                    decimals: (this.state.tokenSymbol === 'BLC') ? (DEFAULT_TOKEN_DECIMALS) : (0),
+                    contractAddress: (this.state.paymentInfomation.tokenSymbol === 'BLC') ? (DEFAULT_TOKEN_CONTRACT_ADDRESS) : (''),
+                    symbol: this.state.paymentInfomation.tokenSymbol, 
+                    decimals: (this.state.paymentInfomation.tokenSymbol === 'BLC') ? (DEFAULT_TOKEN_DECIMALS) : (0),
                 },
-                this.props.defaultWallet,
-                this.state.addressToSend,
+                this.state.defaultWallet,
+                this.state.paymentInfomation.addressToSend,
                 this.state.amountToSend,
             );
             setTimeout(() => {
@@ -273,28 +322,30 @@ class ModalPayment extends Component {
     };
 
     updateWalletBalance = async () => {        
-        if (this.props.defaultWallet.walletAddress) {
+        if (this.state.defaultWallet.walletAddress) {
             const currentETHBalance = await WalletUtils.getBalance({
-                walletAddress: this.props.defaultWallet.walletAddress,
+                walletAddress: this.state.defaultWallet.walletAddress,
                 contractAddress:'', 
                 symbol:'ETH', 
                 decimals:0
             });
             const currentBLCBalance = await WalletUtils.getBalance({
-                walletAddress: this.props.defaultWallet.walletAddress,
+                walletAddress: this.state.defaultWallet.walletAddress,
                 contractAddress: DEFAULT_TOKEN_CONTRACT_ADDRESS,
                 symbol: DEFAULT_TOKEN_SYMBOL, 
                 decimals: DEFAULT_TOKEN_DECIMALS, 
             });
             if (currentETHBalance !== undefined) {
-                if (this.props.ethBalance !== currentETHBalance)
+                if (this.state.ethBalance !== currentETHBalance)
                 {
+                    this.setState({ethBalance: currentETHBalance});
                     this.props.setEthBalance(currentETHBalance); 
                 }
             }
             if (currentBLCBalance !== undefined) {
-                if (this.props.blcBalance !== currentBLCBalance)
+                if (this.state.blcBalance !== currentBLCBalance)
                 {
+                    this.setState({blcBalance: currentBLCBalance});
                     this.props.setBlcBalance(currentBLCBalance);
                 }
             }
@@ -302,12 +353,12 @@ class ModalPayment extends Component {
     }
 
     addressValidationMsg = () => {
-        if (this.state.addressToSend === '' || this.state.addressToSend === null) {
+        if (this.state.paymentInfomation.addressToSend === '' || this.state.paymentInfomation.addressToSend === null) {
             return <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
-        } else if (!this.addressIsValid(this.state.addressToSend)) {
+        } else if (!this.addressIsValid(this.state.paymentInfomation.addressToSend)) {
             return <FormValidationMessage>{'Address is wrong.'}</FormValidationMessage>
-        } else if (this.isSameAddressWithTxAddress(this.state.addressToSend)) {
-            return <FormValidationMessage>{'You can not send ' + this.state.tokenSymbol + ' to same address.'}</FormValidationMessage>
+        } else if (this.isSameAddressWithTxAddress(this.state.paymentInfomation.addressToSend)) {
+            return <FormValidationMessage>{'You can not send ' + this.state.paymentInfomation.tokenSymbol + ' to same address.'}</FormValidationMessage>
         } else {
             return  <FormValidationMessage labelStyle={{color:'#79C753'}}> {'Address is valid.'} </FormValidationMessage>
         }
@@ -330,7 +381,7 @@ class ModalPayment extends Component {
     }
 
     isSameAddressWithTxAddress = (walletAddress) => {
-        if (walletAddress === this.props.defaultWallet.walletAddress) {        
+        if (walletAddress === this.state.defaultWallet.walletAddress) {       
             return true;
         } else {
             return false;
@@ -346,14 +397,14 @@ class ModalPayment extends Component {
     }
 
     amountIsEnough = (amount) => {
-        if (this.state.tokenSymbol === 'BLC') {
-            if (this.props.blcBalance < amount) {
+        if (this.state.paymentInfomation.tokenSymbol === 'BLC') {
+            if (this.state.blcBalance < amount) {
                 return false;
             } else {
                 return true;
             }
         } else if (this.state.tokenSymbol === 'ETH') {
-            if (this.props.ethBalance < amount) {
+            if (this.state.ethBalance < amount) {
                 return false;
             } else {
                 return true;
@@ -433,8 +484,8 @@ function mapStateToProps(state) {
         visibleModalPayment: state.modal.visibleModalPayment,
         paymentInfomation: state.walletTemp.paymentInfomation,
         defaultWallet: state.wallet.defaultWallet,
-        ethBalance: state.wallet.ethBalance,
-        blcBalance: state.wallet.blcBalance,
+        ethBalance: state.walletTemp.ethBalance,
+        blcBalance: state.walletTemp.blcBalance,
         useFingerPrint: state.config.useFingerPrint,
     };
 }

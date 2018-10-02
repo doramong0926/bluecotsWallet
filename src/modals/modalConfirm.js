@@ -8,14 +8,40 @@ import { connect } from 'react-redux';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 class ModalConfirm extends Component {
+
     constructor(props, context) {
-        super(props, context);
+        super(props);
+        this.state = {
+            scanResult: {
+                status: false,
+                message: "init"
+            },
+            modalConfirmHeader: {
+                text: '',
+            },
+            modalConfirmBody: [{
+                text: ''
+            }],
+        };
+    }
+    
+    componentDidMount() {   
+        this.setState({
+            modalConfirmHeader: this.props.modalConfirmHeader,
+            modalConfirmBody: this.props.modalConfirmBody,
+        })
     }
 
-    state = {
-        scanResult: {
-            status: false,
-            message: "init"
+    componentWillReceiveProps(nextProps) {
+        if (this.props.modalConfirmHeader !== nextProps.modalConfirmHeader) {
+            this.setState({
+                modalConfirmHeader: nextProps.modalConfirmHeader,
+            })
+        }
+        if (this.props.modalConfirmBody !== nextProps.modalConfirmBody) {
+            this.setState({
+                modalConfirmBody: nextProps.modalConfirmBody,
+            })
         }
     }
 
@@ -116,16 +142,16 @@ class ModalConfirm extends Component {
     }
 
     renderHeader = () => {
-        if (this.props.header.text === "" || this.props.header.text === null || this.props.header.text === undefined) {
+        if (this.state.modalConfirmHeader.text === "" || this.state.modalConfirmHeader.text === null || this.state.modalConfirmHeader.text === undefined) {
             return <Text style={styles.headerText}>Infomation</Text>
         } else {
-            return <Text style={styles.headerText}>{this.props.header.text}</Text>
+            return <Text style={styles.headerText}>{this.state.modalConfirmHeader.text}</Text>
         }
     }
 
     renderBody = () => {
         return (
-            this.props.body.map((item, index) => 
+            this.state.modalConfirmBody.map((item, index) => 
                 <Text key={index} style={styles.bodyText}>{item.text}</Text>
             )
         )    
@@ -135,6 +161,8 @@ class ModalConfirm extends Component {
 function mapStateToProps(state) {
     return {
         visibleModalConfirm: state.modal.visibleModalConfirm,
+        modalConfirmHeader: state.modal.modalConfirmHeader,
+        modalConfirmBody: state.modal.modalConfirmBody,
     };
 }
 

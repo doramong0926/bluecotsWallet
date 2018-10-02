@@ -8,7 +8,15 @@ import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 class ModalDefaultWalletSettings extends Component {  
     constructor(props, context) {
-        super(props, context);
+        super(props);
+        this.state = {
+        };
+    }
+
+    componentDidMount() {   
+    }
+
+    componentWillReceiveProps(nextProps) {
     }
 
     render() {

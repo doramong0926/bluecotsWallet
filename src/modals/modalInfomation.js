@@ -9,7 +9,30 @@ import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 class ModalInfomation extends Component {
     constructor(props, context) {
-        super(props, context);
+        super(props);
+        this.state = {
+            modalInfomationText: {
+                title: '',
+                message1: '',
+                message2: '',
+                message3: '',
+                transactionId: '',
+            },
+        };
+    }
+
+    componentDidMount() {   
+        this.setState({
+            modalInfomationText: this.props.modalInfomationText,
+        })
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.modalInfomationText !== nextProps.modalInfomationText) {
+            this.setState({
+                modalInfomationText: nextProps.modalInfomationText,
+            })
+        }
     }
 
     render() {
@@ -39,7 +62,7 @@ class ModalInfomation extends Component {
                 }}
             >
                 <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}> {this.props.modalInfomationText.title}</Text>
+                    <Text style={styles.headerText}> {this.state.modalInfomationText.title}</Text>
                     <View style={{alignSelf:"flex-end", paddingRight:20, position:"absolute"}}>
                         <TouchableOpacity onPress={() => this.handlePressClose()} value={'0.5'}>
                             <Ionicons name="ios-close-circle-outline" size={20}/>
@@ -47,32 +70,40 @@ class ModalInfomation extends Component {
                     </View>                      
                 </View>
                 <View style={styles.bodyContainer}>  
-                    <Text style={styles.bodyText}>{this.props.modalInfomationText.message1}</Text>                      
-                    <Text style={styles.bodyText}>{this.props.modalInfomationText.message2}</Text>                      
-                    <Text style={styles.bodyText}>{this.props.modalInfomationText.message3}</Text>
-                    {
-                        (this.props.modalInfomationText.transactionId !== '' && this.props.modalInfomationText.transactionId !== undefined) ?
-                        (
-                            <TouchableOpacity onPress={() => this.handlePressTxid(this.props.modalInfomationText.transactionId)} value={'0.5'}>
-                                <View>
-                                    <Text style={styles.bodyText}>{this.props.modalInfomationText.transactionId}</Text>
-                                    <View style={{marginTop: 5}}>
-                                        <Text style={{textAlign: 'center', color: 'gray'}}>Click to check txid</Text> 
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                        ) : 
-                        (
-                            <View></View>
-                        )
-                    }
+                    <Text style={styles.bodyText}>{this.state.modalInfomationText.message1}</Text>                      
+                    <Text style={styles.bodyText}>{this.state.modalInfomationText.message2}</Text>                      
+                    <Text style={styles.bodyText}>{this.state.modalInfomationText.message3}</Text>
+                    <Text style={styles.bodyText}>{this.state.modalInfomationText.transactionId}</Text>                    
                 </View>
+                {
+                    (this.state.modalInfomationText.transactionId !== '' && this.state.modalInfomationText.transactionId !== undefined) ?
+                    (
+                        <View style={styles.buttonContainer}>
+                            <Button
+                                onPress={this.handelShowDetail}
+                                title="Show detail"
+                                buttonStyle={{
+                                    backgroundColor: "#BD3D3A",
+                                    borderColor: "transparent", 
+                                    borderRadius: 5
+                                }}
+                                containerViewStyle={{
+                                    // alignSelf: 'stretch',
+                                    // margin: 20,
+                                }}
+                            />
+                        </View>
+                    ) : 
+                    (
+                        <View></View>
+                    )
+                }
             </Modal>
         );
     }
 
-    handlePressTxid = (txid) => {
-        const address = "https://ropsten.etherscan.io/tx/" + txid;
+    handelShowDetail = (txid) => {
+        const address = "https://ropsten.etherscan.io/tx/" + this.props.modalInfomationText.transactionId;
         Linking.canOpenURL(address).then(supported => {
             if (supported) {
                 Linking.openURL(address);

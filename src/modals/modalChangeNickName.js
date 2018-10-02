@@ -19,19 +19,33 @@ import {
 const uuid = require('uuid')
 
 class ModalChangeNickName extends Component {     
-    constructor(props, context) {
-        super(props, context);
-    };
-    
     static propTypes = {
         defaultWallet: PropTypes.shape({
             walletAddress: PropTypes.string.isRequired,
         }).isRequired,
     };
+    
+    constructor(props, context) {
+        super(props);
+        this.state = {
+            previousNickName: '',
+            modifiedNickName: '',
+            defaultWallet: defaultWallet,
+            tempWallet: defaultWallet,
+        };
+    }
 
-    state = {
-        nickName: '',
-    };
+    componentDidMount() {   
+        this.setState({
+            previousNickName: this.props.tempWallet.nickName,
+            modifiedNickName: '',
+            defaultWallet: this.props.defaultWallet,
+            tempWallet: this.props.tempWallet,
+        })
+    }
+
+    componentWillReceiveProps(nextProps) {
+    }
     
     render() {
         return (
@@ -43,7 +57,7 @@ class ModalChangeNickName extends Component {
                 closeOnTouchOutside={true}
                 disableOnBackPress={false}
                 modalDidClose={() => {this.closeModal()}}
-                modalDidOpen={() => undefined}
+                modalDidOpen={() => {this.openModal()}}
                 modalProps={undefined}
                 containerProps={undefined}
                 containerStyle={{
@@ -71,8 +85,9 @@ class ModalChangeNickName extends Component {
                     <FormLabel>Nickname</FormLabel>
                     <FormInput 
                         inputStyle = {{paddingLeft:5, paddingRight:5, marginRight:0, fontSize:11}}
-                        value={this.state.nickName} 
-                        onChangeText={(value) => this.setState({nickName: value})}
+                        value={this.state.modifiedNickName} 
+                        onChangeText={(value) => this.setState({modifiedNickName: value})}
+                        placeholder={this.state.previousNickName}
                     />
                     {this.nickNameValidationMsg()}
                 </View>
@@ -98,17 +113,30 @@ class ModalChangeNickName extends Component {
 
     nickNameValidationMsg = () =>
     {
-        if (this.isEmptString(this.state.nickName)) {
+        if (this.isEmptString(this.state.modifiedNickName)) {
             return <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
-        } else if (this.isUsedNickName(this.state.nickName)){
-            return <FormValidationMessage>{'Nickname(' + this.state.nickName + ') already be used.'}</FormValidationMessage>
+        } else if (this.isUsedNickName(this.state.modifiedNickName)){
+            return <FormValidationMessage>{'Nickname(' + this.state.modifiedNickName + ') already be used.'}</FormValidationMessage>
         } else {
             return <FormValidationMessage labelStyle={{color:'#79C753'}}>{'Nickname is valid.'}</FormValidationMessage>
         }
     }
 
+    initState = () => {
+        this.setState({
+            previousNickName: this.props.tempWallet.nickName,
+            modifiedNickName: '',
+            defaultWallet: this.props.defaultWallet,
+            tempWallet: this.props.tempWallet
+        });
+    }
+
     closeModal = () => {        
         this.props.hideModalChangeNickName();
+    }
+
+    openModal = () => {
+        this.initState();
     }
 
     scanFingerPrint = () => {
@@ -126,15 +154,14 @@ class ModalChangeNickName extends Component {
         this.props.showModalPincode();
     }
 
-    changeNickName() {
-        var wallet = this.props.tempWallet;
-        wallet.nickName = this.state.nickName;
-        this.props.changeNickName(wallet);
-        if (this.props.tempWallet.walletAddress === this.props.defaultWallet.walletAddress) {
-            setTimeout(() => {
-                this.props.setDefaultWallet(wallet);    
-            }, );
+    modifyNickName = () => {
+        let wallet = this.state.tempWallet;
+        wallet.nickName = this.state.modifiedNickName;
+        if (wallet.walletAddress === this.state.defaultWallet.walletAddress) {
+            this.props.setDefaultWallet(wallet);
         }
+        this.props.changeNickName(wallet);
+
         const infomation = {
             title: 'Change nickname', 
             message1: 'Success to change nickname to ' + wallet.nickName + '.',
@@ -147,27 +174,23 @@ class ModalChangeNickName extends Component {
 
     modalFingerPrintScanerFinishProcess(result) {
         if (result.status == true) {
-            this.changeNickName();
-            this.setState({nickName: ''})
-            this.props.setTempWallet('')
+            this.modifyNickName();
+            this.initState();
         } else {
             if (result.message === 'usePinCode') { 
                 this.usePinCode();
             } else {
-                this.setState({nickName: ''})
-                this.props.setTempWallet('')
+                this.initState();
             }
         }
     }
 
     modalPincodeFinishProcess(result) {
         if (result.status === true) {
-            this.changeNickName();
-            this.setState({nickName: ''})
-            this.props.setTempWallet('')
+            this.modifyNickName();
+            this.initState();
         } else {
-            this.setState({nickName: ''})
-            this.props.setTempWallet('')
+            this.initState();
         }
     }
 
@@ -179,8 +202,7 @@ class ModalChangeNickName extends Component {
                 this.usePinCode();
             }
         } else {
-            this.setState({nickName: ''})
-            this.props.setTempWallet('')
+            this.initState();
         }        
     }
 
@@ -189,7 +211,7 @@ class ModalChangeNickName extends Component {
         this.props.setModalConfirmFinishProcess(this.confirmToChangeWalletFinishProcess.bind(this));
         this.props.setModalConfirmHeader("Confirmation");
         this.props.setModalConfirmBody([
-            {text: "Are you sure to change nickname to " + this.state.nickName + "?"},
+            {text: "Are you sure to change nickname to " + this.state.modifiedNickName + "?"},
         ]);
         this.props.showModalConfirm();
     }
@@ -206,7 +228,7 @@ class ModalChangeNickName extends Component {
     }
 
     isValidChangeButton = () => {
-        if (!this.isEmptString(this.state.nickName) && !this.isUsedNickName(this.state.nickName))
+        if (!this.isEmptString(this.state.modifiedNickName) && !this.isUsedNickName(this.state.modifiedNickName))
         {
             return true;
         } else {

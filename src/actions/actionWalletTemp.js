@@ -20,3 +20,17 @@ export function setPaymentInfomation(paymentInfomation) {
         payload: paymentInfomation
     };
 }
+
+export function setEthBalance(balance) {
+    return {
+        type: actionTypes.SET_ETH_BALANCE,
+        payload: balance
+    };
+}
+
+export function setBlcBalance(balance) {
+    return {
+        type: actionTypes.SET_BLC_BALANCE,
+        payload: balance
+    };
+}

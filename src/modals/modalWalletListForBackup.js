@@ -7,36 +7,28 @@ import { connect } from 'react-redux';
 import WalletUtils from '../utils/wallet';
 import PropTypes from 'prop-types';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import { 
-	DEFAULT_TOKEN_SYMBOL,
-	DEFAULT_TOKEN_CONTRACT_ADDRESS,
-    DEFAULT_TOKEN_DECIMALS,
-    defaultWallet,
- } from '../config/constants';
 
 class ModalWalletListForBackup extends Component {
+    static propTypes = {
+    };
+
     constructor(props, context) {
         super(props, context);
+        this.state = {
+            dataSourceForWalletList: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2,
+            }),
+        };
     }
 
-    static propTypes = {
-        defaultWallet: PropTypes.shape({
-            walletAddress: PropTypes.string.isRequired,
-        }).isRequired,
-    };
-
-    state = {
-        dataSourceForWalletList: new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2,
-        }),
-    };
-    
-    componentDidMount() {
-        this.fetchWalletList();
+    componentDidMount() {   
+        this.fetchWalletList(this.props.walletList);
     }
 
-    componentWillReceiveProps() {
-        this.fetchWalletList();
+    componentWillReceiveProps(nextProps) {
+        if (this.props.walletList !== nextProps.walletList) {
+            this.fetchWalletList(nextProps.walletList);
+        }
     }
 
     render() {
@@ -87,7 +79,7 @@ class ModalWalletListForBackup extends Component {
     }
 
     openModal = () => {
-        this.fetchWalletList();
+        this.fetchWalletList(this.props.walletList);
     }    
 
     renderWalletList = (wallet) => {
@@ -121,8 +113,8 @@ class ModalWalletListForBackup extends Component {
         this.props.showModalBackupWallet();        
     }
 
-    fetchWalletList = () => {
-        this.state.dataSourceForWalletList = this.state.dataSourceForWalletList.cloneWithRows(this.props.walletList);
+    fetchWalletList = (walletList) => {
+        this.state.dataSourceForWalletList = this.state.dataSourceForWalletList.cloneWithRows(walletList);
     };
 }
 
@@ -150,7 +142,6 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         walletList: state.wallet.walletList,
-        defaultWallet: state.wallet.defaultWallet,
         visibleModalWalletListForBackup: state.modal.visibleModalWalletListForBackup,
         useFingerPrint: state.config.useFingerPrint,
     };

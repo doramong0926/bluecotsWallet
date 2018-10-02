@@ -6,6 +6,18 @@ import { connect } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 class ModalSpinner extends Component {
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+        }
+    }
+
+    componentDidMount(){
+    }
+
+    componentWillReceiveProps(nextProps) {
+    }
+
     render() {
         return (
             <View>                

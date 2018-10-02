@@ -15,8 +15,7 @@ const migrations = {
           ...walletList,
           id: uuid.v4(),
       })),
-      ethBalance: state.wallet.ethBalance,
-      blcBalance: state.wallet.blcBalance,
+      defaultWallet: state.wallet.defaultWallet,
   }),
 };
 

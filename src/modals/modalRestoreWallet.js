@@ -20,21 +20,26 @@ import {
 const uuid = require('uuid')
 
 
-class ModalRestoreWallet extends Component {     
-    constructor(props, context) {
-        super(props, context);
-    }
-
+class ModalRestoreWallet extends Component {    
     static propTypes = {
         defaultWallet: PropTypes.shape({
             walletAddress: PropTypes.string.isRequired,
         }).isRequired,
     };
 
-    state = {
-        nickName: '',
-        privateKey: '',
-    };
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            nickName: '',
+            privateKey: '',
+        };
+    }
+    
+    componentDidMount() {
+    }
+
+    componentWillReceiveProps(nextProps) {
+    }
     
     render() {
         return (

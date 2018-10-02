@@ -20,90 +20,60 @@ export const defaultWallet = {
     privateKey: '',
 };
 
-export const defaultPaymentInfomation = {
-    orderNumber: null,
-    roomType: {
-        avaliableRoom: null,
-        price: {
-            adult: null,
-            kid: null,
-            baby: null,
-        },
-        avaliableService: {
-            dryer: null,
-            parking: null,
-            internet: null,
-        },
-        bedType: null,
-    },
-    numOfPeople: {
-        adult: null,
-        kid: null,
-        baby: null,
-    },
-    tokenSymbolForPayment: null,
-    date: {
-        begin: null,
-        end: null,
-    },
-    tokenPrice: null,
-    hotelInfo: defaultHotelInfo,
-}
-
 export const defaultTransactionData = [
-  {
-    blockNumber: '',
-    timeStamp: '',
-    hash : '',
-    from: '',
-    value: '',
-    to: '',
-    gasUsed: '',
-    isError: '',
-    txreceipt_status: '',
-  }
+    {
+        blockNumber: '',
+        timeStamp: '',
+        hash : '',
+        from: '',
+        value: '',
+        to: '',
+        gasUsed: '',
+        isError: '',
+        txreceipt_status: '',
+    }
 ];
 
 export const erc20Abi = [
     {
-      name: 'balanceOf',
-      type: 'function',
-      constant: true,
-      payable: false,
-      inputs: [
-        {
-          name: '_owner',
-          type: 'address',
-        },
-      ],
-      outputs: [
-        {
-          name: 'balance',
-          type: 'uint256',
-        },
-      ],
+        name: 'balanceOf',
+        type: 'function',
+        constant: true,
+        payable: false,
+        inputs: [
+            {
+                name: '_owner',
+                type: 'address',
+            },
+        ],
+        outputs: [
+            {
+                name: 'balance',
+                type: 'uint256',
+            },
+        ],
     },
     {
-      name: 'transfer',
-      type: 'function',
-      constant: false,
-      payable: false,
-      inputs: [
-        {
-          name: '_to',
-          type: 'address',
-        },
-        {
-          name: '_value',
-          type: 'uint256',
-        },
-      ],
-      outputs: [
-        {
-          name: 'success',
-          type: 'bool',
-        },
-      ],
+        name: 'transfer',
+        type: 'function',
+        constant: false,
+        payable: false,
+        inputs: [
+            {
+                name: '_to',
+                type: 'address',
+            },
+            {
+                name: '_value',
+                type: 'uint256',
+            },
+        ],
+        outputs: [
+            {
+                name: 'success',
+                type: 'bool',
+            },
+        ],
     },
   ];
   

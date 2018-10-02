@@ -15,30 +15,30 @@ import {
  } from '../config/constants';
 
 class ModalRemoveWallet extends Component {
-    constructor(props, context) {
-        super(props, context);
-    }
-
-
     static propTypes = {
         defaultWallet: PropTypes.shape({
             walletAddress: PropTypes.string.isRequired,
         }).isRequired,
     };
 
-    state = {
-        dataSourceForWalletList: new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2,
-        }),
-        walletForRemove: defaultWallet,
-    };
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            dataSourceForWalletList: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2,
+            }),
+            walletForRemove: defaultWallet,
+        };
+    }
     
     componentDidMount() {
-        this.fetchWalletList();
+        this.fetchWalletList(this.props.walletList);
     }
 
-    componentWillReceiveProps() {
-        this.fetchWalletList();
+    componentWillReceiveProps(nextProps) {
+        if (this.props.walletList !== nextProps.walletList) {
+            this.fetchWalletList(nextProps.walletList);
+        }
     }
 
     render() {
@@ -89,7 +89,7 @@ class ModalRemoveWallet extends Component {
     }
 
     openModal = () => {
-        this.fetchWalletList();
+        this.fetchWalletList(this.props.walletList);
     }    
 
     renderWalletList = (wallet) => {
@@ -158,6 +158,15 @@ class ModalRemoveWallet extends Component {
         } else {
             this.props.removeWallet(this.state.walletForRemove);
             this.setState({walletForRemove:defaultWallet});
+            const infomation = {
+                title: 'Remove wallet', 
+                message1: 'Success to remove wallet.',
+                message2: this.state.walletForRemove.walletAddress,
+            };
+            this.props.setModalInfomation(infomation);
+            setTimeout(() => {
+                this.props.showModalInfomation();    
+            }, );     
         }
     }
 
@@ -204,11 +213,13 @@ class ModalRemoveWallet extends Component {
             {text: wallet.walletAddress},
         ]);
         this.props.hideModalRemoveWallet();
-        this.props.showModalConfirm();        
+        setTimeout(() => {
+            this.props.showModalConfirm();            
+        }, 100);
     }
 
-    fetchWalletList = () => {
-        this.state.dataSourceForWalletList = this.state.dataSourceForWalletList.cloneWithRows(this.props.walletList);
+    fetchWalletList = (walletList) => {
+        this.state.dataSourceForWalletList = this.state.dataSourceForWalletList.cloneWithRows(walletList);
     };
     
     updateWalletBalance = async (walletAddress) => {

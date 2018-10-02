@@ -12,26 +12,46 @@ import PropTypes from 'prop-types';
 import { 
 	DEFAULT_TOKEN_SYMBOL,
 	DEFAULT_TOKEN_CONTRACT_ADDRESS,
-	DEFAULT_TOKEN_DECIMALS,
+    DEFAULT_TOKEN_DECIMALS,
+    defaultWallet,
  } from '../config/constants';
  import { Card, Divider } from 'react-native-material-design';
  import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 class WalletBalanceCard extends Component {
-    constructor(props, context) {
-        super(props, context);
-    }
-
     static propTypes = {
         defaultWallet: PropTypes.shape({
             walletAddress: PropTypes.string.isRequired,
         }).isRequired,
     };
+
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            defaultWallet: defaultWallet,
+            blcBalance: 0,
+            ethBalance: 0,
+        }
+    }
+
     componentDidMount(){
+        this.setState({defaultWallet: this.props.defaultWallet})
         this.updateWalletBalance();
         setInterval(() => {
             this.updateWalletBalance();
         }, 1000)
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.defaultWallet !== nextProps.defaultWallet || 
+            this.props.defaultWallet.nickName !== nextProps.defaultWallet.nickName) {
+            this.setState({
+                defaultWallet: nextProps.defaultWallet,
+            })
+            setTimeout(() => {
+                this.updateWalletBalance();    
+            }, );
+        }
     }
 
     render() {
@@ -40,10 +60,10 @@ class WalletBalanceCard extends Component {
                 <Card style={styles.containerCard}>
                     <Card.Body>
                         <View style={styles.containerTitle}>
-                            <Text style={styles.textTitle}>Balance ({this.props.defaultWallet.nickName})</Text>
+                            <Text style={styles.textTitle}>Balance ({this.state.defaultWallet.nickName})</Text>
                             <TouchableOpacity onPress={() => this.handlePressCopy()} value="0.5">
                                 <View style={{alignItems:"center", justifyContent:"center", flexDirection:"row"}}>
-                                    <Text style={styles.descriptionText}>{this.props.defaultWallet.walletAddress}</Text> 
+                                    <Text style={styles.descriptionText}>{this.state.defaultWallet.walletAddress}</Text> 
                                     <View style={{alignItems:"center", marginLeft: 3}}>
                                         <Ionicons name="ios-copy-outline" size={15}/>
                                     </View>              
@@ -56,7 +76,7 @@ class WalletBalanceCard extends Component {
                             </View>
                             <View style={{flex: 5, flexDirection: 'row', justifyContent: 'flex-end'}}>
                                 <Text style={styles.balanceText}>
-                                    {(this.props.blcBalance) ? this.props.blcBalance.toFixed(3): '0.000'}
+                                    {(this.state.blcBalance) ? this.state.blcBalance.toFixed(3): '0.000'}
                                 </Text>
                                 <Text style={{fontSize :10, textAlign: 'center' }}> BLC</Text>
                             </View>
@@ -68,7 +88,7 @@ class WalletBalanceCard extends Component {
                             </View>
                             <View style={{flex: 5, flexDirection: 'row', justifyContent: 'flex-end'}}>
                                 <Text style={styles.balanceText}>
-                                    {(this.props.ethBalance) ? this.props.ethBalance.toFixed(3): '0.000'}
+                                    {(this.state.ethBalance) ? this.state.ethBalance.toFixed(3): '0.000'}
                                 </Text>
                                 <Text style={{fontSize :10, textAlign: 'center' }}> ETH</Text>
                             </View>
@@ -84,7 +104,7 @@ class WalletBalanceCard extends Component {
     }    
 
     handlePressCopy = async () => {
-        Clipboard.setString(this.props.defaultWallet.walletAddress);
+        Clipboard.setString(this.state.defaultWallet.walletAddress);
         const address = await Clipboard.getString();
         const infomation = {
             title: 'INFOMATION', 
@@ -99,28 +119,30 @@ class WalletBalanceCard extends Component {
     };
     
     updateWalletBalance = async () => {
-        if (this.props.defaultWallet.walletAddress) {
+        if (this.state.defaultWallet.walletAddress) {
                 const currentETHBalance = await WalletUtils.getBalance({
-                walletAddress: this.props.defaultWallet.walletAddress,
+                walletAddress: this.state.defaultWallet.walletAddress,
                 contractAddress:'', 
                 symbol:'ETH', 
                 decimals:0
             });
                 const currentBLCBalance = await WalletUtils.getBalance({
-                walletAddress: this.props.defaultWallet.walletAddress,
+                walletAddress: this.state.defaultWallet.walletAddress,
                 contractAddress: DEFAULT_TOKEN_CONTRACT_ADDRESS,
                 symbol: DEFAULT_TOKEN_SYMBOL, 
                 decimals: DEFAULT_TOKEN_DECIMALS, 
             });
             if (currentETHBalance !== undefined) {
-                if (this.props.ethBalance !== currentETHBalance)
+                if (this.state.ethBalance !== currentETHBalance)
                 {
+                    this.setState({ethBalance: currentETHBalance});
                     this.props.setEthBalance(currentETHBalance); 
                 }
             }
             if (currentBLCBalance !== undefined) {
-                if (this.props.blcBalance !== currentBLCBalance)
+                if (this.state.blcBalance !== currentBLCBalance)
                 {
+                    this.setState({blcBalance: currentBLCBalance});
                     this.props.setBlcBalance(currentBLCBalance);
                 }
             }
@@ -131,8 +153,6 @@ class WalletBalanceCard extends Component {
 function mapStateToProps(state) {
     return {
         defaultWallet: state.wallet.defaultWallet,
-        ethBalance: state.wallet.ethBalance,
-        blcBalance: state.wallet.blcBalance,
     };
 }
 
@@ -160,8 +180,8 @@ const styles = StyleSheet.create({
         // height: 300,
     },
     containerCard: {
-        marginTop: 4,  
-        marginBottom: 0,  
+        marginTop: 0,  
+        marginBottom: 4,  
         marginHorizontal: 4,
     },
     containerNotice: {

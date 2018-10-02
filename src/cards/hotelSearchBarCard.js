@@ -10,8 +10,16 @@ class HotelSearchBarCard extends Component {
     static propTypes = {
     };
 
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+        }
+    }
+
+    componentDidMount(){
+    }
+
+    componentWillReceiveProps(nextProps) {
     }
 
     render() {
@@ -21,7 +29,7 @@ class HotelSearchBarCard extends Component {
                     <Card.Body>                        
                         <View style={styles.containerTitle}>
                             <Text style={styles.textTitle}>Search hotel</Text>
-                            <Text style={styles.descriptionText}>Reserve your hotel with bluecots.</Text>
+                            <Text style={styles.descriptionText}>Reserve with bluecots.</Text>
                         </View>   
                         <View style={styles.containerSearchBar}>
                             <SearchBar

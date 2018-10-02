@@ -14,30 +14,31 @@ import {
  } from './../config/constants';
 
 class ModalChangeDefaultWallet extends Component {
-    constructor(props, context) {
-        super(props, context);
-    }
-
     static propTypes = {
         defaultWallet: PropTypes.shape({
             walletAddress: PropTypes.string.isRequired,
         }).isRequired,
     };
 
-    state = {
-        dataSourceForWalletList: new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2,
-        }),
-    };
+    constructor(props, context) {
+        super(props);
+        this.state = {
+            dataSourceForWalletList: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2,
+            }),
+        };
+    }
+
+    componentDidMount() {   
+        this.fetchWalletList(this.props.walletList);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.walletList !== nextProps.walletList) {
+            this.fetchWalletList(nextProps.walletList);
+        }
+    }
     
-    componentDidMount() {
-        this.fetchWalletList();
-    }
-
-    componentWillReceiveProps() {
-        this.fetchWalletList();
-    }
-
     render() {
         return (            
             <Modal 
@@ -86,7 +87,7 @@ class ModalChangeDefaultWallet extends Component {
     }
 
     openModal = () => {
-        this.fetchWalletList();
+        this.fetchWalletList(this.props.walletList);
     }    
 
     renderWalletList = (wallet) => {
@@ -123,8 +124,8 @@ class ModalChangeDefaultWallet extends Component {
         },); 
     }
 
-    fetchWalletList = () => {
-        this.state.dataSourceForWalletList = this.state.dataSourceForWalletList.cloneWithRows(this.props.walletList);
+    fetchWalletList = (walletList) => {
+        this.state.dataSourceForWalletList = this.state.dataSourceForWalletList.cloneWithRows(walletList);
     };
     
     updateWalletBalance = async (walletAddress) => {

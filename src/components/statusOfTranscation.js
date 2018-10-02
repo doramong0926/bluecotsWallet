@@ -4,6 +4,18 @@ import { connect } from 'react-redux';
 import { Divider } from 'react-native-material-design';
 
 class StatusOfTranscation extends Component{
+    constructor(props, context) {
+        super(props);
+        this.state = {
+        };
+    }
+
+    componentDidMount() {   
+    }
+
+    componentWillReceiveProps(nextProps) {
+    }
+    
     render(){
         return (
             <View style={styles.container}>

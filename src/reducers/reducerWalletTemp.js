@@ -1,10 +1,13 @@
 import actionTypes from './../actions/actionTypes';
-import { defaultWallet, defaultPaymentInfomation } from './../config/constants';
+import { defaultWallet, } from './../config/constants';
+import { defaultPaymentInfomation, } from '../config/hotelList';
 
 const initialState = {
     isLoadingTxData: true,
     tempWallet: defaultWallet,
     paymentInfomation: defaultPaymentInfomation,
+    ethBalance: 0,
+    blcBalance: 0,
 };  
 
 export default (state = initialState, action) => {
@@ -22,6 +25,16 @@ export default (state = initialState, action) => {
         case actionTypes.SET_PAYMENT_INFOMATION:
             return Object.assign({}, state, {
                 paymentInfomation: action.payload,
+        });
+
+        case actionTypes.SET_ETH_BALANCE:
+            return Object.assign({}, state, {
+                ethBalance: action.payload,
+        });
+
+        case actionTypes.SET_BLC_BALANCE:
+            return Object.assign({}, state, {
+                blcBalance: action.payload,
         });
 
         default:

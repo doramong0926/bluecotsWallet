@@ -2,6 +2,18 @@ import React, { Component } from 'react';
 import { Image, Text, View } from 'react-native';
 
 class TokenSymbolWithName extends Component {
+    constructor(props, context) {
+        super(props);
+        this.state = {
+        };
+    }
+
+    componentDidMount() {   
+    }
+
+    componentWillReceiveProps(nextProps) {
+    }
+    
     render() {
         return (
             <View style={{flexDirection: 'row'}}>

@@ -13,15 +13,20 @@ import SLIDER_IMAGE3 from './../components/images/sampleSlider3.jpg';
 
 class ModalPincode extends Component {    
     constructor(props, context) {
-        super(props, context);
-    };
-
-    state = {
-        errorMessage: null,
-        scanResult: {
-            status: false,
-            message: "init"
+        super(props);
+        this.state = {
+            errorMessage: null,
+            scanResult: {
+                status: false,
+                message: "init"
+            }
         }
+    }
+
+    componentDidMount() {   
+    }
+
+    componentWillReceiveProps(nextProps) {
     }
 
     render() {

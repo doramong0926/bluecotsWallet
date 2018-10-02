@@ -21,20 +21,6 @@ export function setDefaultWallet(wallet) {
     };
 }
 
-export function setEthBalance(balance) {
-    return {
-        type: actionTypes.SET_ETH_BALANCE,
-        payload: balance
-    };
-}
-
-export function setBlcBalance(balance) {
-    return {
-        type: actionTypes.SET_BLC_BALANCE,
-        payload: balance
-    };
-}
-
 export function changeNickName(wallet) {
     return {
         type: actionTypes.CHANGE_NICKNAME,

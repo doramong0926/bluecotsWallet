@@ -16,24 +16,27 @@ import ActionCreator from './../actions';
 import { connect } from 'react-redux';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
-class ModalQrCodeScaner extends Component {
-    constructor(props, context) {
-        super(props, context);
-    };
-    
+class ModalQrCodeScaner extends Component {    
     static propTypes = {
     };
 
-    state = {
-        lastScannedData: null,
-    };
+    constructor(props, context) {
+        super(props);
+        this.state = {
+            lastScannedData: null,
+        };
+    }
 
-    componentDidMount() {
+    componentDidMount() {   
         this._requestCameraPermission();
     }
 
-    componentWillReceiveProps() {
-        this._requestCameraPermission();
+    componentWillReceiveProps(nextProps) {
+        if (this.props.visibleModalQrCodeScaner !== nextProps.visibleModalQrCodeScaner) {
+            if (nextProps.visibleModalQrCodeScaner === true) {
+                this._requestCameraPermission();
+            }
+        }
     }
     
     _requestCameraPermission = async () => {

@@ -9,32 +9,40 @@ import EthereumJsWallet from 'ethereumjs-wallet';
 import WalletUtils from '../utils/wallet';
 import PropTypes from 'prop-types';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import { 
-	DEFAULT_TOKEN_SYMBOL,
-	DEFAULT_TOKEN_CONTRACT_ADDRESS,
-    DEFAULT_TOKEN_DECIMALS,
-    defaultWallet,
- } from '../config/constants';
  import { FileSystem } from 'expo';
 //  import RNFS from 'react-native-fs';
 // var RNFS = require('react-native-fs');
  
 const uuid = require('uuid')
 
-class ModalBackupWallet extends Component {     
-    constructor(props, context) {
-        super(props, context);
-    };
-    
+class ModalBackupWallet extends Component {    
     static propTypes = {
-        defaultWallet: PropTypes.shape({
-            walletAddress: PropTypes.string.isRequired,
-        }).isRequired,
     };
 
-    state = {
-        typeOfBackup: '',
-    };
+    constructor(props, context) {
+        super(props);
+        this.state = {
+            typeOfBackup: '',
+            wallet: {
+                walletAddress: '',
+                privatekey: '',
+            }
+        };
+    }
+
+    componentDidMount() {   
+        this.setState({
+            wallet: this.props.tempWallet,
+        })
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.tempWallet !== nextProps.tempWallet) {
+            this.setState({
+                wallet: nextProps.tempWallet,
+            })
+        }
+    }
 
     render() {
         return (
@@ -72,7 +80,7 @@ class ModalBackupWallet extends Component {
                 </View>
                 <View style={styles.bodyContainer}>  
                     <Text>wallet address : </Text>
-                    <Text>{this.props.tempWallet.walletAddress}</Text>
+                    <Text>{this.state.wallet.walletAddress}</Text>
                     <Text>Select type of backup privatekey.</Text>
                 </View>
                 <View style={styles.buttonContainer}>
@@ -133,7 +141,7 @@ class ModalBackupWallet extends Component {
     }
 
     copyPrivateKey = async () => {
-        Clipboard.setString(this.props.tempWallet.privateKey);
+        Clipboard.setString(this.state.wallet.privateKey);
         const privateKey = await Clipboard.getString();
         const infomation = {
             title: 'Backup private key', 
@@ -159,13 +167,6 @@ class ModalBackupWallet extends Component {
     }
 
     savePrivateKey = async (privateKey) => {
-        console.log(`${FileSystem.documentDirectory}MyFolder/my_file.txt`)
-        console.log(`${FileSystem.documentDirectory}MyFolder/my_file.txt`)
-        console.log(`${FileSystem.documentDirectory}MyFolder/my_file.txt`)
-        console.log(`${FileSystem.documentDirectory}MyFolder/my_file.txt`)
-        console.log(`${FileSystem.documentDirectory}MyFolder/my_file.txt`)
-        console.log(`${FileSystem.documentDirectory}MyFolder/my_file.txt`)
-        console.log(`${FileSystem.documentDirectory}MyFolder/my_file.txt`)
         this.ensureFolderExists().then(() => {
             FileSystem.writeAsStringAsync(`${FileSystem.documentDirectory}MyFolder/my_file.txt`, "ddddddddddddddd")
         })
@@ -224,7 +225,7 @@ class ModalBackupWallet extends Component {
         if (this.state.typeOfBackup === 'copy') {
             this.copyPrivateKey();
         } else {
-            this.savePrivateKey(this.props.tempWallet.privateKey);            
+            this.savePrivateKey(this.state.wallet.privateKey);            
         }
         this.setState({typeOfBackup: ''});
         this.props.setTempWallet('')
@@ -290,8 +291,6 @@ class ModalBackupWallet extends Component {
 
 function mapStateToProps(state) {
     return {
-        defaultWallet: state.wallet.defaultWallet,
-        walletList: state.wallet.walletList,
         visibleModalBackupWallet: state.modal.visibleModalBackupWallet,
         tempWallet: state.walletTemp.tempWallet,
         useFingerPrint: state.config.useFingerPrint,

@@ -19,45 +19,65 @@ import HOTEL6_MAIN from './../cards/images/hotel6_main.jpg';
 import HOTEL6_SUB1 from './../cards/images/hotel6_sub1.jpg';
 import HOTEL6_SUB2 from './../cards/images/hotel6_sub2.jpg';
 
+export const defaultPaymentInfomation = {
+    orderNumber: 0,
+    roomType: '',
+    numOfPeople: {
+        adult: 0,
+        kid: 0,
+        baby: 0,
+    },
+    tokenSymbol: 'BLC',
+    amountToSend: 0,
+    date: {
+        begin: 0,
+        end: 0,
+    },
+    tokenPrice: 0.01,
+    totalPrice: 0,
+    totalAmount: 0,
+    hotelInfo: defaultHotelInfo,
+};
+
 export const defaultHotelInfo = {
-    id: null,
+    id: 0,
     roomType: {
         deluxRoom : {
-            avaliableRoom: null,
+            avaliableRoomCount: 0,
             price: {
-                adult: null,
-                kid: null,
-                baby: null,
+                adult: 0,
+                kid: 0,
+                baby: 0,
             },
             avaliableService: {
-                dryer: null,
-                parking: null,
-                internet: null,
+                dryer: false,
+                parking: false,
+                internet: false,
             },
-            bedType: null,
+            bedType: 'single',
         },
         familyRoom : {
-            avaliableRoom: null,
+            avaliableRoomCount: 0,
             price: {
-                adult: null,
-                kid: null,
-                baby: null,
+                adult: 0,
+                kid: 0,
+                baby: 0,
             },
             avaliableService: {
-                dryer: null,
-                parking: null,
-                internet: null,
+                dryer: false,
+                parking: false,
+                internet: false,
             },
-            bedType: null,
+            bedType: 'single',
         },
     },        
-    addressToSend: null,
-    name: null,
-    description: null,
-    address: null,
-    homepage: null,
-    country: null,
-    city: null,
+    addressToSend: '',
+    name: '',
+    description: '',
+    address: '',
+    homepage: '',
+    country: '',
+    city: '',
     mainImage: null,
     detailMainImage: [
         null,
@@ -65,7 +85,7 @@ export const defaultHotelInfo = {
     detailSubImage : [
         null,
     ],
-    starCount: null,
+    starCount: 0,
 }
 
 export const defaultHotelInfoList = [
@@ -73,7 +93,7 @@ export const defaultHotelInfoList = [
         id: 1,
         roomType: {
             deluxRoom : {
-                avaliableRoom: 1,
+                avaliableRoomCount: 1,
                 price: {
                     adult: 11,
                     kid: 6,
@@ -87,7 +107,7 @@ export const defaultHotelInfoList = [
                 bedType: 'double'
             },
             familyRoom : {
-                avaliableRoom: 3,
+                avaliableRoomCount: 3,
                 price: {
                     adult: 20,
                     kid: 10,
@@ -124,7 +144,7 @@ export const defaultHotelInfoList = [
         id: 2,
         roomType: {
             deluxRoom : {
-                avaliableRoom: 1,
+                avaliableRoomCount: 1,
                 price: {
                     adult: 11,
                     kid: 6,
@@ -138,7 +158,7 @@ export const defaultHotelInfoList = [
                 bedType: 'double'
             },
             familyRoom : {
-                avaliableRoom: 3,
+                avaliableRoomCount: 3,
                 price: {
                     adult: 20,
                     kid: 10,
@@ -175,7 +195,7 @@ export const defaultHotelInfoList = [
         id: 3,
         roomType: {
             deluxRoom : {
-                avaliableRoom: 1,
+                avaliableRoomCount: 1,
                 price: {
                     adult: 11,
                     kid: 6,
@@ -189,7 +209,7 @@ export const defaultHotelInfoList = [
                 bedType: 'double'
             },
             familyRoom : {
-                avaliableRoom: 3,
+                avaliableRoomCount: 3,
                 price: {
                     adult: 20,
                     kid: 10,
@@ -226,7 +246,7 @@ export const defaultHotelInfoList = [
         id: 4,
         roomType: {
             deluxRoom : {
-                avaliableRoom: 1,
+                avaliableRoomCount: 1,
                 price: {
                     adult: 11,
                     kid: 6,
@@ -240,7 +260,7 @@ export const defaultHotelInfoList = [
                 bedType: 'double'
             },
             familyRoom : {
-                avaliableRoom: 3,
+                avaliableRoomCount: 3,
                 price: {
                     adult: 20,
                     kid: 10,
@@ -277,7 +297,7 @@ export const defaultHotelInfoList = [
         id: 5,
         roomType: {
             deluxRoom : {
-                avaliableRoom: 1,
+                avaliableRoomCount: 1,
                 price: {
                     adult: 11,
                     kid: 6,
@@ -291,7 +311,7 @@ export const defaultHotelInfoList = [
                 bedType: 'double'
             },
             familyRoom : {
-                avaliableRoom: 3,
+                avaliableRoomCount: 3,
                 price: {
                     adult: 20,
                     kid: 10,
@@ -328,7 +348,7 @@ export const defaultHotelInfoList = [
         id: 6,
         roomType: {
             deluxRoom : {
-                avaliableRoom: 1,
+                avaliableRoomCount: 1,
                 price: {
                     adult: 11,
                     kid: 6,
@@ -342,7 +362,7 @@ export const defaultHotelInfoList = [
                 bedType: 'double'
             },
             familyRoom : {
-                avaliableRoom: 3,
+                avaliableRoomCount: 3,
                 price: {
                     adult: 20,
                     kid: 10,

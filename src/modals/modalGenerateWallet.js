@@ -18,19 +18,24 @@ import {
 const uuid = require('uuid')
 
 class ModalGenerateWallet extends Component {     
-    constructor(props, context) {
-        super(props, context);
-    };
-    
     static propTypes = {
         defaultWallet: PropTypes.shape({
             walletAddress: PropTypes.string.isRequired,
         }).isRequired,
     };
 
-    state = {
-        nickName: '',
-    };
+    constructor(props, context) {
+        super(props);
+        this.state = {
+            nickName: '',
+        };
+    }
+
+    componentDidMount() {   
+    }
+
+    componentWillReceiveProps(nextProps) {
+    }
     
     render() {
         return (

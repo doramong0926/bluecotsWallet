@@ -9,10 +9,28 @@ import Moment from 'react-moment';
 import PropTypes from 'prop-types';
 import ActionCreator from './../actions';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { defaultTransactionData } from './../config/constants';
 
 class ModalTransactionHistory extends Component {     
     constructor(props, context) {
-        super(props, context);
+        super(props);
+        this.state = {
+            modalTransactionHistoryInfomation: defaultTransactionData
+        };
+    }
+
+    componentDidMount() {   
+        this.setState({
+            modalTransactionHistoryInfomation: this.props.modalTransactionHistoryInfomation,
+        })
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.modalTransactionHistoryInfomation !== nextProps.modalTransactionHistoryInfomation) {
+            this.setState({
+                modalTransactionHistoryInfomation: nextProps.modalTransactionHistoryInfomation,
+            })
+        }
     }
     
     render() {
@@ -50,17 +68,17 @@ class ModalTransactionHistory extends Component {
                     </View>                      
                 </View>
                     <View style={styles.bodyContainer}>
-                        <Moment unix element={Text} >{this.props.modalTransactionHistoryInfomation.timeStamp}</Moment>                    
-                        <Text>Block : {this.props.modalTransactionHistoryInfomation.blockNumber}</Text>
-                        <Text>Status : {this.props.modalTransactionHistoryInfomation.status}</Text>
-                        <Text>Value : {WalletUtils.fromWei(this.props.modalTransactionHistoryInfomation.value, 'ether')} {this.props.modalTransactionHistoryInfomation.symbol}</Text>
-                        <Text>Fee : {WalletUtils.fromWei(WalletUtils.toWei(this.props.modalTransactionHistoryInfomation.gasUsed, 'gwei'),'ether')} ETH</Text>
+                        <Moment unix element={Text} >{this.state.timeStamp}</Moment>                    
+                        <Text>Block : {this.state.blockNumber}</Text>
+                        <Text>Status : {this.state.status}</Text>
+                        <Text>Value : {WalletUtils.fromWei(this.state.value, 'ether')} {this.props.modalTransactionHistoryInfomation.symbol}</Text>
+                        <Text>Fee : {WalletUtils.fromWei(WalletUtils.toWei(this.state.gasUsed, 'gwei'),'ether')} ETH</Text>
                         <View style={styles.BodyContainer2}>
                             <View>
                                 <Text>From : </Text>
                             </View>
                             <View>
-                                <Text>{this.props.modalTransactionHistoryInfomation.from}</Text>
+                                <Text>{this.state.from}</Text>
                             </View>
                         </View>
                         <View style={styles.BodyContainer2}>
@@ -68,7 +86,7 @@ class ModalTransactionHistory extends Component {
                                 <Text>To : </Text>
                             </View>
                             <View>
-                                <Text>{this.props.modalTransactionHistoryInfomation.to}</Text>
+                                <Text>{this.state.to}</Text>
                             </View>
                         </View>
                         <View style={styles.BodyContainer2}>
@@ -76,7 +94,7 @@ class ModalTransactionHistory extends Component {
                                 <Text>TxID : </Text>
                             </View>
                             <View>
-                                <Text>{this.props.modalTransactionHistoryInfomation.hash}</Text>
+                                <Text>{this.state.hash}</Text>
                             </View>
                         </View>
                     </View>

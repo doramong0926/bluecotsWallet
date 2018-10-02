@@ -16,25 +16,32 @@ import {
  } from '../config/constants';
 
 class ModalSend extends Component {
-    constructor(props, context) {
-        super(props, context);
-    };
-
-    state = {
-        gasForSend: null,
-        maxGasForSend: null,
-        isEnoughGas: null,
-    }
-    
     static propTypes = {
         defaultWallet: PropTypes.shape({
             walletAddress: PropTypes.string.isRequired,
         }).isRequired,
     };
 
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            gasForSend: null,
+            maxGasForSend: null,
+            isEnoughGas: null,
+            blcBalance: 0,
+            ethBalance: 0,
+        }
+    }
+
     componentWillMount() {
         this.updateWalletBalance(this.props.defaultWallet.walletAddress);
         this.calculateGasPrice("max");
+    }
+
+    componentDidMount(){
+    }
+
+    componentWillReceiveProps(nextProps) {
     }
 
     render() {
@@ -165,9 +172,9 @@ class ModalSend extends Component {
 
     renderBalance = () => {
         if (this.props.modalSendTokenName === 'BLC') {
-            return <Text style={styles.balanceText}> {this.props.blcBalance} BLC</Text>
+            return <Text style={styles.balanceText}> {this.state.blcBalance} BLC</Text>
         } else if (this.props.modalSendTokenName === 'ETH') {
-            return <Text style={styles.balanceText}> {this.props.ethBalance} ETH</Text>
+            return <Text style={styles.balanceText}> {this.state.ethBalance} ETH</Text>
         }
     }
 
@@ -239,9 +246,9 @@ class ModalSend extends Component {
     handelPressMax = async () => {
         this.setState({isEnoughGas: null})
         if (this.props.modalSendTokenName === 'BLC') {
-            this.props.setModalAmountToSend(this.props.blcBalance);
+            this.props.setModalAmountToSend(this.state.blcBalance);
         } else if (this.props.modalSendTokenName === 'ETH') {
-            const balance = this.props.ethBalance - this.state.maxGasForSend;
+            const balance = this.state.ethBalance - this.state.maxGasForSend;
             if (balance < 0) {
                 this.props.setModalAmountToSend(0);    
             } else {
@@ -313,10 +320,10 @@ class ModalSend extends Component {
                     (calculateType === "max") ? 
                     (
                         (this.props.modalSendTokenName === 'BLC') ? (
-                            this.props.blcBalance
+                            this.state.blcBalance
                         ) :
                         (
-                            this.props.ethBalance
+                            this.state.ethBalance
                         )
                     ) :
                     (this.props.amountToSend)
@@ -336,9 +343,9 @@ class ModalSend extends Component {
                     const txFee = gasLimit.wei * gasPriceData;
                     this.setState({gasForSend: txFee});
                     
-                    if (this.props.modalSendTokenName === 'BLC' && (txFee) <= this.props.ethBalance) {
+                    if (this.props.modalSendTokenName === 'BLC' && (txFee) <= this.state.ethBalance) {
                         this.setState({isEnoughGas: true});
-                    } else if (this.props.modalSendTokenName === 'ETH' && this.props.amountToSend <= this.props.ethBalance - txFee) { 
+                    } else if (this.props.modalSendTokenName === 'ETH' && this.props.amountToSend <= this.state.ethBalance - txFee) { 
                         this.setState({isEnoughGas: true});
                     } else {
                         this.setState({isEnoughGas: false});
@@ -386,29 +393,35 @@ class ModalSend extends Component {
         }
     };
 
-    updateWalletBalance = async () => {        
-        if (this.props.defaultWallet.walletAddress) {
+    updateWalletBalance = async (walletAddress) => {        
+        if (walletAddress) {
             const currentETHBalance = await WalletUtils.getBalance({
-                walletAddress: this.props.defaultWallet.walletAddress,
+                walletAddress: walletAddress,
                 contractAddress:'', 
                 symbol:'ETH', 
                 decimals:0
             });
             const currentBLCBalance = await WalletUtils.getBalance({
-                walletAddress: this.props.defaultWallet.walletAddress,
+                walletAddress: walletAddress,
                 contractAddress: DEFAULT_TOKEN_CONTRACT_ADDRESS,
                 symbol: DEFAULT_TOKEN_SYMBOL, 
                 decimals: DEFAULT_TOKEN_DECIMALS, 
             });
             if (currentETHBalance !== undefined) {
-                if (this.props.ethBalance !== currentETHBalance)
+                if (this.state.ethBalance !== currentETHBalance)
                 {
+                    this.setState({
+                        ethBalance: currentETHBalance,
+                    })
                     this.props.setEthBalance(currentETHBalance); 
                 }
             }
             if (currentBLCBalance !== undefined) {
-                if (this.props.blcBalance !== currentBLCBalance)
+                if (this.state.blcBalance !== currentBLCBalance)
                 {
+                    this.setState({
+                        blcBalance: currentBLCBalance,
+                    })
                     this.props.setBlcBalance(currentBLCBalance);
                 }
             }
@@ -461,13 +474,13 @@ class ModalSend extends Component {
 
     amountIsEnough = (amount) => {
         if (this.props.modalSendTokenName === 'BLC') {
-            if (this.props.blcBalance < amount) {
+            if (this.state.blcBalance < amount) {
                 return false;
             } else {
                 return true;
             }
         } else if (this.props.modalSendTokenName === 'ETH') {
-            if (this.props.ethBalance < amount) {
+            if (this.state.ethBalance < amount) {
                 return false;
             } else {
                 return true;
@@ -580,8 +593,8 @@ function mapStateToProps(state) {
         visibleModalSend: state.modal.visibleModalSend,
         modalSendTokenName: state.modal.modalSendTokenName,
         defaultWallet: state.wallet.defaultWallet,
-        ethBalance: state.wallet.ethBalance,
-        blcBalance: state.wallet.blcBalance,
+        ethBalance: state.walletTemp.ethBalance,
+        blcBalance: state.walletTemp.blcBalance,
         useFingerPrint: state.config.useFingerPrint,
         addressToSend: state.modal.addressToSend,
         amountToSend: state.modal.amountToSend,

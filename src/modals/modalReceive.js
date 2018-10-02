@@ -18,18 +18,36 @@ import PropTypes from 'prop-types';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 // import RNFS from "react-native-fs"
 
+import { 
+	defaultWallet
+ } from './../config/constants';
+
 class ModalReceive extends Component {
-    constructor(props, context) {
-        super(props, context);
-    };
-    
     static propTypes = {
         defaultWallet: PropTypes.shape({
             walletAddress: PropTypes.string.isRequired,
         }).isRequired,
     };
 
-    componentDidMount() {
+    constructor(props, context) {
+        super(props);
+        this.state = {
+            defaultWallet: defaultWallet
+        };
+    }    
+
+    componentDidMount() {   
+        this.setState({
+            defaultWallet: this.props.defaultWallet,
+        })
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.defaultWallet !== nextProps.defaultWallet) {
+            this.setState({
+                defaultWallet: nextProps.defaultWallet,
+            })
+        }
     }
 
     render() {

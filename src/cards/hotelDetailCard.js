@@ -8,24 +8,38 @@ import ActionCreator from '../actions';
 import StarRating from 'react-native-star-rating';
 import HOTEL_MAIN_DEFULT from './images/hotel1_main.jpg'
 import { Divider } from 'react-native-material-design';
-
-
+import { defaultPaymentInfomation, defaultHotelInfo} from '../config/hotelList';
 
 class HotelDetailCard extends Component {
     static propTypes = {
     };
 
-    constructor(props) {
+    constructor(props, context) {
         super(props);
         this.state = {
-            starCount: 0
+            hotelInfo: defaultHotelInfo,
+            paymentInfomation: defaultPaymentInfomation,
         };
     }
 
-    onStarRatingPress(rating) {
-        // this.setState({
-        //     starCount: rating
-        // });
+    componentDidMount() {
+        let paymentInfomation = this.state.paymentInfomation;
+        paymentInfomation.hotelInfo = this.props.hotelInfo;
+        this.setState({
+            hotelInfo: this.props.hotelInfo,
+            paymentInfomation: paymentInfomation,
+        });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.hotelInfo !== nextProps.hotelInfo) {
+            let paymentInfomation = this.state.paymentInfomation;
+            paymentInfomation.hotelInfo = nextProps.hotelInfo;
+            this.setState({
+                hotelInfo: nextProps.hotelInfo,
+                paymentInfomation: paymentInfomation,
+            });
+        }
     }
 
     render() {
@@ -59,6 +73,9 @@ class HotelDetailCard extends Component {
         );
     }
 
+    onStarRatingPress(rating) {
+    }
+
     handlePressAddress = () => {
 
     }
@@ -72,33 +89,17 @@ class HotelDetailCard extends Component {
     }
 
     handelPressReserve = () => {
-        const paymentInfomation = {
-            orderNumber: '12346789',
-            roomType: this.props.hotelInfo.roomType.deluxRoom,
-            numOfPeople: {
-                adult: 1,
-                kid: 1,
-                baby: 1,
-            },
-            tokenSymbolForPayment: 'BLC',
-            date: {
-                begin: '18.09.26',
-                end: '18.09.29',
-            },
-            tokenPrice: 0.01,
-            hotelInfo: this.props.hotelInfo,
-        };
-        this.props.setPaymentInfomation(paymentInfomation);
+        this.props.setPaymentInfomation(this.state.paymentInfomation);
         setTimeout(() => {
             this.props.showModalPayment();    
         }, );
     }
 
     getStarCount = () => {
-        if (this.props.hotelInfo.starCount !== null && this.props.hotelInfo.starCount !== undefined && this.props.hotelInfo.starCount !== "" ) {
-            return this.props.hotelInfo.starCount;
+        if (this.state.hotelInfo.starCount !== null && this.state.hotelInfo.starCount !== undefined && this.state.hotelInfo.starCount !== "" ) {
+            return this.state.hotelInfo.starCount;
         } else {
-            return this.state.starCount;
+            return 0;
         }
     }
 
@@ -123,18 +124,18 @@ class HotelDetailCard extends Component {
     }
 
     renderHotelName = () => {
-        if (this.props.hotelInfo.name !== null && this.props.hotelInfo.name !== undefined && this.props.hotelInfo.name !== "" ) {
-            return <Text style={styles.textTitle}>{this.props.hotelInfo.name}</Text>
+        if (this.state.hotelInfo.name !== null && this.state.hotelInfo.name !== undefined && this.state.hotelInfo.name !== "" ) {
+            return <Text style={styles.textTitle}>{this.state.hotelInfo.name}</Text>
         } else {
-            return <Text style={styles.textTitle}>need to add hotel name</Text>
+            return <Text style={styles.textTitle}>Hotel</Text>
         }
     }
 
     renderHotelDescription = () => {
-        if (this.props.hotelInfo.description !== null && this.props.hotelInfo.description !== undefined && this.props.hotelInfo.description !== "" ) {
+        if (this.state.hotelInfo.description !== null && this.state.hotelInfo.description !== undefined && this.state.hotelInfo.description !== "" ) {
             return (
                 <Text style={styles.descriptionText}>
-                    {this.props.hotelInfo.description}
+                    {this.state.hotelInfo.description}
                 </Text>
             )
         } else {
@@ -143,42 +144,42 @@ class HotelDetailCard extends Component {
     }
 
     renderHotelAddress = () => {
-        if (this.props.hotelInfo.address !== null && this.props.hotelInfo.address !== undefined && this.props.hotelInfo.address !== "" ) {
+        if (this.state.hotelInfo.address !== null && this.state.hotelInfo.address !== undefined && this.state.hotelInfo.address !== "" ) {
             return (
                 <TouchableOpacity onPress={() => this.handlePressAddress()} value="0.5">
                     <View>
                         <Text style={styles.descriptionText}>
-                            {this.props.hotelInfo.address}
+                            {this.state.hotelInfo.address}
                         </Text>
                     </View>
                 </TouchableOpacity>
             )
         } else {
-            return <Text style={styles.descriptionText}>need to add hotel description</Text>
+            return <Text style={styles.descriptionText}></Text>
         }
     }
 
     renderHotelHomepage = () => {
-        if (this.props.hotelInfo.homepage !== null && this.props.hotelInfo.homepage !== undefined && this.props.hotelInfo.homepage !== "" ) {
+        if (this.state.hotelInfo.homepage !== null && this.state.hotelInfo.homepage !== undefined && this.state.hotelInfo.homepage !== "" ) {
             return (
-                <TouchableOpacity onPress={() => this.handlePressHomepage(this.props.hotelInfo.homepage)} value="0.5">
+                <TouchableOpacity onPress={() => this.handlePressHomepage(this.state.hotelInfo.homepage)} value="0.5">
                     <View>
                         <Text style={styles.descriptionText}>
-                            {this.props.hotelInfo.homepage}
+                            {this.state.hotelInfo.homepage}
                         </Text>
                     </View>
                 </TouchableOpacity>
             )
         } else {
-            return <Text style={styles.descriptionText}>need to add hotel description</Text>
+            return <Text style={styles.descriptionText}></Text>
         }
     }
 
     renderHotelMainImage = () => {
-        if (this.props.hotelInfo.mainImage !== null && this.props.hotelInfo.mainImage !== undefined && this.props.hotelInfo.mainImage !== "" ) {
+        if (this.state.hotelInfo.mainImage !== null && this.state.hotelInfo.mainImage !== undefined && this.state.hotelInfo.mainImage !== "" ) {
             return (
                 <Image 
-                    source={this.props.hotelInfo.mainImage} 
+                    source={this.state.hotelInfo.mainImage} 
                     style={{width: Dimensions.get('window').width, height: 150}} 
                     resizeMode={'stretch'} 
                 />

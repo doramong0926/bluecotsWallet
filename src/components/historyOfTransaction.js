@@ -14,6 +14,7 @@ import {
     DEFAULT_TOKEN_CONTRACT_ADDRESS,
     DEFAULT_TOKEN_DECIMALS,
     defaultTransactionData,
+    defaultWallet,
   } from '../config/constants';
 
 //import RNFS from "react-native-fs"
@@ -26,26 +27,42 @@ class HistoryOfTransaction extends Component{
         }).isRequired,
     };
 
-    state = {
-        dataSourceForTransaction: new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2,
-        }),
-        transactionHistoryData: defaultTransactionData,
-        isNoTransactionData: true
-    };
-
-    componentWillMount() {
-        this.fetchTransaction();  
+    constructor(props, context) {
+        super(props);
+        this.state = {
+            dataSourceForTransaction: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2,
+            }),
+            transactionHistoryData: defaultTransactionData,
+            isNoTransactionData: true,
+            defaultWallet: defaultWallet,
+            tokenName: 'BLC',
+        };
     }
 
-    componentDidMount() {
+    componentDidMount() {       
+        this.setState({
+            defaultWallet: this.props.defaultWallet,
+            tokenName: this.props.tokenName,
+        }) 
+        this.fetchTransaction();
         setInterval(() => {
             this.fetchTransaction();
         }, 10000)
     }
 
-    componentWillReceiveProps() {
-        this.fetchTransaction();
+    componentWillReceiveProps(nextProps) {
+        if (this.props.defaultWallet !== nextProps.defaultWallet) {
+            this.setState({
+                defaultWallet: nextProps.defaultWallet,
+            }) 
+            this.fetchTransaction();
+        }
+        if (this.props.tokenName != nextProps.tokenName) {
+            this.setState({
+                tokenName: nextProps.tokenName,
+            }) 
+        }
     }
 
     render(){
@@ -99,17 +116,17 @@ class HistoryOfTransaction extends Component{
                             <View style={{flexDirection:'row'}}>
                                 <View style={{width: 60, borderRadius:50, backgroundColor:'#92B558'}}>
                                     {
-                                        (txData.from == this.props.defaultWallet.walletAddress) ? 
+                                        (txData.from == this.state.defaultWallet.walletAddress) ? 
                                             ( <Text style={{fontSize:12, textAlign:'center'}}>Send</Text> ) : 
                                             ( <Text style={{fontSize:12, textAlign:'center'}}>Receive</Text> )
                                     }
                                 </View>
-                                <Text> {WalletUtils.fromWei(txData.value, 'ether')} {this.props.tokenName} (</Text>
+                                <Text> {WalletUtils.fromWei(txData.value, 'ether')} {this.state.tokenName} (</Text>
                                 <Moment unix fromNow element={Text} >{txData.timeStamp}</Moment>
                                 <Text>)</Text>           
                             </View>      
                                 {                  
-                                    (txData.from == this.props.defaultWallet.walletAddress) ? 
+                                    (txData.from == this.state.defaultWallet.walletAddress) ? 
                                     (<Text style={{fontSize: 12}}>to : {txData.to}</Text>) :
                                     (<Text style={{fontSize: 12}}>from : {txData.from}</Text>)
                                 }

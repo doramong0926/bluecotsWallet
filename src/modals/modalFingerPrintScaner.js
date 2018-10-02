@@ -9,21 +9,25 @@ import ActionCreator from '../actions';
 import { connect } from 'react-redux';
 import { log } from 'util';
 
-class ModalFingerPrintScaner extends Component {
-
-    constructor(props, context) {
-        super(props, context);
-    };
-    
+class ModalFingerPrintScaner extends Component {    
     static propTypes = {
     };
 
-    state = {
-        errorMessage: null,
-        scanResult: {
-            status: false,
-            message: "init"
+    constructor(props, context) {
+        super(props);
+        this.state = {
+            errorMessage: null,
+            scanResult: {
+                status: false,
+                message: "init"
+            }
         }
+    }
+
+    componentDidMount() {   
+    }
+
+    componentWillReceiveProps(nextProps) {
     }
 
     render() {

@@ -7,6 +7,10 @@ import { Card } from 'react-native-material-design';
 import PropTypes from 'prop-types';
 import ActionCreator from './../actions';
 
+import { 
+    defaultWallet,
+ } from '../config/constants';
+
 class HistoryCard extends Component {
     static propTypes = {
         defaultWallet: PropTypes.shape({
@@ -14,8 +18,22 @@ class HistoryCard extends Component {
         }).isRequired,
     };
 
-    state = {
-        tokenName: 'BLC',
+    constructor(props, context) {
+        super(props);
+        this.state = {
+            tokenName: 'BLC',
+            defaultWallet: defaultWallet,
+        }
+    }
+
+    componentDidMount() {
+        this.setState({defaultWallet: this.props.defaultWallet,});
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.defaultWallet !== nextProps.defaultWallet) {
+            this.setState({defaultWallet: nextProps.defaultWallet,});
+        }
     }
 
     render() {
@@ -30,7 +48,7 @@ class HistoryCard extends Component {
                                     <Text style={styles.descriptionText}>
                                         { (this.props.offset !== undefined) ? 
                                             (`It is shown only ${this.props.offset} recent transaction.`) : 
-                                            (this.props.defaultWallet.walletAddress)
+                                            (this.state.defaultWallet.walletAddress)
                                         }
                                     </Text>
                                 </View>
