@@ -307,18 +307,6 @@ export function hideModalBackupWallet() {
   };
 }
 
-export function showModalWalletListForBackup() {
-  return {
-      type: actionTypes.SHOW_MODAL_WALLET_LIST_FOR_BACKUP,
-  };
-}
-
-export function hideModalWalletListForBackup() {
-  return {
-      type: actionTypes.HIDE_MODAL_WALLET_LIST_FOR_BACKUP,
-  };
-}
-
 export function showModalPayment() {
   return {
       type: actionTypes.SHOW_MODAL_PAYMENT,

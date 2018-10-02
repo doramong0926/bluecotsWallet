@@ -1,51 +1,47 @@
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Platform, Clipboard } from 'react-native';
-import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements';
+import { Text, View, ListView, TouchableOpacity, StyleSheet, Platform, Clipboard } from 'react-native';
 import Modal from 'react-native-simple-modal';
 import ActionCreator from '../actions';
 import { connect } from 'react-redux';
-import EthereumJsWallet from 'ethereumjs-wallet';
 import WalletUtils from '../utils/wallet';
 import PropTypes from 'prop-types';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
- import { FileSystem } from 'expo';
-//  import RNFS from 'react-native-fs';
-// var RNFS = require('react-native-fs');
- 
-const uuid = require('uuid')
 
-class ModalBackupWallet extends Component {    
+class ModalBackupWallet extends Component {
     static propTypes = {
     };
 
     constructor(props, context) {
-        super(props);
+        super(props, context);
         this.state = {
-            typeOfBackup: '',
-            wallet: {
+            dataSourceForWalletList: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2,
+            }),
+            walletForBackup: {
                 walletAddress: '',
                 privatekey: '',
             }
         };
     }
 
-    componentDidMount() {   
-        this.setState({
-            wallet: this.props.tempWallet,
-        })
+    componentDidMount() { 
+        const walletForBackup = {
+            walletAddress: '',
+            privatekey: '',
+        }  
+        this.setState({walletForBackup: walletForBackup})
+        this.fetchWalletList(this.props.walletList);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.tempWallet !== nextProps.tempWallet) {
-            this.setState({
-                wallet: nextProps.tempWallet,
-            })
+        if (this.props.walletList !== nextProps.walletList) {
+            this.fetchWalletList(nextProps.walletList);
         }
     }
 
     render() {
-        return (
+        return (            
             <Modal 
                 offset={0}
                 open={this.props.visibleModalBackupWallet}
@@ -54,7 +50,7 @@ class ModalBackupWallet extends Component {
                 closeOnTouchOutside={true}
                 disableOnBackPress={false}
                 modalDidClose={() => {this.closeModal()}}
-                modalDidOpen={() => undefined}
+                modalDidOpen={() => {this.openModal()}}
                 modalProps={undefined}
                 containerProps={undefined}
                 containerStyle={{
@@ -78,51 +74,67 @@ class ModalBackupWallet extends Component {
                         </TouchableOpacity>
                     </View>                      
                 </View>
-                <View style={styles.bodyContainer}>  
-                    <Text>wallet address : </Text>
-                    <Text>{this.state.wallet.walletAddress}</Text>
-                    <Text>Select type of backup privatekey.</Text>
-                </View>
-                <View style={styles.buttonContainer}>
-                    <View style={{flexDirection: 'row' ,alignItems:'center', justifyContent:'space-around'}}>
-                        <View style={{flex:1}}>
-                            <Button
-                                onPress={this.handelPressCopy}
-                                title="Copy"
-                                buttonStyle={{
-                                    backgroundColor: "#BD3D3A",
-                                    borderColor: "transparent", 
-                                    borderRadius: 5
-                                }}
-                                containerViewStyle={{
-                                    // alignSelf: 'stretch',
-                                    // margin: 20,
-                                }}
-                            />
-                        </View>
-                        <View style={{flex:1}}>
-                            <Button
-                                onPress={this.handelPressSave}
-                                title="Save"
-                                buttonStyle={{
-                                    backgroundColor: "#BD3D3A",
-                                    borderColor: "transparent", 
-                                    borderRadius: 5
-                                }}
-                                containerViewStyle={{
-                                    // alignSelf: 'stretch',
-                                    // margin: 20,
-                                }}
-                            />
-                        </View>
-                    </View>
-                </View>
+                <ListView
+                    dataSource={this.state.dataSourceForWalletList}
+                    renderRow={this.renderWalletList}
+                    style={styles.bodyContainer}
+                />
             </Modal>
         );
     }
 
-    closeModal = () => {        
+    closeModal = () => {
         this.props.hideModalBackupWallet();
+    }
+
+    openModal = () => {
+        this.fetchWalletList(this.props.walletList);
+    }    
+
+    renderWalletList = (wallet) => {
+        if (wallet.walletAddress !== undefined && wallet.walletAddress !== '') {
+            return (
+                <View>
+                    <TouchableOpacity onPress={() => this.handlePress(wallet)} value={'0.5'}>
+                        <View style={{flexDirection: 'row', margin: 10}}>
+                            <View style={{flex:3}}>
+                                <Text> {wallet.nickName} </Text>
+                            </View>
+                            <View style={{flex:7}}>
+                                <Text> {wallet.walletAddress.substring(0,22)}... </Text>
+                            </View>
+                        </View>                                        
+                    </TouchableOpacity>
+                    <View style={{borderColor: 'gray', borderWidth: 0.5}}></View>
+                </View>
+            );
+        } else {
+            return (
+                <View>
+                </View>
+            )
+        }
+    }
+
+    fetchWalletList = (walletList) => {
+        this.state.dataSourceForWalletList = this.state.dataSourceForWalletList.cloneWithRows(walletList);
+    };
+
+    handlePress = (wallet) => {        
+        const walletForBackup = {
+            walletAddress: wallet.walletAddress,
+            privatekey: wallet.privateKey,
+        }  
+        this.setState({
+            walletForBackup: walletForBackup
+        });
+        this.props.hideModalBackupWallet();
+        this.props.setModalConfirmFinishProcess(this.confirmToBackupWalletFinishProcess.bind(this));
+        this.props.setModalConfirmHeader("Confirmation");
+        this.props.setModalConfirmBody([
+            {text: "Are you sure to backup wallet?"},
+        ]);
+        this.props.showModalConfirm();
     }
 
     scanFingerPrint = () => {
@@ -141,13 +153,13 @@ class ModalBackupWallet extends Component {
     }
 
     copyPrivateKey = async () => {
-        Clipboard.setString(this.state.wallet.privateKey);
-        const privateKey = await Clipboard.getString();
+        Clipboard.setString(this.state.walletForBackup.privatekey);
+        const privatekey = await Clipboard.getString();
         const infomation = {
             title: 'Backup private key', 
             message1: 'Success to copy private key to clipboard.', 
-            message2: 'Please be careful to keep your private key.',
-            message3: privateKey,
+            message2: ' ',
+            message3: privatekey,
         };
         this.props.setModalInfomation(infomation);
         setTimeout(() => {
@@ -155,101 +167,21 @@ class ModalBackupWallet extends Component {
         }, );
     };
 
-    ensureFolderExists () {
-        const path = `${FileSystem.documentDirectory}MyFolder`
-        return FileSystem.getInfoAsync(path).then(({exists}) => {
-            if (!exists) {
-                return FileSystem.makeDirectoryAsync(path)
-            } else {
-                return Promise.resolve(true)
-            }
-        })
-    }
-
-    savePrivateKey = async (privateKey) => {
-        this.ensureFolderExists().then(() => {
-            FileSystem.writeAsStringAsync(`${FileSystem.documentDirectory}MyFolder/my_file.txt`, "ddddddddddddddd")
-        })
-        FileSystem.writeAsStringAsync(`${FileSystem.documentDirectory}MyFolder/my_file.txt`, "ddddddddddddddd")
-
-        // const path = FileSystem.documentDirectory;
-        // const fullPath = path + this.props.tempWallet.walletAddress + '_privateKey.txt';
-        // console.log('path = ' + path)
-        // console.log('fullPath = ' + fullPath)
-
-        // await FileSystem.makeDirectoryAsync(path, {intermediates: true}).then(
-        //     console.log('dddddddddddddddddddd Created base dir ', path)
-        // ).catch(
-        //     console.log('eeeeeeeeeeeeeeee Created base dir ', path)
-        // )
-        // await FileSystem.writeAsStringAsync(fullPath, this.props.tempWallet.privateKey).then(
-        //     console.log("ddddddddddddddddd writeAsStringAsync")
-        // ).catch(
-        //     console.log("eeeeeeeeeeeeeeeeeeee writeAsStringAsync")
-        // )
-        
-        // const allFiles = await FileSystem.readDirectoryAsync(path).then(
-        //     console.log('dddddddddddddddddd readDirectoryAsync ' + allFiles)
-        // ).catch(
-        //     console.log('eeeeeeeeeeeeeeee readDirectoryAsync ' + allFiles)
-        // )
-
-        // write the file
-        // RNFS.writeFile(path, this.props.tempWallet.privateKey, 'utf8')
-        // .then((success) => {
-        //     const infomation = {
-        //         title: 'Backup private key', 
-        //         message1: 'Success to save private key to to ' + path,
-        //         message2: 'Please be careful to keep your private key.',
-        //     };
-        //     this.props.setModalInfomation(infomation);
-        //     setTimeout(() => {
-        //         this.props.showModalInfomation();    
-        //     }, );
-        // })
-        // .catch((err) => {
-        //     console.log(err.message);
-        //     const infomation = {
-        //         title: 'Backup private key', 
-        //         message1: 'Failure to save private key to to ' + path,
-        //         message2: err.message,
-        //     };
-        //     this.props.setModalInfomation(infomation);
-        //     setTimeout(() => {
-        //         this.props.showModalInfomation();    
-        //     }, );
-        // });
-    };
-
-    backupWallet = () => {
-        if (this.state.typeOfBackup === 'copy') {
-            this.copyPrivateKey();
-        } else {
-            this.savePrivateKey(this.state.wallet.privateKey);            
-        }
-        this.setState({typeOfBackup: ''});
-        this.props.setTempWallet('')
-    }
-
     modalFingerPrintScanerFinishProcess(result) {
         if (result.status == true) {
-            this.backupWallet();
+            this.copyPrivateKey();
         } else {
             if (result.message === 'usePinCode') { 
                 this.usePinCode();
             } else {
-                this.setState({typeOfBackup: ''});
-                this.props.setTempWallet('')
             }
         }
     }
 
     modalPincodeFinishProcess(result) {
         if (result.status === true) {
-            this.backupWallet();
+            this.copyPrivateKey();
         } else {
-            this.setState({typeOfBackup: ''});
-            this.props.setTempWallet('')
         }
     }
 
@@ -261,38 +193,35 @@ class ModalBackupWallet extends Component {
                 this.usePinCode();
             }
         } else {
-            this.setState({typeOfBackup: ''});
-            this.props.setTempWallet('')
         }        
-    }
-
-    handelPressCopy = () => {
-        this.setState({typeOfBackup: 'copy'});
-        this.props.hideModalBackupWallet();
-        this.props.setModalConfirmFinishProcess(this.confirmToBackupWalletFinishProcess.bind(this));
-        this.props.setModalConfirmHeader("Confirmation");
-        this.props.setModalConfirmBody([
-            {text: "Are you sure to backup wallet?"},
-        ]);
-        this.props.showModalConfirm();
-    }
-
-    handelPressSave = () => {
-        this.setState({typeOfBackup: 'save'});
-        this.props.hideModalBackupWallet();
-        this.props.setModalConfirmFinishProcess(this.confirmToBackupWalletFinishProcess.bind(this));
-        this.props.setModalConfirmHeader("Confirmation");
-        this.props.setModalConfirmBody([
-            {text: "Are you sure to backup wallet?"},
-        ]);
-        this.props.showModalConfirm();
     }
 }
 
+const styles = StyleSheet.create({
+    headerContainer: {
+        backgroundColor: '#67AFCB',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderTopStartRadius : 10,
+        borderTopEndRadius: 10,
+        padding: 10,
+    }, 
+    bodyContainer: {
+        // justifyContent: 'center',
+        paddingHorizontal: 10,
+    },   
+    headerText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: 'black',
+        textAlign: 'center'
+    },
+})
+
 function mapStateToProps(state) {
     return {
+        walletList: state.wallet.walletList,
         visibleModalBackupWallet: state.modal.visibleModalBackupWallet,
-        tempWallet: state.walletTemp.tempWallet,
         useFingerPrint: state.config.useFingerPrint,
     };
 }
@@ -320,9 +249,6 @@ function mapDispatchToProps(dispatch) {
         setModalConfirmBody: (body) => {
             dispatch(ActionCreator.setModalConfirmBody(body));
         },
-        setTempWallet: (wallet) => {
-            dispatch(ActionCreator.setTempWallet(wallet));
-        },
         setModalPincodeFinishProcess: (finishProcess) => {
             dispatch(ActionCreator.setModalPincodeFinishProcess(finishProcess));
         },   
@@ -337,28 +263,5 @@ function mapDispatchToProps(dispatch) {
         },
     };
 }
-
-const styles = StyleSheet.create({
-    headerContainer: {
-        backgroundColor: '#67AFCB',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderTopStartRadius : 10,
-        borderTopEndRadius: 10,
-        padding: 10,
-    }, 
-    bodyContainer: {
-        margin: 20,
-    },
-    buttonContainer: {
-        marginBottom: 10,
-    },
-    headerText: {
-        fontSize: 15,
-        fontWeight: 'bold',
-        color: 'black',
-        textAlign: 'center'
-    },
-})
   
 export default connect(mapStateToProps, mapDispatchToProps)(ModalBackupWallet);

@@ -74,6 +74,7 @@ class ModalGenerateWallet extends Component {
                 <View style={styles.bodyContainer}>
                     <FormLabel>Nickname</FormLabel>
                     <FormInput 
+                        underlineColorAndroid='gray'
                         inputStyle = {{paddingLeft:5, paddingRight:5, marginRight:0, fontSize:11}}
                         value={this.state.nickName} 
                         onChangeText={(value) => this.setState({nickName: value})}

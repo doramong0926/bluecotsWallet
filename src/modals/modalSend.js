@@ -102,7 +102,7 @@ class ModalSend extends Component {
                             <View style={{width:'85%'}}>
                                 <FormInput 
                                     containerStyle={{marginRight:0,}} 
-                                    // underlineColorAndroid='transparent' 
+                                    underlineColorAndroid='gray'
                                     inputStyle = {{paddingLeft:5, paddingRight:5, marginRight:0, fontSize:11}}
                                     value = {(this.props.addressToSend === null) ? (null) : (this.props.addressToSend)}
                                     onChangeText={(value) => this.props.setModalAddressToSend(value)}
@@ -122,7 +122,7 @@ class ModalSend extends Component {
                             <View style={{width:'85%'}}>
                                 <FormInput 
                                     containerStyle={{marginRight:0,}} 
-                                    // underlineColorAndroid='transparent' 
+                                    underlineColorAndroid='gray'
                                     inputStyle = {{paddingLeft:5, paddingRight:5, marginRight:0, fontSize:12}}
                                     keyboardType = 'numeric'
                                     value = {(this.props.amountToSend === null) ? (null) : (this.props.amountToSend.toString())}

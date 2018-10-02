@@ -9,7 +9,6 @@ import {AppStackNavigator} from './src/navigator/navigators'
 import ModalConfirm from './src/modals/modalConfirm';
 import ModalPayment from './src/modals/modalPayment';
 import ModalBackupWallet from './src/modals/modalBackupWallet';
-import ModalWalletListForBackup from './src/modals/modalWalletListForBackup';
 import ModalChangeNickName from './src/modals/modalChangeNickName';
 import ModalWalletListForChangeNickName from './src/modals/modalWalletListForChangeNickName';
 import ModalRemoveWallet from './src/modals/modalRemoveWallet';
@@ -46,7 +45,6 @@ class MainEntry extends Component {
             <View style={{flex:1}}>
                 <AppStackNavigator />   
                 <ModalBackupWallet />
-                <ModalWalletListForBackup />
                 <ModalChangeNickName />
                 <ModalWalletListForChangeNickName />             
                 <ModalRemoveWallet />

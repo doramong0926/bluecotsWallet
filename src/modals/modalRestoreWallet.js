@@ -79,6 +79,7 @@ class ModalRestoreWallet extends Component {
                     <View>
                         <FormLabel>Nickname</FormLabel>
                         <FormInput 
+                            underlineColorAndroid='gray'
                             inputStyle = {{paddingLeft:5, paddingRight:5, marginRight:0, fontSize:11}}
                             value = {this.state.nickName} 
                             onChangeText = {(value) => this.setState({nickName: value})}
@@ -87,22 +88,13 @@ class ModalRestoreWallet extends Component {
                     </View>
                     <View>
                         <FormLabel>PrivateKey</FormLabel>
-                        <View style={styles.inputContainer}>
-                            <View style={{width:'88%'}}>
-                                <FormInput 
+                        <FormInput 
                                     containerStyle={{marginRight:0,}} 
-                                    // underlineColorAndroid='transparent' 
+                                    underlineColorAndroid='gray'
                                     inputStyle = {{paddingLeft:5, paddingRight:5, marginRight:0, fontSize:11}}
                                     value={this.state.privateKey}
                                     onChangeText={(value) => this.setState({privateKey: value})}
-                                />
-                            </View>
-                            <View style={{alignItems:'flex-end', justifyContent:'center', marginRight: 20,}}>
-                                <TouchableOpacity onPress={() => this.readPrivateKeyFromFile()} value="0.5">
-                                    <Ionicons name="ios-attach-outline" size={30} />
-                                </TouchableOpacity>
-                            </View>                            
-                        </View>   
+                        />
                         {this.privateKeyValidationMsg()}
                     </View>
                 </View>
@@ -232,10 +224,6 @@ class ModalRestoreWallet extends Component {
         this.setState({ privateKey }); 
     };
 
-    readPrivateKeyFromFile = async () => {   
-        ;
-    };
-
     isValidRestoreButton = () => {
         if (this.isValidPrivateKey(this.state.privateKey) && !this.isUsedPrivateKey(this.state.privateKey))
         {
@@ -350,10 +338,6 @@ const styles = StyleSheet.create({
     bodyContainer: {
         // marginTop: 10,
         marginBottom: 20,
-    },
-    inputContainer: {
-        flexDirection:'row', 
-        justifyContent:'space-between'
     },
     buttonContainer: {
         marginBottom: 10,
