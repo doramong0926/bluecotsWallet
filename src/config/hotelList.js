@@ -35,8 +35,8 @@ export const defaultPaymentInfomation = {
     tokenSymbol: 'BLC',
     amountToSend: 0,
     date: {
-        begin: 0,
-        end: 0,
+        begin: '',
+        end: '',
     },
     tokenPrice: 0.01,
     totalPrice: 0,

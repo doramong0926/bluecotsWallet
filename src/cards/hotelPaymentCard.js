@@ -67,7 +67,7 @@ class HotelPaymentCard extends Component {
                                                 containerStyle={{marginRight:0,}} 
                                                 underlineColorAndroid='gray'
                                                 inputStyle = {{paddingLeft:5, paddingRight:5, marginRight:0, fontSize:11}}
-                                                value = {(this.state.paymentInfomation.date.begin === null) ? (null) : (this.state.paymentInfomation.date.begin.toString())}
+                                                value = {(this.state.paymentInfomation.date.begin === null) ? (null) : (this.state.paymentInfomation.date.begin)}
                                                 // onChangeText={(value) => this.props.setModalAddressToSend(value)}
                                             />
                                         </View>                        
@@ -85,7 +85,7 @@ class HotelPaymentCard extends Component {
                                                 containerStyle={{marginRight:0,}} 
                                                 underlineColorAndroid='gray'
                                                 inputStyle = {{paddingLeft:5, paddingRight:5, marginRight:0, fontSize:11}}
-                                                value = {(this.state.paymentInfomation.date.end === null) ? (null) : (this.state.paymentInfomation.date.end.toString())}
+                                                value = {(this.state.paymentInfomation.date.end === null) ? (null) : (this.state.paymentInfomation.date.end)}
                                                 // onChangeText={(value) => this.props.setModalAddressToSend(value)}
                                             />
                                         </View>                        
@@ -107,21 +107,21 @@ class HotelPaymentCard extends Component {
     }
 
     selectBeginDateFinishProcess = (date) => {
-        console.log("selected date : " + date.dateString)
+        console.log("selected start date : " + date.dateString)
         let paymentInfomation = this.state.paymentInfomation;
         paymentInfomation.date.begin = date.dateString;
         this.setState({
             paymentInfomation: paymentInfomation,
         })
         const calendarInfo = {
-            selectedBeginDate: date,
+            selectedBeginDate: date.dateString,
             selectedEndDate: this.props.calendarInfo.selectedEndDate,
         }
         this.props.setCalendarInfo(calendarInfo);
     }
 
     selectEndDateFinishProcess = (date) => {
-        console.log("selected date : " + date)
+        console.log("selected end date : " + date.dateString)
         let paymentInfomation = this.state.paymentInfomation;
         paymentInfomation.date.end = date.dateString;
         this.setState({
@@ -129,7 +129,7 @@ class HotelPaymentCard extends Component {
         })
         const calendarInfo = {
             selectedBeginDate: this.props.calendarInfo.selectedBeginDate,
-            selectedEndDate: date,
+            selectedEndDate: date.dateString,
         }
         this.props.setCalendarInfo(calendarInfo);
     }
