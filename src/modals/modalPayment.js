@@ -16,7 +16,7 @@ import {
     defaultWallet,
  } from '../config/constants';
 
- import { defaultPaymentInfomation, defaultHotelInfo } from './../config/hotelList'
+ import { DEFAULT_HOTEL_INFO } from './../config/hotelList'
 
 class ModalPayment extends Component {
     static propTypes = {
@@ -27,14 +27,32 @@ class ModalPayment extends Component {
 
     constructor(props, context) {
         super(props, context);
-        let paymentInfomation = defaultPaymentInfomation;
-        paymentInfomation.hotelInfo = defaultHotelInfo;
+        const DEFAULT_PAYMENT_INFOMATION = {
+            hotelName: '',
+            orderNumber: 0,
+            selectedRoomType: '',
+            numOfPeople: {
+                adult: 0,
+                kid: 0,
+                baby: 0,
+            },
+            tokenSymbol: 'BLC',
+            addressToSend: '',
+            amountToSend: 0,
+            date: {
+                checkIn: '',
+                checkOut: '',
+            },
+            tokenPrice: 0.01,
+            totalPrice: 0,
+            totalAmount: 0,
+        };
         this.state = {
             amountToSend: 0,
             totalPrice: 0,
             gasForSend: 0,
             isEnoughGas: false,
-            paymentInfomation: paymentInfomation,
+            paymentInfomation: DEFAULT_PAYMENT_INFOMATION,
             defaultWallet: defaultWallet,
             blcBalance: 0,
             ethBalance: 0,
@@ -113,8 +131,9 @@ class ModalPayment extends Component {
                     </View>
                     <View style={styles.containerPaymentInfomation}>
                         <Text style={styles.subTitleText}>Reserve infomation</Text>
-                        <Text style={styles.descriptionText}>{this.state.paymentInfomation.hotelInfo.name}</Text>
-                        {/* <Text style={styles.descriptionText}>Room type : {this.state.paymentInfomation.roomType.string()}</Text> */}
+                        <Text style={styles.descriptionText}>{this.state.paymentInfomation.hotelName}</Text>
+                        <Text style={styles.descriptionText}>Order number : {this.state.paymentInfomation.orderNumber}</Text>
+                        <Text style={styles.descriptionText}>Room type : {this.state.paymentInfomation.selectedRoomType}</Text>
                         <Text style={styles.descriptionText}>Adult : {this.state.paymentInfomation.numOfPeople.adult} / Kid : {this.state.paymentInfomation.numOfPeople.kid} / Baby : {this.state.paymentInfomation.numOfPeople.baby}</Text>
                     </View>
                     <View style={styles.containerTotalPrice}>
@@ -192,7 +211,7 @@ class ModalPayment extends Component {
         );
         this.updateWalletBalance(this.state.defaultWallet.walletAddress);
         this.setState({
-            addressToSend: this.state.paymentInfomation.hotelInfo.addressToSend,
+            addressToSend: this.state.paymentInfomation.addressToSend,
             tokenSymbol: this.state.paymentInfomation.tokenSymbol,
             totalPrice: totalPrice,
             amountToSend: (totalPrice / this.state.paymentInfomation.tokenPrice),

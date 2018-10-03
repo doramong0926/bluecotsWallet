@@ -5,7 +5,7 @@ import { Button } from 'react-native-elements';
 import Modal from 'react-native-simple-modal';
 import WalletUtils from './../utils/wallet';
 import { connect } from 'react-redux';
-import Moment from 'react-moment';
+import ReactMoment from 'react-moment';
 import PropTypes from 'prop-types';
 import ActionCreator from './../actions';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
@@ -68,7 +68,7 @@ class ModalTransactionHistory extends Component {
                     </View>                      
                 </View>
                     <View style={styles.bodyContainer}>
-                        <Moment unix element={Text} >{this.state.timeStamp}</Moment>                    
+                        <ReactMoment unix element={Text} >{this.state.timeStamp}</ReactMoment>                    
                         <Text>Block : {this.state.blockNumber}</Text>
                         <Text>Status : {this.state.status}</Text>
                         <Text>Value : {WalletUtils.fromWei(this.state.value, 'ether')} {this.props.modalTransactionHistoryInfomation.symbol}</Text>

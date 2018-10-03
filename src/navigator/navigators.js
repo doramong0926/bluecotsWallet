@@ -17,6 +17,7 @@ import AddWalletScreen from '../screens/addWallet/addWalletScreen';
 import WalletScreen from '../screens/wallet/walletScreen'
 import HotelScreen from '../screens/hotel/hotelScreen'
 import HotelDetailScreen from '../screens/hotel/hotelDetailScreen'
+import RoomDetailScreen from '../screens/hotel/roomDetailScreen'
 import HistoryScreen from '../screens/history/historyScreen'
 import SettingsMainScreen from '../screens/settings/settingsMainScreen';
 import SettingsAccountScreen from '../screens/settings/settingsAccountScreen';
@@ -91,7 +92,10 @@ export const HotelStackNavigator = createStackNavigator (
         },
         HotelDetailStack: {
             screen: HotelDetailScreen,
-        }
+        },
+        RoomDetailStack: {
+            screen: RoomDetailScreen,
+        },
     },
     {
         navigationOptions: {

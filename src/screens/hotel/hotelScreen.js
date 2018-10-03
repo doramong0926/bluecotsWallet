@@ -7,7 +7,7 @@ import ParallaxScrollView from 'react-native-parallax-scroll-view';
 
 import HotelSearchBarCard from './../../cards/hotelSearchBarCard';
 import HotelCard from './../../cards/hotelCard';
-import { defaultHotelInfoList } from './../../config/hotelList'
+import { DEFAULT_HOTEL_INFO_LIST } from './../../config/hotelList'
 
 import SLIDER_IMAGE1 from './../../components/images/sampleSlider1.jpg';
 import SLIDER_IMAGE2 from './../../components/images/sampleSlider2.jpg';
@@ -118,7 +118,7 @@ class HotelScreen extends Component{
     }
 
     fetchHotelInfoList = () => {
-        defaultHotelInfoList.map(t=>{
+        DEFAULT_HOTEL_INFO_LIST.map(t=>{
             if (this.props.hotelInfoList.filter(item=>{return(item.id === t.id)}).length === 0) {
                 this.props.addHotelInfoList(t);    
             }

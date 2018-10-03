@@ -5,13 +5,12 @@ import ActionCreator from '../../actions';
 import { connect } from 'react-redux';
 import ImageSlider from 'react-native-image-slider';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
-import HotelDetailCard from './../../cards/hotelDetailCard';
-import HotelRoomCard from './../../cards/hotelRoomCard';
+import HotelPaymentCard from '../../cards/hotelPaymentCard';
 import PropTypes from 'prop-types';
 
-class HotelDetailScreen extends Component{
+class RoomDetailScreen extends Component{
     static navigationOptions = {
-        title: 'Hotel detail',
+        title: 'Room detail',
         headerTitleStyle: {
             textAlign: 'center',
             fontSize: 14,
@@ -26,17 +25,9 @@ class HotelDetailScreen extends Component{
 
     constructor (props) {
         super(props)
-        this.state = {
-            hotelInfo: this.props.navigation.state.params.hotelInfo,
-        }
     }
 
     componentDidMount() {
-        const roomInfo = {
-        }
-        this.setState({
-            hotelInfo: this.props.navigation.state.params.hotelInfo,
-        })
     }
 
     componentWillMount(nextProps) {
@@ -63,32 +54,20 @@ class HotelDetailScreen extends Component{
                     <View style={styles.containerHotelDetailCard}>
                         <View style={styles.containerImageSlider}>
                             <ImageSlider 
-                                images={this.state.hotelInfo.detailMainImage}
+                                images={this.props.navigation.state.params.roomInfo.roomImage}
                                 // width={Dimensions.get('window').width-8}
                                 height={180}
                                 // autoPlayWithInterval={5000}
                             />
                         </View>
-                        <HotelDetailCard hotelInfo={this.state.hotelInfo} />
-                        {this.generateRoomCardComponent()}
+                        <HotelPaymentCard 
+                            hotelInfo={this.props.navigation.state.params.hotelInfo} 
+                            roomInfo={this.props.navigation.state.params.roomInfo}
+                        />
                     </View>
                 </ParallaxScrollView>
             </View>
         );
-    }
-
-    generateRoomCardComponent = () => {
-        if (this.state.hotelInfo.roomType.length > 0) {
-            return (
-                this.state.hotelInfo.roomType.map((roomInfo, index) => {
-                    if (roomInfo.name !== '') {
-                        return (
-                            <HotelRoomCard key={index} hotelInfo={this.state.hotelInfo} roomInfo={roomInfo}  navigation={this.props.navigation}/>
-                        )
-                    }
-                })
-            )
-        }
     }
 }
 
@@ -114,4 +93,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(HotelDetailScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(RoomDetailScreen);

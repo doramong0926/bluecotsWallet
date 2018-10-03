@@ -9,39 +9,42 @@ import StarRating from 'react-native-star-rating';
 import HOTEL_MAIN_DEFULT from './images/hotel1_main.jpg'
 import { Divider } from 'react-native-material-design';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { defaultHotelInfo } from '../config/hotelList';
+import { DEFAULT_HOTEL_INFO } from '../config/hotelList';
 import { DEFAULT_MAP_REGION, DEFAULT_MAP_LATLEN } from '../config/constants';
 
 
 class HotelDetailCard extends Component {
     static propTypes = {
+        hotelInfo: PropTypes.shape({
+            name: PropTypes.string.isRequired,
+        }).isRequired,
     };
 
     constructor(props, context) {
         super(props);
         this.state = {
-            hotelInfo: defaultHotelInfo,
-            mapRegion: DEFAULT_MAP_REGION,
-            mapMarker: DEFAULT_MAP_LATLEN,
+            // hotelInfo: DEFAULT_HOTEL_INFO,
+            // mapRegion: DEFAULT_MAP_REGION,
+            // mapMarker: DEFAULT_MAP_LATLEN,
         };
     }
 
     componentDidMount() {
         this.setState({
-            hotelInfo: this.props.hotelInfo,
-            mapRegion: this.props.hotelInfo.mapRegion,
-            mapMarker: this.props.hotelInfo.mapMarker,
+            // hotelInfo: this.props.hotelInfo,
+            // mapRegion: this.props.hotelInfo.mapRegion,
+            // mapMarker: this.props.hotelInfo.mapMarker,
         });
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.hotelInfo !== nextProps.hotelInfo) {
-            this.setState({
-                hotelInfo: nextProps.hotelInfo,
-                mapRegion: this.props.hotelInfo.mapRegion,
-                mapMarker: this.props.hotelInfo.mapMarker,
-            });
-        }
+        // if (this.props.hotelInfo !== nextProps.hotelInfo) {
+        //     this.setState({
+        //         hotelInfo: nextProps.hotelInfo,
+        //         mapRegion: this.props.hotelInfo.mapRegion,
+        //         mapMarker: this.props.hotelInfo.mapMarker,
+        //     });
+        // }
     }
 
     render() {
@@ -70,7 +73,7 @@ class HotelDetailCard extends Component {
                                     provider={PROVIDER_GOOGLE}
                                     style={styles.containerMapView}
                                     // region={this.state.mapRegion}
-                                    initialRegion={DEFAULT_MAP_REGION}
+                                    initialRegion={this.props.hotelInfo.mapRegion}
                                     // region={DEFAULT_MAP_REGION}
                                     onRegionChange={this.handelonMapRegionChange}
                                 >
@@ -113,25 +116,25 @@ class HotelDetailCard extends Component {
     }
 
     getStarCount = () => {
-        if (this.state.hotelInfo.starCount !== null && this.state.hotelInfo.starCount !== undefined && this.state.hotelInfo.starCount !== "" ) {
-            return this.state.hotelInfo.starCount;
+        if (this.props.hotelInfo.starCount !== null && this.props.hotelInfo.starCount !== undefined && this.props.hotelInfo.starCount !== "" ) {
+            return this.props.hotelInfo.starCount;
         } else {
             return 0;
         }
     }
     renderHotelName = () => {
-        if (this.state.hotelInfo.name !== null && this.state.hotelInfo.name !== undefined && this.state.hotelInfo.name !== "" ) {
-            return <Text style={styles.textTitle}>{this.state.hotelInfo.name}</Text>
+        if (this.props.hotelInfo.name !== null && this.props.hotelInfo.name !== undefined && this.props.hotelInfo.name !== "" ) {
+            return <Text style={styles.textTitle}>{this.props.hotelInfo.name}</Text>
         } else {
             return <Text style={styles.textTitle}>Hotel</Text>
         }
     }
 
     renderHotelDescription = () => {
-        if (this.state.hotelInfo.description !== null && this.state.hotelInfo.description !== undefined && this.state.hotelInfo.description !== "" ) {
+        if (this.props.hotelInfo.description !== null && this.props.hotelInfo.description !== undefined && this.props.hotelInfo.description !== "" ) {
             return (
                 <Text style={styles.descriptionText}>
-                    {this.state.hotelInfo.description}
+                    {this.props.hotelInfo.description}
                 </Text>
             )
         } else {
@@ -140,12 +143,12 @@ class HotelDetailCard extends Component {
     }
 
     renderHotelAddress = () => {
-        if (this.state.hotelInfo.address !== null && this.state.hotelInfo.address !== undefined && this.state.hotelInfo.address !== "" ) {
+        if (this.props.hotelInfo.address !== null && this.props.hotelInfo.address !== undefined && this.props.hotelInfo.address !== "" ) {
             return (
                 <TouchableOpacity onPress={() => this.handlePressAddress()} value="0.5">
                     <View>
                         <Text style={styles.descriptionText}>
-                            {this.state.hotelInfo.address}
+                            {this.props.hotelInfo.address}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -156,12 +159,12 @@ class HotelDetailCard extends Component {
     }
 
     renderHotelHomepage = () => {
-        if (this.state.hotelInfo.homepage !== null && this.state.hotelInfo.homepage !== undefined && this.state.hotelInfo.homepage !== "" ) {
+        if (this.props.hotelInfo.homepage !== null && this.props.hotelInfo.homepage !== undefined && this.props.hotelInfo.homepage !== "" ) {
             return (
-                <TouchableOpacity onPress={() => this.handlePressHomepage(this.state.hotelInfo.homepage)} value="0.5">
+                <TouchableOpacity onPress={() => this.handlePressHomepage(this.props.hotelInfo.homepage)} value="0.5">
                     <View>
                         <Text style={styles.descriptionText}>
-                            {this.state.hotelInfo.homepage}
+                            {this.props.hotelInfo.homepage}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -172,10 +175,10 @@ class HotelDetailCard extends Component {
     }
 
     renderHotelMainImage = () => {
-        if (this.state.hotelInfo.mainImage !== null && this.state.hotelInfo.mainImage !== undefined && this.state.hotelInfo.mainImage !== "" ) {
+        if (this.props.hotelInfo.mainImage !== null && this.props.hotelInfo.mainImage !== undefined && this.props.hotelInfo.mainImage !== "" ) {
             return (
                 <Image 
-                    source={this.state.hotelInfo.mainImage} 
+                    source={this.props.hotelInfo.mainImage} 
                     style={{width: Dimensions.get('window').width, height: 150}} 
                     resizeMode={'stretch'} 
                 />
@@ -195,12 +198,12 @@ class HotelDetailCard extends Component {
         return (
             <View>
                 <StarRating
-                        disabled={true}
-                        maxStars={5}
-                        rating={this.getStarCount()}
-                        selectedStar={(rating) => this.onStarRatingPress(rating)}
-                        fullStarColor={'#BD3D3A'}
-                        starSize={20}
+                    disabled={true}
+                    maxStars={5}
+                    rating={this.getStarCount()}
+                    selectedStar={(rating) => this.onStarRatingPress(rating)}
+                    fullStarColor={'#BD3D3A'}
+                    starSize={20}
                 />
                 <Text style={styles.starRatingText}>Rating ({this.getStarCount().toFixed(1)} / 5.0)</Text>
             </View>

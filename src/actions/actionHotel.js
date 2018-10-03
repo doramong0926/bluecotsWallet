@@ -14,17 +14,9 @@ export function removeHotelInfoList(hotelInfo) {
     };
 }
 
-export function setSelectHotelInfo(hotelInfo) {
+export function setCalendarMarkedDates(markedDates) {
     return {
-        type: actionTypes.SET_SELECT_HOTEL_INFO,
-        payload: hotelInfo
-    };
-}
-
-
-export function setCalendarInfo(calendarInfo) {
-    return {
-        type: actionTypes.SET_CALENDAR_INFO,
-        payload: calendarInfo
+        type: actionTypes.SET_CALENDAR_MARKED_DATES,
+        payload: markedDates
     };
 }

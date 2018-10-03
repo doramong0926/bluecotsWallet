@@ -1,5 +1,3 @@
-import { defaultHotelInfo } from './hotelList'
-
 export const ETHERSCAN_API_KEY = 'ZGZW3C6175M2MNQTS14HDDIGBYFDHEMXBR';
 export const INFURA_API_KEY = '23663b17c0d34893bfc81542034aac9e';
 export const SEGMENT_API_KEY = 'secret';
@@ -10,6 +8,8 @@ export const DEFAULT_TOKEN_CONTRACT_ADDRESS = '0x0cd4bf09b96d308dafa18d5d6b62d7e
 export const DEFAULT_PAYMENT_OWNER_ADDRESS = '0x1CCc12807F040250dC7cB2f34E553CB272b410cf';
 export const DEFAULT_TOKEN_DECIMALS = 18;
 export const WALLET_VERSION = '0.0.1.180724';
+
+export const DEFAULT_TOKEN_PRICE = 0.01
 
 export const DEFAULT_MAP_REGION = {
     latitude: 37.78825,

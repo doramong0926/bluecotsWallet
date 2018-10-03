@@ -4,7 +4,6 @@ import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { connect } from 'react-redux';
 import ActionCreator from '../actions';
 import PropTypes from 'prop-types';
-import Moment from 'react-moment';
 
 /*
 {

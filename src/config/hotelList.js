@@ -19,35 +19,41 @@ import HOTEL6_MAIN from './../cards/images/hotel6_main.jpg';
 import HOTEL6_SUB1 from './../cards/images/hotel6_sub1.jpg';
 import HOTEL6_SUB2 from './../cards/images/hotel6_sub2.jpg';
 
-export const defaultCalendarInfo = {
-    selectedBeginDate: '',
-    selectedEndDate: '',
+export const DEFAULT_CALENDAR_MARKED_DATES = {
+    selectedCheckInDate: '',
+    selectedCheckOutDate: '',
 }
 
-export const defaultPaymentInfomation = {
+export const DEFAULT_PAYMENT_INFOMATION = {
+    hotelName: '',
     orderNumber: 0,
-    roomType: '',
+    selectedRoomType: '',
     numOfPeople: {
         adult: 0,
         kid: 0,
         baby: 0,
     },
     tokenSymbol: 'BLC',
+    addressToSend: '',
     amountToSend: 0,
     date: {
-        begin: '',
-        end: '',
+        checkIn: '',
+        checkOut: '',
     },
     tokenPrice: 0.01,
     totalPrice: 0,
     totalAmount: 0,
-    hotelInfo: defaultHotelInfo,
 };
 
-export const defaultHotelInfo = {
+export const DEFAULT_HOTEL_INFO = {
     id: 0,
-    roomType: {
-        deluxRoom : {
+    roomType: [
+        {
+            name: '',
+            description: '',
+            roomImage: [
+                HOTEL1_SUB1,
+            ],
             avaliableRoomCount: 0,
             price: {
                 adult: 0,
@@ -55,27 +61,13 @@ export const defaultHotelInfo = {
                 baby: 0,
             },
             avaliableService: {
-                dryer: false,
-                parking: false,
-                internet: false,
+                dryer: 0,
+                parking: 0,
+                internet: 0,
             },
-            bedType: 'single',
+            bedType: ''
         },
-        familyRoom : {
-            avaliableRoomCount: 0,
-            price: {
-                adult: 0,
-                kid: 0,
-                baby: 0,
-            },
-            avaliableService: {
-                dryer: false,
-                parking: false,
-                internet: false,
-            },
-            bedType: 'single',
-        },
-    },        
+    ],        
     addressToSend: '',
     name: '',
     description: '',
@@ -105,15 +97,41 @@ export const defaultHotelInfo = {
     },
 }
 
-export const defaultHotelInfoList = [
+export const DEFAULT_HOTEL_INFO_LIST = [
     {
         id: 1,
-        roomType: {
-            deluxRoom : {
+        roomType: [
+            {
+                name: 'delux',
+                description: 'This room type is delux',
+                roomImage: [
+                    HOTEL1_SUB1,
+                    HOTEL1_SUB2,
+                ],
                 avaliableRoomCount: 1,
                 price: {
                     adult: 11,
-                    kid: 6,
+                    kid: 5,
+                    baby: 3,
+                },
+                avaliableService: {
+                    dryer: 1,
+                    parking: 1,
+                    internet: 1,
+                },
+                bedType: 'single'
+            },
+            {
+                name: 'standard',
+                description: 'This room type is delustandardx',
+                roomImage: [
+                    HOTEL1_SUB1,
+                    HOTEL1_SUB2,
+                ],
+                avaliableRoomCount: 2,
+                price: {
+                    adult: 15,
+                    kid: 5,
                     baby: 3,
                 },
                 avaliableService: {
@@ -123,7 +141,13 @@ export const defaultHotelInfoList = [
                 },
                 bedType: 'double'
             },
-            familyRoom : {
+            {
+                name: 'family',
+                description: 'This room type is family',
+                roomImage: [
+                    HOTEL1_SUB1,
+                    HOTEL1_SUB2,
+                ],
                 avaliableRoomCount: 3,
                 price: {
                     adult: 20,
@@ -135,9 +159,9 @@ export const defaultHotelInfoList = [
                     parking: 1,
                     internet: 1,
                 },
-                bedType: 'double'
+                bedType: 'king'
             },
-        },        
+        ],        
         addressToSend: DEFAULT_PAYMENT_OWNER_ADDRESS,
         name: 'Marriott hotel Seoul',
         description: null,
@@ -171,12 +195,38 @@ export const defaultHotelInfoList = [
     },
     {
         id: 2,
-        roomType: {
-            deluxRoom : {
+        roomType: [
+            {
+                name: 'delux',
+                description: 'This room type is delux',
+                roomImage: [
+                    HOTEL1_SUB1,
+                    HOTEL1_SUB2,
+                ],
                 avaliableRoomCount: 1,
                 price: {
                     adult: 11,
-                    kid: 6,
+                    kid: 5,
+                    baby: 3,
+                },
+                avaliableService: {
+                    dryer: 1,
+                    parking: 1,
+                    internet: 1,
+                },
+                bedType: 'single'
+            },
+            {
+                name: 'standard',
+                description: 'This room type is standard',
+                roomImage: [
+                    HOTEL1_SUB1,
+                    HOTEL1_SUB2,
+                ],
+                avaliableRoomCount: 2,
+                price: {
+                    adult: 15,
+                    kid: 5,
                     baby: 3,
                 },
                 avaliableService: {
@@ -186,7 +236,13 @@ export const defaultHotelInfoList = [
                 },
                 bedType: 'double'
             },
-            familyRoom : {
+            {
+                name: 'family',
+                description: 'This room type is family',
+                roomImage: [
+                    HOTEL1_SUB1,
+                    HOTEL1_SUB2,
+                ],
                 avaliableRoomCount: 3,
                 price: {
                     adult: 20,
@@ -198,9 +254,9 @@ export const defaultHotelInfoList = [
                     parking: 1,
                     internet: 1,
                 },
-                bedType: 'double'
+                bedType: 'king'
             },
-        },
+        ],   
         addressToSend: DEFAULT_PAYMENT_OWNER_ADDRESS,
         name: 'The Shilla Jeju',
         description: null,
@@ -234,12 +290,38 @@ export const defaultHotelInfoList = [
     },
     {
         id: 3,
-        roomType: {
-            deluxRoom : {
+        roomType: [
+            {
+                name: 'delux',
+                description: 'This room type is delux',
+                roomImage: [
+                    HOTEL1_SUB1,
+                    HOTEL1_SUB2,
+                ],
                 avaliableRoomCount: 1,
                 price: {
                     adult: 11,
-                    kid: 6,
+                    kid: 5,
+                    baby: 3,
+                },
+                avaliableService: {
+                    dryer: 1,
+                    parking: 1,
+                    internet: 1,
+                },
+                bedType: 'single'
+            },
+            {
+                name: 'standard',
+                description: 'This room type is standard',
+                roomImage: [
+                    HOTEL1_SUB1,
+                    HOTEL1_SUB2,
+                ],
+                avaliableRoomCount: 2,
+                price: {
+                    adult: 15,
+                    kid: 5,
                     baby: 3,
                 },
                 avaliableService: {
@@ -249,7 +331,13 @@ export const defaultHotelInfoList = [
                 },
                 bedType: 'double'
             },
-            familyRoom : {
+            {
+                name: 'family',
+                description: 'This room type is family',
+                roomImage: [
+                    HOTEL1_SUB1,
+                    HOTEL1_SUB2,
+                ],
                 avaliableRoomCount: 3,
                 price: {
                     adult: 20,
@@ -261,9 +349,9 @@ export const defaultHotelInfoList = [
                     parking: 1,
                     internet: 1,
                 },
-                bedType: 'double'
+                bedType: 'king'
             },
-        },
+        ],   
         addressToSend: DEFAULT_PAYMENT_OWNER_ADDRESS,
         name: 'Paradise Hotel Busan ',
         description: null,
@@ -297,12 +385,38 @@ export const defaultHotelInfoList = [
     },
     {
         id: 4,
-        roomType: {
-            deluxRoom : {
+        roomType: [
+            {
+                name: 'delux',
+                description: 'This room type is delux',
+                roomImage: [
+                    HOTEL1_SUB1,
+                    HOTEL1_SUB2,
+                ],
                 avaliableRoomCount: 1,
                 price: {
                     adult: 11,
-                    kid: 6,
+                    kid: 5,
+                    baby: 3,
+                },
+                avaliableService: {
+                    dryer: 1,
+                    parking: 1,
+                    internet: 1,
+                },
+                bedType: 'single'
+            },
+            {
+                name: 'standard',
+                description: 'This room type is standard',
+                roomImage: [
+                    HOTEL1_SUB1,
+                    HOTEL1_SUB2,
+                ],
+                avaliableRoomCount: 2,
+                price: {
+                    adult: 15,
+                    kid: 5,
                     baby: 3,
                 },
                 avaliableService: {
@@ -312,7 +426,13 @@ export const defaultHotelInfoList = [
                 },
                 bedType: 'double'
             },
-            familyRoom : {
+            {
+                name: 'family',
+                description: 'This room type is family',
+                roomImage: [
+                    HOTEL1_SUB1,
+                    HOTEL1_SUB2,
+                ],
                 avaliableRoomCount: 3,
                 price: {
                     adult: 20,
@@ -324,9 +444,9 @@ export const defaultHotelInfoList = [
                     parking: 1,
                     internet: 1,
                 },
-                bedType: 'double'
+                bedType: 'king'
             },
-        },
+        ],   
         addressToSend: DEFAULT_PAYMENT_OWNER_ADDRESS,
         name: 'Marco Polo Plaza Cebu',
         description: null,
@@ -360,12 +480,38 @@ export const defaultHotelInfoList = [
     },
     {
         id: 5,
-        roomType: {
-            deluxRoom : {
+        roomType: [
+            {
+                name: 'delux',
+                description: 'This room type is delux',
+                roomImage: [
+                    HOTEL1_SUB1,
+                    HOTEL1_SUB2,
+                ],
                 avaliableRoomCount: 1,
                 price: {
                     adult: 11,
-                    kid: 6,
+                    kid: 5,
+                    baby: 3,
+                },
+                avaliableService: {
+                    dryer: 1,
+                    parking: 1,
+                    internet: 1,
+                },
+                bedType: 'single'
+            },
+            {
+                name: 'standard',
+                description: 'This room type is standard',
+                roomImage: [
+                    HOTEL1_SUB1,
+                    HOTEL1_SUB2,
+                ],
+                avaliableRoomCount: 2,
+                price: {
+                    adult: 15,
+                    kid: 5,
                     baby: 3,
                 },
                 avaliableService: {
@@ -375,7 +521,13 @@ export const defaultHotelInfoList = [
                 },
                 bedType: 'double'
             },
-            familyRoom : {
+            {
+                name: 'family',
+                description: 'This room type is family',
+                roomImage: [
+                    HOTEL1_SUB1,
+                    HOTEL1_SUB2,
+                ],
                 avaliableRoomCount: 3,
                 price: {
                     adult: 20,
@@ -387,9 +539,9 @@ export const defaultHotelInfoList = [
                     parking: 1,
                     internet: 1,
                 },
-                bedType: 'double'
+                bedType: 'king'
             },
-        },
+        ],   
         addressToSend: DEFAULT_PAYMENT_OWNER_ADDRESS,
         name: 'The Salisbury Hotel YMCA of Hong Kong',
         description: null,
@@ -423,12 +575,38 @@ export const defaultHotelInfoList = [
     },
     {
         id: 6,
-        roomType: {
-            deluxRoom : {
+        roomType: [
+            {
+                name: 'delux',
+                description: 'This room type is delux',
+                roomImage: [
+                    HOTEL1_SUB1,
+                    HOTEL1_SUB2,
+                ],
                 avaliableRoomCount: 1,
                 price: {
                     adult: 11,
-                    kid: 6,
+                    kid: 5,
+                    baby: 3,
+                },
+                avaliableService: {
+                    dryer: 1,
+                    parking: 1,
+                    internet: 1,
+                },
+                bedType: 'single'
+            },
+            {
+                name: 'standard',
+                description: 'This room type is standard',
+                roomImage: [
+                    HOTEL1_SUB1,
+                    HOTEL1_SUB2,
+                ],
+                avaliableRoomCount: 2,
+                price: {
+                    adult: 15,
+                    kid: 5,
                     baby: 3,
                 },
                 avaliableService: {
@@ -438,7 +616,13 @@ export const defaultHotelInfoList = [
                 },
                 bedType: 'double'
             },
-            familyRoom : {
+            {
+                name: 'family',
+                description: 'This room type is family',
+                roomImage: [
+                    HOTEL1_SUB1,
+                    HOTEL1_SUB2,
+                ],
                 avaliableRoomCount: 3,
                 price: {
                     adult: 20,
@@ -450,9 +634,9 @@ export const defaultHotelInfoList = [
                     parking: 1,
                     internet: 1,
                 },
-                bedType: 'double'
+                bedType: 'king'
             },
-        },
+        ],   
         addressToSend: DEFAULT_PAYMENT_OWNER_ADDRESS,
         name: 'Regal Airport Hotel',
         description: null,

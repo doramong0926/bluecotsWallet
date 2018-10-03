@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import ActionCreator from '../actions';
 import PropTypes from 'prop-types';
 import WalletUtils from '../utils/wallet';
-import Moment from 'react-moment';
+import ReactMoment from 'react-moment';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Divider } from 'react-native-material-design';
 
@@ -122,7 +122,7 @@ class HistoryOfTransaction extends Component{
                                     }
                                 </View>
                                 <Text> {WalletUtils.fromWei(txData.value, 'ether')} {this.state.tokenName} (</Text>
-                                <Moment unix fromNow element={Text} >{txData.timeStamp}</Moment>
+                                <ReactMoment unix fromNow element={Text} >{txData.timeStamp}</ReactMoment>
                                 <Text>)</Text>           
                             </View>      
                                 {                  

@@ -3,12 +3,11 @@ import actionTypes from '../actions/actionTypes';
 import HOTEL1_MAIN from './../cards/images/hotel1_main.jpg';
 import HOTEL1_SUB1 from './../cards/images/hotel1_sub1.jpg';
 import HOTEL1_SUB2 from './../cards/images/hotel1_sub2.jpg';
-import { defaultHotelInfo, defaultCalendarInfo } from './../config/hotelList';
+import { DEFAULT_HOTEL_INFO, DEFAULT_CALENDAR_MARKED_DATES } from './../config/hotelList';
 
 const initialState = {
     hotelInfoList: [],
-    selectHotelInfo: defaultHotelInfo,
-    calendarInfo: defaultCalendarInfo,
+    calendarMarkedDates: DEFAULT_CALENDAR_MARKED_DATES,
 };  
 
 export default (state = initialState, action) => {
@@ -23,14 +22,9 @@ export default (state = initialState, action) => {
                 hotelInfoList: state.hotelInfoList.filter(t=>{return (t.name !== action.payload.name)}),
         });
 
-        case actionTypes.SET_SELECT_HOTEL_INFO:
+        case actionTypes.SET_CALENDAR_MARKED_DATES:
             return Object.assign({}, state, {
-                selectHotelInfo: action.payload,
-        });
-
-        case actionTypes.SET_CALENDAR_INFO:
-            return Object.assign({}, state, {
-                calendarInfo: action.payload,
+                calendarMarkedDates: action.payload,
         });
 
         

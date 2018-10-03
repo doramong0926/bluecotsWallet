@@ -86,7 +86,7 @@ class ModalCalendarForReservation extends Component {
                         // Handler which gets executed when press arrow icon left. It receive a callback can go next month
                         onPressArrowRight={addMonth => addMonth()}
 
-                        markedDates={this.props.calendarInfo.selectedBeginDate = {marked:true}}
+                        markedDates={this.props.calendarMarkedDates}
                         // markedDates={{
                         //     '2018-10-20': {textColor: 'green'},
                         //     '2018-10-22': {startingDay: true, color: 'green'},
@@ -116,8 +116,7 @@ function mapStateToProps(state) {
     return {
         visibleModalCalendarForReservation: state.modal.visibleModalCalendarForReservation,
         modalCalendarForReservationFinishProcess: state.modal.modalCalendarForReservationFinishProcess,
-        selectHotelInfo: state.hotel.selectHotelInfo,
-        calendarInfo: state.hotel.calendarInfo,
+        calendarMarkedDates: state.hotel.calendarMarkedDates,
     };
 }
 
