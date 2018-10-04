@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import ActionCreator from '../actions';
 import { Divider } from 'react-native-material-design';
 
-import { DEFAULT_TOKEN_PRICE } from './../config/constants'
+import { DEFAULT_TOKEN_EXCHANGE_RATE } from './../config/constants'
 import { DEFAULT_CALENDAR_MARKED_DATES } from '../config/hotelList';
 
 
@@ -132,7 +132,7 @@ class HotelRoomCard extends Component {
             return (
                 <View>
                     <Text style={styles.tokenPriceText}>
-                        {(this.props.roomInfo.price.adult / DEFAULT_TOKEN_PRICE).toFixed(2)} BLC
+                        {(this.props.roomInfo.price.adult / DEFAULT_TOKEN_EXCHANGE_RATE).toFixed(2)} BLC
                     </Text>
                     <Text style={styles.tokenPriceDallorText}>
                         ({this.props.roomInfo.price.adult.toFixed(2)} $)

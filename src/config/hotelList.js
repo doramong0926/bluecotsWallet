@@ -1,4 +1,4 @@
-import { DEFAULT_PAYMENT_OWNER_ADDRESS } from './constants'
+import { DEFAULT_PAYMENT_OWNER_ADDRESS, DEFAULT_TOKEN_EXCHANGE_RATE } from './constants'
 
 import HOTEL1_MAIN from './../cards/images/hotel1_main.jpg';
 import HOTEL1_SUB1 from './../cards/images/hotel1_sub1.jpg';
@@ -27,6 +27,7 @@ export const DEFAULT_CALENDAR_MARKED_DATES = {
 export const DEFAULT_PAYMENT_INFOMATION = {
     hotelName: '',
     orderNumber: 0,
+    orderTime: 0,
     selectedRoomType: '',
     numOfPeople: {
         adult: 0,
@@ -34,15 +35,18 @@ export const DEFAULT_PAYMENT_INFOMATION = {
         baby: 0,
     },
     tokenSymbol: 'BLC',
+    addressFromSend: '',
     addressToSend: '',
-    amountToSend: 0,
+    amountToSend: '',
+    transactionId: '',
+    transcationBlockHeight: 0,
     date: {
         checkIn: '',
         checkOut: '',
+        nightsDays: 0,
     },
-    tokenPrice: 0.01,
+    tokenPrice: DEFAULT_TOKEN_EXCHANGE_RATE,
     totalPrice: 0,
-    totalAmount: 0,
 };
 
 export const DEFAULT_HOTEL_INFO = {

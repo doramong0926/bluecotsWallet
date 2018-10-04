@@ -14,9 +14,10 @@ import {
 	DEFAULT_TOKEN_CONTRACT_ADDRESS,
     DEFAULT_TOKEN_DECIMALS,
     defaultWallet,
+    DEFAULT_TOKEN_EXCHANGE_RATE,
  } from '../config/constants';
 
- import { DEFAULT_HOTEL_INFO } from './../config/hotelList'
+ import {DEFAULT_PAYMENT_INFOMATION} from '../config/hotelList';
 
 class ModalPayment extends Component {
     static propTypes = {
@@ -27,29 +28,7 @@ class ModalPayment extends Component {
 
     constructor(props, context) {
         super(props, context);
-        const DEFAULT_PAYMENT_INFOMATION = {
-            hotelName: '',
-            orderNumber: 0,
-            selectedRoomType: '',
-            numOfPeople: {
-                adult: 0,
-                kid: 0,
-                baby: 0,
-            },
-            tokenSymbol: 'BLC',
-            addressToSend: '',
-            amountToSend: 0,
-            date: {
-                checkIn: '',
-                checkOut: '',
-            },
-            tokenPrice: 0.01,
-            totalPrice: 0,
-            totalAmount: 0,
-        };
         this.state = {
-            amountToSend: 0,
-            totalPrice: 0,
             gasForSend: 0,
             isEnoughGas: false,
             paymentInfomation: DEFAULT_PAYMENT_INFOMATION,
@@ -115,7 +94,7 @@ class ModalPayment extends Component {
                 }}
             >
                 <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}>Payment {this.state.paymentInfomation.tokenSymbol} </Text>
+                    <Text style={styles.headerText}>Payment {this.props.paymentInfomation.tokenSymbol} </Text>
                     <View style={{alignSelf:"flex-end", paddingRight:20, position:"absolute"}}>
                         <TouchableOpacity onPress={() => this.closeModal()} value={'0.5'}>
                             <Ionicons name="ios-close-circle-outline" size={20}/>
@@ -126,15 +105,15 @@ class ModalPayment extends Component {
                 <View style={styles.bodyContainer}>                   
                     <View style={styles.containerBalance}>
                         <Text style={styles.subTitleText}>Available balance</Text>
-                        <Text style={styles.descriptionText}>{this.state.defaultWallet.walletAddress}</Text>
+                        <Text style={styles.descriptionText}>{this.props.defaultWallet.walletAddress}</Text>
                         {this.renderBalance()}                        
                     </View>
                     <View style={styles.containerPaymentInfomation}>
                         <Text style={styles.subTitleText}>Reserve infomation</Text>
-                        <Text style={styles.descriptionText}>{this.state.paymentInfomation.hotelName}</Text>
-                        <Text style={styles.descriptionText}>Order number : {this.state.paymentInfomation.orderNumber}</Text>
-                        <Text style={styles.descriptionText}>Room type : {this.state.paymentInfomation.selectedRoomType}</Text>
-                        <Text style={styles.descriptionText}>Adult : {this.state.paymentInfomation.numOfPeople.adult} / Kid : {this.state.paymentInfomation.numOfPeople.kid} / Baby : {this.state.paymentInfomation.numOfPeople.baby}</Text>
+                        <Text style={styles.descriptionText}>{this.props.paymentInfomation.hotelName}</Text>
+                        <Text style={styles.descriptionText}>Room type : {this.props.paymentInfomation.selectedRoomType}</Text>
+                        {this.renderCheckInOut()}
+                        <Text style={styles.descriptionText}>Adult : {this.props.paymentInfomation.numOfPeople.adult} / Kid : {this.props.paymentInfomation.numOfPeople.kid} / Baby : {this.props.paymentInfomation.numOfPeople.baby}</Text>
                     </View>
                     <View style={styles.containerTotalPrice}>
                         <Text style={styles.subTitleText}>Total price</Text>
@@ -144,10 +123,10 @@ class ModalPayment extends Component {
                 <View style={styles.buttonContainer}>  
                     <Button
                         disabled={
-                            !this.addressIsValid(this.state.addressToSend) || 
-                            !this.amountIsValid(this.state.amountToSend) || 
-                            !this.amountIsEnough(this.state.amountToSend) ||
-                            this.isSameAddressWithTxAddress(this.state.addressToSend) ||
+                            !this.addressIsValid(this.props.paymentInfomation.addressToSend) || 
+                            !this.amountIsValid(this.props.paymentInfomation.amountToSend) || 
+                            !this.amountIsEnough(this.props.paymentInfomation.amountToSend) ||
+                            this.isSameAddressWithTxAddress(this.props.paymentInfomation.addressToSend) ||
                             (this.state.isEnoughGas === null ||  this.state.isEnoughGas === false)
                         }
                         onPress={this.handelPressSend}
@@ -168,59 +147,52 @@ class ModalPayment extends Component {
     }  
 
     renderBalance = () => {
-        if (this.state.paymentInfomation.tokenSymbol === 'BLC') {
+        if (this.props.paymentInfomation.tokenSymbol === 'BLC') {
             return <Text style={styles.balanceText}> {this.state.blcBalance} BLC</Text>
-        } else if (this.state.paymentInfomation.tokenSymbol === 'ETH') {
+        } else if (this.props.paymentInfomation.tokenSymbol === 'ETH') {
             return <Text style={styles.balanceText}> {this.state.ethBalance} ETH</Text>
         }
     }
 
     renderTotalPrice = () => {
         return (
-            <Text style={styles.balanceText}>{this.state.amountToSend} BLC ({this.state.totalPrice} $)</Text>
+            <Text style={styles.balanceText}>{this.props.paymentInfomation.amountToSend} BLC ({this.props.paymentInfomation.totalPrice} $)</Text>
         )
     }
 
+    renderCheckInOut = () => {
+        if ( 
+            this.props.paymentInfomation.date.checkIn !== '' && this.props.paymentInfomation.date.checkIn !== undefined && this.props.paymentInfomation.date.checkIn !== null &&  
+            this.props.paymentInfomation.date.checkOut !== '' && this.props.paymentInfomation.date.checkOut !== undefined && this.props.paymentInfomation.date.checkOut !== null
+        ) {
+            return (
+                <View>
+                    <Text style={styles.descriptionText}>Check-in : {this.props.paymentInfomation.date.checkIn}</Text>
+                    <Text style={styles.descriptionText}>Check-out : {this.props.paymentInfomation.date.checkOut}</Text>
+                    <Text style={styles.descriptionText}>({this.props.paymentInfomation.date.nightsDays})</Text>
+                </View>
+            )
+        } else {
+            <View></View>
+        }
+    }
     
 
     openModal = () => {
-        this.setPaymentInfomation();
+        this.calculatePaymentInfomation();
     }
 
     closeModal = () => {
         this.props.hideModalPayment();
     }
 
-    setPaymentInfomation = () => {
-        let adultPrice = 0;
-        let kidPrice = 0;
-        let babyPrice = 0;
-
-        if (this.state.paymentInfomation.roomType === 'delux') {
-            adultPrice = this.state.paymentInfomation.hotelInfo.roomType.deluxRoom.price.adult;
-            kidPrice = this.state.paymentInfomation.hotelInfo.roomType.deluxRoom.price.kid;
-            babyPrice = this.state.paymentInfomation.hotelInfo.roomType.deluxRoom.price.baby;
-        } else {
-
-        }
-
-        const totalPrice = (
-            this.state.paymentInfomation.numOfPeople.adult * adultPrice +
-            this.state.paymentInfomation.numOfPeople.kid * kidPrice +
-            this.state.paymentInfomation.numOfPeople.baby * babyPrice
-        );
+    calculatePaymentInfomation = () => {
         this.updateWalletBalance(this.state.defaultWallet.walletAddress);
-        this.setState({
-            addressToSend: this.state.paymentInfomation.addressToSend,
-            tokenSymbol: this.state.paymentInfomation.tokenSymbol,
-            totalPrice: totalPrice,
-            amountToSend: (totalPrice / this.state.paymentInfomation.tokenPrice),
-        })
         setTimeout(() => {
             this.calculateGasPrice(
-                this.state.paymentInfomation.tokenSymbol,
-                this.state.paymentInfomation.addressToSend,
-                this.state.amountToSend,
+                this.props.paymentInfomation.tokenSymbol,
+                this.props.paymentInfomation.addressToSend,
+                this.props.paymentInfomation.amountToSend,
             );
         }, );
     }
@@ -308,19 +280,19 @@ class ModalPayment extends Component {
         try {  
             const txid = await WalletUtils.sendTransaction (
                 { 
-                    contractAddress: (this.state.paymentInfomation.tokenSymbol === 'BLC') ? (DEFAULT_TOKEN_CONTRACT_ADDRESS) : (''),
-                    symbol: this.state.paymentInfomation.tokenSymbol, 
-                    decimals: (this.state.paymentInfomation.tokenSymbol === 'BLC') ? (DEFAULT_TOKEN_DECIMALS) : (0),
+                    contractAddress: (this.props.paymentInfomation.tokenSymbol === 'BLC') ? (DEFAULT_TOKEN_CONTRACT_ADDRESS) : (''),
+                    symbol: this.props.paymentInfomation.tokenSymbol, 
+                    decimals: (this.props.paymentInfomation.tokenSymbol === 'BLC') ? (DEFAULT_TOKEN_DECIMALS) : (0),
                 },
                 this.state.defaultWallet,
-                this.state.paymentInfomation.addressToSend,
-                this.state.amountToSend,
+                this.props.paymentInfomation.addressToSend,
+                this.props.paymentInfomation.amountToSend,
             );
             setTimeout(() => {
                 this.props.hideModalSpinner();
                 const infomation = {
                     title: 'SUCCESS', 
-                    message1: 'Success to send ' + this.state.tokenSymbol, 
+                    message1: 'Success to send ' + this.props.paymentInfomation.tokenSymbol, 
                     transactionId: txid,
                 };
                 this.props.setModalInfomation(infomation);
@@ -372,23 +344,23 @@ class ModalPayment extends Component {
     }
 
     addressValidationMsg = () => {
-        if (this.state.paymentInfomation.addressToSend === '' || this.state.paymentInfomation.addressToSend === null) {
+        if (this.props.paymentInfomation.addressToSend === '' || this.props.paymentInfomation.addressToSend === null) {
             return <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
-        } else if (!this.addressIsValid(this.state.paymentInfomation.addressToSend)) {
+        } else if (!this.addressIsValid(this.props.paymentInfomation.addressToSend)) {
             return <FormValidationMessage>{'Address is wrong.'}</FormValidationMessage>
-        } else if (this.isSameAddressWithTxAddress(this.state.paymentInfomation.addressToSend)) {
-            return <FormValidationMessage>{'You can not send ' + this.state.paymentInfomation.tokenSymbol + ' to same address.'}</FormValidationMessage>
+        } else if (this.isSameAddressWithTxAddress(this.props.paymentInfomation.addressToSend)) {
+            return <FormValidationMessage>{'You can not send ' + this.props.paymentInfomation.tokenSymbol + ' to same address.'}</FormValidationMessage>
         } else {
             return  <FormValidationMessage labelStyle={{color:'#79C753'}}> {'Address is valid.'} </FormValidationMessage>
         }
     }
 
     amountValidationMsg = () => {
-        if (this.state.amountToSend === '' || this.state.amountToSend === null) {
+        if (this.props.paymentInfomation.amountToSend === '' || this.props.paymentInfomation.amountToSend === null) {
             return <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
-        } else if (!this.amountIsValid(this.state.amountToSend)) {
+        } else if (!this.amountIsValid(this.props.paymentInfomation.amountToSend)) {
             return <FormValidationMessage>{'Amount is wrong.'}</FormValidationMessage>
-        } else if (!this.amountIsEnough(this.state.amountToSend)) {
+        } else if (!this.amountIsEnough(this.props.paymentInfomation.amountToSend)) {
             return <FormValidationMessage>{'Balance is not enough.'}</FormValidationMessage>
         } else if (this.state.isEnoughGas === null) {
             return <FormValidationMessage>{'Calculating gas'}</FormValidationMessage>
@@ -416,13 +388,13 @@ class ModalPayment extends Component {
     }
 
     amountIsEnough = (amount) => {
-        if (this.state.paymentInfomation.tokenSymbol === 'BLC') {
+        if (this.props.paymentInfomation.tokenSymbol === 'BLC') {
             if (this.state.blcBalance < amount) {
                 return false;
             } else {
                 return true;
             }
-        } else if (this.state.tokenSymbol === 'ETH') {
+        } else if (this.props.paymentInfomation.tokenSymbol === 'ETH') {
             if (this.state.ethBalance < amount) {
                 return false;
             } else {

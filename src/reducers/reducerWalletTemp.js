@@ -1,5 +1,5 @@
 import actionTypes from './../actions/actionTypes';
-import { defaultWallet, } from './../config/constants';
+import { defaultWallet, DEFAULT_TOKEN_EXCHANGE_RATE} from './../config/constants';
 
 const initialState = {
     isLoadingTxData: true,
@@ -7,6 +7,7 @@ const initialState = {
     paymentInfomation: {
         hotelName: '',
         orderNumber: 0,
+        orderTime: 0,
         selectedRoomType: '',
         numOfPeople: {
             adult: 0,
@@ -14,15 +15,18 @@ const initialState = {
             baby: 0,
         },
         tokenSymbol: 'BLC',
+        addressFromSend: '',
         addressToSend: '',
-        amountToSend: 0,
+        amountToSend: '',
+        transactionId: '',
+        transcationBlockHeight: 0,
         date: {
             checkIn: '',
             checkOut: '',
+            nightsDays: 0,
         },
-        tokenPrice: 0.01,
+        tokenPrice: DEFAULT_TOKEN_EXCHANGE_RATE,
         totalPrice: 0,
-        totalAmount: 0,
     },
     ethBalance: 0,
     blcBalance: 0,

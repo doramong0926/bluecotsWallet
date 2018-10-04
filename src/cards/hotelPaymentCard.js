@@ -6,10 +6,9 @@ import { Card } from 'react-native-material-design';
 import PropTypes from 'prop-types';
 import ActionCreator from '../actions';
 import { Divider } from 'react-native-material-design';
-import { DEFAULT_HOTEL_INFO, DEFAULT_CALENDAR_MARKED_DATES } from '../config/hotelList';
-import CalendarForReservation from '../components/calendarForReservation';
+import { DEFAULT_PAYMENT_INFOMATION } from '../config/hotelList';
+import { DEFAULT_TOKEN_EXCHANGE_RATE } from '../config/constants'
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import ReactMoment from 'react-moment';
 import Moment from 'moment';
 
 
@@ -18,56 +17,18 @@ class HotelPaymentCard extends Component {
         hotelInfo: PropTypes.shape({
             name: PropTypes.string.isRequired,
         }).isRequired,
+        defaultWallet: PropTypes.shape({
+            walletAddress: PropTypes.string.isRequired,
+        }).isRequired,
     };
-    
     constructor(props, context) {
         super(props);
-        const DEFAULT_PAYMENT_INFOMATION = {
-            hotelName: '',
-            orderNumber: 0,
-            selectedRoomType: '',
-            numOfPeople: {
-                adult: 0,
-                kid: 0,
-                baby: 0,
-            },
-            tokenSymbol: 'BLC',
-            addressToSend: '',
-            amountToSend: 0,
-            date: {
-                checkIn: '',
-                checkOut: '',
-            },
-            tokenPrice: 0.01,
-            totalPrice: 0,
-            totalAmount: 0,
-        };
         this.state = {
             paymentInfomation: DEFAULT_PAYMENT_INFOMATION,
         };
     }
 
     componentDidMount() {
-        const DEFAULT_PAYMENT_INFOMATION = {
-            hotelName: '',
-            orderNumber: 0,
-            selectedRoomType: '',
-            numOfPeople: {
-                adult: 0,
-                kid: 0,
-                baby: 0,
-            },
-            tokenSymbol: 'BLC',
-            addressToSend: '',
-            amountToSend: 0,
-            date: {
-                checkIn: '',
-                checkOut: '',
-            },
-            tokenPrice: 0.01,
-            totalPrice: 0,
-            totalAmount: 0,
-        };
         this.setState({
             paymentInfomation: DEFAULT_PAYMENT_INFOMATION,
         });
@@ -116,7 +77,7 @@ class HotelPaymentCard extends Component {
     }
     selectCheckInDateFinishProcess = (date) => {
         let paymentInfomation = this.state.paymentInfomation;
-        paymentInfomation.date.checkIn = date.dateString;
+        paymentInfomation.date.checkIn = date.dateString;        
         this.setState({
             paymentInfomation: paymentInfomation,
         })
@@ -151,30 +112,7 @@ class HotelPaymentCard extends Component {
     }
 
     handelPressReserve = () => {
-        var paymentInfomation = {
-            hotelName: this.props.hotelInfo.name,
-            orderNumber: 12345,
-            selectedRoomType: 'delux',
-            numOfPeople: {
-                adult: 2,
-                kid: 1,
-                baby: 1,
-            },
-            tokenSymbol: 'BLC',
-            amountToSend: 0,
-            addressToSend: this.props.hotelInfo.addressToSend,
-            date: {
-                checkIn: this.state.paymentInfomation.date.checkIn,
-                checkOut: this.state.paymentInfomation.date.checkOut,
-            },
-            tokenPrice: 0.01,
-            totalPrice: 0,
-            totalAmount: 0,
-        }
-        this.setState({
-            paymentInfomation: paymentInfomation
-        });
-        this.props.setPaymentInfomation(paymentInfomation);    
+        this.calculatePaymentInfomation(); 
         setTimeout(() => {
             this.props.showModalPayment();    
         }, );
@@ -182,6 +120,12 @@ class HotelPaymentCard extends Component {
 
     handelPressChangeNumOfAdult = (type) => {
         var paymentInfomation = this.state.paymentInfomation;
+        if (paymentInfomation.numOfPeople.adult < 0) {
+            paymentInfomation.numOfPeople.adult = 0;
+            this.setState({
+                paymentInfomation: paymentInfomation,
+            })
+        }
         if (type === 'add') {
             paymentInfomation.numOfPeople.adult++;
             this.setState({
@@ -189,14 +133,22 @@ class HotelPaymentCard extends Component {
             })
         } else if (type === 'remove') {
             paymentInfomation.numOfPeople.adult--;
-            this.setState({
-                paymentInfomation: paymentInfomation,
-            })
+            if (paymentInfomation.numOfPeople.adult > 0) {
+                this.setState({
+                    paymentInfomation: paymentInfomation,
+                })
+            }
         }
     }
 
     handelPressChangeNumOfKid = (type) => {
         var paymentInfomation = this.state.paymentInfomation;
+        if (paymentInfomation.numOfPeople.kid < 0) {
+            paymentInfomation.numOfPeople.kid = 0;
+            this.setState({
+                paymentInfomation: paymentInfomation,
+            })
+        }
         if (type === 'add') {
             paymentInfomation.numOfPeople.kid++;
             this.setState({
@@ -204,14 +156,22 @@ class HotelPaymentCard extends Component {
             })
         } else if (type === 'remove') {
             paymentInfomation.numOfPeople.kid--;
-            this.setState({
-                paymentInfomation: paymentInfomation,
-            })
+            if (paymentInfomation.numOfPeople.kid > 0) {
+                this.setState({
+                    paymentInfomation: paymentInfomation,
+                })
+            }
         }
     }
 
     handelPressChangeNumOfBaby = (type) => {
         var paymentInfomation = this.state.paymentInfomation;
+        if (paymentInfomation.numOfPeople.baby < 0) {
+            paymentInfomation.numOfPeople.baby = 0;
+            this.setState({
+                paymentInfomation: paymentInfomation,
+            })
+        }
         if (type === 'add') {
             paymentInfomation.numOfPeople.baby++;
             this.setState({
@@ -219,9 +179,11 @@ class HotelPaymentCard extends Component {
             })
         } else if (type === 'remove') {
             paymentInfomation.numOfPeople.baby--;
-            this.setState({
-                paymentInfomation: paymentInfomation,
-            })
+            if (paymentInfomation.numOfPeople.baby > 0) {
+                this.setState({
+                    paymentInfomation: paymentInfomation,
+                })
+            }
         }
     }
 
@@ -269,42 +231,43 @@ class HotelPaymentCard extends Component {
 
     calculateDiffDate = (start, end) => {
         const diffDate = Moment(end, 'YYYY-MM-DD').diff(Moment(start, 'YYYY-MM-DD'), 'days');
+        // var paymentInfomation = this.state.paymentInfomation;
+        // paymentInfomation.date.nightsDays = diffDate;
+        // this.setState({paymentInfomation: paymentInfomation})
         return diffDate;
     }
 
-    // setPaymentInfomation = () => {
-    //     let adultPrice = 0;
-    //     let kidPrice = 0;
-    //     let babyPrice = 0;
-
-    //     if (this.state.paymentInfomation.roomType === 'delux') {
-    //         adultPrice = this.state.paymentInfomation.hotelInfo.roomType.deluxRoom.price.adult;
-    //         kidPrice = this.state.paymentInfomation.hotelInfo.roomType.deluxRoom.price.kid;
-    //         babyPrice = this.state.paymentInfomation.hotelInfo.roomType.deluxRoom.price.baby;
-    //     } else {
-
-    //     }
-
-    //     const totalPrice = (
-    //         this.state.paymentInfomation.numOfPeople.adult * adultPrice +
-    //         this.state.paymentInfomation.numOfPeople.kid * kidPrice +
-    //         this.state.paymentInfomation.numOfPeople.baby * babyPrice
-    //     );
-    //     this.updateWalletBalance(this.state.defaultWallet.walletAddress);
-    //     this.setState({
-    //         addressToSend: this.state.paymentInfomation.addressToSend,
-    //         tokenSymbol: this.state.paymentInfomation.tokenSymbol,
-    //         totalPrice: totalPrice,
-    //         amountToSend: (totalPrice / this.state.paymentInfomation.tokenPrice),
-    //     })
-    //     setTimeout(() => {
-    //         this.calculateGasPrice(
-    //             this.state.paymentInfomation.tokenSymbol,
-    //             this.state.paymentInfomation.addressToSend,
-    //             this.state.amountToSend,
-    //         );
-    //     }, );
-    // }
+    calculatePaymentInfomation = () => {
+        const totalPrice = (
+            this.state.paymentInfomation.numOfPeople.adult * this.props.roomInfo.price.adult +
+            this.state.paymentInfomation.numOfPeople.kid * this.props.roomInfo.price.kid +
+            this.state.paymentInfomation.numOfPeople.baby * this.props.roomInfo.price.baby
+        );
+        const paymentInfomation = {
+            hotelName: this.props.hotelInfo.name,
+            orderNumber: '',
+            orderTime: 0,
+            selectedRoomType: this.props.roomInfo.name,
+            numOfPeople: this.state.paymentInfomation.numOfPeople,
+            tokenSymbol: 'BLC',
+            addressFromSend: this.props.defaultWallet.walletAddress,
+            addressToSend: this.props.hotelInfo.addressToSend,
+            amountToSend: totalPrice / DEFAULT_TOKEN_EXCHANGE_RATE,
+            transactionId: '',
+            transcationBlockHeight: 0,
+            date: {
+                checkIn: this.state.paymentInfomation.date.checkIn,
+                checkOut: this.state.paymentInfomation.date.checkOut,
+                nightsDays: this.state.paymentInfomation.date.nightsDays,
+            },
+            tokenExchangeRate: DEFAULT_TOKEN_EXCHANGE_RATE,
+            totalPrice: totalPrice,
+        }
+        this.setState({
+            paymentInfomation: paymentInfomation
+        });
+        this.props.setPaymentInfomation(paymentInfomation);  
+    }
 
     renderCheckInOut = () => {
         return (
@@ -489,6 +452,7 @@ class HotelPaymentCard extends Component {
 function mapStateToProps(state) {
     return {
         calendarMarkedDates: state.hotel.calendarMarkedDates,
+        defaultWallet: state.wallet.defaultWallet,
     };
 }
 
