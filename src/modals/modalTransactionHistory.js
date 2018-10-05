@@ -68,17 +68,17 @@ class ModalTransactionHistory extends Component {
                     </View>                      
                 </View>
                     <View style={styles.bodyContainer}>
-                        <ReactMoment unix element={Text} >{this.state.timeStamp}</ReactMoment>                    
-                        <Text>Block : {this.state.blockNumber}</Text>
-                        <Text>Status : {this.state.status}</Text>
-                        <Text>Value : {WalletUtils.fromWei(this.state.value, 'ether')} {this.props.modalTransactionHistoryInfomation.symbol}</Text>
-                        <Text>Fee : {WalletUtils.fromWei(WalletUtils.toWei(this.state.gasUsed, 'gwei'),'ether')} ETH</Text>
+                        <ReactMoment unix element={Text} >{this.state.modalTransactionHistoryInfomation.timeStamp}</ReactMoment>                    
+                        <Text>Block : {this.state.modalTransactionHistoryInfomation.blockNumber}</Text>
+                        <Text>Status : {this.state.modalTransactionHistoryInfomation.status}</Text>
+                        <Text>Value : {WalletUtils.fromWei(this.state.modalTransactionHistoryInfomation.value, 'ether')} {this.state.modalTransactionHistoryInfomation.symbol}</Text>
+                        <Text>Fee : {WalletUtils.fromWei(WalletUtils.toWei(this.state.modalTransactionHistoryInfomation.gasUsed, 'gwei'),'ether')} ETH</Text>
                         <View style={styles.BodyContainer2}>
                             <View>
                                 <Text>From : </Text>
                             </View>
                             <View>
-                                <Text>{this.state.from}</Text>
+                                <Text>{this.state.modalTransactionHistoryInfomation.from}</Text>
                             </View>
                         </View>
                         <View style={styles.BodyContainer2}>
@@ -86,7 +86,7 @@ class ModalTransactionHistory extends Component {
                                 <Text>To : </Text>
                             </View>
                             <View>
-                                <Text>{this.state.to}</Text>
+                                <Text>{this.state.modalTransactionHistoryInfomation.to}</Text>
                             </View>
                         </View>
                         <View style={styles.BodyContainer2}>
@@ -94,7 +94,7 @@ class ModalTransactionHistory extends Component {
                                 <Text>TxID : </Text>
                             </View>
                             <View>
-                                <Text>{this.state.hash}</Text>
+                                <Text>{this.state.modalTransactionHistoryInfomation.hash}</Text>
                             </View>
                         </View>
                     </View>

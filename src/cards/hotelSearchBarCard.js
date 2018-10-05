@@ -13,6 +13,7 @@ class HotelSearchBarCard extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
+            queryString: '',
         }
     }
 
@@ -43,6 +44,7 @@ class HotelSearchBarCard extends Component {
                                 onClearText={this.props.handleonClearText}
                                 placeholder='Search hotel' 
                                 value={this.props.queryString}
+                                // showLoadingIcon={true}
                             />
                         </View>   
                     </Card.Body>

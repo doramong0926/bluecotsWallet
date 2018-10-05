@@ -34,15 +34,15 @@ class HotelScreen extends Component{
     }
 
     componentDidMount() {
-        setInterval(() => {
-            this.fetchHotelInfoList();
-            this.updateHotelInfoList();
-        }, 10000)
+        // setInterval(() => {
+        //     this.fetchHotelInfoList();
+        //     this.updateHotelInfoList();
+        // }, 10000)
     }
 
     componentWillReceiveProps() {
-        this.fetchHotelInfoList();
-        this.updateHotelInfoList();
+        // this.fetchHotelInfoList();
+        // this.updateHotelInfoList();
     }
 
     render() {
@@ -58,7 +58,7 @@ class HotelScreen extends Component{
                     <HotelSearchBarCard 
                         handelOnChnageText={this.handelOnChnageText.bind(this)} 
                         handleonClearText={this.handleonClearText.bind(this)}
-                        queryString={this.state.queryString}
+                        // queryString={this.state.queryString}
                     />
                 </View>
                 <ParallaxScrollView
@@ -125,18 +125,30 @@ class HotelScreen extends Component{
         })
     }
 
-    updateHotelInfoList = () => {
-        this.state.dataSourceForHotelInfoList = this.state.dataSourceForHotelInfoList.cloneWithRows(this.props.hotelInfoList);
+    updateHotelInfoList = (queryString) => {
+        if (queryString !== null && queryString !== undefined && queryString !== '') {
+            this.state.dataSourceForHotelInfoList = this.state.dataSourceForHotelInfoList.cloneWithRows(
+                this.props.hotelInfoList.filter(t => {
+                    return (t.name.includes(queryString) === true);
+                })
+            );
+        }        
+        else {
+            this.state.dataSourceForHotelInfoList = this.state.dataSourceForHotelInfoList.cloneWithRows(this.props.hotelInfoList);
+        }
     };
 
     handelOnChnageText = (queryString) => {
         console.log(`handelOnChnageText : ${queryString}`)
-        this.setState(state => ({ ...state, queryString: queryString || "" }));
+        this.setState({queryString: queryString});
+        this.updateHotelInfoList(queryString);     
+        
     }
 
     handleonClearText = () => {
         console.log(`handleSearchClear`);
         this.setState({queryString: ''});
+        this.updateHotelInfoList('');     
     }
 }
 
