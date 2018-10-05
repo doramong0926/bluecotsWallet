@@ -30,7 +30,30 @@ class HotelPaymentCard extends Component {
 
     componentDidMount() {
         this.setState({
-            paymentInfomation: DEFAULT_PAYMENT_INFOMATION,
+            paymentInfomation: {
+                hotelName: '',
+                orderNumber: 0,
+                orderTime: 0,
+                selectedRoomType: '',
+                numOfPeople: {
+                    adult: 0,
+                    kid: 0,
+                    baby: 0,
+                },
+                tokenSymbol: 'BLC',
+                addressFromSend: '',
+                addressToSend: '',
+                amountToSend: '',
+                transactionId: '',
+                transcationBlockHeight: 0,
+                date: {
+                    checkIn: '',
+                    checkOut: '',
+                    nightsDays: 0,
+                },
+                tokenPrice: DEFAULT_TOKEN_EXCHANGE_RATE,
+                totalPrice: 0,
+            },
         });
     }
 
@@ -237,12 +260,20 @@ class HotelPaymentCard extends Component {
         return diffDate;
     }
 
-    calculatePaymentInfomation = () => {
+    calculatePaymentInfomation = () => {        
+        const diffDate = this.calculateDiffDate(this.state.paymentInfomation.date.checkIn, this.state.paymentInfomation.date.checkOut);
+        setTimeout(() => {
+            var paymentInfomation = this.state.paymentInfomation;
+            paymentInfomation.date.nightsDays = diffDate;
+            this.setState({paymentInfomation: paymentInfomation})
+        }, );
+
         const totalPrice = (
-            this.state.paymentInfomation.numOfPeople.adult * this.props.roomInfo.price.adult +
-            this.state.paymentInfomation.numOfPeople.kid * this.props.roomInfo.price.kid +
-            this.state.paymentInfomation.numOfPeople.baby * this.props.roomInfo.price.baby
+            this.state.paymentInfomation.numOfPeople.adult * this.props.roomInfo.price.adult * diffDate +
+            this.state.paymentInfomation.numOfPeople.kid * this.props.roomInfo.price.kid * diffDate +
+            this.state.paymentInfomation.numOfPeople.baby * this.props.roomInfo.price.baby * diffDate
         );
+
         const paymentInfomation = {
             hotelName: this.props.hotelInfo.name,
             orderNumber: '',

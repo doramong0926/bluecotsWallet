@@ -156,8 +156,32 @@ class ModalPayment extends Component {
 
     renderTotalPrice = () => {
         return (
-            <Text style={styles.balanceText}>{this.props.paymentInfomation.amountToSend} BLC ({this.props.paymentInfomation.totalPrice} $)</Text>
+            <Text style={styles.TotalPiceText}>{this.props.paymentInfomation.amountToSend} BLC ({this.props.paymentInfomation.totalPrice} $)</Text>
         )
+    }
+
+    renderCalculatedDate = (diffDate) => {
+        if (parseInt(diffDate, 10) > 0) {
+            if (parseInt(diffDate, 10) > 1) {
+                return (
+                    <View>
+                        <Text style={styles.descriptionText}>{diffDate} nights {diffDate+1} days</Text>
+                    </View>
+                )
+            } else {
+                return (
+                    <View>
+                        <Text style={styles.descriptionText}>{diffDate} night {diffDate+1} days</Text>
+                    </View>
+                )
+            }
+        } else {
+            return (
+                <View>
+                    <Text style={styles.descriptionText}>Invalid check-In/Out</Text>
+                </View>
+            )
+        }
     }
 
     renderCheckInOut = () => {
@@ -169,14 +193,13 @@ class ModalPayment extends Component {
                 <View>
                     <Text style={styles.descriptionText}>Check-in : {this.props.paymentInfomation.date.checkIn}</Text>
                     <Text style={styles.descriptionText}>Check-out : {this.props.paymentInfomation.date.checkOut}</Text>
-                    <Text style={styles.descriptionText}>({this.props.paymentInfomation.date.nightsDays})</Text>
+                    {this.renderCalculatedDate(this.props.paymentInfomation.date.nightsDays)}
                 </View>
             )
         } else {
             <View></View>
         }
-    }
-    
+    }    
 
     openModal = () => {
         this.calculatePaymentInfomation();
@@ -459,6 +482,12 @@ const styles = StyleSheet.create({
     },
     balanceText: {
         fontSize: 16,
+        fontWeight: 'bold',
+        color: '#BD3D3A',
+        textAlign: 'center',
+    },
+    TotalPiceText: {
+        fontSize: 20,
         fontWeight: 'bold',
         color: '#BD3D3A',
         textAlign: 'center',

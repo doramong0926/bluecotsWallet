@@ -89,11 +89,10 @@ class ModalRestoreWallet extends Component {
                     <View>
                         <FormLabel>PrivateKey</FormLabel>
                         <FormInput 
-                                    containerStyle={{marginRight:0,}} 
-                                    underlineColorAndroid='gray'
-                                    inputStyle = {{paddingLeft:5, paddingRight:5, marginRight:0, fontSize:11}}
-                                    value={this.state.privateKey}
-                                    onChangeText={(value) => this.setState({privateKey: value})}
+                            underlineColorAndroid='gray'
+                            inputStyle = {{paddingLeft:5, paddingRight:5, marginRight:0, fontSize:11}}
+                            value={this.state.privateKey}
+                            onChangeText={(value) => this.setState({privateKey: value})}
                         />
                         {this.privateKeyValidationMsg()}
                     </View>
