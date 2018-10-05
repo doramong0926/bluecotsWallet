@@ -40,7 +40,7 @@ class HotelSearchBarCard extends Component {
                                 containerStyle={{backgroundColor: 'white', borderTopWidth:0, borderBottomWidth:0}}
                                 searchIcon={{ size: 24 }}
                                 clearIcon={{ size: 24}}
-                                onChangeText={this.props.handelOnChnageText}
+                                onChangeText={this.props.handleOnChnageText}
                                 onClearText={this.props.handleonClearText}
                                 placeholder='Search hotel' 
                                 value={this.props.queryString}

@@ -7,7 +7,7 @@ import ParallaxScrollView from 'react-native-parallax-scroll-view';
 
 import HotelSearchBarCard from './../../cards/hotelSearchBarCard';
 import HotelCard from './../../cards/hotelCard';
-import { DEFAULT_HOTEL_INFO_LIST } from './../../config/hotelList'
+import { DEFAULT_HOTEL_INFO, DEFAULT_HOTEL_INFO_LIST } from './../../config/hotelList'
 
 import SLIDER_IMAGE1 from './../../components/images/sampleSlider1.jpg';
 import SLIDER_IMAGE2 from './../../components/images/sampleSlider2.jpg';
@@ -19,30 +19,36 @@ class HotelScreen extends Component{
 
     constructor(props, context) {
         super(props, context);
+        this.state = {
+            dataSourceForHotelInfoList: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2,
+            }),
+            hotelInfoList: DEFAULT_HOTEL_INFO_LIST,
+            queryString: null,
+        };
     }
 
-    state = {
-        dataSourceForHotelInfoList: new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2,
-        }),
-        queryString: '',
-    };
-
-    componentWillMount() {
-        this.fetchHotelInfoList();
-        this.updateHotelInfoList();
-    }
+    // componentWillMount() {
+    //     this.fetchHotelInfoList();
+    //     this.updateHotelInfoList(null);
+    // }
 
     componentDidMount() {
-        // setInterval(() => {
-        //     this.fetchHotelInfoList();
-        //     this.updateHotelInfoList();
-        // }, 10000)
+        this.setState({hotelInfoList: this.props.hotelInfoList})
+        this.fetchHotelInfoList();
+        this.updateHotelInfoList(null);
+        
+        setInterval(() => {
+            this.fetchHotelInfoList();
+            this.updateHotelInfoList(this.state.queryString);
+        }, 10000)
     }
 
-    componentWillReceiveProps() {
-        // this.fetchHotelInfoList();
-        // this.updateHotelInfoList();
+    componentWillReceiveProps(nextProps) {
+        // if (this.props.hotelInfoList !== nextProps.hotelInfoList) {
+        //     this.fetchHotelInfoList();
+        //     this.updateHotelInfoList(this.state.queryString);
+        // }
     }
 
     render() {
@@ -56,7 +62,7 @@ class HotelScreen extends Component{
             <View style={{flex:1, backgroundColor: '#E4F1F6'}}>
                 <View style={styles.containerSearchBar}>
                     <HotelSearchBarCard 
-                        handelOnChnageText={this.handelOnChnageText.bind(this)} 
+                        handleOnChnageText={this.handleOnChnageText.bind(this)} 
                         handleonClearText={this.handleonClearText.bind(this)}
                         // queryString={this.state.queryString}
                     />
@@ -84,7 +90,7 @@ class HotelScreen extends Component{
                     // renderFixedHeader={() => 
                     //     <View style={styles.containerSearchBar}>
                     //         <HotelSearchBarCard 
-                    //             handelOnChnageText={this.handelOnChnageText.bind(this)} 
+                    //             handleOnChnageText={this.handleOnChnageText.bind(this)} 
                     //             handleonClearText={this.handleonClearText.bind(this)}
                     //             queryString={this.state.queryString}
                     //         />
@@ -118,37 +124,39 @@ class HotelScreen extends Component{
     }
 
     fetchHotelInfoList = () => {
-        DEFAULT_HOTEL_INFO_LIST.map(t=>{
+        this.state.hotelInfoList.map(t=>{
             if (this.props.hotelInfoList.filter(item=>{return(item.id === t.id)}).length === 0) {
                 this.props.addHotelInfoList(t);    
             }
         })
+        setTimeout(() => {
+            this.setState({hotelInfoList: this.props.hotelInfoList});    
+        }, );
     }
 
-    updateHotelInfoList = (queryString) => {
+    updateHotelInfoList = (queryString = null) => {
         if (queryString !== null && queryString !== undefined && queryString !== '') {
             this.state.dataSourceForHotelInfoList = this.state.dataSourceForHotelInfoList.cloneWithRows(
-                this.props.hotelInfoList.filter(t => {
+                this.state.hotelInfoList.filter(t => {
                     return (t.name.includes(queryString) === true);
                 })
             );
         }        
         else {
-            this.state.dataSourceForHotelInfoList = this.state.dataSourceForHotelInfoList.cloneWithRows(this.props.hotelInfoList);
+            this.state.dataSourceForHotelInfoList = this.state.dataSourceForHotelInfoList.cloneWithRows(this.state.hotelInfoList);
         }
     };
 
-    handelOnChnageText = (queryString) => {
-        console.log(`handelOnChnageText : ${queryString}`)
-        this.setState({queryString: queryString});
-        this.updateHotelInfoList(queryString);     
-        
+    handleOnChnageText = (queryString) => {
+        console.log(`handleOnChnageText : ${queryString}`)
+        if (this.state.queryString !== queryString) {
+            this.setState({queryString: queryString});
+        }
+        this.updateHotelInfoList(queryString);    
     }
 
     handleonClearText = () => {
-        console.log(`handleSearchClear`);
-        this.setState({queryString: ''});
-        this.updateHotelInfoList('');     
+        console.log(`handleSearchClear`)
     }
 }
 
