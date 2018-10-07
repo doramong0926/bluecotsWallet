@@ -142,15 +142,17 @@ class HotelPaymentCard extends Component {
     }
 
     handelPressChangeNumOfAdult = (type) => {
-        var paymentInfomation = this.state.paymentInfomation;
+        let paymentInfomation = this.state.paymentInfomation;
         if (type === 'add') {
             paymentInfomation.numOfPeople.adult++;
             this.setState({
                 paymentInfomation: paymentInfomation,
             })
         } else if (type === 'remove') {
-            paymentInfomation.numOfPeople.adult--;
-            if (paymentInfomation.numOfPeople.adult > 0) {
+            console.log(`dkdk 1 handelPressChangeNumOfAdult adult[${paymentInfomation.adult}]`);
+            if (paymentInfomation.numOfPeople.adult >= 1) {
+                paymentInfomation.numOfPeople.adult--;
+                console.log(`dkdk 3 handelPressChangeNumOfAdult adult[${paymentInfomation.adult}]`);
                 this.setState({
                     paymentInfomation: paymentInfomation,
                 })
@@ -159,15 +161,15 @@ class HotelPaymentCard extends Component {
     }
 
     handelPressChangeNumOfKid = (type) => {
-        var paymentInfomation = this.state.paymentInfomation;
+        let paymentInfomation = this.state.paymentInfomation;
         if (type === 'add') {
             paymentInfomation.numOfPeople.kid++;
             this.setState({
                 paymentInfomation: paymentInfomation,
             })
-        } else if (type === 'remove') {
-            paymentInfomation.numOfPeople.kid--;
-            if (paymentInfomation.numOfPeople.kid > 0) {
+        } else if (type === 'remove') {          
+            if (paymentInfomation.numOfPeople.kid >= 1) {
+                paymentInfomation.numOfPeople.kid--;
                 this.setState({
                     paymentInfomation: paymentInfomation,
                 })
@@ -176,15 +178,15 @@ class HotelPaymentCard extends Component {
     }
 
     handelPressChangeNumOfBaby = (type) => {
-        var paymentInfomation = this.state.paymentInfomation;
+        let paymentInfomation = this.state.paymentInfomation;
         if (type === 'add') {
             paymentInfomation.numOfPeople.baby++;
             this.setState({
                 paymentInfomation: paymentInfomation,
             })
         } else if (type === 'remove') {
-            paymentInfomation.numOfPeople.baby--;
-            if (paymentInfomation.numOfPeople.baby > 0) {
+            if (paymentInfomation.numOfPeople.baby >= 1) {
+                paymentInfomation.numOfPeople.baby--;
                 this.setState({
                     paymentInfomation: paymentInfomation,
                 })
