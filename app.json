@@ -1,24 +1,45 @@
 {
   "expo": {
-    "sdkVersion": "27.0.0",
-    "name": "bluecots",
-    "slug": "bluecots",
-    "icon": "./assets/images/icon.png",
-    "version": "0.0.1",
+    "name": "bluecotsWallet",
+    "description": "This project is bluecots wallet.",
+    "slug": "bluecotsWallet",
     "privacy": "public",
-    "platforms": ["android"],
+    "sdkVersion": "30.0.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#347B98"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false
+    },
     "isDetached": false,
     "detach": {
-      "scheme": "exp5f35913053c249e18df5080502949fec",
-      "androidExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/android-v2.5.3-sdk27.0.0-408c8d77-8d1f-4784-b7b4-93826250663a.tar.gz"
+      "androidExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/android-v2.8.1-sdk30.0.0-271c32ab-0715-4dfb-8270-ecead3679bb4.tar.gz"
     },
-    "splash": {
-      "image": "./assets/images/splash.png",
-      "backgroundColor": "#347B98"
-    },  
+    "scheme": "expa32f64d874f94e4e94fa61959ff3f54e",
     "android": {
-      "package": "com.bluecots.wallet"
-    },
-    "orientation": "portrait"
+      "package": "com.bluecots.wallet",
+      "publishBundlePath": "android/app/src/main/assets/shell-app.bundle",
+      "publishManifestPath": "android/app/src/main/assets/shell-app-manifest.json",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDb5AgKgLPpGEKmgtBn7w8ZYKMw0dBoHd4"
+        }
+      }
+    }
   }
 }

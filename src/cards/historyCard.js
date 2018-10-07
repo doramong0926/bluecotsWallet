@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import HistoryOfTransaction from '../components/historyOfTransaction'
 import StatusOfTranscation from '../components/statusOfTranscation'
-import { Card } from 'react-native-material-design';
+import { Card } from '@doramong0926/react-native-material-design';
 import PropTypes from 'prop-types';
 import ActionCreator from './../actions';
 

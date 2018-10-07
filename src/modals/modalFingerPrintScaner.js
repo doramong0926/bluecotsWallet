@@ -47,6 +47,8 @@ class ModalFingerPrintScaner extends Component {
                     justifyContent: "center"
                 }}
                 modalStyle={{
+                    margin: 0,
+                    padding:0,
                     borderRadius: 10,
                     marginHorizontal: 20,
                     backgroundColor: "white"
@@ -107,7 +109,7 @@ class ModalFingerPrintScaner extends Component {
             this.props.modalFinishProcess(scanResult);
         }
         setTimeout(() => {
-            Expo.Fingerprint.cancelAuthenticate();
+            Expo.LocalAuthentication.cancelAuthenticate();
             this.props.hideModalFingerPrintScaner();
             this.initState();    
         },);
@@ -176,7 +178,7 @@ class ModalFingerPrintScaner extends Component {
     }
 
     scanFingerprint = async () => {
-        const result = await Expo.Fingerprint.authenticateAsync('Scan your finger.');
+        const result = await Expo.LocalAuthentication.authenticateAsync('Scan your finger.');
         console.log('Scan Result:', result)
         if (result.success === true) {
             const scanResult = {
@@ -213,7 +215,7 @@ class ModalFingerPrintScaner extends Component {
     
 const styles = StyleSheet.create({
     headerContainer: {
-        backgroundColor: '#67AFCB',
+        backgroundColor: '#B4B7BA',
         alignItems: 'center',
         justifyContent: 'center',
         borderTopStartRadius : 10,

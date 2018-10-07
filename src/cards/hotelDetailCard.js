@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image, Dimensions, Linking } from 'react-native';
 import { Button } from 'react-native-elements'
 import { connect } from 'react-redux';
-import { Card } from 'react-native-material-design';
+import { Card } from '@doramong0926/react-native-material-design';
 import PropTypes from 'prop-types';
 import ActionCreator from '../actions';
 import StarRating from 'react-native-star-rating';
 import HOTEL_MAIN_DEFULT from './images/hotel1_main.jpg'
-import { Divider } from 'react-native-material-design';
+import { Divider } from '@doramong0926/react-native-material-design';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { DEFAULT_HOTEL_INFO } from '../config/hotelList';
 import { DEFAULT_MAP_REGION, DEFAULT_MAP_LATLEN } from '../config/constants';

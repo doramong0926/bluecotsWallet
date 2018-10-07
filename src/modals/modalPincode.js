@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Dimensions } from 'react-native';
 import Modal from 'react-native-simple-modal';
 import ActionCreator from '../actions';
-import PINCode from '@haskkor/react-native-pincode'
+import PINCode from '@doramong0926/react-native-pincode'
 import { connect } from 'react-redux';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import ImageSlider from 'react-native-image-slider';
@@ -53,6 +53,8 @@ class ModalPincode extends Component {
                     flex:1,
                 }}
                 modalStyle={{
+                    margin: 0,
+                    padding:0,
                     position: 'absolute',
                     top: 0,
                     left: 0,
@@ -64,13 +66,17 @@ class ModalPincode extends Component {
                     flex: 1
                 }}
             >
-                <PINCode 
-                    status={'enter'} 
-                    storedPin={this.props.pincode} 
-                    touchIDDisabled={true}
-                    finishProcess={this.handelFinishProcess}
-                    onFail={this.handelOnfail}
-                /> 
+                <View style={{flex:1}}>
+                    <View style={{height: Dimensions.get('window').height, paddingBottom: 40}}>
+                        <PINCode 
+                            status={'enter'} 
+                            storedPin={this.props.pincode} 
+                            touchIDDisabled={true}
+                            finishProcess={this.handelFinishProcess}
+                            onFail={this.handelOnfail}
+                        /> 
+                    </View>
+                </View> 
             </Modal>
         );
     }  

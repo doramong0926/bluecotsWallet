@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image, Dimensions, Linking } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'
 import { connect } from 'react-redux';
-import { Card } from 'react-native-material-design';
+import { Card } from '@doramong0926/react-native-material-design';
 import PropTypes from 'prop-types';
 import ActionCreator from '../actions';
-import { Divider } from 'react-native-material-design';
+import { Divider } from '@doramong0926/react-native-material-design';
 import { DEFAULT_PAYMENT_INFOMATION } from '../config/hotelList';
 import { DEFAULT_TOKEN_EXCHANGE_RATE } from '../config/constants'
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
@@ -143,12 +143,6 @@ class HotelPaymentCard extends Component {
 
     handelPressChangeNumOfAdult = (type) => {
         var paymentInfomation = this.state.paymentInfomation;
-        if (paymentInfomation.numOfPeople.adult < 0) {
-            paymentInfomation.numOfPeople.adult = 0;
-            this.setState({
-                paymentInfomation: paymentInfomation,
-            })
-        }
         if (type === 'add') {
             paymentInfomation.numOfPeople.adult++;
             this.setState({
@@ -166,12 +160,6 @@ class HotelPaymentCard extends Component {
 
     handelPressChangeNumOfKid = (type) => {
         var paymentInfomation = this.state.paymentInfomation;
-        if (paymentInfomation.numOfPeople.kid < 0) {
-            paymentInfomation.numOfPeople.kid = 0;
-            this.setState({
-                paymentInfomation: paymentInfomation,
-            })
-        }
         if (type === 'add') {
             paymentInfomation.numOfPeople.kid++;
             this.setState({
@@ -189,12 +177,6 @@ class HotelPaymentCard extends Component {
 
     handelPressChangeNumOfBaby = (type) => {
         var paymentInfomation = this.state.paymentInfomation;
-        if (paymentInfomation.numOfPeople.baby < 0) {
-            paymentInfomation.numOfPeople.baby = 0;
-            this.setState({
-                paymentInfomation: paymentInfomation,
-            })
-        }
         if (type === 'add') {
             paymentInfomation.numOfPeople.baby++;
             this.setState({

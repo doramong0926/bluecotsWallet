@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, Linking, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import { Card } from 'react-native-material-design';
+import { Card } from '@doramong0926/react-native-material-design';
 
 class NotificationCard extends Component {
 

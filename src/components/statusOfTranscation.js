@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { Divider } from 'react-native-material-design';
+import { Divider } from '@doramong0926/react-native-material-design';
 
 class StatusOfTranscation extends Component{
     constructor(props, context) {

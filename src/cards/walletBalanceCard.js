@@ -15,7 +15,7 @@ import {
     DEFAULT_TOKEN_DECIMALS,
     defaultWallet,
  } from '../config/constants';
- import { Card, Divider } from 'react-native-material-design';
+ import { Card, Divider } from '@doramong0926/react-native-material-design';
  import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 class WalletBalanceCard extends Component {

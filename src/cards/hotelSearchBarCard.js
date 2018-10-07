@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image, Dimensions, Linking } from 'react-native';
 import { SearchBar } from 'react-native-elements'
 import { connect } from 'react-redux';
-import { Card } from 'react-native-material-design';
+import { Card } from '@doramong0926/react-native-material-design';
 import PropTypes from 'prop-types';
 import ActionCreator from '../actions';
 

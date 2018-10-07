@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import WalletUtils from '../utils/wallet';
 import ReactMoment from 'react-moment';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { Divider } from 'react-native-material-design';
+import { Divider } from '@doramong0926/react-native-material-design';
 
 import { 
     DEFAULT_TOKEN_SYMBOL,
@@ -37,6 +37,7 @@ class HistoryOfTransaction extends Component{
             isNoTransactionData: true,
             defaultWallet: defaultWallet,
             tokenName: 'BLC',
+            previousTokenName: 'BLC',
         };
     }
 
@@ -44,6 +45,7 @@ class HistoryOfTransaction extends Component{
         this.setState({
             defaultWallet: this.props.defaultWallet,
             tokenName: this.props.tokenName,
+            previousTokenName: this.props.tokenName,
         }) 
         this.fetchTransaction();
         setInterval(() => {
@@ -61,6 +63,11 @@ class HistoryOfTransaction extends Component{
         if (this.props.tokenName != nextProps.tokenName) {
             this.setState({
                 tokenName: nextProps.tokenName,
+            }) 
+        }
+        if (this.props.previousTokenName != nextProps.previousTokenName) {
+            this.setState({
+                previousTokenName: nextProps.previousTokenName,
             }) 
         }
     }
@@ -113,7 +120,7 @@ class HistoryOfTransaction extends Component{
                     <Divider />
                     <TouchableOpacity onPress={() => this.handlePress(txData)} value="0.5">
                         <View style={styles.listViewInnerContainer}>
-                            <View style={{flexDirection:'row'}}>
+                            <View style={{flexDirection:'row', alignItems: 'center'}}>
                                 <View style={{width: 60, borderRadius:50, backgroundColor:'#92B558'}}>
                                     {
                                         (txData.from == this.state.defaultWallet.walletAddress) ? 
@@ -121,15 +128,26 @@ class HistoryOfTransaction extends Component{
                                             ( <Text style={{fontSize:12, textAlign:'center'}}>Receive</Text> )
                                     }
                                 </View>
-                                <Text> {WalletUtils.fromWei(txData.value, 'ether')} {this.state.tokenName} (</Text>
-                                <ReactMoment unix fromNow element={Text} >{txData.timeStamp}</ReactMoment>
-                                <Text>)</Text>           
-                            </View>      
+                                <View style={{flexDirection:'row', paddingLeft: 5}}>
+                                    <Text style={{textAlign:'center'}}>{WalletUtils.fromWei(txData.value, 'ether')} </Text>
+                                    <Text style={{textAlign:'center'}}>
+                                        {(this.props.isLoadingTxData === true) ? 
+                                            (this.state.previousTokenName) : 
+                                            (this.state.tokenName)}
+                                    </Text>
+                                    <Text style={{textAlign:'center'}}> (
+                                        <ReactMoment unix fromNow style={{textAlign:'center'}} element={Text} >{txData.timeStamp}</ReactMoment>
+                                        )
+                                    </Text>
+                                </View>
+                            </View>    
+                            <View style={{marginTop: 5}}>
                                 {                  
                                     (txData.from == this.state.defaultWallet.walletAddress) ? 
                                     (<Text style={{fontSize: 12}}>to : {txData.to}</Text>) :
                                     (<Text style={{fontSize: 12}}>from : {txData.from}</Text>)
                                 }
+                            </View>  
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -184,12 +202,18 @@ class HistoryOfTransaction extends Component{
                 this.setState({transactionHistoryData: this.parsingTxData(txData.result)});
                 this.state.dataSourceForTransaction = this.state.dataSourceForTransaction.cloneWithRows(this.state.transactionHistoryData)
                 this.setState({isNoTransactionData: false});
-                this.props.setIsLoadingTxData(false);                
+                if(this.props.isLoadingTxData !== false) {
+                    this.props.setIsLoadingTxData(false);
+                    this.setState({previousTokenName: this.props.tokenName});                
+                }
             } else if (txData.message === 'NO_TRANSACTIONS_FOUND') {
                 this.setState({transactionHistoryData: defaultTransactionData});
                 this.state.dataSourceForTransaction = this.state.dataSourceForTransaction.cloneWithRows(this.state.transactionHistoryData) 
                 this.setState({isNoTransactionData: true});
-                this.props.setIsLoadingTxData(false);
+                if(this.props.isLoadingTxData !== false) {
+                    this.props.setIsLoadingTxData(false);
+                    this.setState({previousTokenName: this.props.tokenName});
+                }
             } else {
                 ;
             }

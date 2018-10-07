@@ -1,12 +1,14 @@
 
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Dimensions, Image } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
-import PINCode from '@haskkor/react-native-pincode'
+import PINCode from '@doramong0926/react-native-pincode'
 import { connect } from 'react-redux';
 import ActionCreator from './../../actions';
 import Expo from 'expo';
 
+import TEST_IMAGE from './../../../assets/splash.gif';
+// height: Dimensions.get('window').height,
 // export declare enum PinResultStatus {
 //     initial = "initial",
 //     success = "success",
@@ -48,21 +50,36 @@ class VerificationPincodeScreen extends Component{
                 {
                     (this.props.pincode !== '' && this.props.pincode !== undefined && this.props.useFingerPrint !== undefined) ? 
                     (
-                        <PINCode 
-                            status={'enter'} 
-                            storePin={this.props.setPincode} 
-                            storedPin={this.props.pincode} 
-                            touchIDDisabled={true}
-                            finishProcess={this.handelFinishProcess}
-                            onFail={this.handelOnfail}
-                        />
+                        <View>
+                            {/* <View style={{height: 150}}>
+                                <Image 
+                                    source={TEST_IMAGE} 
+                                    style={{width: Dimensions.get('window').width, height: 150}} 
+                                    resizeMode={'stretch'} 
+                                />
+                            </View> */}
+                            <View style={{height: Dimensions.get('window').height, paddingBottom: 40}}>
+                                <PINCode 
+                                    status={'enter'} 
+                                    storePin={this.props.setPincode} 
+                                    storedPin={this.props.pincode} 
+                                    touchIDDisabled={true}
+                                    finishProcess={this.handelFinishProcess}
+                                    onFail={this.handelOnfail}
+                                />
+                            </View>
+                        </View>
                     ) :
                     (
-                        <PINCode 
-                            status={'choose'} 
-                            storePin={this.setPincode.bind(this)}
-                            touchIDDisabled={true}
-                        />
+                        <View>
+                            <View style={{height: Dimensions.get('window').height, paddingBottom: 40}}>
+                                <PINCode 
+                                    status={'choose'} 
+                                    storePin={this.setPincode.bind(this)}
+                                    touchIDDisabled={true}
+                                />
+                            </View>
+                        </View>
                     ) 
                 }           
             </View>
@@ -100,12 +117,12 @@ class VerificationPincodeScreen extends Component{
     }
 
     checkDeviceForHardware = async () => {
-        let fingerPrintCompatible = await Expo.Fingerprint.hasHardwareAsync();
+        let fingerPrintCompatible = await Expo.LocalAuthentication.hasHardwareAsync();
         this.setState({fingerPrintCompatible})
     }
     
     checkForFingerprints = async () => {
-        let fingerprintsExisit = await Expo.Fingerprint.isEnrolledAsync();
+        let fingerprintsExisit = await Expo.LocalAuthentication.isEnrolledAsync();
         this.setState({fingerprintsExisit})
     }
 }

@@ -150,12 +150,12 @@ class VerificationFingerPrintScreen extends Component{
     }
     
     checkDeviceForHardware = async () => {
-        const fingerPrintCompatible = await Expo.Fingerprint.hasHardwareAsync();
+        const fingerPrintCompatible = await Expo.LocalAuthentication.hasHardwareAsync();
         this.setState({fingerPrintCompatible})
     }
     
     checkForFingerprints = async () => {
-        const fingerprintsExisit = await Expo.Fingerprint.isEnrolledAsync();
+        const fingerprintsExisit = await Expo.LocalAuthentication.isEnrolledAsync();
         this.setState({fingerprintsExisit})
     }
 }

@@ -10,18 +10,13 @@ import expolib_v1.okhttp3.OkHttpClient;
 
 // Needed for `react-native link`
 // import com.facebook.react.ReactApplication;
-import com.airbnb.android.react.maps.MapsPackage;
-import com.rnfs.RNFSPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.rnfingerprint.FingerprintAuthPackage;
-import com.oblador.keychain.KeychainPackage;
-import com.peel.react.rnos.RNOSModule;
-import org.reactnative.camera.RNCameraPackage;
 import com.horcrux.svg.SvgPackage;
 import br.com.classapp.RNSensitiveInfo.RNSensitiveInfoPackage;
 import com.bitgo.randombytes.RandomBytesPackage;
+import com.airbnb.android.react.maps.MapsPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
-import com.bitgo.randombytes.RandomBytesPackage;
 
 public class MainApplication extends ExpoApplication {
 
@@ -38,18 +33,13 @@ public class MainApplication extends ExpoApplication {
 
         // Needed for `react-native link`
         // new MainReactPackage(),
-            new MapsPackage(),
-            new RNFSPackage(),
             new VectorIconsPackage(),
             new FingerprintAuthPackage(),
-            new KeychainPackage(),
-            new RNOSModule(),
-            new RNCameraPackage(),
             new SvgPackage(),
             new RNSensitiveInfoPackage(),
             new RandomBytesPackage(),
-            new ReactNativeConfigPackage(),
-            new RandomBytesPackage()
+            new MapsPackage(),
+            new ReactNativeConfigPackage()
     );
   }
 

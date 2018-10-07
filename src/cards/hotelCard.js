@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image, Dimensions, Linking } from 'react-native';
 import { connect } from 'react-redux';
-import { Card } from 'react-native-material-design';
+import { Card } from '@doramong0926/react-native-material-design';
 import PropTypes from 'prop-types';
 import ActionCreator from '../actions';
 import StarRating from 'react-native-star-rating';

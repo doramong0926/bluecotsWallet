@@ -54,6 +54,8 @@ class ModalGenerateWallet extends Component {
                     justifyContent: "center"
                 }}
                 modalStyle={{
+                    margin: 0,
+                    padding:0,
                     borderRadius: 10,
                     marginHorizontal: 20,
                     backgroundColor: "white"
@@ -246,7 +248,7 @@ function mapDispatchToProps(dispatch) {
 
 const styles = StyleSheet.create({
     headerContainer: {
-        backgroundColor: '#67AFCB',
+        backgroundColor: '#B4B7BA',
         alignItems: 'center',
         justifyContent: 'center',
         borderTopStartRadius : 10,
