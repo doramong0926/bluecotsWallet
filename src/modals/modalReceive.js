@@ -8,7 +8,6 @@ import {
   Clipboard,
 } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
-
 import Modal from 'react-native-simple-modal';
 
 import ActionCreator from '../actions';
@@ -156,7 +155,7 @@ class ModalReceive extends Component {
                 <QRCode 
                     size = {250} 
                     value={this.props.defaultWallet.walletAddress}
-                    getRef={(c) => (this.svg = c)}
+                    // getRef={(c) => (this.svg = c)}
                 />
             )
         } else {

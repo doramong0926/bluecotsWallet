@@ -99,8 +99,8 @@ class VerificationPincodeScreen extends Component{
         this.checkForFingerprints();
         setTimeout(() => {
             if (this.state.fingerPrintCompatible !== true) {
-                this.props.navigation.dispatch(resetActionToMain);
-                this.props.navigation.navigate('Main');
+                this.props.navigation.dispatch(resetActionToAddWallet);
+                this.props.navigation.navigate('AddWallet');
             } else {
                 this.props.navigation.dispatch(resetActionToVerificationFingerPrint);
                 this.props.navigation.navigate('VerificationFingerPrint');
@@ -130,6 +130,11 @@ class VerificationPincodeScreen extends Component{
 const resetActionToMain = StackActions.reset({
     index: 0,
     actions: [NavigationActions.navigate({ routeName: 'Main' })],
+});
+
+const resetActionToAddWallet = StackActions.reset({
+    index: 0,
+    actions: [NavigationActions.navigate({ routeName: 'AddWallet' })],
 });
 
 const resetActionToVerificationFingerPrint = StackActions.reset({
